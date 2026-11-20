@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bwpsfuplu8cvf"]
+
+[ext_resource type="Script" path="res://scripts/movement/player.gd" id="1_player"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(40, 230)
+
+[node name="TopDownMovement" type="Node2D"]
+
+[node name="Floor" type="Polygon2D" parent="."]
+position = Vector2(48, 48)
+color = Color(0.18, 0.26, 0.30, 1)
+polygon = PackedVector2Array(0, 0, 992, 0, 992, 516, 0, 516)
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(340, 306)
+collision_layer = 2
+collision_mask = 1
+input_pickable = false
+motion_mode = 1
+script = ExtResource("1_player")
+
+[node name="Visual" type="Node2D" parent="Player"]
+
+[node name="Body" type="Polygon2D" parent="Player/Visual"]
+color = Color(0.48, 0.84, 0.87, 1)
+polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+
+[node name="Facing" type="Polygon2D" parent="Player/Visual"]
+color = Color(0.08, 0.20, 0.24, 1)
+polygon = PackedVector2Array(-5, -7, 8, 0, -5, 7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Wall" type="StaticBody2D" parent="."]
+position = Vector2(560, 306)
+collision_layer = 1
+collision_mask = 0
+input_pickable = false
+
+[node name="Visual" type="Polygon2D" parent="Wall"]
+color = Color(0.63, 0.66, 0.67, 1)
+polygon = PackedVector2Array(-20, -115, 20, -115, 20, 115, -20, 115)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall"]
+shape = SubResource("RectangleShape2D_wall")
