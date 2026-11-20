@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/file_manager.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/document_launcher.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/image_launcher.tscn" id="3"]
+
+[node name="FileManager" type="MarginContainer"]
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Location" type="Label" parent="Layout"]
+layout_mode = 2
+text = "Files"
+
+[node name="Scroll" type="ScrollContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Files" type="GridContainer" parent="Layout/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+
+[node name="Readme" parent="Layout/Scroll/Files" instance=ExtResource("2")]
+layout_mode = 2
+theme_type_variation = &"FileItem"
+display_title = "Readme.txt"
+submission_filename = "Readme.txt"
+starting_text = "My files\n\nOpen a document or image from this folder."
+
+[node name="Notes" parent="Layout/Scroll/Files" instance=ExtResource("2")]
+layout_mode = 2
+theme_type_variation = &"FileItem"
+display_title = "Notes.txt"
+submission_filename = "Notes.txt"
+starting_text = "Things to remember"
+
+[node name="Image" parent="Layout/Scroll/Files" instance=ExtResource("3")]
+layout_mode = 2
+theme_type_variation = &"FileItem"
+display_title = "Image"

@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://dpdtl5dkg6qe1"]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/word_explorer.gd" id="1_app"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/word_explorer_home.tscn" id="2_page"]
+
+[node name="WordExplorer" type="MarginContainer"]
+script = ExtResource("1_app")
+local_page = ExtResource("2_page")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Toolbar" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"BrowserToolbar"
+
+[node name="Navigation" type="HBoxContainer" parent="Layout/Toolbar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Home" type="Button" parent="Layout/Toolbar/Navigation"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(62, 34)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Home"
+
+[node name="Address" type="LineEdit" parent="Layout/Toolbar/Navigation"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(142, 34)
+layout_mode = 2
+size_flags_horizontal = 3
+accessibility_name = "Address"
+placeholder_text = "Address"
+keep_editing_on_text_submit = true
+
+[node name="Go" type="Button" parent="Layout/Toolbar/Navigation"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 34)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Go"
+
+[node name="PagePanel" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Scroll" type="ScrollContainer" parent="Layout/PagePanel"]
+unique_name_in_owner = true
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Page" type="MarginContainer" parent="Layout/PagePanel/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 20

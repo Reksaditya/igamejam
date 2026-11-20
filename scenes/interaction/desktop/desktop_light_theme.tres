@@ -1,0 +1,345 @@
+[gd_resource type="Theme" format=3 uid="uid://cqbx0heiy2n72"]
+
+[ext_resource type="FontFile" uid="uid://3u2ud3kb3vs5" path="res://assets/fonts/pixelify_sans/pixelify_sans.ttf" id="1_pixel"]
+
+[sub_resource type="StyleBoxFlat" id="Dialog"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.97, 0.98, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.49, 0.57, 0.69, 1)
+
+[sub_resource type="StyleBoxFlat" id="Frame"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.94, 0.96, 0.99, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.38, 0.47, 0.63, 1)
+shadow_color = Color(0.035, 0.055, 0.12, 0.42)
+shadow_size = 6
+shadow_offset = Vector2(2, 3)
+
+[sub_resource type="StyleBoxFlat" id="Toolbar"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 9.0
+bg_color = Color(0.88, 0.92, 0.97, 1)
+border_width_bottom = 1
+border_color = Color(0.63, 0.7, 0.8, 1)
+
+[sub_resource type="StyleBoxFlat" id="ControlFocus"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.36, 0.66, 1)
+
+[sub_resource type="StyleBoxFlat" id="ButtonHover"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.8, 0.88, 0.97, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.39, 0.54, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="Button"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.98, 0.99, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.49, 0.59, 0.71, 1)
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.79, 0.43, 1)
+
+[sub_resource type="StyleBoxFlat" id="IconHover"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.16, 0.3, 0.3)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.81, 0.89, 1, 0.44)
+
+[sub_resource type="StyleBoxEmpty" id="Transparent"]
+
+[sub_resource type="StyleBoxFlat" id="IconPressed"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.12, 0.21, 0.36, 0.64)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.81, 0.89, 1, 0.62)
+
+[sub_resource type="StyleBoxFlat" id="Input"]
+content_margin_left = 12.0
+content_margin_top = 9.0
+content_margin_right = 12.0
+content_margin_bottom = 9.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.51, 0.6, 0.72, 1)
+
+[sub_resource type="StyleBoxFlat" id="Editor"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="FileMenuHover"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+bg_color = Color(0.77, 0.86, 0.95, 1)
+
+[sub_resource type="StyleBoxEmpty" id="FileMenu"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="NotepadToolbar"]
+content_margin_left = 2.0
+content_margin_top = 1.0
+content_margin_right = 2.0
+content_margin_bottom = 1.0
+bg_color = Color(0.88, 0.92, 0.97, 1)
+border_width_bottom = 1
+border_color = Color(0.63, 0.7, 0.8, 1)
+
+[sub_resource type="StyleBoxFlat" id="Page"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.95, 0.97, 0.99, 1)
+
+[sub_resource type="StyleBoxFlat" id="DialogFrame"]
+bg_color = Color(0.25, 0.38, 0.57, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.43, 0.54, 0.7, 1)
+expand_margin_left = 3.0
+expand_margin_top = 32.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="WindowButton"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 1.0
+bg_color = Color(0.97, 0.98, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.47, 0.57, 0.7, 1)
+
+[sub_resource type="StyleBoxFlat" id="CloseHover"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 1.0
+bg_color = Color(0.94, 0.77, 0.8, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.63, 0.33, 0.4, 1)
+
+[sub_resource type="StyleBoxFlat" id="Close"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 1.0
+bg_color = Color(0.97, 0.87, 0.88, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.65, 0.42, 0.48, 1)
+
+[sub_resource type="StyleBoxFlat" id="TitleActive"]
+content_margin_left = 7.0
+content_margin_top = 4.0
+content_margin_right = 7.0
+content_margin_bottom = 4.0
+bg_color = Color(0.77, 0.86, 0.95, 1)
+border_width_bottom = 1
+border_color = Color(0.43, 0.54, 0.7, 1)
+
+[sub_resource type="StyleBoxFlat" id="TitleFocused"]
+content_margin_left = 7.0
+content_margin_top = 4.0
+content_margin_right = 7.0
+content_margin_bottom = 4.0
+bg_color = Color(0.77, 0.86, 0.95, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.19, 0.39, 0.65, 1)
+
+[sub_resource type="StyleBoxFlat" id="TitleInactive"]
+content_margin_left = 7.0
+content_margin_top = 4.0
+content_margin_right = 7.0
+content_margin_bottom = 4.0
+bg_color = Color(0.86, 0.9, 0.95, 1)
+border_width_bottom = 1
+border_color = Color(0.56, 0.63, 0.74, 1)
+
+[resource]
+default_font_size = 16
+AcceptDialog/styles/panel = SubResource("Dialog")
+AppFrame/base_type = &"PanelContainer"
+AppFrame/styles/panel = SubResource("Frame")
+BrowserHeading/base_type = &"Label"
+BrowserHeading/font_sizes/font_size = 25
+BrowserToolbar/base_type = &"PanelContainer"
+BrowserToolbar/styles/panel = SubResource("Toolbar")
+Button/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+Button/colors/font_focus_color = Color(0.09, 0.15, 0.24, 1)
+Button/colors/font_hover_color = Color(0.09, 0.15, 0.24, 1)
+Button/colors/font_hover_pressed_color = Color(0.09, 0.15, 0.24, 1)
+Button/colors/font_pressed_color = Color(0.09, 0.15, 0.24, 1)
+Button/colors/icon_focus_color = Color(0.14, 0.24, 0.39, 1)
+Button/colors/icon_hover_color = Color(0.14, 0.24, 0.39, 1)
+Button/colors/icon_normal_color = Color(0.2, 0.31, 0.47, 1)
+Button/colors/icon_pressed_color = Color(0.14, 0.24, 0.39, 1)
+Button/styles/focus = SubResource("ControlFocus")
+Button/styles/hover = SubResource("ButtonHover")
+Button/styles/normal = SubResource("Button")
+Button/styles/pressed = SubResource("Button")
+DesktopCaption/base_type = &"ShellLabel"
+DesktopCaption/colors/font_color = Color(1, 0.99, 0.94, 1)
+DesktopCaption/colors/font_outline_color = Color(0.045, 0.075, 0.14, 1)
+DesktopCaption/constants/outline_size = 4
+DesktopItem/base_type = &"Button"
+DesktopItem/styles/focus = SubResource("Focus")
+DesktopItem/styles/hover = SubResource("IconHover")
+DesktopItem/styles/normal = SubResource("Transparent")
+DesktopItem/styles/pressed = SubResource("IconPressed")
+FileCaption/base_type = &"ShellLabel"
+FileCaption/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+FileDialog/colors/file_icon_color = Color(0.26, 0.4, 0.58, 1)
+FileDialog/colors/folder_icon_color = Color(0.6, 0.4, 0.18, 1)
+FileItem/base_type = &"DesktopItem"
+ItemList/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+ItemList/colors/font_selected_color = Color(0.09, 0.15, 0.24, 1)
+ItemList/styles/focus = SubResource("ControlFocus")
+ItemList/styles/panel = SubResource("Input")
+ItemList/styles/selected = SubResource("ButtonHover")
+ItemList/styles/selected_focus = SubResource("ButtonHover")
+Label/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+LineEdit/colors/caret_color = Color(0.09, 0.15, 0.24, 1)
+LineEdit/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+LineEdit/colors/font_selected_color = Color(1, 1, 1, 1)
+LineEdit/colors/selection_color = Color(0.24, 0.38, 0.6, 1)
+LineEdit/styles/focus = SubResource("ControlFocus")
+LineEdit/styles/normal = SubResource("Input")
+MenuButton/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+MenuButton/styles/focus = SubResource("ControlFocus")
+MenuButton/styles/hover = SubResource("ButtonHover")
+MenuButton/styles/pressed = SubResource("ButtonHover")
+NotepadEditor/base_type = &"TextEdit"
+NotepadEditor/font_sizes/font_size = 16
+NotepadEditor/styles/normal = SubResource("Editor")
+NotepadFileMenu/base_type = &"MenuButton"
+NotepadFileMenu/font_sizes/font_size = 13
+NotepadFileMenu/styles/hover = SubResource("FileMenuHover")
+NotepadFileMenu/styles/normal = SubResource("FileMenu")
+NotepadFileMenu/styles/pressed = SubResource("FileMenuHover")
+NotepadFilePopup/base_type = &"PopupMenu"
+NotepadFilePopup/font_sizes/font_size = 14
+NotepadToolbar/base_type = &"PanelContainer"
+NotepadToolbar/styles/panel = SubResource("NotepadToolbar")
+PanelContainer/styles/panel = SubResource("Page")
+PopupMenu/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+PopupMenu/colors/font_hover_color = Color(0.09, 0.15, 0.24, 1)
+PopupMenu/styles/hover = SubResource("ButtonHover")
+PopupMenu/styles/panel = SubResource("Dialog")
+ShellLabel/base_type = &"Label"
+ShellLabel/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+ShellLabel/font_sizes/font_size = 16
+ShellLabel/fonts/font = ExtResource("1_pixel")
+TextEdit/colors/caret_color = Color(0.09, 0.15, 0.24, 1)
+TextEdit/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+TextEdit/colors/font_placeholder_color = Color(0.36, 0.42, 0.52, 1)
+TextEdit/colors/font_selected_color = Color(1, 1, 1, 1)
+TextEdit/colors/selection_color = Color(0.24, 0.38, 0.6, 1)
+TextEdit/styles/focus = SubResource("ControlFocus")
+TextEdit/styles/normal = SubResource("Input")
+Window/colors/title_color = Color(1, 1, 1, 1)
+Window/constants/title_height = 32
+Window/fonts/title_font = ExtResource("1_pixel")
+Window/styles/embedded_border = SubResource("DialogFrame")
+Window/styles/embedded_unfocused_border = SubResource("DialogFrame")
+WindowButton/base_type = &"Button"
+WindowButton/styles/hover = SubResource("ButtonHover")
+WindowButton/styles/normal = SubResource("WindowButton")
+WindowButton/styles/pressed = SubResource("ButtonHover")
+WindowClose/base_type = &"WindowButton"
+WindowClose/colors/font_color = Color(0.37, 0.11, 0.17, 1)
+WindowClose/fonts/font = ExtResource("1_pixel")
+WindowClose/styles/hover = SubResource("CloseHover")
+WindowClose/styles/normal = SubResource("Close")
+WindowClose/styles/pressed = SubResource("CloseHover")
+WindowTitle/base_type = &"ShellLabel"
+WindowTitle/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+WindowTitle/font_sizes/font_size = 16
+WindowTitleActive/base_type = &"PanelContainer"
+WindowTitleActive/styles/panel = SubResource("TitleActive")
+WindowTitleFocused/base_type = &"PanelContainer"
+WindowTitleFocused/styles/panel = SubResource("TitleFocused")
+WindowTitleInactive/base_type = &"PanelContainer"
+WindowTitleInactive/styles/panel = SubResource("TitleInactive")

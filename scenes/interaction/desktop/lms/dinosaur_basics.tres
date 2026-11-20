@@ -1,0 +1,39 @@
+[gd_resource type="Resource" format=3 uid="uid://cnsf2expce81l"]
+
+[ext_resource type="Script" uid="uid://cbo4dgg3cmitt" path="res://scripts/interaction/desktop/lms/lms_assignment.gd" id="1_assignment"]
+[ext_resource type="Script" uid="uid://bq6v701qefr3q" path="res://scripts/interaction/desktop/lms/lms_question.gd" id="2_question"]
+
+[sub_resource type="Resource" id="Question_horns"]
+script = ExtResource("2_question")
+prompt = "How many horns did Triceratops have?"
+options = PackedStringArray("One", "Two", "Three", "Four")
+correct_option = 2
+
+[sub_resource type="Resource" id="Question_plates"]
+script = ExtResource("2_question")
+prompt = "Which dinosaur had two rows of large plates on its back?"
+options = PackedStringArray("Stegosaurus", "Ankylosaurus", "Iguanodon", "Brachiosaurus")
+
+[sub_resource type="Resource" id="Question_stegosaurus"]
+script = ExtResource("2_question")
+prompt = "Which period did Stegosaurus live in?"
+options = PackedStringArray("Late Triassic", "Early Jurassic", "Early Cretaceous", "Late Jurassic")
+correct_option = 3
+
+[sub_resource type="Resource" id="Question_tyrannosaurus"]
+script = ExtResource("2_question")
+prompt = "Which period did Tyrannosaurus rex live in?"
+options = PackedStringArray("Late Jurassic", "Late Cretaceous", "Early Cretaceous", "Late Triassic")
+correct_option = 1
+
+[sub_resource type="Resource" id="Question_first_dinosaurs"]
+script = ExtResource("2_question")
+prompt = "In which period did the earliest known dinosaurs appear?"
+options = PackedStringArray("Permian", "Jurassic", "Triassic", "Cretaceous")
+correct_option = 2
+
+[resource]
+script = ExtResource("1_assignment")
+id = "dinosaur_basics"
+title = "Dinosaur Basics"
+questions = Array[ExtResource("2_question")]([SubResource("Question_horns"), SubResource("Question_plates"), SubResource("Question_stegosaurus"), SubResource("Question_tyrannosaurus"), SubResource("Question_first_dinosaurs")])

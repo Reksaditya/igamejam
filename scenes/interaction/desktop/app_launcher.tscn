@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/desktop_launcher.gd" id="1_launcher"]
+
+[node name="AppLauncher" type="Button"]
+custom_minimum_size = Vector2(126, 76)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"DesktopItem"
+script = ExtResource("1_launcher")
+display_title = "App shortcut"
+icon_kind = 3

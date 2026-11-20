@@ -1,0 +1,78 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/app_window.gd" id="1_window"]
+
+[node name="AppWindow" type="PanelContainer"]
+offset_right = 524.0
+offset_bottom = 328.0
+theme_type_variation = &"AppFrame"
+mouse_force_pass_scroll_events = false
+script = ExtResource("1_window")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 1
+theme_override_constants/separation = 0
+
+[node name="TitleBar" type="PanelContainer" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 2
+mouse_default_cursor_shape = 13
+theme_type_variation = &"WindowTitleInactive"
+
+[node name="TitleRow" type="HBoxContainer" parent="Layout/TitleBar"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Layout/TitleBar/TitleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"WindowTitle"
+text_overrun_behavior = 3
+
+[node name="WindowControls" type="HBoxContainer" parent="Layout/TitleBar/TitleRow"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="Maximize" type="Button" parent="Layout/TitleBar/TitleRow/WindowControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 26)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WindowButton"
+
+[node name="MaximizeGlyph" type="Control" parent="Layout/TitleBar/TitleRow/WindowControls/Maximize"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Close" type="Button" parent="Layout/TitleBar/TitleRow/WindowControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 26)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WindowClose"
+text = "X"
+tooltip_text = "Close window (Ctrl+W)"
+
+[node name="Body" type="ScrollContainer" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_force_pass_scroll_events = false
+follow_focus = true
+
+[node name="ResizeHandles" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2

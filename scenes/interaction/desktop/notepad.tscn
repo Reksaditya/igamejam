@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://chsarud6135vb"]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/notepad.gd" id="1_app"]
+
+[node name="Notepad" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_app")
+
+[node name="Toolbar" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"NotepadToolbar"
+
+[node name="FileMenu" type="MenuButton" parent="Toolbar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(42, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"NotepadFileMenu"
+text = "File"
+
+[node name="Editor" type="TextEdit" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"NotepadEditor"
+placeholder_text = "Write a note…"
+wrap_mode = 1
+draw_control_chars = false
+draw_spaces = false
+draw_tabs = false
+
+[node name="NotePicker" type="FileDialog" parent="."]
+title = "Open note"
+mode_overrides_title = false
+access = 1
+filters = PackedStringArray("*.txt ; Text files")
+folder_creation_enabled = false
+hidden_files_toggle_enabled = false
+recent_list_enabled = false
+use_native_dialog = false
+
+[node name="DiscardEdits" type="ConfirmationDialog" parent="."]
+title = "Open note"
+dialog_text = "Opening another note will discard your unsaved edits."
+dialog_autowrap = true
+ok_button_text = "Discard and open"
+
+[node name="FileError" type="AcceptDialog" parent="."]
+title = "Notepad"
+dialog_autowrap = true

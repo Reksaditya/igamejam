@@ -1,0 +1,11 @@
+# Install the godot-mcp v0.15.0 server for Godot 4.7 and your platform.
+# https://github.com/zeegzoog/godot-mcp/releases/tag/v0.15.0
+# Copy this file to .codex/config.toml and replace the three absolute paths.
+
+[mcp_servers.godot]
+command = '/path/to/godot-mcp'
+cwd = '/path/to/igamejam'
+args = ["--feedback", "off"]
+
+[mcp_servers.godot.env]
+GODOT_PATH = '/path/to/godot'

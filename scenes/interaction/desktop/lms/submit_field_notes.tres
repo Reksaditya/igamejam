@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/lms/lms_assignment.gd" id="1_assignment"]
+
+[resource]
+script = ExtResource("1_assignment")
+id = "submit_field_notes"
+title = "Submit Your Field Notes"
+kind = 1
+instructions = "Attach one TXT file or image from the desktop or File Manager."
+accepted_filenames = PackedStringArray("field_notes.txt")

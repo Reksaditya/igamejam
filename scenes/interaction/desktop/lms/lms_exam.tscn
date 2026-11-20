@@ -1,0 +1,86 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/lms/lms_exam.gd" id="1_exam"]
+[ext_resource type="Theme" path="res://scenes/interaction/desktop/lms/lms_theme.tres" id="2_theme"]
+
+[node name="Exam" type="CanvasLayer"]
+layer = 50
+script = ExtResource("1_exam")
+
+[node name="Screen" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+
+[node name="Scroll" type="ScrollContainer" parent="Screen"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Margins" type="MarginContainer" parent="Screen/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 24
+
+[node name="Center" type="CenterContainer" parent="Screen/Scroll/Margins"]
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Screen/Scroll/Margins/Center"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Header" type="HBoxContainer" parent="Screen/Scroll/Margins/Center/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="University" type="Label" parent="Screen/Scroll/Margins/Center/Content/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"LmsSubheading"
+autowrap_mode = 3
+
+[node name="ExitQuiz" type="Button" parent="Screen/Scroll/Margins/Center/Content/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+text = "Exit quiz"
+
+[node name="Loading" type="PanelContainer" parent="Screen/Scroll/Margins/Center/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LmsSection"
+
+[node name="Message" type="VBoxContainer" parent="Screen/Scroll/Margins/Center/Content/Loading"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Screen/Scroll/Margins/Center/Content/Loading/Message"]
+layout_mode = 2
+theme_type_variation = &"LmsHeading"
+text = "Starting quiz…"
+
+[node name="LoadingAssignment" type="Label" parent="Screen/Scroll/Margins/Center/Content/Loading/Message"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LmsMeta"
+autowrap_mode = 3
+
+[node name="ConfirmExit" type="ConfirmationDialog" parent="Screen"]
+unique_name_in_owner = true
+title = "Exit quiz?"
+dialog_text = "Your unsubmitted answers will be discarded."
+dialog_autowrap = true
+ok_button_text = "Discard and exit"
+
+[node name="LoadingTimer" type="Timer" parent="."]
+ignore_time_scale = true
+one_shot = true
