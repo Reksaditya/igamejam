@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cvqulqlo1xxc2"]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/image_launcher.gd" id="1_launcher"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/image_viewer.tscn" id="2_app"]
+
+[node name="ImageLauncher" type="Button"]
+custom_minimum_size = Vector2(126, 76)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"DesktopItem"
+script = ExtResource("1_launcher")
+display_title = "Image Viewer"
+icon_kind = 1
+app_scene = ExtResource("2_app")
+preferred_window_size = Vector2(568, 384)
+minimum_window_size = Vector2(280, 204)

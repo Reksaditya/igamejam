@@ -1,0 +1,80 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/lms/lms_quiz.gd" id="1_quiz"]
+
+[node name="Quiz" type="VBoxContainer"]
+theme_override_constants/separation = 12
+script = ExtResource("1_quiz")
+
+[node name="QuizTitle" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"LmsHeading"
+autowrap_mode = 3
+
+[node name="QuestionCard" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"LmsCard"
+
+[node name="Question" type="VBoxContainer" parent="QuestionCard"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="QuestionNumber" type="Label" parent="QuestionCard/Question"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LmsMeta"
+
+[node name="Prompt" type="Label" parent="QuestionCard/Question"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LmsSubheading"
+autowrap_mode = 3
+
+[node name="Options" type="VBoxContainer" parent="QuestionCard/Question"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Progress" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LmsMeta"
+autowrap_mode = 3
+
+[node name="SaveError" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"LmsError"
+autowrap_mode = 3
+
+[node name="Actions" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Previous" type="Button" parent="Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Previous"
+
+[node name="Next" type="Button" parent="Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Next"
+
+[node name="Spacer" type="Control" parent="Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Submit" type="Button" parent="Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"LmsPrimaryButton"
+text = "Submit quiz"
+disabled = true

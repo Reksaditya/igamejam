@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://b0clhrtrjh6yy"]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/document_launcher.gd" id="1_launcher"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/notepad.tscn" id="2_app"]
+
+[node name="DocumentLauncher" type="Button"]
+custom_minimum_size = Vector2(126, 76)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"DesktopItem"
+script = ExtResource("1_launcher")
+display_title = "Text document"
+app_scene = ExtResource("2_app")

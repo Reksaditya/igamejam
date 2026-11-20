@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://darep7ii57je4"]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/image_viewer.gd" id="1_app"]
+
+[node name="ImageViewer" type="MarginContainer"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+script = ExtResource("1_app")
+
+[node name="Preview" type="TextureRect" parent="."]
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Empty" type="Label" parent="."]
+layout_mode = 2
+text = "No image assigned"
+horizontal_alignment = 1
+vertical_alignment = 1

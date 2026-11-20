@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/autoload/game_clock.gd" id="1_clock"]
+
+[node name="GameClock" type="Node"]
+script = ExtResource("1_clock")
+
+[node name="MinuteTimer" type="Timer" parent="."]
+ignore_time_scale = true

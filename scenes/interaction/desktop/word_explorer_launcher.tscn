@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bc3pgjpwu6cw1"]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/desktop_launcher.gd" id="1_launcher"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/word_explorer.tscn" id="2_app"]
+
+[node name="WordExplorerLauncher" type="Button"]
+custom_minimum_size = Vector2(126, 76)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"DesktopItem"
+script = ExtResource("1_launcher")
+display_title = "Word Explorer"
+icon_kind = 3
+app_scene = ExtResource("2_app")
+preferred_window_size = Vector2(652, 500)
+minimum_window_size = Vector2(428, 232)

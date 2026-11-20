@@ -1,0 +1,185 @@
+[gd_resource type="Theme" format=3 uid="uid://j4ne0q5wen4c"]
+
+[sub_resource type="StyleBoxFlat" id="Card"]
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.83, 0.84, 0.86, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="Section"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.94, 0.95, 0.96, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.16, 0.33, 0.59, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="ActionHover"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(0.9, 0.91, 0.93, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.53, 0.55, 0.6, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="Action"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(0.97, 0.97, 0.98, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.65, 0.67, 0.71, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="OptionSelected"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.96, 0.85, 0.87, 1)
+
+[sub_resource type="StyleBoxFlat" id="Option"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.95, 0.95, 0.96, 1)
+
+[sub_resource type="StyleBoxFlat" id="PrimaryHover"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(0.52, 0.07, 0.15, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="Primary"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(0.66, 0.11, 0.19, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="Page"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="DialogFrame"]
+bg_color = Color(0.64, 0.12, 0.19, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.64, 0.65, 0.69, 1)
+expand_margin_left = 3.0
+expand_margin_top = 32.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[resource]
+default_font_size = 16
+AcceptDialog/styles/panel = SubResource("Card")
+Button/colors/font_color = Color(0.12, 0.14, 0.17, 1)
+Button/colors/font_disabled_color = Color(0.39, 0.41, 0.45, 1)
+Button/colors/font_focus_color = Color(0.09, 0.11, 0.14, 1)
+Button/colors/font_hover_color = Color(0.09, 0.11, 0.14, 1)
+Button/colors/font_pressed_color = Color(0.09, 0.11, 0.14, 1)
+Button/styles/disabled = SubResource("Section")
+Button/styles/focus = SubResource("Focus")
+Button/styles/hover = SubResource("ActionHover")
+Button/styles/normal = SubResource("Action")
+Button/styles/pressed = SubResource("ActionHover")
+Label/colors/font_color = Color(0.12, 0.14, 0.17, 1)
+LmsCard/base_type = &"PanelContainer"
+LmsCard/styles/panel = SubResource("Card")
+LmsError/base_type = &"Label"
+LmsError/colors/font_color = Color(0.59, 0.09, 0.16, 1)
+LmsHeading/base_type = &"Label"
+LmsHeading/font_sizes/font_size = 26
+LmsMeta/base_type = &"Label"
+LmsMeta/colors/font_color = Color(0.32, 0.35, 0.4, 1)
+LmsMeta/font_sizes/font_size = 14
+LmsOption/base_type = &"CheckBox"
+LmsOption/colors/font_color = Color(0.12, 0.14, 0.17, 1)
+LmsOption/colors/font_focus_color = Color(0.12, 0.14, 0.17, 1)
+LmsOption/colors/font_hover_color = Color(0.12, 0.14, 0.17, 1)
+LmsOption/colors/font_hover_pressed_color = Color(0.12, 0.14, 0.17, 1)
+LmsOption/colors/font_pressed_color = Color(0.12, 0.14, 0.17, 1)
+LmsOption/constants/h_separation = 8
+LmsOption/styles/focus = SubResource("Focus")
+LmsOption/styles/hover = SubResource("OptionSelected")
+LmsOption/styles/hover_pressed = SubResource("OptionSelected")
+LmsOption/styles/normal = SubResource("Option")
+LmsOption/styles/pressed = SubResource("OptionSelected")
+LmsPrimaryButton/base_type = &"Button"
+LmsPrimaryButton/colors/font_color = Color(1, 1, 1, 1)
+LmsPrimaryButton/colors/font_focus_color = Color(1, 1, 1, 1)
+LmsPrimaryButton/colors/font_hover_color = Color(1, 1, 1, 1)
+LmsPrimaryButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+LmsPrimaryButton/styles/hover = SubResource("PrimaryHover")
+LmsPrimaryButton/styles/hover_pressed = SubResource("PrimaryHover")
+LmsPrimaryButton/styles/normal = SubResource("Primary")
+LmsPrimaryButton/styles/pressed = SubResource("PrimaryHover")
+LmsResult/base_type = &"Label"
+LmsResult/colors/font_color = Color(0.56, 0.09, 0.16, 1)
+LmsSection/base_type = &"PanelContainer"
+LmsSection/styles/panel = SubResource("Section")
+LmsSubheading/base_type = &"Label"
+LmsSubheading/font_sizes/font_size = 19
+PanelContainer/styles/panel = SubResource("Page")
+ItemList/colors/font_color = Color(0.12, 0.14, 0.17, 1)
+ItemList/colors/font_selected_color = Color(0.12, 0.14, 0.17, 1)
+ItemList/styles/panel = SubResource("Card")
+ItemList/styles/selected = SubResource("OptionSelected")
+ItemList/styles/selected_focus = SubResource("OptionSelected")
+ItemList/styles/focus = SubResource("Focus")
+Window/colors/title_color = Color(1, 1, 1, 1)
+Window/constants/title_height = 32
+Window/styles/embedded_border = SubResource("DialogFrame")
+Window/styles/embedded_unfocused_border = SubResource("DialogFrame")

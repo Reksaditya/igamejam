@@ -1,0 +1,106 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/lms/lms_attachment_form.gd" id="1_form"]
+
+[node name="AttachmentForm" type="VBoxContainer"]
+theme_override_constants/separation = 12
+script = ExtResource("1_form")
+
+[node name="Title" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LmsSubheading"
+autowrap_mode = 3
+
+[node name="Instructions" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Attachment" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"LmsSection"
+
+[node name="Fields" type="VBoxContainer" parent="Attachment"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Filename" type="Label" parent="Attachment/Fields"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "No attachment selected"
+autowrap_mode = 3
+
+[node name="Actions" type="HBoxContainer" parent="Attachment/Fields"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Choose" type="Button" parent="Attachment/Fields/Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Choose file"
+
+[node name="Remove" type="Button" parent="Attachment/Fields/Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+disabled = true
+text = "Remove"
+
+[node name="SaveError" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"LmsError"
+text = "Could not submit the attachment. Your selection is still here."
+autowrap_mode = 3
+
+[node name="Footer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Cancel" type="Button" parent="Footer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Cancel"
+
+[node name="Spacer" type="Control" parent="Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Submit" type="Button" parent="Footer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"LmsPrimaryButton"
+disabled = true
+text = "Submit attachment"
+
+[node name="Picker" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Choose a simulated file"
+ok_button_text = "Attach"
+
+[node name="PickerContent" type="VBoxContainer" parent="Picker"]
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 446.0
+offset_bottom = 274.0
+theme_override_constants/separation = 8
+
+[node name="Files" type="ItemList" parent="Picker/PickerContent"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+size_flags_vertical = 3
+accessibility_name = "Available TXT and image files"
+
+[node name="EmptyFiles" type="Label" parent="Picker/PickerContent"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"LmsMeta"
+text = "No TXT or image items are available."
