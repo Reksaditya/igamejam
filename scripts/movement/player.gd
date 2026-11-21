@@ -15,5 +15,5 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y = minf(velocity.y + gravity * delta, maximum_fall_speed)
 	if not is_zero_approx(direction):
-		_visual.scale.x = signf(direction)
+		_visual.scale.x = absf(_visual.scale.x) * signf(direction)
 	move_and_slide()

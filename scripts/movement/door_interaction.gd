@@ -15,6 +15,7 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	$Prompt/Button.text = "E · " + action_text
 	$Prompt/Button.pressed.connect(_request_open)
+	SceneTransition.transition_finished.connect(_on_transition_finished)
 	_prompt.hide()
 
 
@@ -26,7 +27,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _request_open() -> bool:
-	if _opening or not is_instance_valid(_player) or not overlaps_body(_player) or destination.is_empty():
+	if _opening or SceneTransition.is_active() or not is_instance_valid(_player) or not overlaps_body(_player) or destination.is_empty():
 		return false
 	_opening = true
 	_open.call_deferred()
@@ -46,8 +47,9 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func _open() -> void:
-	get_tree().set_meta(&"side_scroller_spawn", destination_spawn)
-	var error := get_tree().change_scene_to_file(destination)
+	SceneTransition.change_scene(destination, destination_spawn)
+
+
+func _on_transition_finished(error: Error) -> void:
 	if error != OK:
-		get_tree().remove_meta(&"side_scroller_spawn")
 		_opening = false
