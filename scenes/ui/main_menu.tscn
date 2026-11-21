@@ -149,44 +149,38 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Kembali"
 
-[node name="LoadPanel" type="VBoxContainer" parent="Margin/Scroll/Center/Layout/Card"]
+[node name="MenuStatus" type="Label" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 visible = false
-theme_override_constants/separation = 14
-
-[node name="LoadTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Load"
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 28
-
-[node name="LoadCaption" type="Label" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Data permainan tersimpan"
-
-[node name="SaveList" type="ItemList" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 150)
-auto_height = false
-allow_reselect = true
-accessibility_name = "Daftar data permainan tersimpan"
-
-[node name="SaveDetails" type="Label" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 64)
 autowrap_mode = 3
+theme_override_font_sizes/font_size = 16
 
-[node name="LoadBack" type="Button" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Kembali"
-
-[node name="NewGamePlaceholder" type="AcceptDialog" parent="."]
+[node name="NewGameConfirm" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
 title = "New Game"
-dialog_text = "New Game masih berupa placeholder."
+transient = true
+exclusive = true
+ok_button_text = "Ya, mulai baru"
+cancel_button_text = "Batal"
+
+[node name="Content" type="VBoxContainer" parent="NewGameConfirm"]
+custom_minimum_size = Vector2(480, 130)
+theme_override_constants/separation = 16
+
+[node name="Question" type="Label" parent="NewGameConfirm/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(480, 0)
+text = "apakah anda yakin ingin memulai kehidupan baru?"
+autowrap_mode = 3
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+
+[node name="Subheader" type="Label" parent="NewGameConfirm/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(480, 0)
+text = "seluruh data yang anda save sebelumnya akan hilang"
+autowrap_mode = 3
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.9, 0.76, 0.58, 1)

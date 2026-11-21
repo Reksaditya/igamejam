@@ -37,6 +37,25 @@ func get_week() -> int:
 	return floori(float(get_day() - 1) / 7.0) + 1
 
 
+func get_save_state() -> Dictionary:
+	var minutes := _absolute_minutes
+	var remainder := _assessment_remainder_msec
+	if not _assessment_tokens.is_empty():
+		var elapsed := Time.get_ticks_msec() - _assessment_started_msec + remainder
+		minutes += floori(float(elapsed) / 60000.0)
+		remainder = elapsed % 60000
+	return {"minutes": minutes, "remainder": remainder}
+
+
+func restore_save_state(state: Dictionary) -> void:
+	_assessment_tokens.clear()
+	_absolute_minutes = maxi(0, state.get("minutes", 0))
+	_assessment_remainder_msec = clampi(state.get("remainder", 0), 0, 59999)
+	_timer.paused = false
+	_timer.start(seconds_per_minute)
+	minute_changed.emit(_absolute_minutes)
+
+
 func begin_assessment() -> int:
 	if _assessment_tokens.is_empty():
 		_assessment_started_msec = Time.get_ticks_msec()

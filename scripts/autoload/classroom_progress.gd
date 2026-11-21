@@ -10,6 +10,13 @@ var _pending_material: int = -1
 
 
 func _ready() -> void:
+	reload_progress()
+
+
+func reload_progress() -> void:
+	_notes.clear()
+	_attempted.clear()
+	_pending_material = -1
 	var save := ConfigFile.new()
 	if save.load(SAVE_PATH) != OK:
 		return

@@ -12,6 +12,12 @@ var _placed := PackedInt32Array()
 
 
 func _ready() -> void:
+	reload_progress()
+
+
+func reload_progress() -> void:
+	_learned.clear()
+	_placed.clear()
 	var save := ConfigFile.new()
 	if save.load(SAVE_PATH) != OK or save.get_value("project", "id", "") != PROJECT.id:
 		return

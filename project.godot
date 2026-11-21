@@ -22,6 +22,7 @@ GameSettings="*res://scripts/autoload/game_settings.gd"
 BlueprintProgress="*res://scripts/autoload/blueprint_progress.gd"
 ClassroomProgress="*res://scripts/autoload/classroom_progress.gd"
 SceneTransition="*res://scripts/autoload/scene_transition.tscn"
+GameSave="*res://scripts/autoload/game_save.gd"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 

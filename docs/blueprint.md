@@ -30,7 +30,17 @@ Satu minggu adalah tujuh hari game: hari 1–7 adalah minggu 1, hari 50–56 ada
 
 UTS dan UAS masing-masing menggunakan sepuluh soal pilihan ganda dari resource `midterm.tres` dan `final.tres`. Durasi maksimalnya 600 detik nyata. Pemain dapat mengumpulkan lebih awal; jawaban kosong bernilai nol. Saat waktu habis, jawaban dikunci dan dikumpulkan otomatis. Hasil disimpan melalui sistem LMS yang sama. Membuka ujian yang sudah selesai menampilkan hasil, bukan memulai percobaan baru. Draf jawaban dan tenggat waktu nyata disimpan untuk melanjutkan sesi yang terputus; penghitung waktu tetap mengikuti tenggat tersebut.
 
-Selama kuis LMS dan ujian kelas, `GameClock.begin_assessment()` menghentikan Timer waktu game. `end_assessment()` menambahkan durasi akses sebenarnya ke jam game, termasuk ketika sesi ditutup. Pecahan menit dibawa ke sesi berikutnya. Pengerjaan enam menit mulai 14.30 menghasilkan 14.36. Fungsi ini aman terhadap pelepasan berulang dan sesi yang saling bertumpuk. Sistem kalender tetap memakai GameClock yang ada; penyimpanan jam lintas peluncuran game belum ditambahkan.
+Selama kuis LMS dan ujian kelas, `GameClock.begin_assessment()` menghentikan Timer waktu game. `end_assessment()` menambahkan durasi akses sebenarnya ke jam game, termasuk ketika sesi ditutup. Pecahan menit dibawa ke sesi berikutnya. Pengerjaan enam menit mulai 14.30 menghasilkan 14.36. Fungsi ini aman terhadap pelepasan berulang dan sesi yang saling bertumpuk. Jam dan pecahan menit kini ikut disimpan dalam autosave sesi.
+
+## New Game, Load, dan autosave
+
+Game dimulai dari main menu. **New Game** langsung membuka halaman kampus pada hari 1 pukul 00.00 jika belum ada progres. Bila sudah ada data, muncul pertanyaan **apakah anda yakin ingin memulai kehidupan baru?** dengan subheader **seluruh data yang anda save sebelumnya akan hilang**. **Batal** mempertahankan data; **Ya, mulai baru** menghapus catatan kelas, status materi, blueprint, hasil LMS/ujian, draf ujian, dan catatan desktop. Pengaturan volume dan resolusi tetap dipertahankan.
+
+`GameSave` menyimpan checkpoint versi 1 ke `user://game_save.cfg` setiap dua detik selama permainan, ketika memasuki world, setelah perubahan catatan/blueprint, dan ketika jendela game ditutup. Checkpoint memuat scene, posisi dan arah karakter, kalender global, serta salinan data progres permainan. Penulisan rutin memakai file sementara lalu mengganti checkpoint sebelumnya. Pergantian scene yang sedang berjalan tidak ditangkap sebagai lokasi akhir.
+
+**Load** langsung memulihkan checkpoint terakhir dan masuk ke lokasi tersimpan, tanpa membuka daftar save. Tombol nonaktif jika tidak ada checkpoint atau progres lama yang dapat dibaca. Posisi dibatasi di luar trigger teleport tepi world agar Load tidak langsung memindahkan pemain lagi. Scene desktop juga dapat dilanjutkan, dengan aplikasi desktop dibuka kembali melalui launcher seperti biasa.
+
+Save sebelum adanya checkpoint sesi belum mempunyai informasi lokasi dan kalender. Progres lama tersebut tetap dapat dimuat dari titik awal halaman kampus, kemudian memperoleh checkpoint baru. Materi QTE yang sudah dilewati tetap terkunci; pemuatan scene kelas tidak mengulang QTE yang sudah terlewat. Penggantian data saat Load atau New Game memakai cadangan sementara dan mengembalikan berkas lama apabila operasi berkas gagal.
 
 Untuk menguji minggu ujian tanpa menunggu kalender, atur `week_override` pada node **ClassActivity** di scene kelas menjadi 8 atau 16. Nilai 0 memakai kalender global. Durasi QTE, waktu membaca materi, dan durasi ujian juga merupakan properti yang dapat diatur.
 
@@ -41,3 +51,5 @@ Untuk menguji minggu ujian tanpa menunggu kalender, atur `week_override` pada no
 ## Pemeriksaan
 
 Gunakan Godot 4.7.2 console. Jalankan `--headless --path <project> --script res://tests/classroom_smoke.gd` dengan APPDATA baru dan terisolasi agar tidak menyentuh progres pemain. Jalankan lagi dengan `-- --reload` untuk memeriksa pemuatan catatan, hadiah blueprint, dan nilai dari sesi baru. `tests/side_scroller_smoke.gd` memeriksa interaksi pintu, transisi, dan navigasi world. `tests/blueprint_smoke.gd` tetap menjadi pemeriksaan mandiri komponen blueprint lama.
+
+`tests/game_save_smoke.gd` memeriksa New Game pertama, autosave lokasi, Load langsung, pemulihan progres/waktu, pembatalan konfirmasi, reset seluruh progres, dan pengaturan yang tetap tersimpan. Jalankan kembali dengan `-- --reload` untuk menguji sesi baru; gunakan APPDATA lain dengan `-- --legacy` untuk memeriksa migrasi progres lama. `tests/main_menu_smoke.gd` memeriksa Settings dan perilaku tombol menu.

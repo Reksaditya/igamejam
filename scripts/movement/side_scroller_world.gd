@@ -19,6 +19,7 @@ func _ready() -> void:
 	var marker := get_node_or_null(NodePath(spawn)) as Marker2D
 	if marker != null:
 		_player.position = marker.position
+	GameSave.register_world(self, _player)
 	_player.get_node("Camera2D").reset_smoothing()
 
 
