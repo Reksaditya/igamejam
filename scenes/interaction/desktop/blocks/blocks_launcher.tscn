@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/desktop_launcher.gd" id="1_launcher"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/blocks/blocks_game.tscn" id="2_game"]
+
+[node name="BlocksLauncher" type="Button"]
+mouse_default_cursor_shape = 2
+theme_type_variation = &"DesktopItem"
+script = ExtResource("1_launcher")
+display_title = "Blocks n Blast"
+icon_kind = 5
+app_scene = ExtResource("2_game")
+preferred_window_size = Vector2(374, 432)
+minimum_window_size = Vector2(294, 398)

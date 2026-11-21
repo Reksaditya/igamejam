@@ -12,6 +12,8 @@
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/pcopening.ogg" id="10_startup_sound"]
 [ext_resource type="Theme" path="res://scenes/interaction/desktop/desktop_light_theme.tres" id="11_light"]
 
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/blocks/blocks_launcher.tscn" id="12_blocks"]
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wallpaper"]
 resource_local_to_scene = true
 shader = ExtResource("2_wallpaper")
@@ -25,12 +27,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_theme")
+theme = ExtResource("11_light")
 script = ExtResource("1_desktop")
 wallpaper_texture = ExtResource("7_wallpaper_texture")
 wallpaper_pixel_columns = 500
 wallpaper_color_levels = 0
-dark_theme = ExtResource("3_theme")
 light_theme = ExtResource("11_light")
 
 [node name="Fallback" type="ColorRect" parent="."]
@@ -92,6 +93,8 @@ starting_text = "Things to look up\n\nlark"
 
 [node name="FileManagerLauncher" parent="DesktopItems/Launchers" instance=ExtResource("9_files")]
 
+[node name="BlocksLauncher" parent="DesktopItems/Launchers" instance=ExtResource("12_blocks")]
+
 [node name="Windows" type="Control" parent="."]
 z_index = 2
 layout_mode = 1
@@ -117,13 +120,15 @@ theme_type_variation = &"Taskbar"
 [node name="Bar" type="HBoxContainer" parent="Taskbar"]
 layout_mode = 2
 
-[node name="ThemeSwitch" type="CheckButton" parent="Taskbar/Bar"]
+[node name="TurnOff" type="Button" parent="Taskbar/Bar"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"TaskbarThemeSwitch"
-text = "Dark"
-tooltip_text = "Switch between light and dark desktop themes"
-accessibility_name = "Use light desktop theme"
+size_flags_vertical = 4
+theme_type_variation = &"TaskbarTurnOff"
+disabled = true
+mouse_default_cursor_shape = 2
+text = "Turn off"
+tooltip_text = "No return scene configured."
 
 [node name="Clock" type="Label" parent="Taskbar/Bar"]
 unique_name_in_owner = true
@@ -137,3 +142,8 @@ text = "Day 1   00:00"
 
 [node name="StartupSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_startup_sound")
+
+[node name="ReturnError" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
+title = "Could not turn off"
+dialog_autowrap = true

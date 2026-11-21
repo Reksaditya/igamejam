@@ -3,7 +3,7 @@ extends Button
 
 signal open_requested(launcher: Button)
 
-enum IconKind { TEXT_DOCUMENT, IMAGE, NOTEPAD, BROWSER, FOLDER }
+enum IconKind { TEXT_DOCUMENT, IMAGE, NOTEPAD, BROWSER, FOLDER, BLOCKS }
 
 const ITEM_SIZE := Vector2(126, 96)
 const CAPTION_WIDTH: float = 118.0
@@ -93,6 +93,13 @@ func _draw() -> void:
 			draw_rect(Rect2(7, 19, 26, 3), PAPER)
 			draw_rect(Rect2(7, 26, 18, 2), INK)
 			draw_rect(Rect2(7, 30, 12, 2), INK)
+
+		IconKind.BLOCKS:
+			draw_rect(Rect2(3, 3, 34, 34), INK)
+			draw_rect(Rect2(5, 5, 30, 30), Color("#203f53"))
+			for cell: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 2), Vector2i(3, 2)]:
+				var fill := Color("#71d3b0") if cell.x < 2 else Color("#f6bf70")
+				draw_rect(Rect2(Vector2(7, 7) + Vector2(cell) * 7, Vector2.ONE * 6), fill)
 
 
 func get_attachment_metadata() -> Dictionary:

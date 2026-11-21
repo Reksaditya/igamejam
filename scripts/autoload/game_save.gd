@@ -173,8 +173,9 @@ func load_game(allow_legacy: bool = false) -> Error:
 
 
 func _clear_spawn() -> void:
-	if get_tree().has_meta(&"side_scroller_spawn"):
-		get_tree().remove_meta(&"side_scroller_spawn")
+	for key: StringName in [&"side_scroller_spawn", &"desktop_return_context"]:
+		if get_tree().has_meta(key):
+			get_tree().remove_meta(key)
 
 
 func _make_snapshot(clock: Dictionary, files: Dictionary) -> ConfigFile:

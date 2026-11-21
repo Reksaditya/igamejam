@@ -5,6 +5,7 @@ const Launcher = preload("res://scripts/interaction/desktop/desktop_launcher.gd"
 const FileManagerLauncher = preload("res://scripts/interaction/desktop/file_manager_launcher.gd")
 const IconGrid = preload("res://scripts/interaction/desktop/desktop_icon_grid.gd")
 const AppWindow = preload("res://scripts/interaction/desktop/app_window.gd")
+const RETURN_CONTEXT := &"desktop_return_context"
 const APP_WINDOW_SCENE: PackedScene = preload("res://scenes/interaction/desktop/app_window.tscn")
 
 @export_group("Wallpaper")
@@ -27,19 +28,23 @@ var _open_windows: Dictionary[Launcher, AppWindow] = {}
 var _active_window: AppWindow
 var _exam_window: AppWindow
 var _login: Control
+var _turning_off := false
 
 @export_group("Login")
 @export var login_scene: PackedScene = preload("res://scenes/interaction/desktop/login_screen.tscn")
 
 @export_group("Themes")
-@export var dark_theme: Theme
 @export var light_theme: Theme
+
+@export_group("Return")
+@export_file("*.tscn") var return_scene: String
+@export var return_spawn: StringName
 
 @onready var _wallpaper: TextureRect = $Wallpaper
 @onready var _launchers: IconGrid = %Launchers
 @onready var _windows: Control = $Windows
 @onready var _clock: Label = %Clock
-@onready var _theme_switch: CheckButton = %ThemeSwitch
+@onready var _turn_off: Button = %TurnOff
 @onready var _startup_sound: AudioStreamPlayer = $StartupSound
 
 
@@ -56,13 +61,14 @@ func _ready() -> void:
 	get_window().focus_exited.connect(_launchers.cancel_drag)
 	GameClock.minute_changed.connect(_update_clock)
 	_update_clock(GameClock.get_absolute_minutes())
-	_theme_switch.toggled.connect(_set_light_theme)
-	_set_light_theme(false)
+	theme = light_theme
+	_configure_return()
 	if login_scene != null:
 		$DesktopItems.hide()
 		_windows.hide()
 		$Taskbar.hide()
 		_login = login_scene.instantiate() as Control
+		_login.theme = $Taskbar.theme
 		add_child(_login)
 		_login.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		_login.z_index = 10
@@ -102,9 +108,37 @@ func _update_clock(_absolute_minutes: int) -> void:
 	_clock.text = "Day %d   %s" % [GameClock.get_day(), GameClock.get_formatted_time()]
 
 
-func _set_light_theme(use_light: bool) -> void:
-	theme = light_theme if use_light else dark_theme
-	_theme_switch.text = "Light" if use_light else "Dark"
+func _configure_return() -> void:
+	if get_tree().has_meta(RETURN_CONTEXT):
+		var context: Variant = get_tree().get_meta(RETURN_CONTEXT)
+		get_tree().remove_meta(RETURN_CONTEXT)
+		if context is Dictionary:
+			return_scene = context.get("scene", return_scene)
+			return_spawn = context.get("spawn", return_spawn)
+	_turn_off.disabled = return_scene.is_empty()
+	_turn_off.tooltip_text = "No return scene configured." if return_scene.is_empty() else "Return to the movement scene"
+	_turn_off.pressed.connect(_request_turn_off)
+	SceneTransition.transition_finished.connect(_on_return_finished)
+
+
+func _request_turn_off() -> void:
+	if _turning_off or SceneTransition.is_active() or return_scene.is_empty():
+		return
+	_turning_off = true
+	_turn_off.disabled = true
+	_launchers.cancel_drag()
+	var spawn := return_spawn if not return_spawn.is_empty() else &"InitialSpawn"
+	SceneTransition.change_scene(return_scene, spawn)
+
+
+func _on_return_finished(error: Error) -> void:
+	if not _turning_off:
+		return
+	_turning_off = false
+	_turn_off.disabled = false
+	if error != OK:
+		%ReturnError.dialog_text = "Could not return to the movement scene. " + error_string(error)
+		%ReturnError.popup_centered_clamped(Vector2i(340, 0))
 
 
 func _connect_launcher(child: Node) -> void:
