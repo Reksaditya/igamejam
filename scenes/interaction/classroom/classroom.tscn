@@ -1,0 +1,85 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/classroom/classroom.gd" id="1_class"]
+[ext_resource type="Script" path="res://scripts/interaction/classroom/classroom_computer.gd" id="2_computer"]
+[ext_resource type="Theme" path="res://scenes/interaction/desktop/desktop_theme.tres" id="3_theme"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_computer"]
+size = Vector2(140, 160)
+
+[node name="ClassActivity" type="Node2D"]
+script = ExtResource("1_class")
+
+[node name="Computer" type="Area2D" parent="."]
+position = Vector2(1290, 540)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_computer")
+
+[node name="Monitor" type="Polygon2D" parent="Computer"]
+polygon = PackedVector2Array(-45, -65, 45, -65, 45, -12, 8, -12, 8, -3, 26, -3, 26, 4, -26, 4, -26, -3, -8, -3, -8, -12, -45, -12)
+color = Color(0.15, 0.22, 0.3, 1)
+
+[node name="Screen" type="Polygon2D" parent="Computer"]
+polygon = PackedVector2Array(-37, -57, 37, -57, 37, -20, -37, -20)
+color = Color(0.5, 0.8, 0.76, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Computer"]
+shape = SubResource("RectangleShape2D_computer")
+
+[node name="Prompt" type="Button" parent="Computer"]
+visible = false
+offset_left = -90.0
+offset_top = -115.0
+offset_right = 90.0
+offset_bottom = -75.0
+focus_mode = 0
+theme = ExtResource("3_theme")
+text = "E · Komputer Ujian"
+
+[node name="Hud" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="Panel" type="PanelContainer" parent="Hud"]
+offset_left = 20.0
+offset_top = 104.0
+offset_right = 640.0
+offset_bottom = 180.0
+theme = ExtResource("3_theme")
+
+[node name="Content" type="VBoxContainer" parent="Hud/Panel"]
+layout_mode = 2
+
+[node name="ClassStatus" type="Label" parent="Hud/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Review" type="Button" parent="Hud/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Lihat catatan akhir kelas"
+
+[node name="Seat" type="Area2D" parent="."]
+position = Vector2(700, 592)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_computer")
+
+[node name="Chair" type="Polygon2D" parent="Seat"]
+polygon = PackedVector2Array(-27, 12, 21, 12, 21, -32, 29, -32, 29, 28, 21, 28, 21, 20, -19, 20, -19, 28, -27, 28)
+color = Color(0.38, 0.29, 0.22, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Seat"]
+position = Vector2(0, -40)
+shape = SubResource("RectangleShape2D_computer")
+
+[node name="Prompt" type="Button" parent="Seat"]
+visible = false
+offset_left = -95.0
+offset_top = -125.0
+offset_right = 95.0
+offset_bottom = -85.0
+focus_mode = 0
+theme = ExtResource("3_theme")
+text = "E · Duduk dan Belajar"

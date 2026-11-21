@@ -1,0 +1,70 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/lms/lms_assignment.gd" id="1_assignment"]
+[ext_resource type="Script" path="res://scripts/interaction/desktop/lms/lms_question.gd" id="2_question"]
+
+[sub_resource type="Resource" id="Question_0"]
+script = ExtResource("2_question")
+prompt = "Apa fungsi motor dalam sistem transmisi?"
+options = PackedStringArray("Menopang bangunan", "Mengubah energi listrik menjadi gerak putar", "Menghentikan bantalan", "Menyimpan catatan")
+correct_option = 1
+
+[sub_resource type="Resource" id="Question_1"]
+script = ExtResource("2_question")
+prompt = "Komponen yang mengubah perbandingan putaran dan torsi adalah ..."
+options = PackedStringArray("Roda gigi", "Pelat dasar", "Baut", "Dudukan motor")
+correct_option = 0
+
+[sub_resource type="Resource" id="Question_2"]
+script = ExtResource("2_question")
+prompt = "Apa fungsi utama poros?"
+options = PackedStringArray("Menyerap cahaya", "Mengatur suhu ruangan", "Meneruskan putaran dan torsi", "Menghasilkan listrik sendiri")
+correct_option = 2
+
+[sub_resource type="Resource" id="Question_3"]
+script = ExtResource("2_question")
+prompt = "Bagaimana posisi poros terhadap bantalan?"
+options = PackedStringArray("Miring secara acak", "Tanpa penopang", "Selalu bergeser", "Sejajar pada sumbu putarnya")
+correct_option = 3
+
+[sub_resource type="Resource" id="Question_4"]
+script = ExtResource("2_question")
+prompt = "Mengapa dudukan motor harus kokoh?"
+options = PackedStringArray("Supaya gigi terlepas", "Menjaga posisi motor tetap stabil", "Menghentikan seluruh putaran", "Menghilangkan pelat dasar")
+correct_option = 1
+
+[sub_resource type="Resource" id="Question_5"]
+script = ExtResource("2_question")
+prompt = "Apa fungsi pelat dasar?"
+options = PackedStringArray("Menghasilkan torsi awal", "Mengubah energi listrik", "Menjadi landasan seluruh komponen", "Menggantikan poros")
+correct_option = 2
+
+[sub_resource type="Resource" id="Question_6"]
+script = ExtResource("2_question")
+prompt = "Bantalan memungkinkan poros berputar dengan ..."
+options = PackedStringArray("Gesekan lebih rendah", "Posisi selalu miring", "Gigi terlepas", "Dudukan longgar")
+correct_option = 0
+
+[sub_resource type="Resource" id="Question_7"]
+script = ExtResource("2_question")
+prompt = "Apa akibat ketidaksejajaran poros?"
+options = PackedStringArray("Catatan menjadi lengkap", "Tidak ada perubahan mekanis", "Motor menghasilkan cahaya", "Getaran berlebih")
+correct_option = 3
+
+[sub_resource type="Resource" id="Question_8"]
+script = ExtResource("2_question")
+prompt = "Bagaimana roda gigi meneruskan putaran?"
+options = PackedStringArray("Dengan menutup bantalan", "Melalui gigi yang saling berkaitan", "Dengan melepas dudukan", "Tanpa hubungan mekanis")
+correct_option = 1
+
+[sub_resource type="Resource" id="Question_9"]
+script = ExtResource("2_question")
+prompt = "Sebelum merangkai mesin di lab, apa yang dibutuhkan?"
+options = PackedStringArray("Poros tanpa bantalan", "Motor tanpa dudukan", "Blueprint lengkap dan struktur yang selaras", "Pelat dasar tanpa komponen")
+correct_option = 2
+
+[resource]
+script = ExtResource("1_assignment")
+id = "classroom_midterm_week_8"
+title = "UTS · Minggu 8"
+questions = Array[ExtResource("2_question")]([SubResource("Question_0"), SubResource("Question_1"), SubResource("Question_2"), SubResource("Question_3"), SubResource("Question_4"), SubResource("Question_5"), SubResource("Question_6"), SubResource("Question_7"), SubResource("Question_8"), SubResource("Question_9")])

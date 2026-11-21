@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/blueprint/blueprint_definition.gd" id="1_definition"]
+[ext_resource type="Script" path="res://scripts/interaction/blueprint/blueprint_lesson.gd" id="2_lesson"]
+[ext_resource type="Texture2D" path="res://assets/textures/transmission_blueprint.svg" id="3_image"]
+
+[sub_resource type="Resource" id="Motor"]
+script = ExtResource("2_lesson")
+id = "transmission_motor"
+title = "Motor penggerak"
+material = "Motor mengubah energi listrik menjadi gerak putar. Pada rancangan transmisi, motor merupakan sumber putaran awal yang kemudian diteruskan menuju poros dan roda gigi."
+question = "Apa fungsi motor pada rancangan ini?"
+options = PackedStringArray("Menahan beban rangka", "Menghasilkan gerak putar", "Menghentikan poros")
+correct_option = 1
+
+[sub_resource type="Resource" id="Gear"]
+script = ExtResource("2_lesson")
+id = "transmission_gear"
+title = "Roda gigi"
+material = "Roda gigi meneruskan gerak dan mengubah perbandingan kecepatan serta torsi. Gigi yang saling berkaitan harus memiliki ukuran dan jarak yang sesuai agar putaran dapat diteruskan."
+question = "Komponen apa yang mengubah perbandingan putaran dan torsi?"
+options = PackedStringArray("Roda gigi", "Baut dudukan", "Pelat dasar")
+correct_option = 0
+
+[sub_resource type="Resource" id="Shaft"]
+script = ExtResource("2_lesson")
+id = "transmission_shaft"
+title = "Poros keluaran"
+material = "Poros meneruskan putaran dan torsi ke bagian mesin berikutnya. Sumbu poros harus sejajar dengan bantalan agar putarannya lancar dan tidak menghasilkan getaran berlebih."
+question = "Bagaimana posisi poros terhadap bantalan?"
+options = PackedStringArray("Miring secara acak", "Tidak perlu ditopang", "Sejajar pada sumbu putarnya")
+correct_option = 2
+
+[sub_resource type="Resource" id="Mount"]
+script = ExtResource("2_lesson")
+id = "transmission_mount"
+title = "Dudukan motor"
+material = "Dudukan mengikat motor pada pelat dasar. Dudukan yang kokoh menjaga posisi motor agar sambungan poros tidak bergeser ketika motor bekerja."
+question = "Mengapa motor membutuhkan dudukan yang kokoh?"
+options = PackedStringArray("Agar posisinya tetap stabil", "Agar poros selalu bergeser", "Agar roda gigi tidak berputar")
+correct_option = 0
+
+[sub_resource type="Resource" id="Base"]
+script = ExtResource("2_lesson")
+id = "transmission_base"
+title = "Pelat dasar"
+material = "Pelat dasar menjadi landasan bagi seluruh komponen. Semua dudukan dipasang pada landasan yang sama untuk menjaga keselarasan struktur mesin saat menerima beban."
+question = "Apa fungsi pelat dasar?"
+options = PackedStringArray("Menghasilkan listrik", "Menjadi landasan komponen", "Menggantikan roda gigi")
+correct_option = 1
+
+[sub_resource type="Resource" id="Bearing"]
+script = ExtResource("2_lesson")
+id = "transmission_bearing"
+title = "Bantalan poros"
+material = "Bantalan menopang poros sambil memungkinkan poros berputar dengan gesekan rendah. Bantalan dipasang pada dudukan yang terhubung ke pelat dasar."
+question = "Apa fungsi bantalan?"
+options = PackedStringArray("Mengunci semua putaran", "Menghasilkan torsi awal", "Menopang poros dan mengurangi gesekan")
+correct_option = 2
+
+[resource]
+script = ExtResource("1_definition")
+id = "transmission"
+title = "Project Lab · Struktur Transmisi"
+image = ExtResource("3_image")
+columns = 3
+rows = 2
+lessons = Array[ExtResource("2_lesson")]([SubResource("Motor"), SubResource("Gear"), SubResource("Shaft"), SubResource("Mount"), SubResource("Base"), SubResource("Bearing")])

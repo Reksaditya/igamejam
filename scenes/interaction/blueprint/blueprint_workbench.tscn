@@ -1,0 +1,49 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/blueprint/blueprint_workbench.gd" id="1_workbench"]
+
+[node name="BlueprintWorkbench" type="VBoxContainer"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+script = ExtResource("1_workbench")
+
+[node name="Summary" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Instructions" type="Label" parent="."]
+layout_mode = 2
+text = "Pelajari materi untuk memperoleh potongan. Susun blueprint sebagai rancangan kegiatan lab."
+autowrap_mode = 3
+
+[node name="OpenBlueprint" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Buka popup blueprint"
+
+[node name="Lessons" type="OptionButton" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+accessibility_name = "Pilih materi belajar"
+fit_to_longest_item = false
+
+[node name="Material" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Question" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Answers" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Feedback" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
