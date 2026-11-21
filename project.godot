@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="Deadline"
-run/main_scene="res://scenes/movement/top_down_movement.tscn"
+run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://assets/textures/icon.svg"
 
 [autoload]
 
 GameClock="*res://scripts/autoload/game_clock.tscn"
+GameSettings="*res://scripts/autoload/game_settings.gd"
 BlueprintProgress="*res://scripts/autoload/blueprint_progress.gd"
 ClassroomProgress="*res://scripts/autoload/classroom_progress.gd"
 SceneTransition="*res://scripts/autoload/scene_transition.tscn"

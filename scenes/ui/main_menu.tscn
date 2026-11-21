@@ -1,0 +1,192 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+[ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="2_theme"]
+[ext_resource type="Script" path="res://scripts/ui/menu_background.gd" id="3_background"]
+
+[node name="MainMenu" type="Control"]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2_theme")
+script = ExtResource("1_menu")
+
+[node name="Background" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("3_background")
+
+[node name="Margin" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+
+[node name="Scroll" type="ScrollContainer" parent="Margin"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Center" type="CenterContainer" parent="Margin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Layout" type="VBoxContainer" parent="Margin/Scroll/Center"]
+layout_mode = 2
+custom_minimum_size = Vector2(420, 0)
+theme_override_constants/separation = 20
+
+[node name="Logo" type="Label" parent="Margin/Scroll/Center/Layout"]
+layout_mode = 2
+text = "Deadline"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 80
+theme_override_colors/font_color = Color(0.97, 0.91, 0.76, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 4
+
+[node name="Card" type="PanelContainer" parent="Margin/Scroll/Center/Layout"]
+layout_mode = 2
+
+[node name="MainPanel" type="VBoxContainer" parent="Margin/Scroll/Center/Layout/Card"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="NewGame" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New Game"
+mouse_default_cursor_shape = 2
+
+[node name="Load" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load"
+mouse_default_cursor_shape = 2
+
+[node name="Settings" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+mouse_default_cursor_shape = 2
+
+[node name="Quit" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"
+mouse_default_cursor_shape = 2
+
+[node name="SettingsPanel" type="VBoxContainer" parent="Margin/Scroll/Center/Layout/Card"]
+unique_name_in_owner = true
+layout_mode = 2
+visible = false
+theme_override_constants/separation = 14
+
+[node name="SettingsTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="VolumeRow" type="HBoxContainer" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+
+[node name="VolumeTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel/VolumeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Volume"
+size_flags_horizontal = 3
+
+[node name="VolumeValue" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel/VolumeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "80%"
+
+[node name="Volume" type="HSlider" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+value = 80.0
+custom_minimum_size = Vector2(0, 28)
+accessibility_name = "Volume utama"
+
+[node name="ResolutionTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Resolusi"
+
+[node name="Resolution" type="OptionButton" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+accessibility_name = "Resolusi layar"
+
+[node name="SettingsStatus" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Apply" type="Button" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Terapkan"
+
+[node name="SettingsBack" type="Button" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Kembali"
+
+[node name="LoadPanel" type="VBoxContainer" parent="Margin/Scroll/Center/Layout/Card"]
+unique_name_in_owner = true
+layout_mode = 2
+visible = false
+theme_override_constants/separation = 14
+
+[node name="LoadTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="LoadCaption" type="Label" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Data permainan tersimpan"
+
+[node name="SaveList" type="ItemList" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 150)
+auto_height = false
+allow_reselect = true
+accessibility_name = "Daftar data permainan tersimpan"
+
+[node name="SaveDetails" type="Label" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 64)
+autowrap_mode = 3
+
+[node name="LoadBack" type="Button" parent="Margin/Scroll/Center/Layout/Card/LoadPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Kembali"
+
+[node name="NewGamePlaceholder" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
+title = "New Game"
+dialog_text = "New Game masih berupa placeholder."
