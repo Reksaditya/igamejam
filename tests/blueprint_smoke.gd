@@ -18,10 +18,10 @@ func _run() -> void:
 	assert(progress.get_placed_count() == 0, "Use an isolated APPDATA directory for this test")
 	assert(progress.complete_study("unknown_lesson") == ERR_INVALID_PARAMETER)
 	assert(progress.place_piece(0, 0) == ERR_INVALID_PARAMETER, "Locked pieces cannot be placed")
-	var main := load("res://scenes/movement/top_down_movement.tscn").instantiate() as Node
+	var main := load("res://scenes/interaction/blueprint/project_access.tscn").instantiate() as Node
 	root.add_child(main)
 	await process_frame
-	var access := main.get_node("ProjectAccess")
+	var access := main
 	access._open()
 	assert(paused, "Study window must pause movement")
 	var workbench := access.get_node("StudyWindow/Panel/Margin/Scroll/Workbench")
@@ -61,7 +61,8 @@ func _run() -> void:
 	desktop.login_scene = null
 	root.add_child(desktop)
 	await process_frame
-	var launcher := desktop.get_node("DesktopItems/Launchers/BlueprintLauncher")
+	var launcher := load("res://scenes/interaction/blueprint/blueprint_launcher.tscn").instantiate() as Button
+	desktop.get_node("DesktopItems/Launchers").add_child(launcher)
 	desktop._open_launcher(launcher)
 	assert(desktop._open_windows.size() == 1)
 	var app: Control = desktop._open_windows[launcher].get_content()

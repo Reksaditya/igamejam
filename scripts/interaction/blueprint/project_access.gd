@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 var _was_paused: bool = false
+var _owns_pause: bool = false
 
 
 func _ready() -> void:
@@ -11,6 +12,7 @@ func _ready() -> void:
 
 func _open() -> void:
 	_was_paused = get_tree().paused
+	_owns_pause = true
 	get_tree().paused = true
 	%StudyWindow.popup_centered_clamped(Vector2i(620, 560), 0.9)
 	%Workbench.get_node("OpenBlueprint").grab_focus()
@@ -19,9 +21,10 @@ func _open() -> void:
 func _on_visibility_changed() -> void:
 	if not %StudyWindow.visible:
 		get_tree().paused = _was_paused
+		_owns_pause = false
 		%OpenProject.grab_focus()
 
 
 func _exit_tree() -> void:
-	if %StudyWindow.visible:
+	if _owns_pause:
 		get_tree().paused = _was_paused

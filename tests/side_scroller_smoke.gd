@@ -164,4 +164,8 @@ func _wait_transition() -> void:
 		await transition.transition_finished
 	assert(not transition.is_active())
 	assert(not transition.get_node("Screen").visible)
+	await process_frame
+	var classroom := current_scene.get_node_or_null("ClassActivity")
+	if classroom != null and is_instance_valid(classroom._lesson):
+		classroom._lesson._close()
 	assert(not paused)
