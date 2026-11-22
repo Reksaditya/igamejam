@@ -1,0 +1,2605 @@
+{
+  "semester": 1,
+  "questions": [
+    {
+      "id": "s1_q004",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 10 + 15 adalah...",
+      "choices": [
+        "23",
+        "26",
+        "27",
+        "25"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q007",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 14 + 6 adalah...",
+      "choices": [
+        "22",
+        "20",
+        "21",
+        "26"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q010",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 11 + 11 adalah...",
+      "choices": [
+        "28",
+        "22",
+        "18",
+        "20"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q013",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 32 + 5 adalah...",
+      "choices": [
+        "39",
+        "43",
+        "37",
+        "41"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q015",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 18 + 9 adalah...",
+      "choices": [
+        "28",
+        "27",
+        "21",
+        "33"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q018",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 23 + 14 adalah...",
+      "choices": [
+        "35",
+        "37",
+        "38",
+        "41"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q020",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 45 + 15 adalah...",
+      "choices": [
+        "60",
+        "75",
+        "64",
+        "65"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q023",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 60 + 19 adalah...",
+      "choices": [
+        "79",
+        "89",
+        "94",
+        "69"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q025",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 35 + 35 adalah...",
+      "choices": [
+        "80",
+        "70",
+        "72",
+        "65"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q028",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 51 + 24 adalah...",
+      "choices": [
+        "65",
+        "90",
+        "60",
+        "75"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q030",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 75 + 25 adalah...",
+      "choices": [
+        "90",
+        "115",
+        "100",
+        "98"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q033",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 15 - 6 adalah...",
+      "choices": [
+        "11",
+        "13",
+        "9",
+        "7"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q036",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 30 - 10 adalah...",
+      "choices": [
+        "22",
+        "20",
+        "16",
+        "18"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q039",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 40 - 15 adalah...",
+      "choices": [
+        "26",
+        "24",
+        "27",
+        "25"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q041",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 22 - 11 adalah...",
+      "choices": [
+        "13",
+        "11",
+        "10",
+        "15"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q044",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 48 - 8 adalah...",
+      "choices": [
+        "44",
+        "40",
+        "39",
+        "36"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q047",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 33 - 13 adalah...",
+      "choices": [
+        "24",
+        "20",
+        "21",
+        "14"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q049",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 100 - 30 adalah...",
+      "choices": [
+        "69",
+        "68",
+        "85",
+        "70"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q052",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 55 - 25 adalah...",
+      "choices": [
+        "34",
+        "30",
+        "32",
+        "29"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q054",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 64 - 14 adalah...",
+      "choices": [
+        "60",
+        "52",
+        "50",
+        "49"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q057",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 70 - 35 adalah...",
+      "choices": [
+        "41",
+        "29",
+        "35",
+        "34"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q059",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 99 - 9 adalah...",
+      "choices": [
+        "88",
+        "105",
+        "89",
+        "90"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q063",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 5 × 2 adalah...",
+      "choices": [
+        "10",
+        "9",
+        "14",
+        "7"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q065",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 3 × 5 adalah...",
+      "choices": [
+        "17",
+        "15",
+        "16",
+        "18"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q068",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 5 × 5 adalah...",
+      "choices": [
+        "25",
+        "19",
+        "31",
+        "29"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q071",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 8 × 2 adalah...",
+      "choices": [
+        "17",
+        "22",
+        "16",
+        "14"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q073",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 9 × 2 adalah...",
+      "choices": [
+        "20",
+        "18",
+        "14",
+        "22"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q076",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 4 × 6 adalah...",
+      "choices": [
+        "25",
+        "24",
+        "23",
+        "28"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q078",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 5 × 6 adalah...",
+      "choices": [
+        "34",
+        "30",
+        "29",
+        "24"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q080",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 10 × 5 adalah...",
+      "choices": [
+        "35",
+        "52",
+        "65",
+        "50"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q083",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 7 × 4 adalah...",
+      "choices": [
+        "28",
+        "22",
+        "34",
+        "24"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q085",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 8 × 5 adalah...",
+      "choices": [
+        "36",
+        "42",
+        "39",
+        "40"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q087",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 0 × 7 adalah...",
+      "choices": [
+        "3",
+        "0",
+        "6",
+        "4"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q089",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 9 × 5 adalah...",
+      "choices": [
+        "51",
+        "47",
+        "50",
+        "45"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q093",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 10 : 2 adalah...",
+      "choices": [
+        "3",
+        "2",
+        "9",
+        "5"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q095",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 12 : 3 adalah...",
+      "choices": [
+        "4",
+        "6",
+        "7",
+        "3"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q098",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 20 : 4 adalah...",
+      "choices": [
+        "8",
+        "3",
+        "5",
+        "2"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q100",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 18 : 3 adalah...",
+      "choices": [
+        "12",
+        "6",
+        "7",
+        "5"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q102",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 25 : 5 adalah...",
+      "choices": [
+        "2",
+        "5",
+        "9",
+        "4"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q104",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 21 : 3 adalah...",
+      "choices": [
+        "7",
+        "13",
+        "8",
+        "5"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q107",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 18 : 2 adalah...",
+      "choices": [
+        "13",
+        "6",
+        "12",
+        "9"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_q109",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 28 : 4 adalah...",
+      "choices": [
+        "10",
+        "7",
+        "6",
+        "5"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q111",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 40 : 10 adalah...",
+      "choices": [
+        "1",
+        "6",
+        "4",
+        "10"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q114",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 32 : 4 adalah...",
+      "choices": [
+        "8",
+        "6",
+        "7",
+        "5"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q116",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 50 : 10 adalah...",
+      "choices": [
+        "6",
+        "11",
+        "5",
+        "3"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q118",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 40 : 5 adalah...",
+      "choices": [
+        "14",
+        "7",
+        "8",
+        "6"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q120",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 8 : 1 adalah...",
+      "choices": [
+        "12",
+        "8",
+        "7",
+        "10"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m001",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Nilai dari 1/2 + 1/2 adalah...",
+      "choices": [
+        "1/4",
+        "1",
+        "3/2",
+        "2"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m002",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Nilai dari 1/4 + 2/4 adalah...",
+      "choices": [
+        "3/4",
+        "4/4",
+        "2/4",
+        "1/4"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_m003",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Nilai dari 3/4 - 1/4 adalah...",
+      "choices": [
+        "1/4",
+        "3/4",
+        "1/2",
+        "1"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_m004",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Setengah (1/2) dari 24 baut adalah...",
+      "choices": [
+        "6 baut",
+        "12 baut",
+        "8 baut",
+        "16 baut"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m005",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Seperempat (1/4) dari 40 komponen adalah...",
+      "choices": [
+        "8 komponen",
+        "20 komponen",
+        "12 komponen",
+        "10 komponen"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_m006",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Pecahan 1/2 jika diubah ke bentuk desimal menjadi...",
+      "choices": [
+        "0,25",
+        "0,5",
+        "5,0",
+        "0,2"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m007",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Pecahan 1/4 jika diubah ke bentuk desimal menjadi...",
+      "choices": [
+        "0,75",
+        "0,4",
+        "0,5",
+        "0,25"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_m008",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Pecahan 3/4 jika diubah ke bentuk desimal menjadi...",
+      "choices": [
+        "0,34",
+        "0,75",
+        "0,25",
+        "0,5"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m009",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 0,5 + 0,5 adalah...",
+      "choices": [
+        "0,10",
+        "1,0",
+        "1,5",
+        "0,55"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m010",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 1,5 + 0,5 adalah...",
+      "choices": [
+        "2,0",
+        "2,5",
+        "1,10",
+        "1,0"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_m011",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 2,5 - 0,5 adalah...",
+      "choices": [
+        "2,0",
+        "2,5",
+        "3,0",
+        "1,5"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_m012",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 1,2 + 0,8 adalah...",
+      "choices": [
+        "1,10",
+        "2,0",
+        "2,2",
+        "1,8"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m013",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 3,6 - 1,2 adalah...",
+      "choices": [
+        "2,2",
+        "4,8",
+        "2,4",
+        "2,8"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_m014",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Bentuk persen dari pecahan 1/2 adalah...",
+      "choices": [
+        "20%",
+        "25%",
+        "75%",
+        "50%"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_m015",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Bentuk persen dari pecahan 1/4 adalah...",
+      "choices": [
+        "14%",
+        "40%",
+        "25%",
+        "50%"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_m016",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Bentuk persen dari pecahan 3/4 adalah...",
+      "choices": [
+        "80%",
+        "50%",
+        "75%",
+        "34%"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_m017",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Bentuk persen dari desimal 0,2 adalah...",
+      "choices": [
+        "200%",
+        "20%",
+        "2%",
+        "12%"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m018",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "25% dari 100 mur adalah...",
+      "choices": [
+        "25 mur",
+        "50 mur",
+        "75 mur",
+        "20 mur"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_m019",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "50% dari 80 sekrup adalah...",
+      "choices": [
+        "40 sekrup",
+        "30 sekrup",
+        "60 sekrup",
+        "20 sekrup"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_m020",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "10% dari 200 baut adalah...",
+      "choices": [
+        "10 baut",
+        "40 baut",
+        "20 baut",
+        "50 baut"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_m021",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Di bengkel ada 18 baut, lalu ditambah 14 baut lagi. Jumlah baut sekarang adalah...",
+      "choices": [
+        "34 baut",
+        "30 baut",
+        "28 baut",
+        "32 baut"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_m022",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Tersedia 50 mur di kotak, lalu dipakai 17 mur untuk merakit tuas. Sisa mur adalah...",
+      "choices": [
+        "37 mur",
+        "33 mur",
+        "35 mur",
+        "31 mur"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m023",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Setiap katrol membutuhkan 6 baut. Jika ada 4 katrol, total baut yang diperlukan adalah...",
+      "choices": [
+        "20 baut",
+        "24 baut",
+        "28 baut",
+        "18 baut"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m024",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Sebanyak 36 roda dibagi rata ke dalam 4 kotak peralatan. Tiap kotak berisi...",
+      "choices": [
+        "8 roda",
+        "12 roda",
+        "6 roda",
+        "9 roda"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_m025",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Panjang papan bidang miring 2,5 meter ditambah sambungan 1,5 meter menjadi...",
+      "choices": [
+        "4,0 meter",
+        "3,5 meter",
+        "4,5 meter",
+        "3,0 meter"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_m026",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Dari 20 komponen, sebanyak 10 komponen sudah dipasang. Persentase yang sudah dipasang adalah...",
+      "choices": [
+        "75%",
+        "50%",
+        "40%",
+        "25%"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m027",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Pecahan yang senilai dengan 2/4 adalah...",
+      "choices": [
+        "1/2",
+        "2/3",
+        "1/4",
+        "3/4"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_m028",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 0,25 + 0,75 adalah...",
+      "choices": [
+        "1,25",
+        "1,0",
+        "0,5",
+        "0,95"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_m029",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 7 × 8 adalah...",
+      "choices": [
+        "48",
+        "64",
+        "56",
+        "54"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_m030",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 72 : 8 adalah...",
+      "choices": [
+        "12",
+        "8",
+        "7",
+        "9"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_m031",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 12 × 5 adalah...",
+      "choices": [
+        "55",
+        "50",
+        "65",
+        "60"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s1_m032",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Hasil dari 84 : 7 adalah...",
+      "choices": [
+        "12",
+        "13",
+        "14",
+        "11"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_m033",
+      "semester": 1,
+      "topic": "math",
+      "prompt": "Jika 20% dari 50 komponen perlu diganti, jumlah komponen yang diganti adalah...",
+      "choices": [
+        "20 komponen",
+        "15 komponen",
+        "10 komponen",
+        "5 komponen"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q121",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat yang digunakan untuk memudahkan pekerjaan manusia disebut...",
+      "choices": [
+        "Mainan",
+        "Pesawat sederhana (mesin sederhana)",
+        "Hiasan",
+        "Perabotan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q122",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Contoh alat yang menggunakan prinsip roda adalah...",
+      "choices": [
+        "Penggaris",
+        "Sepeda",
+        "Sendok",
+        "Buku"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q123",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Papan miring yang digunakan untuk menaikkan drum ke atas truk disebut...",
+      "choices": [
+        "Katrol",
+        "Tuas",
+        "Bidang miring",
+        "Roda"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q124",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk menimba air di sumur menggunakan roda beralur dan tali disebut...",
+      "choices": [
+        "Katrol",
+        "Jungkat-jungkit",
+        "Gunting",
+        "Tangga"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q125",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Permainan jungkat-jungkit di taman bekerja menggunakan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas (pengungkit)",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q126",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Gunting kertas adalah contoh alat sederhana jenis...",
+      "choices": [
+        "Katrol",
+        "Tuas",
+        "Bidang miring",
+        "Roda"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q127",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Tangga di rumah dibuat miring agar kita lebih mudah...",
+      "choices": [
+        "Turun ke bawah tanah",
+        "Naik ke lantai atas",
+        "Tidur nyenyak",
+        "Bermain air"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q128",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada gerobak dorong berfungsi untuk...",
+      "choices": [
+        "Memperberat beban",
+        "Memudahkan memindahkan barang berat",
+        "Menghentikan gerobak",
+        "Menghias gerobak"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q129",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Bagian tiang bendera paling atas yang digunakan untuk mengerek bendera adalah...",
+      "choices": [
+        "Tuas",
+        "Bidang miring",
+        "Katrol",
+        "Paku"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q130",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Pisau dapur memiliki bagian yang tajam. Pisau termasuk contoh...",
+      "choices": [
+        "Katrol",
+        "Bidang miring",
+        "Roda",
+        "Bola"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q131",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk mencabut paku yang menancap di kayu adalah palu pencabut paku. Alat ini bekerja seperti...",
+      "choices": [
+        "Katrol",
+        "Tuas",
+        "Roda",
+        "Bidang miring"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q132",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Bentuk roda pada umumnya adalah...",
+      "choices": [
+        "Kotak",
+        "Segitiga",
+        "Bulat (lingkaran)",
+        "Bintang"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q133",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Jalan di pegunungan dibuat berkelok-kelok dan landai menggunakan prinsip...",
+      "choices": [
+        "Katrol",
+        "Tuas",
+        "Bidang miring",
+        "Roda"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q134",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pembuka tutup botol adalah contoh mesin sederhana jenis...",
+      "choices": [
+        "Tuas",
+        "Katrol",
+        "Roda",
+        "Tangga"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q135",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Jika gerobak tidak memiliki roda, maka mendorong barang akan terasa...",
+      "choices": [
+        "Sangat ringan",
+        "Sangat berat",
+        "Cepat sampai",
+        "Mudah sekali"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q136",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Katrol biasanya digunakan bersama dengan...",
+      "choices": [
+        "Kayu bakar",
+        "Tali atau rantai",
+        "Kertas",
+        "Air"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q137",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Linggis digunakan pekerja bangunan untuk mencongkel batu besar. Linggis termasuk...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q138",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Perosotan di taman bermain anak-anak berbentuk seperti...",
+      "choices": [
+        "Katrol",
+        "Bidang miring",
+        "Tuas",
+        "Roda"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q139",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada koper berfungsi agar koper mudah...",
+      "choices": [
+        "Diangkat ke atas kepala",
+        "Ditarik atau didorong",
+        "Dilempar",
+        "Dilipat"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q140",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat berikut yang termasuk tuas adalah...",
+      "choices": [
+        "Roda mobil",
+        "Pinset",
+        "Perosotan",
+        "Katrol sumur"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q141",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Fungsi utama dari mesin sederhana adalah...",
+      "choices": [
+        "Membuat pekerjaan lebih sulit",
+        "Mempermudah dan mempercepat pekerjaan",
+        "Menambah berat benda",
+        "Membuang-buang waktu"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q142",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Kapak untuk membelah kayu memanfaatkan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q143",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pemotong kuku bekerja menggunakan prinsip...",
+      "choices": [
+        "Tuas",
+        "Katrol",
+        "Roda",
+        "Bidang miring"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q144",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda kursi kantor berguna untuk...",
+      "choices": [
+        "Membuat kursi terbang",
+        "Memudahkan kursi digeser",
+        "Mengunci kursi",
+        "Menambah tinggi kursi"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q145",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk mengangkat barang berat di pelabuhan atau proyek gedung tinggi menggunakan...",
+      "choices": [
+        "Gunting",
+        "Katrol (derek)",
+        "Sendok",
+        "Sapu"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q146",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Sekop yang digunakan untuk menggali tanah termasuk jenis...",
+      "choices": [
+        "Katrol",
+        "Tuas",
+        "Roda",
+        "Pegas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q147",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Paku dan jarum memiliki ujung yang runcing agar mudah menembus benda. Ini memanfaatkan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q148",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Setir mobil berbentuk bulat dan bekerja seperti...",
+      "choices": [
+        "Bidang miring",
+        "Katrol",
+        "Roda",
+        "Tangga"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q149",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Penjepit jemuran baju menggunakan prinsip...",
+      "choices": [
+        "Tuas",
+        "Bidang miring",
+        "Katrol",
+        "Roda"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q150",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Contoh benda yang menggunakan roda di rumah adalah...",
+      "choices": [
+        "Meja makan",
+        "Lemari pakaian",
+        "Kursi roda",
+        "Tempat tidur"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q151",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Semakin landai sebuah bidang miring, maka mendorong benda ke atas akan terasa semakin...",
+      "choices": [
+        "Berat",
+        "Ringan",
+        "Sulit",
+        "Mahal"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q152",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk menimbang barang di pasar tradisional (timbangan dacin/lengan) menggunakan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q153",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada sepatu roda dipasang di bagian...",
+      "choices": [
+        "Atas sepatu",
+        "Bawah sepatu",
+        "Samping sepatu",
+        "Dalam sepatu"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q154",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat yang digunakan tukang kayu untuk menghaluskan kayu (ketam/serut) menggunakan mata pisau yang prinsipnya...",
+      "choices": [
+        "Katrol",
+        "Bidang miring",
+        "Roda",
+        "Tuas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q155",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Gerobak pasir dorong memiliki roda di bagian...",
+      "choices": [
+        "Belakang",
+        "Depan",
+        "Atas",
+        "Samping"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q156",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Fungsi katrol pada tiang bendera adalah untuk...",
+      "choices": [
+        "Menurunkan bendera saja",
+        "Menaikkan dan menurunkan bendera dengan mudah",
+        "Memotong tali bendera",
+        "Mengikat tiang bendera"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q157",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Sapu lantai saat digunakan untuk menyapu bekerja seperti...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q158",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Gergaji memiliki gigi-gigi tajam yang merupakan contoh...",
+      "choices": [
+        "Bidang miring",
+        "Katrol",
+        "Roda",
+        "Tuas"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q159",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Skateboard (papan luncur) dapat melaju kencang karena memiliki...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q160",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk menjepit gorengan panas di dapur bekerja menggunakan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q161",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Memindahkan kotak berat dari lantai ke atas meja akan lebih mudah jika menggunakan...",
+      "choices": [
+        "Tali rafia",
+        "Papan miring (bidang miring)",
+        "Gunting",
+        "Sapu"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q162",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Katrol yang dipasang tetap di satu tempat (tidak ikut bergerak naik turun) disebut...",
+      "choices": [
+        "Katrol bebas",
+        "Katrol tetap",
+        "Katrol rusak",
+        "Katrol mainan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q163",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Contoh penggunaan katrol tetap adalah pada...",
+      "choices": [
+        "Sepeda motor",
+        "Sumur timba",
+        "Gunting kain",
+        "Perosotan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q164",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Gagang pintu yang diputar menggunakan prinsip...",
+      "choices": [
+        "Bidang miring",
+        "Katrol",
+        "Roda",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q165",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk memotong rumput (gunting rumput) adalah contoh...",
+      "choices": [
+        "Tuas",
+        "Roda",
+        "Katrol",
+        "Bidang miring"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q166",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Pahat yang digunakan untuk mengukir kayu adalah contoh...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q167",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pedati atau delman ditarik oleh...",
+      "choices": [
+        "Mesin mobil",
+        "Kuda atau sapi",
+        "Angin",
+        "Air"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q168",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Ketika kita memancing ikan, joran pancing yang kita pegang berfungsi sebagai...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q169",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Bagian penggulung senar pada pancingan (reel) bekerja menggunakan prinsip...",
+      "choices": [
+        "Bidang miring",
+        "Roda / Katrol",
+        "Tangga",
+        "Pisau"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q170",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat berikut yang BUKAN termasuk mesin sederhana adalah...",
+      "choices": [
+        "Tuas",
+        "Katrol",
+        "Batu bata",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q171",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada troli belanja di supermarket berguna agar pembeli mudah...",
+      "choices": [
+        "Mengangkat barang belanjaan",
+        "Mendorong barang belanjaan yang banyak",
+        "Membayar di kasir",
+        "Menyimpan troli"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q172",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Anak tangga pada tangga rumah dibuat bertingkat-tingkat agar kaki kita tidak...",
+      "choices": [
+        "Terpeleset saat naik",
+        "Basah",
+        "Kotor",
+        "Cepat besar"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q173",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Staples (alat penjepret kertas) menggunakan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q174",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Tuas disebut juga dengan istilah...",
+      "choices": [
+        "Pengungkit",
+        "Penggulung",
+        "Pemotong",
+        "Penarik"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q175",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Pada permainan jungkat-jungkit, bagian tengah yang menjadi tumpuan papan disebut...",
+      "choices": [
+        "Titik beban",
+        "Titik tumpu",
+        "Titik kuasa",
+        "Titik akhir"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q176",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Tempat kita memegang gagang gunting disebut...",
+      "choices": [
+        "Titik tumpu",
+        "Titik kuasa",
+        "Titik beban",
+        "Titik tengah"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q177",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Bagian ujung gunting yang memotong kertas disebut...",
+      "choices": [
+        "Titik kuasa",
+        "Titik tumpu",
+        "Titik beban",
+        "Titik awal"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q178",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk mengocok telur (whisk) atau mikser tangan memutar menggunakan prinsip...",
+      "choices": [
+        "Bidang miring",
+        "Roda",
+        "Tangga",
+        "Pisau"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q179",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Papan seluncur es memiliki pisau tipis di bawah sepatu yang prinsipnya...",
+      "choices": [
+        "Katrol",
+        "Bidang miring",
+        "Tuas",
+        "Roda"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q180",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Jika ingin membelah buah semangka, alat bidang miring yang paling tepat adalah...",
+      "choices": [
+        "Sendok",
+        "Pisau",
+        "Palu",
+        "Garpu"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q181",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda mobil terbuat dari karet (ban) agar...",
+      "choices": [
+        "Mudah pecah",
+        "Tidak licin di jalan raya",
+        "Berat saat berjalan",
+        "Cepat rusak"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q182",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk mengangkat mobil saat ganti ban (dongkrak) membantu manusia karena...",
+      "choices": [
+        "Mobil sangat ringan",
+        "Tenaga manusia tidak kuat mengangkat mobil langsung",
+        "Ban mobil sangat kecil",
+        "Dongkrak bisa berjalan sendiri"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q183",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Pemecah biji kenari atau kemiri bekerja menggunakan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q184",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Tang (alat penjepit kawat) adalah contoh alat sederhana jenis...",
+      "choices": [
+        "Katrol",
+        "Tuas",
+        "Roda",
+        "Bidang miring"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q185",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada mesin jahit kuno digerakkan dengan cara...",
+      "choices": [
+        "Ditiup",
+        "Diinjak dengan kaki",
+        "Disiram air",
+        "Dipukul"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q186",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Katrol membuat arah tarikan menjadi lebih mudah, misalnya untuk mengangkat ember ke atas kita cukup menarik tali ke arah...",
+      "choices": [
+        "Atas",
+        "Bawah",
+        "Samping",
+        "Depan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q187",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Cangkul yang digunakan petani untuk mencangkul sawah bekerja dengan prinsip...",
+      "choices": [
+        "Roda dan katrol",
+        "Tuas dan bidang miring",
+        "Roda saja",
+        "Katrol saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q188",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Jalan masuk ke gedung untuk pengguna kursi roda dibuat miring (ramp) agar...",
+      "choices": [
+        "Terlihat bagus",
+        "Kursi roda mudah didorong naik",
+        "Orang tidak bisa lewat",
+        "Air hujan menggenang"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q189",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Dayung perahu yang digunakan nelayan bekerja sebagai...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q190",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Bagian dari katrol yang berputar saat tali ditarik adalah...",
+      "choices": [
+        "Talinya",
+        "Rodanya",
+        "Pengaitnya",
+        "Embernya"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q191",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pemotong kertas besar (guillotine kertas) di tempat fotokopi menggunakan prinsip...",
+      "choices": [
+        "Roda dan katrol",
+        "Tuas dan bidang miring",
+        "Roda saja",
+        "Katrol saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q192",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Benda berikut yang menggunakan roda untuk bergerak adalah...",
+      "choices": [
+        "Perahu layar",
+        "Kereta api",
+        "Pesawat terbang di udara",
+        "Layang-layang"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q193",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Sumpit yang digunakan untuk makan mie bekerja dengan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q194",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Ujung obeng yang pipih (obeng min) berbentuk seperti...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Bola"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q195",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Ketika tukang bangunan menaikkan ember berisi semen ke lantai 2, alat paling praktis yang digunakan adalah...",
+      "choices": [
+        "Gunting",
+        "Katrol",
+        "Pisau",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q196",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada kincir air berputar karena didorong oleh...",
+      "choices": [
+        "Angin",
+        "Aliran air",
+        "Api",
+        "Tanah"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q197",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada kincir angin berputar karena hembusan...",
+      "choices": [
+        "Air",
+        "Angin",
+        "Tanah",
+        "Batu"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q198",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pembuka kaleng susu menggunakan ujung tajam yang merupakan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Bola"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q199",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Mengangkat batu besar menggunakan kayu panjang yang diganjal batu kecil di tengahnya adalah cara kerja...",
+      "choices": [
+        "Katrol",
+        "Tuas",
+        "Roda",
+        "Bidang miring"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q200",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Batu kecil yang dipakai untuk mengganjal kayu saat mencongkel batu besar berfungsi sebagai...",
+      "choices": [
+        "Beban",
+        "Titik tumpu",
+        "Kuasa",
+        "Hiasan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q201",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada jam dinding berputar untuk menggerakkan...",
+      "choices": [
+        "Baterai",
+        "Jarum jam",
+        "Kaca jam",
+        "Angka jam"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q202",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk menyendok nasi (centong) bekerja dengan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q203",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Bagian tajam pada alat peraut pensil adalah contoh...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q204",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Jika tali pada katrol putus, maka katrol...",
+      "choices": [
+        "Tetap bisa mengangkat beban",
+        "Tidak bisa digunakan untuk mengangkat beban",
+        "Berputar lebih cepat",
+        "Berubah menjadi tuas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q205",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Gerobak dorong beroda satu biasanya digunakan oleh...",
+      "choices": [
+        "Dokter di rumah sakit",
+        "Pekerja bangunan",
+        "Guru di kelas",
+        "Pilot di pesawat"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q206",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Prinsip kerja raket bulu tangkis saat memukul kok adalah seperti...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q207",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Garpu makan memiliki ujung-ujung runcing yang memanfaatkan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q208",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada tas punggung (tas troli anak sekolah) berguna agar anak tidak...",
+      "choices": [
+        "Lupa membawa buku",
+        "Sakit punggung karena tas terlalu berat",
+        "Terlambat bangun",
+        "Kehujanan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q209",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pemotong pizza berbentuk lingkaran tajam menggabungkan prinsip...",
+      "choices": [
+        "Tuas dan katrol",
+        "Roda dan bidang miring",
+        "Katrol dan tangga",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q210",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Pada alat jungkat-jungkit, jika anak yang lebih berat duduk di satu sisi, maka sisi tersebut akan...",
+      "choices": [
+        "Naik ke atas",
+        "Turun ke bawah",
+        "Diam di tengah",
+        "Berputar"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q211",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Supaya jungkat-jungkit seimbang antara anak yang berat dan anak yang ringan, anak yang berat harus duduk...",
+      "choices": [
+        "Lebih dekat ke titik tumpu (tengah)",
+        "Di paling ujung papan",
+        "Di atas kepala temannya",
+        "Di tanah"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q212",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Katrol ganda adalah gabungan dari beberapa...",
+      "choices": [
+        "Pisau",
+        "Katrol",
+        "Papan",
+        "Gunting"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q213",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Menggunakan katrol ganda membuat pekerjaan mengangkat benda sangat berat menjadi...",
+      "choices": [
+        "Jauh lebih ringan",
+        "Jauh lebih berat",
+        "Tidak bisa diangkat",
+        "Sangat berbahaya"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s1_q214",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Mobil derek menggunakan katrol untuk...",
+      "choices": [
+        "Mencuci mobil",
+        "Mengangkat mobil yang mogok atau rusak",
+        "Mengecat mobil",
+        "Mengisi bensin mobil"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q215",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Tangga lipat yang biasa dipakai mengecat tembok menggunakan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q216",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Pemukul bola kasti saat diayunkan bekerja sebagai...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q217",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada pintu pagar geser berfungsi agar pintu mudah...",
+      "choices": [
+        "Diangkat",
+        "Digeser ke samping",
+        "Dilepas",
+        "Dikunci"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q218",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk mengupas kulit buah (peeler) memiliki pisau kecil yang merupakan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q219",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Menarik ember berisi air tanpa katrol terasa lebih...",
+      "choices": [
+        "Mudah dan santai",
+        "Berat dan melelahkan",
+        "Cepat dan ringan",
+        "Aman dan nyaman"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q220",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Benda berbentuk bulat yang menggelinding di lantai miring bergerak karena bantuan...",
+      "choices": [
+        "Katrol",
+        "Bidang miring",
+        "Tuas",
+        "Tali"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q221",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pel lantai dengan gagang panjang bekerja seperti...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q222",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Bagian ujung sekop yang pipih dan tajam berguna untuk memotong tanah menggunakan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q223",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Kereta bayi (stroller) dilengkapi roda agar orang tua mudah...",
+      "choices": [
+        "Menggendong bayi",
+        "Mendorong bayi jalan-jalan",
+        "Menidurkan bayi di kasur",
+        "Memberi makan bayi"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q224",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Paku payung (paku pin) dapat ditekan ke papan gabus dengan ibu jari karena ujungnya berbentuk...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Bidang miring (runcing)",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q225",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pelubang kertas (perforator) di kantor bekerja menggunakan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q226",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada mesin pemotong rumput dorong berfungsi untuk...",
+      "choices": [
+        "Memotong rumput",
+        "Menjalankan mesin di atas rumput",
+        "Menyiram rumput",
+        "Menanam rumput"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q227",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Jika ban sepeda kempes, maka roda akan...",
+      "choices": [
+        "Berputar lebih ringan",
+        "Berat saat dikayuh",
+        "Terbang",
+        "Lepas sendiri"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q228",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pengungkit tutup kaleng cat yang paling sering dipakai adalah...",
+      "choices": [
+        "Katrol",
+        "Obeng pipih atau sendok besi (tuas)",
+        "Tali tambang",
+        "Roda sepeda"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q229",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Tirai jendela (gorden) yang ditarik naik-turun dengan tali menggunakan prinsip...",
+      "choices": [
+        "Tuas",
+        "Katrol kecil",
+        "Bidang miring",
+        "Roda mobil"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q230",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Cakar kucing atau kuku hewan yang tajam memiliki bentuk seperti...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Bidang miring",
+        "Tuas"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q231",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Gigi seri kita yang digunakan untuk memotong makanan bekerja seperti...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Bidang miring (pisau)",
+        "Tali"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q232",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Sendi pada siku tangan kita saat mengangkat barbel bekerja mirip dengan prinsip...",
+      "choices": [
+        "Roda",
+        "Katrol",
+        "Tuas",
+        "Bidang miring"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q233",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat untuk memindahkan batu bata ke atas truk tanpa mengangkatnya satu per satu dengan tangan adalah...",
+      "choices": [
+        "Gunting",
+        "Papan miring atau konveyor",
+        "Jarum",
+        "Sendok"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q234",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Roda pada lemari es (kulkas) kecil berguna saat kita ingin...",
+      "choices": [
+        "Mendinginkan air",
+        "Menggeser kulkas untuk membersihkan lantai di bawahnya",
+        "Membuka pintu kulkas",
+        "Mematikan listrik"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q235",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat pemotong kerupuk manual menggunakan pisau yang ditekan ke bawah merupakan gabungan...",
+      "choices": [
+        "Roda dan katrol",
+        "Tuas dan bidang miring",
+        "Roda saja",
+        "Katrol saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q236",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Pada katrol, tali diletakkan di bagian roda yang memiliki...",
+      "choices": [
+        "Duri tajam",
+        "Celah atau alur agar tali tidak lepas",
+        "Lem perekat",
+        "Cat warna-warni"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q237",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Alat bantu jalan untuk lansia yang memiliki roda di bagian depannya disebut...",
+      "choices": [
+        "Sepeda",
+        "Walker beroda",
+        "Skateboard",
+        "Gerobak"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q238",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Mengangkat barang dengan tuas akan terasa lebih ringan jika gagang tuas yang kita pegang berukuran...",
+      "choices": [
+        "Sangat pendek",
+        "Lebih panjang",
+        "Sangat tipis",
+        "Patah"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s1_q239",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Contoh kegiatan sehari-hari yang memanfaatkan bidang miring adalah...",
+      "choices": [
+        "Menimba air sumur",
+        "Menggunting kertas",
+        "Berjalan menaiki tangga jembatan penyeberangan",
+        "Mengayuh sepeda"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s1_q240",
+      "semester": 1,
+      "topic": "machine",
+      "prompt": "Semua mesin sederhana (tuas, roda, katrol, bidang miring) diciptakan manusia dengan tujuan agar hidup menjadi lebih...",
+      "choices": [
+        "Susah dan rumit",
+        "Mudah dan terbantu",
+        "Mahal dan berat",
+        "Lambat dan malas"
+      ],
+      "correct_index": 1
+    }
+  ]
+}

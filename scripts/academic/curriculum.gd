@@ -1,718 +1,405 @@
 extends RefCounted
 
+const PROGRESSION = preload("res://scenes/interaction/classroom/progression_rules.tres")
+
+const SEMESTER_COUNT := 2
+const DAYS_PER_SEMESTER := 12
+const MIDTERM_DAY := 6
+const FINAL_DAY := 12
+const TOTAL_DAYS := SEMESTER_COUNT * DAYS_PER_SEMESTER
+
+const QUESTION_BANK_PATHS := {
+	1: "res://resources/questions/semester_1_questions.json",
+	2: "res://resources/questions/semester_2_questions.json",
+}
+
+## 4 Workshop Blueprints mapped 1-to-1 across the 2 semesters (15% Midterm + 15% Final = 30%/sem).
+const BLUEPRINTS: Array[Dictionary] = [
+	{
+		"blueprint_id": "core_drive",
+		"puzzle_id": "starter_drive",
+		"title": "Penggerak Inti",
+		"difficulty": "Mudah",
+		"semester": 1,
+		"half": 1,
+		"slot": "midterm",
+		"slot_label": "Blueprint Midterm (15%)",
+		"weight": 0.15,
+		"unlock_day_in_semester": 1,
+		"deadline_day_in_semester": 6,
+		"absolute_unlock_day": 1,
+		"absolute_deadline_day": 6,
+		"topic": "Dasar Mesin Sederhana (Tuas, Roda, Katrol, Bidang Miring)",
+	},
+	{
+		"blueprint_id": "sediment_sorter",
+		"puzzle_id": "transmission_bench",
+		"title": "Pemilah Sedimen",
+		"difficulty": "Sedang",
+		"semester": 1,
+		"half": 2,
+		"slot": "final",
+		"slot_label": "Blueprint Final (15%)",
+		"weight": 0.15,
+		"unlock_day_in_semester": 7,
+		"deadline_day_in_semester": 12,
+		"absolute_unlock_day": 7,
+		"absolute_deadline_day": 12,
+		"topic": "Operasi Bilangan & Mesin Sederhana Terpadu",
+	},
+	{
+		"blueprint_id": "sieve_shaker",
+		"puzzle_id": "slider_relay",
+		"title": "Pengayak Getar",
+		"difficulty": "Sulit",
+		"semester": 2,
+		"half": 1,
+		"slot": "midterm",
+		"slot_label": "Blueprint Midterm (15%)",
+		"weight": 0.15,
+		"unlock_day_in_semester": 1,
+		"deadline_day_in_semester": 6,
+		"absolute_unlock_day": 13,
+		"absolute_deadline_day": 18,
+		"topic": "Mesin Sederhana Lanjutan (Baji, Sekrup, Roda-Poros)",
+	},
+	{
+		"blueprint_id": "core_centrifuge",
+		"puzzle_id": "centrifuge_drive",
+		"title": "Sentrifuga Inti",
+		"difficulty": "Ahli",
+		"semester": 2,
+		"half": 2,
+		"slot": "final",
+		"slot_label": "Blueprint Final (15%)",
+		"weight": 0.15,
+		"unlock_day_in_semester": 7,
+		"deadline_day_in_semester": 12,
+		"absolute_unlock_day": 19,
+		"absolute_deadline_day": 24,
+		"topic": "Penggabungan Mesin Sederhana Lanjutan",
+	},
+]
+
+## 2 Semesters x 10 lesson units (Hari 1-5 Paruh 1 / UTS prep, Hari 7-11 Paruh 2 / UAS prep).
 const COURSES := [
 	[
-		"Dasar",
-		"Operasi bilangan dan mesin sederhana",
+		"Semester 1",
+		"Dasar-Dasar: Operasi Bilangan & Mesin Sederhana",
 		[
+			# Hari 1..5 (Paruh 1 — Midterm / UTS prep)
 			[
-				"Penjumlahan dan tuas",
-				"Jumlahkan beban sebelum memilih tuas. Tuas berputar pada titik tumpu; lengan kuasa yang lebih panjang mengurangi gaya yang diperlukan.",
+				"Penjumlahan, Pengurangan & Pengenal Alat",
+				"Operasi tambah dan kurang menghitung kebutuhan dan sisa komponen. Mesin sederhana membantu mempermudah serta mempercepat pekerjaan manusia.",
 				"tuas",
-				"Bagian tempat tuas berputar adalah",
+			],
+			[
+				"Perkalian & Prinsip Tuas (Pengungkit)",
+				"Perkalian membantu menghitung komponen berulang. Tuas berputar pada titik tumpu; lengan kuasa yang lebih panjang mengurangi gaya yang dibutuhkan.",
 				"titik tumpu",
-				"roda gigi",
-				"kabel",
-				"katup"
 			],
 			[
-				"Pengurangan dan roda",
-				"Pengurangan menghitung sisa bahan. Roda mengurangi hambatan saat memindahkan beban dibandingkan menyeretnya.",
+				"Pembagian & Prinsip Roda",
+				"Pembagian membagi material secara merata. Roda berbentuk bulat mengurangi gesekan agar memindahkan beban berat jauh lebih ringan daripada menyeretnya.",
 				"roda",
-				"Mengapa troli memakai roda?",
-				"Memudahkan perpindahan beban",
-				"Menghasilkan listrik",
-				"Mengukur suhu",
-				"Menyimpan data"
 			],
 			[
-				"Perkalian dan katrol",
-				"Perkalian membantu menghitung komponen berulang. Katrol mengubah arah tarikan; beberapa katrol dapat mengurangi gaya angkat.",
+				"Operasi Campuran & Prinsip Katrol",
+				"Hitung kebutuhan gaya secara bertahap. Katrol berupa roda beralur dengan tali atau rantai untuk mengubah arah tarikan dan meringankan beban angkat.",
 				"katrol",
-				"Fungsi katrol tetap adalah",
-				"Mengubah arah gaya tarik",
-				"Menyimpan energi listrik",
-				"Memotong baja",
-				"Mengukur massa"
 			],
 			[
-				"Pembagian dan bidang miring",
-				"Pembagian membagi bahan secara merata. Bidang miring memanjangkan lintasan agar gaya mengangkat beban lebih kecil.",
+				"Bidang Miring & Persiapan UTS",
+				"Bidang miring seperti papan miring, tangga, dan jalan berkelok memanjangkan lintasan agar gaya mengangkat beban menjadi lebih kecil.",
 				"bidang miring",
-				"Keuntungan bidang miring adalah",
-				"Mengurangi gaya dengan lintasan lebih panjang",
-				"Menghapus massa beban",
-				"Membuat energi tanpa sumber",
-				"Menghentikan gravitasi"
 			],
+			# Hari 7..11 (Paruh 2 — Final / UAS prep)
 			[
-				"Pecahan dan lengan tuas",
-				"Pecahan menyatakan bagian dari keseluruhan. Setengah meter sama dengan 1/2 meter. Pada tuas, gaya dikali panjang lengan menentukan momen.",
+				"Pecahan & Bagian Lengan Tuas",
+				"Pecahan (1/2, 1/4, 3/4) menyatakan bagian dari keseluruhan. Memahami proporsi panjang lengan kuasa dan lengan beban membuat tuas lebih efisien.",
 				"pecahan",
-				"1/2 dari delapan komponen adalah",
-				"4 komponen",
-				"2 komponen",
-				"6 komponen",
-				"8 komponen"
 			],
 			[
-				"Desimal dan pengukuran roda",
-				"Desimal menyatakan bagian dengan nilai tempat. 0,5 meter sama dengan 50 sentimeter. Periksa satuan sebelum membandingkan ukuran roda.",
+				"Desimal & Ukuran Komponen Roda",
+				"Desimal menyatakan ukuran presisi seperti 0,5 meter = 50 sentimeter. Ketepatan diameter roda dan poros menjaga putaran tetap stabil.",
 				"desimal",
-				"0,5 meter setara dengan",
-				"50 sentimeter",
-				"5 sentimeter",
-				"500 sentimeter",
-				"0,5 sentimeter"
 			],
 			[
-				"Persen dan pemilihan mesin",
-				"Persen berarti per seratus. Efisiensi membandingkan hasil berguna terhadap masukan. Pilih alat berdasarkan beban, lintasan, dan keselamatan.",
+				"Persen & Efisiensi Kerja Mesin",
+				"Persen berarti per seratus (25% = 1/4, 50% = 1/2). Persentase membantu menilai efisiensi dan porsi komponen yang siap dirakit.",
 				"persen",
-				"25% dari 100 baut adalah",
-				"25 baut",
-				"4 baut",
-				"75 baut",
-				"125 baut"
-			]
-		]
-	],
-	[
-		"Dasar",
-		"Perbandingan, pengukuran dan gabungan mesin",
-		[
-			[
-				"Perbandingan dan baji",
-				"Perbandingan membandingkan dua besaran sejenis. Baji memiliki bidang miring untuk membelah atau memisahkan material.",
-				"baji",
-				"Contoh penerapan baji adalah",
-				"mata kapak",
-				"lampu",
-				"sensor suhu",
-				"baterai"
 			],
 			[
-				"Pola bilangan dan sekrup",
-				"Pola bilangan mengikuti aturan. Sekrup mengubah gerak putar menjadi perpindahan maju mengikuti ulir.",
-				"sekrup",
-				"Sekrup mengubah gerak putar menjadi",
-				"gerak maju sepanjang ulir",
-				"cahaya",
-				"sinyal radio",
-				"data digital"
-			],
-			[
-				"Satuan panjang dan roda-poros",
-				"Gunakan satuan yang sama: 1 m = 100 cm = 1000 mm. Roda dan poros terhubung pada sumbu yang sama.",
-				"roda-poros",
-				"Satu meter sama dengan",
-				"1000 milimeter",
-				"10 milimeter",
-				"100 milimeter",
-				"10000 milimeter"
-			],
-			[
-				"Massa, waktu dan alat ukur",
-				"Massa diukur dalam kilogram dan waktu dalam detik. Pilih alat sesuai besaran: penggaris untuk panjang, neraca untuk massa.",
-				"pengukuran",
-				"Alat yang sesuai untuk mengukur massa adalah",
-				"neraca",
-				"penggaris",
-				"jam",
-				"termometer"
-			],
-			[
-				"Rasio dan mesin gabungan",
-				"Gabungan tuas, katrol, dan roda dapat menyelesaikan pekerjaan bertahap. Rasio harus memperhatikan satuan dan fungsi tiap bagian.",
-				"rasio",
-				"Sebelum membandingkan panjang, kita harus",
-				"menyamakan satuan",
-				"menghapus angka",
-				"mengabaikan skala",
-				"mengganti massa"
-			],
-			[
-				"Pola pertumbuhan dan ulir",
-				"Jarak antarulir yang seragam menghasilkan perpindahan berulang yang terukur. Pola 2,4,6,8 bertambah dua tiap langkah.",
-				"ulir",
-				"Angka berikutnya pada pola 2,4,6,8 adalah",
-				"10",
-				"9",
-				"12",
-				"16"
-			],
-			[
-				"Kalibrasi mesin sederhana",
-				"Kalibrasi membandingkan alat dengan acuan. Ukur ulang, catat hasil, dan periksa pengikat sebelum menguji mesin gabungan.",
-				"kalibrasi",
-				"Tujuan kalibrasi adalah",
-				"membandingkan pengukuran dengan acuan",
-				"memperbesar semua beban",
-				"mengganti fungsi mesin",
-				"menghilangkan satuan"
-			]
-		]
-	],
-	[
-		"Pengembangan",
-		"Geometri, variabel dan komponen penggerak",
-		[
-			[
-				"Luas dan roda gigi",
-				"Luas persegi panjang adalah panjang kali lebar. Roda gigi yang saling berkait meneruskan putaran dengan arah berlawanan.",
-				"roda gigi",
-				"Dua roda gigi luar yang berkaitan berputar",
-				"berlawanan arah",
-				"selalu diam",
-				"tanpa poros",
-				"tanpa kontak"
-			],
-			[
-				"Volume dan rantai",
-				"Volume balok adalah panjang kali lebar kali tinggi. Rantai meneruskan putaran antara sproket dengan hubungan gigi yang pasti.",
-				"rantai",
-				"Rantai dipasangkan dengan",
-				"sproket",
-				"katup",
-				"lampu",
-				"kapasitor"
-			],
-			[
-				"Keliling dan sabuk",
-				"Keliling mengukur panjang batas. Sabuk meneruskan putaran melalui puli; ketegangan yang kurang dapat membuat sabuk selip.",
-				"sabuk",
-				"Sabuk yang terlalu longgar berisiko",
-				"selip",
-				"menghasilkan air",
-				"mengubah warna",
-				"menambah massa"
-			],
-			[
-				"Variabel dan engkol",
-				"Variabel mewakili nilai yang dapat berubah. Engkol dapat mengubah putaran menjadi gerak bolak-balik dengan batang penghubung.",
-				"engkol",
-				"Engkol dengan batang penghubung dapat menghasilkan",
-				"gerak bolak-balik",
-				"arus tanpa baterai",
-				"data tanpa sensor",
-				"cahaya tanpa lampu"
-			],
-			[
-				"Rasio roda gigi",
-				"Roda penggerak 10 gigi yang memutar roda 20 gigi menghasilkan kecepatan keluaran setengahnya pada model ideal.",
-				"transmisi",
-				"Penggerak 10 gigi menuju 20 gigi membuat keluaran",
-				"lebih lambat",
-				"dua kali lebih cepat",
-				"selalu nol",
-				"tanpa arah"
-			],
-			[
-				"Luas penampang dan poros",
-				"Luas penampang membantu menilai bagian yang menerima beban. Geometri komponen harus sesuai ruang dan sambungan.",
-				"penampang",
-				"Volume balok 2 × 3 × 4 adalah",
-				"24 satuan kubik",
-				"9 satuan kubik",
-				"12 satuan kubik",
-				"20 satuan kubik"
-			],
-			[
-				"Model variabel penggerak",
-				"Tuliskan masukan, proses, dan keluaran sebagai variabel. Periksa arah putaran dan pelindung sebelum menyalakan transmisi.",
-				"variabel",
-				"Jika x + 3 = 7, nilai x adalah",
-				"4",
-				"3",
-				"7",
-				"10"
-			]
-		]
-	],
-	[
-		"Pengembangan",
-		"Aljabar, logika dan komponen penopang",
-		[
-			[
-				"Aljabar dan poros",
-				"Persamaan menjaga kedua sisi tetap setara. Poros meneruskan putaran dan memerlukan posisi sumbu yang benar.",
-				"poros",
-				"Jika x + 5 = 12, x adalah",
-				"7",
-				"5",
-				"12",
-				"17"
-			],
-			[
-				"Grafik dan bantalan",
-				"Grafik menunjukkan hubungan antarbesaran. Bantalan menopang poros dan mengurangi gesekan saat berputar.",
-				"bantalan",
-				"Fungsi bantalan adalah",
-				"menopang poros dan mengurangi gesekan",
-				"menghasilkan bahan bakar",
-				"memutus semua putaran",
-				"menggantikan baterai"
-			],
-			[
-				"Tabel dan pegas",
-				"Tabel menyusun hasil ukur. Pegas menyimpan energi elastis ketika ditekan atau ditarik dalam batas kerjanya.",
-				"pegas",
-				"Pegas yang ditekan menyimpan",
-				"energi elastis",
-				"data digital",
-				"energi nuklir",
-				"air"
-			],
-			[
-				"Logika jika-maka dan baut",
-				"Jika sambungan longgar, maka hentikan mesin sebelum mengencangkan baut. Baut dan mur menyatukan komponen secara dapat dilepas.",
-				"baut",
-				"Tindakan aman ketika baut longgar adalah",
-				"matikan mesin sebelum mengencangkan",
-				"sentuh bagian bergerak",
-				"naikkan kecepatan",
-				"lepas pelindung"
-			],
-			[
-				"Persamaan dan mur",
-				"Baut dan mur harus memiliki ukuran ulir sesuai. Jangan memaksa pasangan ulir yang berbeda.",
-				"mur",
-				"Baut dan mur yang dipasangkan harus",
-				"memiliki ukuran ulir sesuai",
-				"selalu berbeda ukuran",
-				"dipasang tanpa pemeriksaan",
-				"terbuat dari kertas"
-			],
-			[
-				"Membaca kemiringan grafik",
-				"Grafik waktu dan perpindahan membantu membaca perubahan gerak. Catat nama sumbu dan satuan sebelum menyimpulkan.",
-				"grafik",
-				"Sebelum membaca grafik, periksa",
-				"nama sumbu dan satuan",
-				"warna meja saja",
-				"nama pemain saja",
-				"suara mesin saja"
-			],
-			[
-				"Penopang dan aturan keselamatan",
-				"Susun poros, bantalan, pegas, dan pengikat sebagai sistem. Jika pelindung terbuka, maka penggerak harus dimatikan.",
-				"logika",
-				"Jika pelindung terbuka, penggerak sebaiknya",
-				"dimatikan",
-				"dipercepat",
-				"diberi beban lebih",
-				"diabaikan"
-			]
-		]
-	],
-	[
-		"Terapan",
-		"Statistik, probabilitas dan mekanisme gerak",
-		[
-			[
-				"Rata-rata dan cam",
-				"Rata-rata adalah jumlah data dibagi banyaknya data. Cam mengubah putaran menjadi gerak pengikut sesuai profilnya.",
-				"cam",
-				"Rata-rata dari 2,4,6 adalah",
-				"4",
-				"2",
-				"6",
-				"12"
-			],
-			[
-				"Diagram dan piston",
-				"Diagram membantu membandingkan data. Piston bergerak bolak-balik di dalam silinder.",
-				"piston",
-				"Gerak utama piston dalam silinder adalah",
-				"bolak-balik",
-				"selalu melingkar bebas",
-				"diam selamanya",
-				"acak tanpa batas"
-			],
-			[
-				"Probabilitas dan katup",
-				"Peluang sederhana adalah kejadian yang diinginkan dibagi semua kejadian setara. Katup mengatur aliran fluida.",
-				"katup",
-				"Fungsi katup adalah",
-				"mengatur aliran fluida",
-				"menghitung nilai IPK",
-				"menggantikan roda",
-				"menyimpan catatan"
-			],
-			[
-				"Variasi data dan tuas majemuk",
-				"Tuas majemuk menggabungkan beberapa tuas. Ukur beberapa percobaan agar kesimpulan tidak hanya bergantung pada satu hasil.",
-				"tuas majemuk",
-				"Mengapa pengukuran perlu diulang?",
-				"Menilai variasi hasil",
-				"Menghapus semua data",
-				"Menghindari satuan",
-				"Mengubah hukum fisika"
-			],
-			[
-				"Frekuensi dan profil cam",
-				"Frekuensi menyatakan jumlah kejadian dalam satu rentang. Profil cam menentukan waktu naik dan turun pengikut.",
-				"pengikut",
-				"Bentuk cam memengaruhi",
-				"gerak pengikut",
-				"nama operator",
-				"warna bahan bakar",
-				"jumlah huruf"
-			],
-			[
-				"Peluang kegagalan komponen",
-				"Peluang berada antara 0 dan 1. Nilai 0 berarti mustahil pada model; nilai 1 berarti pasti pada model.",
-				"peluang",
-				"Peluang 1/2 setara dengan",
-				"50%",
-				"2%",
-				"100%",
-				"25%"
-			],
-			[
-				"Menganalisis mekanisme",
-				"Gunakan diagram, rata-rata, dan pengamatan untuk membandingkan mekanisme. Hentikan pengujian bila ada kebocoran atau sambungan longgar.",
-				"statistik",
-				"Kesimpulan eksperimen sebaiknya didukung oleh",
-				"data pengamatan",
-				"tebakan saja",
-				"warna favorit",
-				"nama komponen saja"
-			]
-		]
-	],
-	[
-		"Terapan",
-		"Algoritma dan elektronik konseptual",
-		[
-			[
-				"Urutan algoritma dan baterai",
-				"Algoritma adalah langkah terurut. Baterai menyediakan energi listrik; pasang dengan polaritas yang benar.",
-				"baterai",
-				"Fungsi baterai adalah",
-				"menyediakan energi listrik",
-				"membuat gaya tanpa energi",
-				"menghapus program",
-				"mengukur panjang"
-			],
-			[
-				"Diagram alir dan kabel",
-				"Diagram alir menggambarkan urutan dan percabangan. Kabel menghubungkan komponen agar arus memiliki lintasan.",
-				"kabel",
-				"Kabel pada rangkaian berfungsi sebagai",
-				"penghubung lintasan listrik",
-				"sumber massa",
-				"buku catatan",
-				"bantalan"
-			],
-			[
-				"Percabangan dan saklar",
-				"Jika saklar tertutup, lintasan terhubung; jika terbuka, lintasan terputus. Ini contoh aturan jika-maka.",
-				"saklar",
-				"Saklar terbuka membuat lintasan",
-				"terputus",
-				"selalu lebih terang",
-				"menjadi poros",
-				"menambah baterai"
-			],
-			[
-				"Keluaran program dan lampu",
-				"Lampu merupakan keluaran yang mengubah energi listrik menjadi cahaya. Program visual dapat mengatur kapan lampu menyala.",
-				"lampu",
-				"Lampu mengubah energi listrik menjadi",
-				"cahaya",
-				"catatan",
-				"massa",
-				"variabel"
-			],
-			[
-				"Perulangan dan motor",
-				"Perulangan menjalankan langkah beberapa kali. Motor mengubah energi listrik menjadi gerak dan harus dimatikan sebelum dirakit.",
-				"motor",
-				"Motor listrik menghasilkan",
-				"gerak",
-				"air tanpa sumber",
-				"angka acak saja",
-				"udara tanpa komponen"
-			],
-			[
-				"Masukan program dan sensor",
-				"Sensor membaca kondisi lingkungan sebagai masukan. Program mengolah masukan lalu menentukan keluaran.",
-				"sensor",
-				"Peran sensor dalam sistem adalah",
-				"membaca kondisi sebagai masukan",
-				"menggantikan seluruh program",
-				"menghasilkan semua energi",
-				"menjadi pengikat"
-			],
-			[
-				"Program visual rangkaian",
-				"Susun blok Mulai, Baca sensor, Jika kondisi, Aktifkan keluaran. Uji sambungan tanpa daya sebelum menyalakan rangkaian.",
-				"algoritma",
-				"Urutan sistem kendali yang benar adalah",
-				"masukan, proses, keluaran",
-				"keluaran, keluaran, keluaran",
-				"energi tanpa sumber",
-				"sensor tanpa proses"
-			]
-		]
-	],
-	[
-		"Integrasi",
-		"Optimasi dan mesin otomatis",
-		[
-			[
-				"Menentukan masalah robot",
-				"Tentukan kebutuhan dan batasan sebelum memilih komponen. Robot menggabungkan sensor, kendali, dan penggerak.",
-				"robot",
-				"Langkah awal merancang robot adalah",
-				"menentukan kebutuhan dan batasan",
-				"membeli komponen tanpa tujuan",
-				"menyalakan tanpa pemeriksaan",
-				"menghapus semua data"
-			],
-			[
-				"Membandingkan solusi",
-				"Bandingkan beberapa rancangan berdasarkan biaya, energi, keandalan, dan keselamatan. Solusi terbaik mengikuti kriteria yang jelas.",
-				"optimasi",
-				"Optimasi memerlukan",
-				"kriteria dan batasan",
-				"tebakan tanpa tujuan",
-				"satu warna",
-				"tanpa data"
-			],
-			[
-				"Integrasi sensor mekanik",
-				"Sensor mendeteksi kondisi, pengendali memilih tindakan, lalu motor menggerakkan mekanisme.",
-				"otomasi",
-				"Urutan kerja otomatis adalah",
-				"sensor, pengendali, penggerak",
-				"penggerak tanpa energi",
-				"lampu menjadi mur",
-				"bantalan menjadi program"
-			],
-			[
-				"Umpan balik sederhana",
-				"Umpan balik membandingkan keadaan nyata dengan sasaran dan membantu memperbaiki tindakan.",
-				"umpan balik",
-				"Kegunaan umpan balik adalah",
-				"menyesuaikan tindakan berdasarkan keadaan",
-				"menghilangkan semua sensor",
-				"mengganti semua baut",
-				"menambah gangguan"
-			],
-			[
-				"Efisiensi dan transmisi",
-				"Pilih rasio transmisi sesuai kebutuhan kecepatan dan torsi. Efisiensi membandingkan energi berguna dengan energi masukan.",
+				"Pemilihan Alat & Mesin Terpadu",
+				"Kenali fungsi tiap mesin: gunting dan linggis memakai tuas, kapak dan pisau memakai bidang miring, derek memakai katrol, troli memakai roda.",
 				"efisiensi",
-				"Efisiensi menilai perbandingan",
-				"hasil berguna terhadap masukan",
-				"nama terhadap warna",
-				"massa terhadap huruf",
-				"tanggal terhadap baut"
 			],
 			[
-				"Pengujian mesin otomatis",
-				"Uji setiap subsistem sebelum sistem lengkap. Catat hasil, perbaiki satu penyebab, dan uji kembali.",
-				"pengujian",
-				"Mengapa subsistem diuji terpisah?",
-				"Memudahkan menemukan penyebab masalah",
-				"Menghapus kebutuhan keselamatan",
-				"Menghindari semua data",
-				"Menaikkan risiko"
+				"Evaluasi Terpadu & Persiapan UAS Sem 1",
+				"Gabungkan hitungan operasi bilangan, pecahan, desimal, dan persen untuk memilih kombinasi tuas, roda, katrol, dan bidang miring yang paling aman.",
+				"mesin sederhana",
 			],
-			[
-				"Optimasi rancangan robot",
-				"Perbaikan harus terukur: bandingkan hasil sebelum dan sesudah. Jangan menukar keselamatan dengan kecepatan.",
-				"keandalan",
-				"Perbaikan rancangan dinilai melalui",
-				"hasil uji sebelum dan sesudah",
-				"tebakan operator saja",
-				"jumlah warna",
-				"nama berkas"
-			]
-		]
+		],
 	],
 	[
-		"Integrasi",
-		"Proyek akhir, manajemen dan keselamatan",
+		"Semester 2",
+		"Dasar Lanjutan: Pola Bilangan, Pengukuran & Mesin Lanjutan",
 		[
+			# Hari 1..5 (Paruh 1 — Midterm / UTS prep)
 			[
-				"Tujuan proyek akhir",
-				"Tulis kebutuhan pengguna, tujuan terukur, serta batas biaya dan waktu. Rancangan akhir memakai komponen yang sudah dipelajari.",
-				"kebutuhan",
-				"Tujuan proyek sebaiknya",
-				"jelas dan dapat diuji",
-				"tidak dapat diukur",
-				"berubah setiap detik",
-				"tanpa batasan"
+				"Pola Bilangan Loncat & Membesar",
+				"Pola bilangan mengikuti aturan tetap seperti loncat +2, +5, atau +10. Mengamati selisih antarangka membantu memprediksi langkah berikutnya.",
+				"pola",
 			],
 			[
-				"Perencanaan komponen",
-				"Buat daftar komponen dan hubungan antarbagian. Pilih komponen mekanik dan elektronik sesuai fungsi.",
-				"komponen",
-				"Daftar komponen membantu",
-				"merencanakan kebutuhan perakitan",
-				"menghapus jadwal",
-				"mengganti pengujian",
-				"mengabaikan biaya"
+				"Pola Berulang, Mengecil & Baji",
+				"Pola dapat mengecil atau berulang secara periodik. Baji adalah dua bidang miring menyatu yang berfungsi membelah, memotong, atau mengganjal benda.",
+				"baji",
 			],
 			[
-				"Jadwal dan ketergantungan",
-				"Pecah proyek menjadi tugas kecil. Pekerjaan yang bergantung pada bagian lain dijadwalkan setelah bagian itu siap.",
-				"jadwal",
-				"Tugas yang membutuhkan rangka selesai dikerjakan",
-				"setelah rangka siap",
-				"sebelum kebutuhan diketahui",
-				"tanpa bahan",
-				"tanpa urutan"
+				"Pola Deret & Prinsip Sekrup",
+				"Sekrup adalah bidang miring yang melingkar mengelilingi silinder. Jarak ulir yang teratur mengubah gerak putar menjadi gerak maju untuk mengikat kuat.",
+				"sekrup",
 			],
 			[
-				"Identifikasi risiko",
-				"Catat bahaya dan tindakan pengendalian. Matikan sumber energi sebelum merakit atau memperbaiki mesin.",
-				"keselamatan",
-				"Sebelum merakit mesin, sumber energi harus",
-				"dimatikan",
-				"ditambah dayanya",
-				"diabaikan",
-				"dipindah ke operator"
+				"Pola Bertingkat & Sistem Roda-Poros",
+				"Roda-poros menghubungkan roda besar dengan poros di tengahnya agar berputar bersama, seperti setir mobil, gagang pintu putar, dan obeng.",
+				"roda-poros",
 			],
 			[
-				"Perakitan dan dokumentasi",
-				"Ikuti blueprint, pasang komponen sesuai urutan, dan dokumentasikan perubahan. Perubahan harus diuji ulang.",
-				"dokumentasi",
-				"Perubahan rancangan sebaiknya",
-				"dicatat dan diuji ulang",
-				"disembunyikan",
-				"tidak diperiksa",
-				"langsung dianggap aman"
+				"Analisis Mesin Lanjutan & Persiapan UTS",
+				"Bandingkan fungsi baji (memotong/membelah), sekrup (mengikat dengan ulir), dan roda-poros (memperbesar gaya putar) sebelum menghadapi UTS.",
+				"ulir",
+			],
+			# Hari 7..11 (Paruh 2 — Final / UAS prep)
+			[
+				"Perbandingan & Rasio Komponen",
+				"Perbandingan (rasio) membandingkan dua besaran sejenis. Sebelum membandingkan ukuran komponen, samakan dulu satuannya.",
+				"perbandingan",
 			],
 			[
-				"Validasi dan presentasi",
-				"Bandingkan hasil uji terhadap tujuan awal. Jelaskan cara kerja, keterbatasan, biaya, serta prosedur aman.",
-				"validasi",
-				"Validasi membandingkan hasil dengan",
-				"kebutuhan awal",
-				"warna favorit",
-				"nama kelompok",
-				"jumlah judul"
+				"Satuan Panjang, Massa & Waktu",
+				"Gunakan satuan baku: 1 m = 100 cm = 1000 mm, 1 kg = 1000 g, 1 jam = 60 menit. Pengukuran akurat mencegah kesalahan sambungan mesin.",
+				"satuan",
 			],
 			[
-				"Penyerahan proyek akhir",
-				"Periksa kelengkapan mesin, catatan uji, dan keselamatan sebelum melapor kepada dosen. Nilai akhir menentukan kelulusan.",
-				"penyerahan",
-				"Proyek siap dikumpulkan setelah",
-				"fungsi dan keselamatannya diuji",
-				"baru diberi nama",
-				"bahan belum tersedia",
-				"rangka belum terpasang"
-			]
-		]
-	]
-]
-const WEEK_COUNT := 16
-const SEMESTER_COUNT := 8
-const PRACTICE := [
-	["Apa yang dilakukan sebelum merakit bagian mesin?", "Mematikan sumber energi", "Menaikkan kecepatan", "Melepas pelindung saat mesin hidup", "Menambah beban"],
-	["Dasar memilih komponen untuk rancangan adalah?", "Fungsi dan batasan kebutuhan", "Warna saja", "Ukuran terbesar selalu", "Nama terpanjang"],
-	["Hasil pengukuran yang dapat dibandingkan harus mencantumkan?", "Nilai dan satuan", "Warna meja", "Nama ruangan saja", "Nomor halaman saja"],
-	["Hasil uji mesin dibandingkan dengan?", "Tujuan rancangan", "Warna sepatu", "Nama berkas saja", "Jumlah huruf"],
-	["Kesimpulan eksperimen yang baik berdasarkan?", "Data pengamatan", "Tebakan tanpa bukti", "Warna favorit", "Suara paling keras"],
-	["Perubahan rancangan sebaiknya?", "Dicatat dan diuji ulang", "Disembunyikan", "Tidak diperiksa", "Dianggap selalu benar"],
-	["Kapan mesin siap dinyatakan berfungsi?", "Setelah fungsi dan keselamatannya diuji", "Setelah diberi nama", "Sebelum dirakit", "Ketika bahannya belum tersedia"]
+				"Alat Ukur & Kalibrasi Bengkel",
+				"Pilih alat ukur sesuai besaran: penggaris/meteran untuk panjang, neraca untuk massa, stopwatch untuk waktu. Kalibrasi memastikan keakuratan acuan.",
+				"pengukuran",
+			],
+			[
+				"Penggabungan Mesin Sederhana Lanjutan",
+				"Banyak alat modern menggabungkan beberapa mesin: gunting (tuas + baji), keran air (roda-poros + sekrup), gerobak dorong (tuas + roda-poros).",
+				"gabungan",
+			],
+			[
+				"Integrasi Proyek Akhir & Persiapan UAS Sem 2",
+				"Satukan pola bilangan, perbandingan, pengukuran, dan gabungan baji, sekrup, serta roda-poros untuk merakit proyek akhir dengan aman dan teruji.",
+				"kalibrasi",
+			],
+		],
+	],
 ]
 
-
-static func semester_at(absolute_week: int) -> int:
-	return clampi(floori(float(maxi(1, absolute_week) - 1) / 16.0) + 1, 1, 8)
+static var _bank_cache: Dictionary[int, Array] = {}
 
 
-static func week_at(absolute_week: int) -> int:
-	return (maxi(1, absolute_week) - 1) % 16 + 1
+static func semester_for_day(absolute_day: int) -> int:
+	@warning_ignore("integer_division")
+	return clampi((maxi(1, absolute_day) - 1) / DAYS_PER_SEMESTER + 1, 1, SEMESTER_COUNT)
 
 
-static func unit_index(week: int) -> int:
-	return clampi(week - 1 if week < 8 else week - 2, 0, 13) % 7
+static func day_in_semester(absolute_day: int) -> int:
+	return (maxi(1, absolute_day) - 1) % DAYS_PER_SEMESTER + 1
 
 
-static func lesson(semester: int, week: int) -> Dictionary:
-	var course: Array = COURSES[clampi(semester, 1, 8) - 1]
-	var unit: Array = course[2][unit_index(week)]
-	return {"title": unit[0], "material": unit[1], "keyword": unit[2], "sections": [unit[1], "Penerapan: " + unit[0] + ". Catat masukan, proses, dan keluaran sebelum memilih komponen.", "Keselamatan: matikan sumber energi, periksa sambungan, lalu uji fungsi sesuai tujuan."], "year": course[0], "course": course[1]}
+static func half_for_day(day_in_sem: int) -> int:
+	return 1 if clampi(day_in_sem, 1, DAYS_PER_SEMESTER) <= MIDTERM_DAY else 2
 
 
-static func questions(semester: int, week: int, kind: String) -> Array[Dictionary]:
+static func is_exam_day(day_in_sem: int) -> bool:
+	return day_in_sem == MIDTERM_DAY or day_in_sem == FINAL_DAY
+
+
+static func is_lesson_day(day_in_sem: int) -> bool:
+	return day_in_sem >= 1 and day_in_sem <= DAYS_PER_SEMESTER and not is_exam_day(day_in_sem)
+
+
+static func absolute_day_for(semester: int, day_in_sem: int) -> int:
+	return (clampi(semester, 1, SEMESTER_COUNT) - 1) * DAYS_PER_SEMESTER + clampi(day_in_sem, 1, DAYS_PER_SEMESTER)
+
+
+static func deadline_day_for_half(semester: int, half: int) -> int:
+	return absolute_day_for(semester, MIDTERM_DAY if half == 1 else FINAL_DAY)
+
+
+## Backwards-compatible aliases kept for legacy callers.
+static func semester_at(absolute_day: int) -> int:
+	return semester_for_day(absolute_day)
+
+
+static func week_at(absolute_day: int) -> int:
+	return day_in_semester(absolute_day)
+
+
+static func unit_index(day_in_sem: int) -> int:
+	var clamped := clampi(day_in_sem, 1, DAYS_PER_SEMESTER)
+	if clamped <= 5:
+		return clamped - 1
+	if clamped == MIDTERM_DAY:
+		return 4
+	if clamped <= 11:
+		return clamped - 2
+	return 9
+
+
+static func course_title(semester: int) -> String:
+	var course: Array = COURSES[clampi(semester, 1, SEMESTER_COUNT) - 1]
+	return str(course[1])
+
+
+static func lesson(semester: int, day_in_sem: int) -> Dictionary:
+	var sem := clampi(semester, 1, SEMESTER_COUNT)
+	var course: Array = COURSES[sem - 1]
+	var unit: Array = course[2][unit_index(day_in_sem)]
+	var bp_id := blueprint_for_lesson(sem, day_in_sem)
+	var half := half_for_day(day_in_sem)
+	return {
+		"title": str(unit[0]),
+		"material": str(unit[1]),
+		"keyword": str(unit[2]),
+		"sections": [
+			str(unit[1]),
+			"Penerapan: %s (Semester %d · Paruh %d). Catat prinsip kerja dan contohnya untuk Tugas, Kuis, serta Ujian." % [str(unit[0]), sem, half],
+			"Keselamatan & Praktik: periksa satuan, fungsi tiap bagian, dan pastikan penggerak aman sebelum menguji mesin di Bengkel.",
+		],
+		"year": str(course[0]),
+		"course": str(course[1]),
+		"blueprint_id": bp_id,
+		"half": half,
+	}
+
+
+static func blueprint_for_lesson(semester: int, day_in_sem: int) -> String:
+	if not is_lesson_day(day_in_sem):
+		return ""
+	return PROGRESSION.blueprint_for_half(semester, half_for_day(day_in_sem))
+
+
+static func blueprint_info(blueprint_id: String) -> Dictionary:
+	for entry: Dictionary in BLUEPRINTS:
+		if str(entry.blueprint_id) == blueprint_id:
+			return entry
+	return {}
+
+
+static func blueprint_for_slot(semester: int, slot: String) -> Dictionary:
+	for entry: Dictionary in BLUEPRINTS:
+		if int(entry.semester) == semester and str(entry.slot) == slot:
+			return entry
+	return {}
+
+
+static func blueprints_for_semester(semester: int) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
-	var count := 7 if kind in ["uts", "uas"] else unit_index(week) + 1
-	for index: int in 3:
-		result.append(_calculation(semester, week, index))
-	for index: int in 7:
-		var row: Array
-		if index < count:
-			var unit: Array = COURSES[clampi(semester, 1, 8) - 1][2][(unit_index(week) - index + count) % count]
-			row = [unit[3] + "?", unit[4], unit[5], unit[6], unit[7]]
-		else:
-			row = PRACTICE[index - count]
-		var options: Array[String] = [row[1], row[2], row[3], row[4]]
-		var correct := (semester + week + index) % 4
-		var answer: String = options.pop_front()
-		options.insert(correct, answer)
-		result.append({"prompt": row[0], "options": options, "correct": correct})
+	for entry: Dictionary in BLUEPRINTS:
+		if int(entry.semester) == semester:
+			result.append(entry)
 	return result
 
 
-static func _calculation(semester: int, week: int, index: int) -> Dictionary:
-	var a := week + index + 2
-	var b := index + 2
-	var answer := 0
-	var prompt := ""
-	match semester:
-		1:
-			match unit_index(week):
-				0:
-					answer = a + b
-					prompt = "%d + %d = ?" % [a, b]
-				1:
-					answer = a - b
-					prompt = "%d − %d = ?" % [a, b]
-				2:
-					answer = a * b
-					prompt = "%d × %d = ?" % [a, b]
-				3:
-					answer = a
-					prompt = "%d ÷ %d = ?" % [a * b, b]
-				4:
-					answer = a
-					prompt = "1/2 dari %d komponen = ?" % (a * 2)
-				5:
-					answer = a * 10
-					prompt = "%.1f meter = berapa sentimeter?" % (a / 10.0)
-				6:
-					answer = a
-					prompt = "25%% dari %d baut = ?" % (a * 4)
-		2:
-			answer = a * 100 if index == 0 else a * b
-			prompt = "%d meter = berapa sentimeter?" % a if index == 0 else "Rasio komponen 1:%d. Untuk %d kelompok diperlukan berapa komponen?" % [a, b]
-		3:
-			answer = a * b * (2 if index == 2 else 1)
-			prompt = "Volume balok %d × %d × 2 = ?" % [a, b] if index == 2 else "Luas persegi panjang %d × %d = ?" % [a, b]
-		4:
-			answer = a
-			prompt = "x + %d = %d. Berapa x?" % [b, a + b]
-		5:
-			answer = a
-			prompt = "Rata-rata data %d, %d, %d = ?" % [a - 1, a, a + 1]
-		6:
-			answer = a * b
-			prompt = "Blok ulang %d kali menjalankan %d langkah per putaran. Total langkah?" % [a, b]
-		7:
-			answer = a - b
-			prompt = "Energi awal %d unit, setelah optimasi %d unit. Berapa penghematannya?" % [a, b]
-		8:
-			answer = a * b
-			prompt = "%d komponen berharga %d satuan per buah. Total biaya?" % [a, b]
-	var correct := (week + index) % 4
-	var options: Array[String] = [str(answer + 1), str(answer + 2), str(answer + 3)]
-	options.insert(correct, str(answer))
-	return {"prompt": prompt, "options": options, "correct": correct}
+static func load_question_bank(semester: int) -> Array[Dictionary]:
+	var sem := clampi(semester, 1, SEMESTER_COUNT)
+	if _bank_cache.has(sem):
+		var cached: Array[Dictionary] = []
+		for item: Dictionary in _bank_cache[sem]:
+			cached.append(item)
+		return cached
+	var path: String = QUESTION_BANK_PATHS.get(sem, "")
+	var loaded: Array[Dictionary] = []
+	if not path.is_empty() and FileAccess.file_exists(path):
+		var file := FileAccess.open(path, FileAccess.READ)
+		if file != null:
+			var parsed: Variant = JSON.parse_string(file.get_as_text())
+			file.close()
+			if parsed is Dictionary and parsed.get("questions") is Array:
+				for raw: Variant in parsed.get("questions"):
+					if raw is Dictionary:
+						var choices_raw: Variant = raw.get("choices", [])
+						if choices_raw is Array and choices_raw.size() == 4:
+							var opts: Array[String] = []
+							for c: Variant in choices_raw:
+								opts.append(str(c))
+							loaded.append({
+								"id": str(raw.get("id", "")),
+								"semester": int(raw.get("semester", sem)),
+								"topic": str(raw.get("topic", "math")),
+								"prompt": str(raw.get("prompt", "")),
+								"choices": opts,
+								"options": opts,
+								"correct_index": clampi(int(raw.get("correct_index", 0)), 0, 3),
+								"correct": clampi(int(raw.get("correct_index", 0)), 0, 3),
+							})
+	_bank_cache[sem] = loaded
+	return loaded
 
+
+## Draws a balanced, randomized, non-repeating set of 10 questions (5 math + 5 machine)
+## from the validated in-repo Semester 1 or Semester 2 Bank Soal.
+static func questions(semester: int, slot: int, kind: String, count: int = 10, seed_override: int = -1) -> Array[Dictionary]:
+	var sem := clampi(semester, 1, SEMESTER_COUNT)
+	var bank := load_question_bank(sem)
+	var math_pool: Array[Dictionary] = []
+	var machine_pool: Array[Dictionary] = []
+	for q: Dictionary in bank:
+		if str(q.get("topic", "")) == "math":
+			math_pool.append(q)
+		else:
+			machine_pool.append(q)
+
+	var rng := RandomNumberGenerator.new()
+	if seed_override >= 0:
+		rng.seed = seed_override
+	else:
+		# Deterministic-per-assessment-slot seed mixed with current time if needed;
+		# using a stable per-(semester, slot, kind) seed guarantees draft resume matches the exact same 10 questions!
+		var kind_hash := kind.hash()
+		rng.seed = abs(sem * 100003 + slot * 1009 + kind_hash)
+
+	_shuffle_pool(math_pool, rng)
+	_shuffle_pool(machine_pool, rng)
+
+	var math_target := mini(count / 2, math_pool.size())
+	var machine_target := mini(count - math_target, machine_pool.size())
+	var selected: Array[Dictionary] = []
+	var used_ids: Dictionary[String, bool] = {}
+
+	for i: int in range(math_target):
+		var q := math_pool[i]
+		used_ids[str(q.id)] = true
+		selected.append(q)
+	for i: int in range(machine_target):
+		var q := machine_pool[i]
+		if not used_ids.has(str(q.id)):
+			used_ids[str(q.id)] = true
+			selected.append(q)
+
+	# Fill any remainder if one pool was smaller than target.
+	for pool: Array[Dictionary] in [math_pool, machine_pool]:
+		for q: Dictionary in pool:
+			if selected.size() >= count:
+				break
+			if not used_ids.has(str(q.id)):
+				used_ids[str(q.id)] = true
+				selected.append(q)
+
+	_shuffle_pool(selected, rng)
+	return selected
+
+
+static func _shuffle_pool(pool: Array[Dictionary], rng: RandomNumberGenerator) -> void:
+	for i: int in range(pool.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var tmp := pool[i]
+		pool[i] = pool[j]
+		pool[j] = tmp

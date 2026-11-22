@@ -3,6 +3,8 @@ extends Node
 signal minute_changed(absolute_minutes: int)
 
 const MINUTES_PER_DAY: int = 1440
+const DAYS_PER_SEMESTER: int = 12
+const SEMESTER_COUNT: int = 2
 const MORNING_MINUTES := 360
 const TIMED_ATTEMPT_MINUTES := 10
 const LEGACY_TIMELINE_PATH := "user://chapter_timeline.cfg"
@@ -44,6 +46,15 @@ func resume_timeline() -> void:
 func get_day() -> int:
 	@warning_ignore("integer_division")
 	return _absolute_minutes / MINUTES_PER_DAY + 1
+
+
+func get_semester() -> int:
+	@warning_ignore("integer_division")
+	return clampi((get_day() - 1) / DAYS_PER_SEMESTER + 1, 1, SEMESTER_COUNT)
+
+
+func get_day_in_semester() -> int:
+	return (get_day() - 1) % DAYS_PER_SEMESTER + 1
 
 
 func get_absolute_minutes() -> int:

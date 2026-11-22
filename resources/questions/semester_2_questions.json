@@ -1,0 +1,3112 @@
+{
+  "semester": 2,
+  "questions": [
+    {
+      "id": "s2_q001",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 2, 3, 4, ... Angka selanjutnya adalah...",
+      "choices": [
+        "9",
+        "6",
+        "3",
+        "5"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q002",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2, 4, 6, 8, ... Angka selanjutnya adalah...",
+      "choices": [
+        "13",
+        "11",
+        "8",
+        "10"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q003",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "5, 10, 15, 20, ... Angka selanjutnya adalah...",
+      "choices": [
+        "19",
+        "24",
+        "27",
+        "25"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q004",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 3, 5, 7, ... Angka selanjutnya adalah...",
+      "choices": [
+        "12",
+        "10",
+        "9",
+        "15"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q005",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "10, 20, 30, 40, ... Angka selanjutnya adalah...",
+      "choices": [
+        "60",
+        "50",
+        "45",
+        "52"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q006",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "3, 6, 9, 12, ... Angka selanjutnya adalah...",
+      "choices": [
+        "17",
+        "16",
+        "15",
+        "13"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q007",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "10, 9, 8, 7, ... Angka selanjutnya adalah...",
+      "choices": [
+        "5",
+        "6",
+        "4",
+        "8"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q008",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "20, 18, 16, 14, ... Angka selanjutnya adalah...",
+      "choices": [
+        "10",
+        "12",
+        "15",
+        "18"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q009",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "4, 8, 12, 16, ... Angka selanjutnya adalah...",
+      "choices": [
+        "22",
+        "18",
+        "20",
+        "14"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q010",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 2, 1, 2, 1, ... Angka selanjutnya adalah...",
+      "choices": [
+        "5",
+        "2",
+        "0",
+        "3"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q011",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "50, 40, 30, 20, ... Angka selanjutnya adalah...",
+      "choices": [
+        "12",
+        "7",
+        "16",
+        "10"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q012",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "6, 12, 18, 24, ... Angka selanjutnya adalah...",
+      "choices": [
+        "30",
+        "29",
+        "34",
+        "24"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q013",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "100, 90, 80, 70, ... Angka selanjutnya adalah...",
+      "choices": [
+        "50",
+        "64",
+        "55",
+        "60"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q014",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2, 2, 4, 4, 6, ... Angka selanjutnya adalah...",
+      "choices": [
+        "6",
+        "12",
+        "10",
+        "3"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q015",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "7, 14, 21, 28, ... Angka selanjutnya adalah...",
+      "choices": [
+        "39",
+        "37",
+        "35",
+        "33"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q016",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "15, 14, 13, 12, ... Angka selanjutnya adalah...",
+      "choices": [
+        "12",
+        "11",
+        "9",
+        "15"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q017",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "11, 22, 33, 44, ... Angka selanjutnya adalah...",
+      "choices": [
+        "55",
+        "50",
+        "54",
+        "45"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q018",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "25, 20, 15, 10, ... Angka selanjutnya adalah...",
+      "choices": [
+        "9",
+        "3",
+        "5",
+        "8"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q019",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 4, 7, 10, ... Angka selanjutnya adalah...",
+      "choices": [
+        "13",
+        "15",
+        "10",
+        "19"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q020",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "3, 3, 3, 3, ... Angka selanjutnya adalah...",
+      "choices": [
+        "1",
+        "3",
+        "9",
+        "0"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q021",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "8, 16, 24, 32, ... Angka selanjutnya adalah...",
+      "choices": [
+        "42",
+        "40",
+        "36",
+        "34"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q022",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "30, 27, 24, 21, ... Angka selanjutnya adalah...",
+      "choices": [
+        "24",
+        "17",
+        "18",
+        "14"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q023",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2, 5, 8, 11, ... Angka selanjutnya adalah...",
+      "choices": [
+        "12",
+        "11",
+        "16",
+        "14"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q024",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "9, 18, 27, 36, ... Angka selanjutnya adalah...",
+      "choices": [
+        "43",
+        "45",
+        "30",
+        "44"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q025",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 2, 3, 1, 2, 3, 1, ... Angka selanjutnya adalah...",
+      "choices": [
+        "3",
+        "2",
+        "8",
+        "6"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q026",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "40, 35, 30, 25, ... Angka selanjutnya adalah...",
+      "choices": [
+        "20",
+        "19",
+        "21",
+        "22"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q027",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "12, 14, 16, 18, ... Angka selanjutnya adalah...",
+      "choices": [
+        "24",
+        "19",
+        "20",
+        "21"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q028",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "100, 200, 300, 400, ... Angka selanjutnya adalah...",
+      "choices": [
+        "520",
+        "510",
+        "499",
+        "500"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q029",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "5, 7, 9, 11, ... Angka selanjutnya adalah...",
+      "choices": [
+        "13",
+        "12",
+        "15",
+        "10"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q030",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "16, 12, 8, 4, ... Angka selanjutnya adalah...",
+      "choices": [
+        "0",
+        "6",
+        "1",
+        "2"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q031",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2, 4, ..., 8, 10. Angka yang hilang adalah...",
+      "choices": [
+        "6",
+        "3",
+        "4",
+        "8"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q032",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "10, 20, ..., 40, 50. Angka yang hilang adalah...",
+      "choices": [
+        "26",
+        "30",
+        "29",
+        "28"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q033",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "5, ..., 15, 20, 25. Angka yang hilang adalah...",
+      "choices": [
+        "9",
+        "13",
+        "10",
+        "12"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q034",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 3, 5, ..., 9. Angka yang hilang adalah...",
+      "choices": [
+        "13",
+        "10",
+        "7",
+        "8"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q035",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "20, 19, ..., 17, 16. Angka yang hilang adalah...",
+      "choices": [
+        "16",
+        "24",
+        "20",
+        "18"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q036",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "3, 6, ..., 12, 15. Angka yang hilang adalah...",
+      "choices": [
+        "15",
+        "8",
+        "7",
+        "9"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q037",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "50, 45, 40, ..., 30. Angka yang hilang adalah...",
+      "choices": [
+        "41",
+        "31",
+        "37",
+        "35"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q038",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "4, 8, 12, ..., 20. Angka yang hilang adalah...",
+      "choices": [
+        "15",
+        "17",
+        "16",
+        "14"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q039",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "100, 80, ..., 40, 20. Angka yang hilang adalah...",
+      "choices": [
+        "65",
+        "50",
+        "61",
+        "60"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q040",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "7, 8, 9, ..., 11. Angka yang hilang adalah...",
+      "choices": [
+        "7",
+        "8",
+        "10",
+        "13"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q047",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 5, 9, 13, ... Angka selanjutnya adalah...",
+      "choices": [
+        "15",
+        "21",
+        "23",
+        "17"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q048",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2, 6, 10, 14, ... Angka selanjutnya adalah...",
+      "choices": [
+        "14",
+        "24",
+        "18",
+        "12"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q049",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "25, 50, 75, ... Angka selanjutnya adalah...",
+      "choices": [
+        "95",
+        "100",
+        "102",
+        "101"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q050",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "12, 10, 8, 6, ... Angka selanjutnya adalah...",
+      "choices": [
+        "4",
+        "10",
+        "1",
+        "6"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q055",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 10, 100, ... Angka selanjutnya adalah...",
+      "choices": [
+        "1010",
+        "1000",
+        "1002",
+        "999"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q056",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "9, 8, 9, 8, 9, ... Angka selanjutnya adalah...",
+      "choices": [
+        "7",
+        "5",
+        "12",
+        "8"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q057",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "14, 17, 20, 23, ... Angka selanjutnya adalah...",
+      "choices": [
+        "28",
+        "26",
+        "32",
+        "25"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q058",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "40, 38, 36, 34, ... Angka selanjutnya adalah...",
+      "choices": [
+        "32",
+        "36",
+        "38",
+        "33"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q059",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "6, 8, 10, 12, ... Angka selanjutnya adalah...",
+      "choices": [
+        "12",
+        "16",
+        "14",
+        "20"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q060",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "15, 30, 45, ... Angka selanjutnya adalah...",
+      "choices": [
+        "58",
+        "55",
+        "60",
+        "65"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q061",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 2, 4, 8, ... (dikali ). Angka selanjutnya adalah...",
+      "choices": [
+        "15",
+        "16",
+        "20",
+        "12"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q062",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "3, 6, 12, ... (dikali ). Angka selanjutnya adalah...",
+      "choices": [
+        "22",
+        "18",
+        "25",
+        "24"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q063",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "5, 10, 20, ... (dikali ). Angka selanjutnya adalah...",
+      "choices": [
+        "40",
+        "46",
+        "42",
+        "39"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q066",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "11, 13, 15, 17, ... Angka selanjutnya adalah...",
+      "choices": [
+        "23",
+        "19",
+        "25",
+        "18"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q067",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "22, 24, 26, 28, ... Angka selanjutnya adalah...",
+      "choices": [
+        "30",
+        "28",
+        "36",
+        "32"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q068",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "35, 30, 25, 20, ... Angka selanjutnya adalah...",
+      "choices": [
+        "17",
+        "21",
+        "15",
+        "14"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q069",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 6, 11, 16, ... Angka selanjutnya adalah...",
+      "choices": [
+        "15",
+        "21",
+        "17",
+        "23"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q070",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2, 7, 12, 17, ... Angka selanjutnya adalah...",
+      "choices": [
+        "18",
+        "26",
+        "24",
+        "22"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q071",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "4, 4, 8, 8, 12, ... Angka selanjutnya adalah...",
+      "choices": [
+        "12",
+        "13",
+        "11",
+        "18"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q072",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "10, 13, 16, 19, ... Angka selanjutnya adalah...",
+      "choices": [
+        "22",
+        "20",
+        "16",
+        "21"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q073",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "50, 48, 46, 44, ... Angka selanjutnya adalah...",
+      "choices": [
+        "42",
+        "57",
+        "48",
+        "52"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q074",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "90, 80, 70, 60, ... Angka selanjutnya adalah...",
+      "choices": [
+        "49",
+        "50",
+        "51",
+        "40"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q075",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 2, 4, 7, 11, ... (tambah , tambah , tambah , tambah , lalu tambah ). Angka selanjutnya adalah...",
+      "choices": [
+        "14",
+        "17",
+        "10",
+        "16"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q076",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2, 3, 5, 8, ... (tambah , tambah , tambah , lalu tambah ). Angka selanjutnya adalah...",
+      "choices": [
+        "10",
+        "12",
+        "18",
+        "15"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q077",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "10, 11, 13, 16, ... (tambah , tambah , tambah , lalu tambah ). Angka selanjutnya adalah...",
+      "choices": [
+        "24",
+        "20",
+        "16",
+        "22"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q078",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "7, 7, 14, 14, 21, ... Angka selanjutnya adalah...",
+      "choices": [
+        "25",
+        "27",
+        "21",
+        "20"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q079",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "5, 15, 25, 35, ... Angka selanjutnya adalah...",
+      "choices": [
+        "30",
+        "47",
+        "43",
+        "45"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q080",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "12, 24, 36, ... Angka selanjutnya adalah...",
+      "choices": [
+        "54",
+        "48",
+        "43",
+        "50"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q081",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "80, 75, 70, 65, ... Angka selanjutnya adalah...",
+      "choices": [
+        "55",
+        "75",
+        "60",
+        "62"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q082",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 3, 1, 3, 1, ... Angka selanjutnya adalah...",
+      "choices": [
+        "5",
+        "2",
+        "3",
+        "6"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q083",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "4, 6, 8, 10, ... Angka selanjutnya adalah...",
+      "choices": [
+        "13",
+        "10",
+        "12",
+        "11"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q084",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "19, 17, 15, 13, ... Angka selanjutnya adalah...",
+      "choices": [
+        "8",
+        "11",
+        "12",
+        "9"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q085",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "20, 40, 60, 80, ... Angka selanjutnya adalah...",
+      "choices": [
+        "115",
+        "100",
+        "98",
+        "104"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q086",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "3, 5, 7, 9, ... Angka selanjutnya adalah...",
+      "choices": [
+        "10",
+        "8",
+        "11",
+        "14"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q087",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "60, 50, 40, 30, ... Angka selanjutnya adalah...",
+      "choices": [
+        "24",
+        "20",
+        "14",
+        "26"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q088",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 9, 1, 9, 1, ... Angka selanjutnya adalah...",
+      "choices": [
+        "11",
+        "9",
+        "6",
+        "8"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q089",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "8, 10, 12, 14, ... Angka selanjutnya adalah...",
+      "choices": [
+        "18",
+        "14",
+        "22",
+        "16"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q090",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "21, 18, 15, 12, ... Angka selanjutnya adalah...",
+      "choices": [
+        "12",
+        "7",
+        "13",
+        "9"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q091",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "30, 33, 36, 39, ... Angka selanjutnya adalah...",
+      "choices": [
+        "57",
+        "42",
+        "27",
+        "48"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q092",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "45, 40, 35, 30, ... Angka selanjutnya adalah...",
+      "choices": [
+        "31",
+        "19",
+        "26",
+        "25"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q093",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2, 12, 22, 32, ... Angka selanjutnya adalah...",
+      "choices": [
+        "42",
+        "46",
+        "52",
+        "48"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q094",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "5, 8, 11, 14, ... Angka selanjutnya adalah...",
+      "choices": [
+        "16",
+        "21",
+        "23",
+        "17"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q095",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "100, 95, 90, 85, ... Angka selanjutnya adalah...",
+      "choices": [
+        "80",
+        "79",
+        "70",
+        "82"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q096",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "7, 9, 11, 13, ... Angka selanjutnya adalah...",
+      "choices": [
+        "13",
+        "16",
+        "15",
+        "18"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q097",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "10, 15, 20, 25, ... Angka selanjutnya adalah...",
+      "choices": [
+        "31",
+        "29",
+        "30",
+        "36"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q098",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "18, 15, 12, 9, ... Angka selanjutnya adalah...",
+      "choices": [
+        "4",
+        "6",
+        "5",
+        "12"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q099",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "4, 9, 14, 19, ... Angka selanjutnya adalah...",
+      "choices": [
+        "28",
+        "25",
+        "18",
+        "24"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q100",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "50, 60, 70, 80, ... Angka selanjutnya adalah...",
+      "choices": [
+        "88",
+        "105",
+        "75",
+        "90"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q110",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "3, 7, 11, 15, ... Angka selanjutnya adalah...",
+      "choices": [
+        "13",
+        "18",
+        "19",
+        "17"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q111",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "24, 20, 16, 12, ... Angka selanjutnya adalah...",
+      "choices": [
+        "10",
+        "14",
+        "8",
+        "6"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q112",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "6, 9, 12, 15, ... Angka selanjutnya adalah...",
+      "choices": [
+        "19",
+        "18",
+        "22",
+        "17"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q113",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1, 1, 2, 2, 3, ... Angka selanjutnya adalah...",
+      "choices": [
+        "4",
+        "6",
+        "3",
+        "9"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q114",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "30, 60, 90, ... Angka selanjutnya adalah...",
+      "choices": [
+        "118",
+        "119",
+        "135",
+        "120"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q115",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "17, 16, 15, 14, ... Angka selanjutnya adalah...",
+      "choices": [
+        "19",
+        "13",
+        "17",
+        "10"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q116",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "4, 7, 10, 13, ... Angka selanjutnya adalah...",
+      "choices": [
+        "18",
+        "20",
+        "16",
+        "10"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q117",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "20, 25, 30, 35, ... Angka selanjutnya adalah...",
+      "choices": [
+        "40",
+        "44",
+        "34",
+        "46"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q118",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "8, 6, 4, 2, ... Angka selanjutnya adalah...",
+      "choices": [
+        "3",
+        "2",
+        "1",
+        "0"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q119",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "13, 15, 17, 19, ... Angka selanjutnya adalah...",
+      "choices": [
+        "27",
+        "21",
+        "17",
+        "23"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q120",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "10, 30, 50, 70, ... Angka selanjutnya adalah...",
+      "choices": [
+        "90",
+        "94",
+        "75",
+        "100"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_m001",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1 meter sama dengan berapa sentimeter?",
+      "choices": [
+        "1000 cm",
+        "100 cm",
+        "50 cm",
+        "10 cm"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_m002",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1 meter sama dengan berapa milimeter?",
+      "choices": [
+        "10000 mm",
+        "1000 mm",
+        "10 mm",
+        "100 mm"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_m003",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1 sentimeter sama dengan berapa milimeter?",
+      "choices": [
+        "10 mm",
+        "100 mm",
+        "5 mm",
+        "1000 mm"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_m004",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2,5 meter jika diubah ke sentimeter menjadi...",
+      "choices": [
+        "25 cm",
+        "2500 cm",
+        "205 cm",
+        "250 cm"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_m005",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1 kilogram sama dengan berapa gram?",
+      "choices": [
+        "500 gram",
+        "1000 gram",
+        "100 gram",
+        "10 gram"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_m006",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "500 gram sama dengan berapa kilogram?",
+      "choices": [
+        "0,05 kg",
+        "0,5 kg",
+        "5 kg",
+        "2 kg"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_m007",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "1 jam sama dengan berapa menit?",
+      "choices": [
+        "120 menit",
+        "100 menit",
+        "30 menit",
+        "60 menit"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_m008",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "2 jam 30 menit sama dengan berapa menit?",
+      "choices": [
+        "180 menit",
+        "130 menit",
+        "150 menit",
+        "120 menit"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_m009",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Alat yang paling tepat untuk mengukur panjang batang poros adalah...",
+      "choices": [
+        "Neraca",
+        "Termometer",
+        "Penggaris atau meteran",
+        "Stopwatch"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_m010",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Alat yang paling tepat untuk mengukur massa komponen logam adalah...",
+      "choices": [
+        "Neraca atau timbangan",
+        "Penggaris",
+        "Jam dinding",
+        "Busur derajat"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_m011",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Alat yang paling tepat untuk mengukur waktu putaran mesin adalah...",
+      "choices": [
+        "Neraca",
+        "Stopwatch",
+        "Penggaris",
+        "Jangka sorong"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_m012",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Perbandingan jumlah roda dan poros adalah 2 : 1. Jika ada 6 poros, maka jumlah roda adalah...",
+      "choices": [
+        "10 roda",
+        "8 roda",
+        "3 roda",
+        "12 roda"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_m013",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Perbandingan panjang dua batang adalah 1 : 3. Jika batang pendek 10 cm, maka batang panjang adalah...",
+      "choices": [
+        "13 cm",
+        "20 cm",
+        "30 cm",
+        "40 cm"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_m014",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Perbandingan baut kecil dan baut besar adalah 3 : 2. Jika ada 9 baut kecil, jumlah baut besar adalah...",
+      "choices": [
+        "4 baut",
+        "12 baut",
+        "8 baut",
+        "6 baut"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_m015",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Sebelum membandingkan dua hasil pengukuran panjang, hal pertama yang harus dilakukan adalah...",
+      "choices": [
+        "Menghapus satuannya",
+        "Menukar angkanya",
+        "Menyamakan satuannya terlebih dahulu",
+        "Mengalikan keduanya dengan sepuluh"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_m016",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Panjang 150 cm jika dinyatakan dalam meter adalah...",
+      "choices": [
+        "1,5 meter",
+        "150 meter",
+        "15 meter",
+        "0,15 meter"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_m017",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Bentuk paling sederhana dari perbandingan 4 : 8 adalah...",
+      "choices": [
+        "1 : 2",
+        "1 : 4",
+        "2 : 1",
+        "2 : 3"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_m018",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Bentuk paling sederhana dari perbandingan 6 : 9 adalah...",
+      "choices": [
+        "3 : 2",
+        "1 : 3",
+        "2 : 3",
+        "2 : 4"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_m019",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Jika 1 roda membutuhkan 4 sekrup, maka 5 roda membutuhkan...",
+      "choices": [
+        "25 sekrup",
+        "15 sekrup",
+        "9 sekrup",
+        "20 sekrup"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_m020",
+      "semester": 2,
+      "topic": "math",
+      "prompt": "Jarak 2 kilometer sama dengan berapa meter?",
+      "choices": [
+        "200 meter",
+        "20 meter",
+        "2000 meter",
+        "20000 meter"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q121",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mesin sederhana yang memiliki dua sisi miring yang bertemu di ujung tajam untuk membelah benda disebut...",
+      "choices": [
+        "Katrol",
+        "Baji",
+        "Sekrup",
+        "Roda"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q122",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bidang miring yang melingkar mengelilingi sebuah batang silinder disebut...",
+      "choices": [
+        "Tuas",
+        "Katrol",
+        "Sekrup",
+        "Roda"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q123",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Roda besar yang terhubung langsung dengan batang kecil di tengahnya sehingga berputar bersama disebut...",
+      "choices": [
+        "Roda-poros",
+        "Baji",
+        "Sekrup",
+        "Bidang miring"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q124",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Contoh benda yang termasuk baji adalah...",
+      "choices": [
+        "Setir mobil",
+        "Kapak dan pisau",
+        "Baut dan mur",
+        "Katrol sumur"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q125",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Contoh benda yang termasuk sekrup adalah...",
+      "choices": [
+        "Gunting",
+        "Sekrup kayu dan tutup botol ulir",
+        "Sepeda",
+        "Jungkat-jungkit"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q126",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Contoh benda yang menggunakan sistem roda-poros adalah...",
+      "choices": [
+        "Gagang pintu putar dan setir mobil",
+        "Pisau dapur dan kapak",
+        "Paku dan jarum",
+        "Tangga dan perosotan"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q127",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Fungsi utama dari baji adalah untuk...",
+      "choices": [
+        "Mengangkat ember air",
+        "Membelah, memotong, atau memisahkan benda",
+        "Menggulung tali",
+        "Memutar jarum jam"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q128",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Fungsi utama dari sekrup adalah untuk...",
+      "choices": [
+        "Memotong kertas",
+        "Mengikat atau menyatukan dua benda dengan kuat",
+        "Mendorong gerobak",
+        "Mengungkit batu"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q129",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Cara memasang sekrup ke dalam kayu adalah dengan cara...",
+      "choices": [
+        "Dipukul dengan palu",
+        "Diputar menggunakan obeng",
+        "Ditarik dengan tali",
+        "Ditiup"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q130",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bagian batang tengah yang menghubungkan dua roda pada mobil disebut...",
+      "choices": [
+        "Baji",
+        "Poros (as roda)",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q131",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Obeng saat digunakan untuk memutar sekrup bekerja sebagai...",
+      "choices": [
+        "Katrol",
+        "Roda-poros",
+        "Baji",
+        "Bidang miring"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q132",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Tutup botol air mineral yang dibuka dengan cara diputar menggunakan prinsip...",
+      "choices": [
+        "Tuas",
+        "Sekrup",
+        "Katrol",
+        "Baji"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q133",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pahat kayu yang dipakai tukang ukir memiliki ujung tajam. Pahat termasuk jenis...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q134",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Ganjal pintu berbentuk segitiga yang diselipkan di bawah pintu agar pintu tidak menutup sendiri adalah contoh...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q135",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Jika roda diputar, maka poros di tengahnya akan ikut...",
+      "choices": [
+        "Diam saja",
+        "Berputar",
+        "Patah",
+        "Melompat"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q136",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Ritsleting (resleting) pada jaket atau tas bekerja dengan menggabungkan prinsip...",
+      "choices": [
+        "Katrol",
+        "Baji",
+        "Sekrup",
+        "Roda"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q137",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bor tangan atau mata bor untuk melubangi tembok memiliki ulir melingkar seperti...",
+      "choices": [
+        "Roda-poros",
+        "Sekrup",
+        "Katrol",
+        "Tuas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q138",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Keran air yang diputar untuk membuka dan menutup aliran air menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros dan sekrup",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q139",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat peraut pensil meja yang diputar gagangnya menggabungkan mesin sederhana...",
+      "choices": [
+        "Katrol dan tangga",
+        "Roda-poros (gagang putar) dan baji (pisau peraut)",
+        "Sekrup dan katrol",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q140",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Gunting adalah gabungan dari dua mesin sederhana, yaitu...",
+      "choices": [
+        "Katrol dan roda",
+        "Tuas (gagang) dan baji (mata pisau)",
+        "Sekrup dan poros",
+        "Roda dan tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q141",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Gerobak dorong adalah gabungan dari mesin sederhana...",
+      "choices": [
+        "Katrol dan sekrup",
+        "Tuas (gagang angkat) dan roda-poros",
+        "Baji dan sekrup",
+        "Katrol dan baji"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q142",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Dongkrak ulir yang diputar untuk mengangkat mobil menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Katrol",
+        "Roda"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q143",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Jarum jahit dan peniti memiliki ujung runcing untuk menembus kain. Keduanya adalah contoh...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q144",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pedal sepeda yang dikayuh kaki terhubung dengan roda gigi menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Sekrup",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q145",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bagian tajam pada kapak disebut...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q146",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alur melingkar pada sekrup disebut...",
+      "choices": [
+        "Roda",
+        "Ulir (drat)",
+        "Tuas",
+        "Tali"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q147",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Semakin rapat ulir pada sebuah sekrup, maka memutar sekrup akan terasa semakin...",
+      "choices": [
+        "Berat",
+        "Ringan",
+        "Sulit",
+        "Cepat lepas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q148",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Paku biasa dipasang dengan cara dipukul palu, sedangkan sekrup dipasang dengan cara...",
+      "choices": [
+        "Ditekan dengan jari",
+        "Diputar dengan obeng",
+        "Diikat dengan tali",
+        "Dilem"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q149",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mana yang lebih kuat menahan dua papan kayu agar tidak mudah lepas?",
+      "choices": [
+        "Sekrup",
+        "Paku biasa",
+        "Selotip kertas",
+        "Tali benang"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q150",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Contoh baji yang ada di mulut kita untuk mengunyah dan memotong makanan adalah...",
+      "choices": [
+        "Lidah",
+        "Gigi",
+        "Bibir",
+        "Pipi"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q151",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Kuku jari kita yang tajam bisa digunakan untuk mengupas kulit jeruk. Kuku bekerja seperti...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q152",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Kipas angin memiliki baling-baling yang berputar pada sebuah batang tengah. Ini adalah contoh...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Sekrup",
+        "Tuas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q153",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pembuka tutup gabus botol anggur berbentuk spiral tajam menggabungkan prinsip...",
+      "choices": [
+        "Katrol dan roda",
+        "Sekrup dan tuas",
+        "Baji dan roda",
+        "Katrol saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q154",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bagian roda pada sepeda terpasang pada bagian tengah yang disebut...",
+      "choices": [
+        "Baji",
+        "Poros (hub)",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q155",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mesin penggiling daging manual yang diputar tuasnya menggunakan prinsip...",
+      "choices": [
+        "Roda-poros dan sekrup",
+        "Katrol dan tangga",
+        "Baji saja",
+        "Katrol saja"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q156",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pemotong rumput (sabit/celurit) memiliki mata pisau tajam yang merupakan prinsip...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q157",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bola lampu (bohlam) dipasang ke tempatnya (fitting) dengan cara diputar karena bagian bawahnya berbentuk...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q158",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bagian ujung pensil yang sudah diraut hingga runcing berbentuk seperti...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q159",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Sekop saat digunakan untuk menggali tanah menggabungkan...",
+      "choices": [
+        "Katrol dan sekrup",
+        "Tuas (gagang) dan baji (ujung sekop)",
+        "Roda dan katrol",
+        "Sekrup saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q160",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Kunci inggris atau kunci pas yang diputar untuk mengencangkan baut bekerja seperti...",
+      "choices": [
+        "Baji",
+        "Roda-poros / tuas",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q161",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Roda pada kincir air terpasang pada batang kayu panjang di tengahnya. Batang kayu itu disebut...",
+      "choices": [
+        "Baji",
+        "Poros",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q162",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Paku paku-payung (paku mading) memiliki ujung runcing seperti...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda",
+        "Katrol"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q163",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Gergaji tangan memiliki banyak gigi kecil yang tajam. Setiap gigi gergaji adalah...",
+      "choices": [
+        "Sekrup kecil",
+        "Baji kecil",
+        "Roda kecil",
+        "Katrol kecil"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q164",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Setir kapal laut yang berbentuk roda besar dengan pegangan di sekelilingnya menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q165",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mengapa setir mobil dibuat lebih besar daripada batang porosnya?",
+      "choices": [
+        "Agar terlihat keren",
+        "Agar memutar roda mobil terasa ringan",
+        "Agar mobil bisa terbang",
+        "Agar menghalangi pandangan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q166",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Jika gagang pintu bulat (kenop) dilepas dan kita hanya memutar batang besi kecil di dalamnya, maka pintu akan terasa...",
+      "choices": [
+        "Sangat mudah dibuka",
+        "Sangat berat dan sulit diputar",
+        "Terbuka sendiri",
+        "Lebih ringan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q167",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pembuka kaleng putar menggabungkan...",
+      "choices": [
+        "Katrol dan tangga",
+        "Roda-poros (pemutar) dan baji (pisau pemotong kaleng)",
+        "Sekrup dan katrol",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q168",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Cangkul menggabungkan dua mesin sederhana yaitu...",
+      "choices": [
+        "Roda dan katrol",
+        "Tuas (gagang kayu) dan baji (mata cangkul)",
+        "Sekrup dan roda",
+        "Katrol dan sekrup"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q169",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Baling-baling pesawat terbang dan helikopter berputar mengelilingi...",
+      "choices": [
+        "Baji",
+        "Poros",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q170",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Perosotan air berbentuk spiral (melingkar ke bawah) di kolam renang mirip dengan bentuk...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda-poros",
+        "Tuas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q171",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Tangga putar (tangga spiral) di rumah yang sempit menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Sekrup (bidang miring melingkar)",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q172",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Paku ulir adalah nama lain dari...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Katrol",
+        "Roda"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q173",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Saat kita memutar keran air, bagian yang kita pegang adalah roda, dan bagian dalam yang naik-turun menutup air adalah...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Katrol",
+        "Tuas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q174",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pemecah es batu yang ujungnya runcing bekerja menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q175",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mobil mainan memiliki roda yang dihubungkan oleh batang besi. Batang besi itu disebut...",
+      "choices": [
+        "Sekrup",
+        "Poros",
+        "Baji",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q176",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Jika poros pada roda sepeda berkarat dan macet, maka roda sepeda akan...",
+      "choices": [
+        "Berputar sangat cepat",
+        "Sulit berputar",
+        "Lepas",
+        "Menjadi ringan"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q177",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mesin jahit modern maupun kuno memiliki jarum yang runcing. Jarum itu menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q178",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat untuk mengencangkan senar gitar (tuning peg) diputar menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros dan sekrup",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q179",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Penggiling lada atau garam meja yang diputar bagian atasnya menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q180",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pisau cukur memiliki mata pisau sangat tipis yang merupakan prinsip...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q181",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Menggabungkan dua atau lebih mesin sederhana dalam satu alat disebut...",
+      "choices": [
+        "Mesin rusak",
+        "Mesin majemuk (kompleks)",
+        "Mesin mainan",
+        "Mesin tunggal"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q182",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Sepeda adalah contoh mesin majemuk karena menggabungkan...",
+      "choices": [
+        "Baji dan sekrup",
+        "Roda-poros, tuas (rem/pedal), dan katrol (rantai-gir)",
+        "Tangga dan pisau",
+        "Baji saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q183",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mobil derek menggabungkan mesin sederhana berupa...",
+      "choices": [
+        "Baji dan sekrup",
+        "Roda-poros dan katrol",
+        "Pisau dan gunting",
+        "Tangga dan tuas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q184",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pemotong kuku menggabungkan mesin sederhana...",
+      "choices": [
+        "Roda dan katrol",
+        "Tuas (gagang penekan) dan baji (ujung pemotong)",
+        "Sekrup dan roda",
+        "Katrol dan tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q185",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Kapak untuk membelah kayu adalah gabungan dari...",
+      "choices": [
+        "Roda dan katrol",
+        "Tuas (gagang kapak) dan baji (kepala kapak yang tajam)",
+        "Sekrup dan roda",
+        "Katrol saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q186",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pembuka kaleng manual yang ditekan-tekan menggabungkan...",
+      "choices": [
+        "Roda dan sekrup",
+        "Tuas dan baji",
+        "Katrol dan tangga",
+        "Roda saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q187",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Stempel tanggal yang diputar angkanya menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q188",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pembuka botol anggur bersayap (wing corkscrew) menggabungkan...",
+      "choices": [
+        "Roda dan tangga",
+        "Sekrup (spiral tengah) dan tuas (dua sayap di samping)",
+        "Katrol dan baji",
+        "Roda saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q189",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mixer listrik untuk membuat kue memiliki pengocok yang berputar pada...",
+      "choices": [
+        "Baji",
+        "Poros",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q190",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Blender buah memiliki pisau tajam yang berputar. Alat ini menggabungkan...",
+      "choices": [
+        "Katrol dan tangga",
+        "Roda-poros (pemutar) dan baji (pisau blender)",
+        "Sekrup dan katrol",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q191",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Ragum (catok penjepit benda kerja di bengkel) diputar tuasnya untuk menjepit besi. Ragum menggabungkan...",
+      "choices": [
+        "Baji dan katrol",
+        "Tuas/roda-poros dan sekrup",
+        "Roda dan tangga",
+        "Katrol saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q192",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Garpu taman untuk menggemburkan tanah menggabungkan...",
+      "choices": [
+        "Roda dan katrol",
+        "Tuas (gagang) dan baji (ujung garpu yang runcing)",
+        "Sekrup dan roda",
+        "Katrol saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q193",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pemutar kaset atau CD di pemutar musik berputar pada...",
+      "choices": [
+        "Baji",
+        "Poros",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q194",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Ujung tombak atau anak panah dibuat runcing agar menancap ke sasaran menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q195",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Kancing jepret atau peniti menggunakan ujung tajam yang merupakan prinsip...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q196",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pemeras jeruk manual yang diputar bagian atasnya menggunakan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda-poros dan baji (gerigi pemeras)",
+        "Tangga",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q197",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Timba sumur modern yang memakai engkol putar (katrol timba berengkol) menggabungkan...",
+      "choices": [
+        "Baji dan sekrup",
+        "Katrol dan roda-poros (engkol)",
+        "Tangga dan pisau",
+        "Baji saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q198",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pengepres sampah atau pembuat jus apel manual dengan batang ulir besar di tengah menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros dan sekrup",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q199",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Kipas angin tangan yang dilipat memiliki titik putar di bagian bawah yang berfungsi sebagai...",
+      "choices": [
+        "Sekrup",
+        "Poros (engsel)",
+        "Baji",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q200",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pintu rumah kita bisa dibuka dan ditutup dengan mudah karena dipasang pada...",
+      "choices": [
+        "Katrol",
+        "Engsel (poros putar)",
+        "Sekrup besar",
+        "Roda mobil"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q201",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Benda yang memiliki dua permukaan miring yang menyatu disebut...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q202",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Baji berbeda dengan bidang miring biasa karena baji...",
+      "choices": [
+        "Diam di tempat",
+        "Bergerak masuk untuk membelah atau memisahkan benda",
+        "Berbentuk bulat",
+        "Menggunakan tali"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q203",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Sekrup bekerja dengan mengubah gerakan memutar menjadi gerakan...",
+      "choices": [
+        "Melompat",
+        "Maju atau mundur (lurus)",
+        "Terbang",
+        "Diam"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q204",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Saat kita memutar sekrup ke kanan (searah jarum jam), sekrup biasanya akan bergerak...",
+      "choices": [
+        "Keluar (mundur)",
+        "Masuk lebih dalam (maju)",
+        "Patah",
+        "Berhenti"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q205",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Saat kita memutar sekrup ke kiri (berlawanan arah jarum jam), sekrup biasanya akan bergerak...",
+      "choices": [
+        "Masuk lebih dalam",
+        "Keluar (lepas)",
+        "Bengkok",
+        "Diam"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q206",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Roda-poros memudahkan kita karena tenaga kecil pada roda besar menghasilkan tenaga besar pada...",
+      "choices": [
+        "Tali",
+        "Poros yang kecil",
+        "Tanah",
+        "Udara"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q207",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pemotong kue (pisau kue) menggunakan prinsip...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q208",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Kursi putar di salon yang bisa naik turun saat diputar menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Sekrup dan roda-poros",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q209",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Penutup toples selai yang diputar untuk membukanya adalah contoh...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Katrol",
+        "Roda-poros"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q210",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Haluan (bagian depan) kapal laut dibuat lancip seperti baji agar...",
+      "choices": [
+        "Kapal terlihat cantik",
+        "Mudah membelah air laut saat melaju",
+        "Kapal mudah tenggelam",
+        "Ikan takut mendekat"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q211",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Moncong pesawat terbang dibuat runcing seperti baji agar...",
+      "choices": [
+        "Mudah membelah udara saat terbang",
+        "Mudah mendarat di air",
+        "Bisa membawa banyak barang",
+        "Tidak kehujanan"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q212",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pengupas kentang atau wortel menggabungkan...",
+      "choices": [
+        "Katrol dan roda",
+        "Tuas (gagang) dan baji (pisau kecil)",
+        "Sekrup dan katrol",
+        "Roda saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q213",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Paku keling atau paku kayu membelah serat kayu saat dipukul masuk karena ujungnya berbentuk...",
+      "choices": [
+        "Roda",
+        "Baji",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q214",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Roda pada alat pemintal benang tradisional bekerja menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q215",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mesin bor listrik menggabungkan...",
+      "choices": [
+        "Katrol dan tangga",
+        "Roda-poros (motor pemutar) dan sekrup (mata bor)",
+        "Baji dan katrol",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q216",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Gerobak sapi menggunakan roda kayu besar yang berputar pada...",
+      "choices": [
+        "Sekrup",
+        "Poros kayu/besi",
+        "Baji",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q217",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pemotong kertas putar (rotary cutter) yang biasa dipakai penjahit menggabungkan...",
+      "choices": [
+        "Katrol dan tangga",
+        "Roda-poros dan baji (pisau bulat)",
+        "Sekrup dan katrol",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q218",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Sendok makan saat dipakai memotong agar-agar atau puding bekerja sebagai...",
+      "choices": [
+        "Sekrup",
+        "Baji dan tuas",
+        "Katrol",
+        "Roda-poros"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q219",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Kunci pintu rumah yang dimasukkan ke lubang kunci lalu diputar menggunakan prinsip...",
+      "choices": [
+        "Katrol",
+        "Roda-poros (saat diputar)",
+        "Tangga",
+        "Baji saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q220",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Benda berikut yang BUKAN contoh baji adalah...",
+      "choices": [
+        "Kapak",
+        "Pisau",
+        "Bola basket",
+        "Pahat"
+      ],
+      "correct_index": 2
+    },
+    {
+      "id": "s2_q221",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Benda berikut yang BUKAN contoh sekrup adalah...",
+      "choices": [
+        "Baut",
+        "Tutup botol ulir",
+        "Mata bor",
+        "Gunting"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q222",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Benda berikut yang BUKAN contoh roda-poros adalah...",
+      "choices": [
+        "Setir mobil",
+        "Gagang pintu bulat",
+        "Pedal sepeda",
+        "Pisau dapur"
+      ],
+      "correct_index": 3
+    },
+    {
+      "id": "s2_q223",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Jika sebuah baji ujungnya tumpul (tidak tajam), maka membelah kayu akan terasa...",
+      "choices": [
+        "Sangat mudah",
+        "Sangat sulit dan berat",
+        "Cepat selesai",
+        "Ringan sekali"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q224",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Fungsi utama menggabungkan beberapa mesin sederhana menjadi satu alat adalah...",
+      "choices": [
+        "Membuat alat menjadi mahal",
+        "Membuat pekerjaan jauh lebih efektif, cepat, dan ringan",
+        "Membuat alat menjadi berat",
+        "Mempersulit pemakaian"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q225",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mesin pemotong rumput dorong menggabungkan mesin sederhana...",
+      "choices": [
+        "Sekrup dan katrol",
+        "Roda-poros (roda dorong & pemutar pisau) serta baji (pisau pemotong)",
+        "Katrol dan tangga",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q226",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat penggiling kopi manual yang diputar di bagian atasnya menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q227",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Paku sekrup yang digunakan untuk memasang lukisan di tembok memiliki kepala beralur agar bisa diputar dengan...",
+      "choices": [
+        "Palu",
+        "Obeng",
+        "Gunting",
+        "Tang"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q228",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bagian tajam pada alat pembuka surat (letter opener) adalah contoh...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q229",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Roda Ferris (bianglala) di taman hiburan berputar pada satu titik tengah yang besar yang disebut...",
+      "choices": [
+        "Baji",
+        "Poros",
+        "Sekrup",
+        "Tuas"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q230",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat penggulung selang air yang diputar dengan engkol menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Sekrup",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q231",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pahat es dan kapak pendaki gunung memiliki ujung tajam yang termasuk...",
+      "choices": [
+        "Sekrup",
+        "Baji",
+        "Roda-poros",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q232",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Lipstik atau lem stik (glue stick) yang diputar bagian bawahnya agar isinya naik ke atas menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q233",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Penutup tangki bensin mobil yang diputar hingga berbunyi \"klik\" menggunakan prinsip...",
+      "choices": [
+        "Baji",
+        "Sekrup",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q234",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Roda pada troli bandara terpasang pada poros agar roda bisa...",
+      "choices": [
+        "Diam di tempat",
+        "Berputar dengan lancar",
+        "Patah",
+        "Terbang"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q235",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Alat pemotong pizza menggabungkan prinsip...",
+      "choices": [
+        "Sekrup dan katrol",
+        "Tuas (gagang), roda-poros (roda pisau), dan baji (pinggiran tajam)",
+        "Tangga dan katrol",
+        "Sekrup saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q236",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Gergaji mesin (chainsaw) menggabungkan...",
+      "choices": [
+        "Katrol dan tangga",
+        "Roda-poros (penggerak rantai) dan baji (gigi-gigi tajam rantai)",
+        "Sekrup dan tangga",
+        "Tuas saja"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q237",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Pemutar keran air berbentuk palang atau bulat memudahkan tangan kita karena bekerja sebagai...",
+      "choices": [
+        "Baji",
+        "Roda-poros",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q238",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Saat menggunakan obeng, bagian gagang obeng yang besar dipegang tangan berfungsi sebagai...",
+      "choices": [
+        "Baji",
+        "Roda",
+        "Sekrup",
+        "Katrol"
+      ],
+      "correct_index": 1
+    },
+    {
+      "id": "s2_q239",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Bagian batang besi obeng yang panjang dan memutar sekrup berfungsi sebagai...",
+      "choices": [
+        "Poros",
+        "Baji",
+        "Katrol",
+        "Tangga"
+      ],
+      "correct_index": 0
+    },
+    {
+      "id": "s2_q240",
+      "semester": 2,
+      "topic": "machine",
+      "prompt": "Mempelajari baji, sekrup, dan roda-poros membantu kita memahami cara kerja benda-benda di sekitar agar kita bisa menggunakannya dengan...",
+      "choices": [
+        "Sembarangan",
+        "Tepat, aman, dan bermanfaat",
+        "Kasar dan merusak",
+        "Malas"
+      ],
+      "correct_index": 1
+    }
+  ]
+}

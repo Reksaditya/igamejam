@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/academic/progression_rules.gd" id="1_rules"]
+
+[resource]
+script = ExtResource("1_rules")
+semester_blueprint_ids = PackedStringArray("core_drive", "sediment_sorter", "sieve_shaker", "core_centrifuge")
+semester_blueprint_days = PackedInt32Array(1, 7, 1, 7)
+semester_blueprint_deadlines = PackedInt32Array(6, 12, 6, 12)
+one_missing_minutes = 60
+two_missing_minutes = 120
