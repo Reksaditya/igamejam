@@ -82,14 +82,14 @@ func _run() -> void:
 	actor.position.x = 700.0
 	await _frames(5)
 	assert(classroom.get_node("Seat/Prompt").visible)
-	var standing_legs: PackedVector2Array = actor.get_node("Visual/Legs").polygon
+	assert(actor.get_node("Visual/AnimatedSprite2D").is_playing())
 	seed(1234)
 	_press(KEY_E)
 	await _frames(2)
 	var lesson: CanvasLayer = classroom._lesson
 	assert(is_instance_valid(lesson))
 	assert(actor.is_studying())
-	assert(actor.get_node("Visual/Legs").polygon != standing_legs)
+	assert(not actor.get_node("Visual/AnimatedSprite2D").is_playing())
 	assert(not paused)
 	assert(not lesson.get_node("Screen").visible)
 	assert(not lesson.get_node("Qte").visible)
@@ -131,7 +131,7 @@ func _run() -> void:
 	await _frames(2)
 	assert(not paused)
 	assert(not actor.is_studying())
-	assert(actor.get_node("Visual/Legs").polygon == standing_legs)
+	assert(actor.get_node("Visual/AnimatedSprite2D").is_playing())
 	assert(not classroom.get_node("Seat").available)
 	classroom._open_lesson()
 	assert(not is_instance_valid(classroom._lesson))

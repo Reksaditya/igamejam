@@ -4,7 +4,7 @@ const SAVE_PATH := "user://game_save.cfg"
 const INITIAL_SCENE := "res://scenes/movement/top_down_movement.tscn"
 const DESKTOP_SCENE := "res://scenes/interaction/desktop/desktop.tscn"
 const WORLD_SCENES := [INITIAL_SCENE, "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn"]
-const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg"]
+const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg"]
 
 var last_save_error: Error = OK
 var _enabled: bool = false
@@ -24,6 +24,8 @@ func _ready() -> void:
 	get_tree().scene_changed.connect(_on_scene_changed)
 	ClassroomProgress.changed.connect(request_autosave)
 	BlueprintProgress.changed.connect(request_autosave)
+	PlayerStats.changed.connect(request_autosave)
+	PlayerJournal.changed.connect(request_autosave)
 
 
 func _process(delta: float) -> void:
@@ -104,7 +106,10 @@ func save_now() -> Error:
 	return last_save_error
 
 
-func start_new_game() -> Error:
+func start_new_game(player_name: String = "Yohan") -> Error:
+	if player_name.strip_edges().is_empty():
+		return ERR_INVALID_PARAMETER
+	var stats := PlayerStats.make_new_state(player_name)
 	_busy = true
 	var previous_scene := _resume_scene
 	var previous_world := _world_scene
@@ -115,7 +120,7 @@ func start_new_game() -> Error:
 	_position = Vector2(320, 592)
 	_facing = 1.0
 	var clock := {"minutes": 0, "remainder": 0}
-	var snapshot := _make_snapshot(clock, {})
+	var snapshot := _make_snapshot(clock, {}, stats)
 	var error := _replace_files({"game_save.cfg": snapshot.encode_to_text()}, true)
 	if error != OK:
 		_resume_scene = previous_scene
@@ -126,6 +131,8 @@ func start_new_game() -> Error:
 		return error
 	ClassroomProgress.reload_progress()
 	BlueprintProgress.reload_progress()
+	PlayerJournal.reload_progress()
+	PlayerStats.restore_save_state(stats)
 	GameClock.restore_save_state(clock)
 	_clear_spawn()
 	_restore_position = true
@@ -163,6 +170,11 @@ func load_game(allow_legacy: bool = false) -> Error:
 	_facing = snapshot.get_value("world", "facing", 1.0)
 	ClassroomProgress.reload_progress()
 	BlueprintProgress.reload_progress()
+	PlayerJournal.reload_progress()
+	var stats := PlayerStats.DEFAULTS.duplicate()
+	for key: String in stats:
+		stats[key] = snapshot.get_value("profile", key, stats[key])
+	PlayerStats.restore_save_state(stats)
 	GameClock.restore_save_state({"minutes": snapshot.get_value("clock", "minutes"), "remainder": snapshot.get_value("clock", "remainder", 0)})
 	_clear_spawn()
 	_restore_position = _resume_scene in WORLD_SCENES
@@ -177,9 +189,12 @@ func _clear_spawn() -> void:
 		get_tree().remove_meta(&"side_scroller_spawn")
 
 
-func _make_snapshot(clock: Dictionary, files: Dictionary) -> ConfigFile:
+func _make_snapshot(clock: Dictionary, files: Dictionary, stats: Dictionary = {}) -> ConfigFile:
 	var snapshot := ConfigFile.new()
-	snapshot.set_value("save", "version", 1)
+	snapshot.set_value("save", "version", 2)
+	var profile := PlayerStats.get_save_state() if stats.is_empty() else stats
+	for key: String in profile:
+		snapshot.set_value("profile", key, profile[key])
 	snapshot.set_value("world", "scene", _resume_scene)
 	snapshot.set_value("world", "world_scene", _world_scene)
 	snapshot.set_value("world", "position", _position)
@@ -193,7 +208,7 @@ func _make_snapshot(clock: Dictionary, files: Dictionary) -> ConfigFile:
 
 func _read_snapshot() -> ConfigFile:
 	var snapshot := ConfigFile.new()
-	if snapshot.load(SAVE_PATH) != OK or snapshot.get_value("save", "version", 0) != 1:
+	if snapshot.load(SAVE_PATH) != OK or snapshot.get_value("save", "version", 0) not in [1, 2]:
 		return null
 	var scene: Variant = snapshot.get_value("world", "scene", "")
 	var world: Variant = snapshot.get_value("world", "world_scene", "")

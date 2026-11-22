@@ -36,8 +36,9 @@ func _run() -> void:
 	await _cross_exit(false, LAB, 1800.0)
 	await _cross_exit(true, COURTYARD, 120.0)
 	assert(root.get_node("GameClock") == clock)
-	var button := current_scene.get_node("DesktopAccess/OpenDesktop") as Button
-	button._pressed()
+	assert(not current_scene.has_node("DesktopAccess"))
+	assert(current_scene.get_node("PlayerProfile")._hud_clock.text == clock.get_formatted_time())
+	change_scene_to_file("res://scenes/interaction/desktop/desktop.tscn")
 	await scene_changed
 	await _wait_transition()
 	assert(current_scene.scene_file_path == "res://scenes/interaction/desktop/desktop.tscn")
@@ -92,7 +93,7 @@ func _run() -> void:
 		await scene_changed
 		await _wait_transition()
 		assert(current_scene.scene_file_path == room)
-	print("PASS: E and bubble interaction, both building interiors, exit and return positions, W inactive, walking, portals, desktop button")
+	print("PASS: E and bubble interaction, both building interiors, exit and return positions, W inactive, walking, portals, world clock, removed desktop button")
 	quit()
 
 

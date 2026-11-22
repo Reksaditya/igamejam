@@ -20,12 +20,12 @@ var _remaining: float = 0.0
 var _was_paused: bool = false
 var _owns_pause: bool = false
 var _popup: Window
-var _desktop_button: Button
-var _desktop_was_disabled: bool = false
 var _save_error: bool = false
+var _class_week: int = 1
 
 
 func _ready() -> void:
+	_class_week = GameClock.get_week()
 	_popup = BLUEPRINT_SCENE.instantiate()
 	add_child(_popup)
 	%Close.pressed.connect(_close)
@@ -40,10 +40,6 @@ func _ready() -> void:
 	if not is_instance_valid(player):
 		_close()
 		return
-	_desktop_button = player.get_parent().get_node_or_null("DesktopAccess/OpenDesktop") as Button
-	if _desktop_button != null:
-		_desktop_was_disabled = _desktop_button.disabled
-		_desktop_button.disabled = true
 	player.position = seat_position
 	player.set_studying(true)
 	player.get_node("Camera2D").reset_smoothing()
@@ -130,6 +126,8 @@ func _show_notes() -> void:
 	_owns_pause = true
 	get_tree().paused = true
 	var finished := ClassroomProgress.is_class_finished()
+	if finished and not notes_only and PlayerJournal.record_classroom(_class_week) != OK:
+		_save_error = true
 	%Heading.text = "Catatan akhir kelas" if finished else "Sesi pembelajaran terhenti"
 	%Week.text = "Minggu %d · Hari %d" % [GameClock.get_week(), GameClock.get_day()]
 	var complete := ClassroomProgress.is_complete()
@@ -156,8 +154,6 @@ func _open_blueprint() -> void:
 func _restore_player() -> void:
 	if is_instance_valid(player):
 		player.set_studying(false)
-	if is_instance_valid(_desktop_button):
-		_desktop_button.disabled = _desktop_was_disabled
 
 
 func _close() -> void:
