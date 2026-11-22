@@ -16,6 +16,8 @@ const FAN_AMBIENT_BASE_PATH := "res://assets/audio/sfx/desktop_pc_fan"
 const AUDIO_EXTENSIONS: PackedStringArray = [".ogg", ".mp3", ".wav"]
 const FAN_SILENT_DB := -40.0
 const FAN_FADE_OUT_SECONDS := 0.35
+const TUTORIAL_ID := "desktop_intro"
+const TUTORIAL_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
 
 @export_group("Wallpaper")
 @export var wallpaper_texture: Texture2D:
@@ -43,6 +45,8 @@ var _click_players: Array[AudioStreamPlayer] = []
 var _click_pool_index := 0
 var _fan_tween: Tween
 var _sanity_blur: ColorRect
+var _tutorial_layer: CanvasLayer
+var _tutorial_button: Button
 
 @export_group("Login")
 @export var login_scene: PackedScene
@@ -229,6 +233,7 @@ func _finish_boot() -> void:
 	_boot_cover.hide()
 	if not is_instance_valid(_login):
 		_focus_launcher(null)
+		_maybe_show_desktop_tutorial()
 
 
 func _input(event: InputEvent) -> void:
@@ -236,6 +241,13 @@ func _input(event: InputEvent) -> void:
 		return
 	if _boot_cover.visible:
 		get_viewport().set_input_as_handled()
+		return
+	if is_tutorial_visible():
+		if event is InputEventKey and event.pressed and not event.echo:
+			var key_ev := event as InputEventKey
+			if key_ev.keycode == KEY_ESCAPE or key_ev.keycode == KEY_ENTER or key_ev.keycode == KEY_KP_ENTER:
+				dismiss_tutorial()
+				get_viewport().set_input_as_handled()
 		return
 	if not _turning_off and event is InputEventMouseButton:
 		var mouse_button := event as InputEventMouseButton
@@ -431,6 +443,108 @@ func _unlock_desktop() -> void:
 	_windows.show()
 	$Display/Taskbar.show()
 	_focus_launcher(null)
+	_maybe_show_desktop_tutorial()
+
+
+func is_tutorial_visible() -> bool:
+	return is_instance_valid(_tutorial_layer) and _tutorial_layer.visible
+
+
+func dismiss_tutorial() -> void:
+	GameSettings.mark_tutorial_seen(TUTORIAL_ID)
+	if is_instance_valid(_tutorial_layer):
+		_tutorial_layer.queue_free()
+		_tutorial_layer = null
+		_tutorial_button = null
+	_focus_launcher(null)
+
+
+func _maybe_show_desktop_tutorial() -> void:
+	if Engine.is_editor_hint() or is_instance_valid(_tutorial_layer):
+		return
+	if GameSettings.has_seen_tutorial(TUTORIAL_ID):
+		return
+	_tutorial_layer = CanvasLayer.new()
+	_tutorial_layer.name = &"DesktopTutorialOverlay"
+	_tutorial_layer.layer = 20
+	add_child(_tutorial_layer)
+
+	var backdrop := ColorRect.new()
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.color = Color(0.03, 0.06, 0.11, 0.56)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	_tutorial_layer.add_child(backdrop)
+
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_tutorial_layer.add_child(center)
+
+	var card := PanelContainer.new()
+	card.custom_minimum_size = Vector2(460.0, 0.0)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("#111d2cf5")
+	style.border_color = Color("#d8b674")
+	style.border_width_left = 4
+	style.border_width_top = 2
+	style.border_width_right = 2
+	style.border_width_bottom = 2
+	style.set_corner_radius_all(10)
+	style.content_margin_left = 22
+	style.content_margin_right = 22
+	style.content_margin_top = 18
+	style.content_margin_bottom = 18
+	card.add_theme_stylebox_override("panel", style)
+	center.add_child(card)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 10)
+	card.add_child(vbox)
+
+	var badge := Label.new()
+	badge.text = "PANDUAN PERTAMA · DESKTOP KAMPUS"
+	badge.add_theme_font_override("font", TUTORIAL_FONT)
+	badge.add_theme_font_size_override("font_size", 13)
+	badge.add_theme_color_override("font_color", Color("#ffd277"))
+	vbox.add_child(badge)
+
+	var title := Label.new()
+	title.text = "Selamat Datang di PC Mahasiswa"
+	title.add_theme_font_override("font", TUTORIAL_FONT)
+	title.add_theme_font_size_override("font_size", 20)
+	title.add_theme_color_override("font_color", Color("#f8fafc"))
+	vbox.add_child(title)
+
+	var body := Label.new()
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.custom_minimum_size = Vector2(416.0, 0.0)
+	body.add_theme_font_size_override("font_size", 14)
+	body.add_theme_color_override("font_color", Color("#d7e4ef"))
+	body.text = "1. Word Explorer — Buka LMS untuk Tugas & Kuis, serta Perpustakaan untuk mengejar catatan kelas yang terlewat dan mengunduh Blueprint.\n\n2. Project — Pantau Blueprint Midterm (15%) dan Final (15%) beserta tenggat pengumpulannya sebelum dirakit di Lab.\n\n3. Ikon Power (kanan bawah) — Simpan progres otomatis dan kembali ke kamar."
+	vbox.add_child(body)
+
+	var footer := HBoxContainer.new()
+	footer.alignment = BoxContainer.ALIGNMENT_END
+	footer.add_theme_constant_override("separation", 10)
+	vbox.add_child(footer)
+
+	var hint := Label.new()
+	hint.text = "Enter / Esc untuk menutup"
+	hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hint.add_theme_font_size_override("font_size", 12)
+	hint.add_theme_color_override("font_color", Color("#8fa7ba"))
+	footer.add_child(hint)
+
+	_tutorial_button = Button.new()
+	_tutorial_button.name = &"DismissButton"
+	_tutorial_button.text = "Mengerti"
+	_tutorial_button.custom_minimum_size = Vector2(116.0, 34.0)
+	_tutorial_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_tutorial_button.add_theme_font_override("font", TUTORIAL_FONT)
+	_tutorial_button.add_theme_font_size_override("font_size", 14)
+	_tutorial_button.pressed.connect(dismiss_tutorial)
+	footer.add_child(_tutorial_button)
+	_tutorial_button.grab_focus.call_deferred()
 
 
 func _release_launcher(launcher: Launcher) -> void:

@@ -1,10 +1,12 @@
 extends Node
 
 const SAVE_PATH := "user://settings.cfg"
+const TUTORIALS_PATH := "user://tutorials.cfg"
 const RESOLUTIONS: Array[Vector2i] = [Vector2i(960, 540), Vector2i(1152, 648), Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080)]
 
 var master_volume: float = 0.8
 var resolution_index: int = 2
+var _tutorials: Dictionary[String, bool] = {}
 
 
 func _ready() -> void:
@@ -16,7 +18,46 @@ func _ready() -> void:
 			master_volume = clampf(volume, 0.0, 1.0)
 		if resolution is int and resolution >= 0 and resolution < RESOLUTIONS.size():
 			resolution_index = resolution
+	reload_tutorials()
 	_apply.call_deferred()
+
+
+func reload_tutorials() -> void:
+	_tutorials.clear()
+	var cfg := ConfigFile.new()
+	if cfg.load(TUTORIALS_PATH) == OK and cfg.has_section("seen"):
+		for key: String in cfg.get_section_keys("seen"):
+			_tutorials[key] = cfg.get_value("seen", key, false) == true
+
+
+func has_seen_tutorial(id: String) -> bool:
+	if id.is_empty():
+		return true
+	return _tutorials.get(id, false)
+
+
+func mark_tutorial_seen(id: String) -> Error:
+	if id.is_empty():
+		return ERR_INVALID_PARAMETER
+	if _tutorials.get(id, false):
+		return OK
+	_tutorials[id] = true
+	return _save_tutorials()
+
+
+func reset_tutorials() -> Error:
+	_tutorials.clear()
+	return _save_tutorials()
+
+
+func _save_tutorials() -> Error:
+	var cfg := ConfigFile.new()
+	for key: String in _tutorials:
+		cfg.set_value("seen", key, _tutorials[key])
+	var error := cfg.save(TUTORIALS_PATH + ".tmp")
+	if error == OK:
+		error = DirAccess.rename_absolute(TUTORIALS_PATH + ".tmp", TUTORIALS_PATH)
+	return error
 
 
 func preview_volume(volume: float) -> void:
