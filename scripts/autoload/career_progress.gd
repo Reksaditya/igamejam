@@ -143,6 +143,8 @@ func blueprint_ready(term: int) -> bool:
 func assemble_component(term: int, component: int) -> Error:
 	if not blueprint_ready(term):
 		return ERR_UNAUTHORIZED
+	if term == 8 and not state.flags.has("final_design"):
+		return ERR_UNAUTHORIZED
 	var assembled: Array = state.assembled.get(str(term), []).duplicate()
 	if component != assembled.size() or component >= 6:
 		return ERR_INVALID_PARAMETER
@@ -179,7 +181,25 @@ func record_result(term: int, study_week: int, kind: String, score: float) -> Er
 func submit_project(term: int) -> Error:
 	if state.assembled.get(str(term), []).size() != 6:
 		return ERR_UNAUTHORIZED
-	return record_result(term, 16, "project", 100.0)
+	var failures: int = int(state.flags.get("project_failures_%d" % term, 0))
+	return record_result(term, 16, "project", 100.0 - minf(40, failures * 5.0))
+
+
+func record_project_failure(term: int) -> Error:
+	var previous := state.duplicate(true)
+	var key := "project_failures_%d" % term
+	state.flags[key] = int(state.flags.get(key, 0)) + 1
+	return _save(previous)
+
+
+func set_final_design(values: Array[String]) -> Error:
+	if values.size() != 3 or values[0] not in ["Engkol", "Cam", "Roda gigi"] or values[1] not in ["Sensor", "Saklar"] or values[2] not in ["Baterai", "Baterai dan saklar"]:
+		return ERR_INVALID_PARAMETER
+	if state.flags.has("final_design"):
+		return ERR_ALREADY_EXISTS
+	var previous := state.duplicate(true)
+	state.flags.final_design = values
+	return _save(previous)
 
 
 func semester_grade(term: int) -> float:

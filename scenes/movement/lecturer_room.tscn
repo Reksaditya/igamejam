@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/movement/campus_classroom.tscn" id="1"]
+
+[node name="LecturerRoom" instance=ExtResource("1")]
+world_title = "RUANG DOSEN"
+
+[node name="Door" parent="."]
+destination = "res://scenes/movement/top_down_movement.tscn"
+destination_spawn = &"LecturerSpawn"
+
+[node name="ClassActivity" parent="."]
+classroom_enabled = false

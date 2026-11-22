@@ -18,6 +18,14 @@ Validasi: academic_flow_smoke memeriksa alur kelas, kegagalan catatan, larangan 
 
 ## Tahap berikutnya
 
+## Tahap 4: bengkel dan pengumpulan proyek
+
+Meja bengkel dapat diakses dengan E di ruang laboratorium. Tiap semester memiliki enam komponen sesuai kurikulum. Pemain mengambil komponen yang diminta objective, memasangnya pada dudukan, lalu menyelesaikan QTE. Komponen yang salah ditolak; QTE gagal mengembalikan komponen ke rak. Blueprint sembilan bagian harus lengkap sebelum perakitan. Progres enam komponen dan kegagalan sambungan disimpan. Preview mesin menampilkan dudukan dan komponen yang sudah dipasang.
+
+Pada semester delapan pemain memilih mekanisme, masukan, dan sumber energi dari komponen terdahulu. Pilihan rancangan disimpan dan memengaruhi daftar komponen proyek akhir. Ruang dosen memiliki pintu dari halaman kampus; dosen menerima mesin lengkap dan memberikan nilai 100 dikurangi lima per kegagalan QTE (pengurangan maksimum 40). Pengumpulan hanya sekali dan memperbarui IPK serta riwayat LMS.
+
+Validasi: workshop_flow_smoke memeriksa kunci blueprint, pengambilan komponen, QTE gagal/berhasil, enam tahap perakitan, nilai 95 setelah satu kegagalan, penolakan pengumpulan ganda, rancangan semester delapan, dan persistensi proyek akhir.
+
 ## Tahap 3: asrama dan aplikasi komputer
 
 Asrama memiliki eksterior, lantai 1, lantai 2, dan kamar 210 dengan tempat tidur serta meja komputer. Interaksi E memakai area fisik, bukan tombol desktop di HUD. Mematikan komputer kembali ke kamar melalui fade. Library menampilkan materi kelas yang selesai atau minggu yang terlewat; keyword yang benar memulihkan catatan dan memberikan potongan. Project menampilkan siluet 3×3, potongan yang dimiliki, dan penempatan yang memeriksa kecocokan. Blocks diadaptasi dari implementasi origin/main dengan penempatan, pembersihan garis, skor, dan kondisi kehabisan langkah. Waktu normal tetap berjalan pada komputer.
@@ -26,5 +34,4 @@ Tidur delapan jam memulihkan energi dengan penalti terlambat, sedangkan istiraha
 
 Validasi: dorm_study_smoke menguji penalti tidur pukul 23.00, pemulihan melalui sembilan bacaan, kecocokan puzzle, empat lokasi asrama, interaksi komputer, penempatan Blocks, kembali dari desktop, dan pemuatan kembali progres.
 
-4. Bengkel, QTE perakitan, pengumpulan proyek, dan penilaian dosen.
 5. Energi/kewarasan, satpam, NPC, cerita, tiga ending, dan pemeriksaan integrasi.

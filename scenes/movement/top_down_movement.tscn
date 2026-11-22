@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/movement/door_interaction.tscn" id="6_door"]
 [ext_resource type="SpriteFrames" path="res://scenes/movement/mc_idle_frames.tres" id="7_idle"]
 [ext_resource type="PackedScene" path="res://scenes/ui/player_profile.tscn" id="8_profile"]
+[ext_resource type="Script" path="res://scripts/movement/world_features.gd" id="9_features"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
 radius = 21.0
@@ -26,6 +27,12 @@ right_destination = "res://scenes/movement/campus_lab.tscn"
 script = ExtResource("5_background")
 
 [node name="PlayerProfile" parent="." instance=ExtResource("8_profile")]
+
+[node name="WorldFeatures" type="Node2D" parent="."]
+script = ExtResource("9_features")
+
+[node name="LecturerSpawn" type="Marker2D" parent="."]
+position = Vector2(1470, 592)
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2(960, 670)
