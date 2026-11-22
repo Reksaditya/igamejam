@@ -612,6 +612,15 @@ const COURSES := [
 ]
 const WEEK_COUNT := 16
 const SEMESTER_COUNT := 8
+const PRACTICE := [
+	["Apa yang dilakukan sebelum merakit bagian mesin?", "Mematikan sumber energi", "Menaikkan kecepatan", "Melepas pelindung saat mesin hidup", "Menambah beban"],
+	["Dasar memilih komponen untuk rancangan adalah?", "Fungsi dan batasan kebutuhan", "Warna saja", "Ukuran terbesar selalu", "Nama terpanjang"],
+	["Hasil pengukuran yang dapat dibandingkan harus mencantumkan?", "Nilai dan satuan", "Warna meja", "Nama ruangan saja", "Nomor halaman saja"],
+	["Hasil uji mesin dibandingkan dengan?", "Tujuan rancangan", "Warna sepatu", "Nama berkas saja", "Jumlah huruf"],
+	["Kesimpulan eksperimen yang baik berdasarkan?", "Data pengamatan", "Tebakan tanpa bukti", "Warna favorit", "Suara paling keras"],
+	["Perubahan rancangan sebaiknya?", "Dicatat dan diuji ulang", "Disembunyikan", "Tidak diperiksa", "Dianggap selalu benar"],
+	["Kapan mesin siap dinyatakan berfungsi?", "Setelah fungsi dan keselamatannya diuji", "Setelah diberi nama", "Sebelum dirakit", "Ketika bahannya belum tersedia"]
+]
 
 
 static func semester_at(absolute_week: int) -> int:
@@ -635,15 +644,20 @@ static func lesson(semester: int, week: int) -> Dictionary:
 static func questions(semester: int, week: int, kind: String) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	var count := 7 if kind in ["uts", "uas"] else unit_index(week) + 1
-	for index: int in 10:
-		var unit: Array = COURSES[clampi(semester, 1, 8) - 1][2][(unit_index(week) + index) % count]
-		var options: Array[String] = [unit[4], unit[5], unit[6], unit[7]]
+	for index: int in 3:
+		result.append(_calculation(semester, week, index))
+	for index: int in 7:
+		var row: Array
+		if index < count:
+			var unit: Array = COURSES[clampi(semester, 1, 8) - 1][2][(unit_index(week) - index + count) % count]
+			row = [unit[3] + "?", unit[4], unit[5], unit[6], unit[7]]
+		else:
+			row = PRACTICE[index - count]
+		var options: Array[String] = [row[1], row[2], row[3], row[4]]
 		var correct := (semester + week + index) % 4
 		var answer: String = options.pop_front()
 		options.insert(correct, answer)
-		result.append({"prompt": unit[3] + "?", "options": options, "correct": correct})
-	for index: int in 3:
-		result[index] = _calculation(semester, week, index)
+		result.append({"prompt": row[0], "options": options, "correct": correct})
 	return result
 
 

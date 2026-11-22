@@ -2,6 +2,7 @@ extends SceneTree
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 

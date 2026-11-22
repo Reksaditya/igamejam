@@ -8,10 +8,13 @@ const COSTS := {"class": 15.0, "tugas": 5.0, "kuis": 5.0, "uts": 30.0, "uas": 30
 const WEIGHTS := {"tugas": 0.10, "kuis": 0.15, "uts": 0.225, "uas": 0.225, "project": 0.30}
 
 var state: Dictionary = {}
+var _active_semester: int = 1
 
 
 func _ready() -> void:
 	reload_progress()
+	_active_semester = semester()
+	GameClock.minute_changed.connect(_on_time_changed)
 
 
 func reload_progress() -> void:
@@ -46,7 +49,7 @@ func begin_activity(kind: String, id: String) -> Error:
 		return ERR_INVALID_PARAMETER
 	if state.charged.has(id):
 		return OK
-	if PlayerStats.get_energy() < COSTS[kind]:
+	if PlayerStats.get_energy() < COSTS[kind] and not (kind == "class" and PlayerStats.get_energy() <= 0):
 		return ERR_UNAVAILABLE
 	var previous := state.duplicate(true)
 	state.charged[id] = true
@@ -219,6 +222,12 @@ func recalculate_gpa() -> void:
 	PlayerStats.set_gpa(total / terms)
 
 
+func _on_time_changed(_minutes: int) -> void:
+	if semester() != _active_semester:
+		_active_semester = semester()
+		recalculate_gpa()
+
+
 func rest(hours: int) -> Error:
 	if hours not in [1, 8]:
 		return ERR_INVALID_PARAMETER
@@ -231,11 +240,89 @@ func rest(hours: int) -> Error:
 	var error := _save(previous)
 	if error != OK:
 		return error
-	PlayerStats.set_energy(maxf(0, 100.0 - ceili(late) * 10.0 - debt * 5.0) if hours == 8 else minf(100.0 - debt * 5.0, PlayerStats.get_energy() + 10.0))
+	PlayerStats.set_energy(maxf(0, 100.0 - late * 10.0 - debt * 5.0) if hours == 8 else minf(100.0 - debt * 5.0, PlayerStats.get_energy() + 10.0))
 	PlayerStats.set_sanity(50)
 	GameClock.advance_minutes(hours * 60)
 	recalculate_gpa()
 	return OK
+
+
+func can_advance_week() -> bool:
+	var term := semester()
+	var study_week := week()
+	for kind: String in ["tugas", "kuis"]:
+		if not state.results.has(result_id(term, study_week, kind)):
+			return false
+	if study_week in [8, 16]:
+		return state.results.has(result_id(term, study_week, "uts" if study_week == 8 else "uas"))
+	return class_data(term, study_week).finished
+
+
+func advance_week() -> Error:
+	if not can_advance_week():
+		return ERR_UNAUTHORIZED
+	var previous := state.duplicate(true)
+	state.flags.sleep_debt = 0
+	var error := _save(previous)
+	if error != OK:
+		return error
+	PlayerStats.set_energy(100)
+	PlayerStats.set_sanity(50)
+	GameClock.advance_minutes(GameClock.get_week() * 7 * 1440 + 360 - GameClock.get_absolute_minutes())
+	return OK
+
+
+func pending_story() -> String:
+	if not state.flags.has("story_intro"):
+		return "intro"
+	if semester() >= 3 and not state.flags.has("story_busy"):
+		return "busy"
+	if GameClock.get_week() >= 72 and not state.flags.has("story_loss"):
+		return "loss"
+	if semester() >= 6 and not state.flags.has("story_promise"):
+		return "promise"
+	return ""
+
+
+func acknowledge_story(id: String) -> Error:
+	if id not in ["intro", "busy", "loss", "promise"]:
+		return ERR_INVALID_PARAMETER
+	var key := "story_" + id
+	if state.flags.has(key):
+		return ERR_ALREADY_EXISTS
+	var previous := state.duplicate(true)
+	state.flags[key] = true
+	var error := _save(previous)
+	if error == OK and id == "loss":
+		PlayerStats.set_energy(PlayerStats.get_energy() - 40)
+		PlayerStats.set_sanity(PlayerStats.get_sanity() + 40)
+	elif error == OK and id == "promise":
+		PlayerStats.set_energy(PlayerStats.get_energy() + 20)
+		PlayerStats.set_sanity(50)
+	return error
+
+
+func should_graduate() -> bool:
+	return GameClock.get_week() > 128 or (semester() == 8 and week() == 16 and state.results.has("s8_w16_uas") and state.results.has("s8_w16_project"))
+
+
+static func ending_for(gpa: float, final_passed: bool) -> String:
+	if not final_passed:
+		return "bad"
+	return "happy" if gpa >= 3.5 else "basic"
+
+
+func complete_career() -> Error:
+	if not should_graduate():
+		return ERR_UNAUTHORIZED
+	if not state.ending.is_empty():
+		return OK
+	recalculate_gpa()
+	var previous := state.duplicate(true)
+	var final_passed := float(state.results.get("s8_w16_project", 0.0)) >= 60.0
+	state.ending = ending_for(PlayerStats.get_gpa(), final_passed)
+	state.flags.graduation_gpa = PlayerStats.get_gpa()
+	return _save(previous)
 
 
 func _journal_class(term: int, study_week: int) -> Error:

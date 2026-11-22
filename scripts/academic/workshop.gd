@@ -16,6 +16,7 @@ const COMPONENTS := [
 var term: int = 1
 var _held: int = -1
 var _qte: Control
+var _qte_window: Window
 var _feedback: Label
 var _term_choice: OptionButton
 var _design_choices: Array[OptionButton] = []
@@ -29,6 +30,9 @@ func _ready() -> void:
 
 
 func _refresh() -> void:
+	if is_instance_valid(_qte_window):
+		_qte_window.hide()
+		_qte_window.queue_free()
 	clear()
 	_design_choices.clear()
 	_term_choice = OptionButton.new()
@@ -82,11 +86,30 @@ func _refresh() -> void:
 	_feedback = label("Pilih komponen dari rak.", 18)
 	button("Pasang pada dudukan", _fit_component)
 	_qte = Qte.new()
-	_qte.custom_minimum_size = Vector2(140, 140)
+	_qte.custom_minimum_size = Vector2(160, 160)
+	_qte.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_qte.focus_mode = Control.FOCUS_ALL
-	_qte.hide()
 	_qte.resolved.connect(_resolved)
-	content.add_child(_qte)
+	_qte_window = Window.new()
+	_qte_window.title = "Sambungkan komponen · Space"
+	_qte_window.visible = false
+	_qte_window.transient = true
+	_qte_window.exclusive = true
+	_qte_window.theme = window.theme
+	window.add_child(_qte_window)
+	var panel := PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_qte_window.add_child(panel)
+	var layout := VBoxContainer.new()
+	layout.alignment = BoxContainer.ALIGNMENT_CENTER
+	panel.add_child(layout)
+	var instructions := Label.new()
+	instructions.text = "Tekan Space di zona hijau"
+	instructions.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	layout.add_child(instructions)
+	layout.add_child(_qte)
+	_qte_window.close_requested.connect(func(): _qte._resolve(false))
+	_qte_window.window_input.connect(_qte_input)
 	add_close()
 
 
@@ -115,9 +138,15 @@ func _fit_component() -> void:
 	if PlayerStats.get_energy() <= 0 or CareerProgress.begin_activity("project", "project_s%d" % term) != OK:
 		_feedback.text = "Energi tidak cukup. Istirahat sebelum melanjutkan proyek."
 		return
-	_qte.show()
+	_qte_window.popup_centered_clamped(Vector2i(340, 280))
+	_feedback.text = "Sambungkan komponen: tekan Space saat penanda berada di zona hijau."
 	_qte.start(built, 6)
-	content.get_parent().call_deferred("ensure_control_visible", _qte)
+
+
+func _qte_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		_qte_window.set_input_as_handled()
+		_qte._resolve(false)
 
 
 func _resolved(success: bool) -> void:
@@ -131,7 +160,7 @@ func _resolved(success: bool) -> void:
 	else:
 		CareerProgress.record_project_failure(term)
 		_held = -1
-		_qte.hide()
+		_qte_window.hide()
 		_feedback.text = "Sambungan belum berhasil. Komponen kembali ke rak; ambil dan coba lagi."
 
 

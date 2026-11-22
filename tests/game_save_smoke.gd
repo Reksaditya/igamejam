@@ -8,6 +8,7 @@ const Results = preload("res://scripts/interaction/desktop/lms/lms_results.gd")
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
@@ -147,7 +148,7 @@ func _run() -> void:
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)
 	assert(current_scene.get_node("Player").position.x == 320.0)
-	assert(clock.get_absolute_minutes() == 0)
+	assert(clock.get_absolute_minutes() == 360)
 	assert(not notes.has_attempted(0))
 	assert(not blueprint.has_piece(0))
 	assert(Results.read_result("save_test_quiz").is_empty())

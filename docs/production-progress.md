@@ -1,37 +1,70 @@
-# Penyelesaian Deadline
+# Validasi implementasi Deadline
 
-Keputusan produksi: delapan semester, 16 minggu per semester, tujuh hari per minggu. Satu hari game berlangsung 12 menit nyata. Kelas menambah tepat 120 menit game. Kuis dan ujian memakai durasi nyata dan menambah durasi akses yang sebenarnya.
+## Keputusan yang digunakan
 
-Bobot nilai: tugas 10%, kuis 15%, UTS 22,5%, UAS 22,5%, proyek 30%. Nilai persentase dibagi 25 menjadi IPK. Tugas dan kuis dirata-rata atas 16 minggu; tugas yang tidak dikumpulkan bernilai nol. Energi: kelas 15, tugas/kuis 5, ujian 30, proyek 20. Belajar ulang menghabiskan 5 energi.
+- Delapan semester mengikuti kurikulum pengguna, masing-masing 16 minggu dengan tujuh hari per minggu.
+- Waktu normal: 12 menit nyata per hari game. Kelas menambah tepat dua jam; kuis/ujian menambah durasi akses nyata.
+- Bobot IPK: tugas 10%, kuis 15%, UTS 22,5%, UAS 22,5%, proyek 30%. Skor persentase dibagi 25.
+- Biaya energi: kelas 15, tugas/kuis 5, ujian 30, proyek 20. Belajar ulang memakai 5 energi.
+- Tidur delapan jam memulihkan energi; keterlambatan sesudah 22.00 mengurangi pemulihan 10 poin per jam.
+- Profil, Status, dan Jurnal tetap menjalankan waktu. Settings menghentikan waktu. Lompatan tetap dinonaktifkan, sesuai perubahan pengguna sebelumnya.
+- Nama diminta saat New Game; ID berawalan 607 dengan total 12 digit. Aset yang belum disediakan menggunakan dummy.
 
-## Tahap 1: fondasi akademik
+## Tahap dan hasil
 
-Kurikulum memuat materi konseptual, keyword, pertanyaan pilihan ganda, dan soal hitungan untuk seluruh semester. CareerProgress menyimpan catatan per minggu, percobaan yang tidak bisa diulang di kelas, pemulihan melalui belajar, sembilan potongan blueprint per semester, perakitan bertahap, serta nilai. Progres ini termasuk dalam reset New Game dan autosave tanpa membuang progres lama.
+| Tahap | Commit | Hasil |
+|---|---|---|
+| 1 | 356590b | Kurikulum delapan semester, data per minggu, energi, nilai, catatan, potongan, dan autosave |
+| 2 | 3456e4c | Kelas/QTE kurikulum, LMS mingguan, draf, tenggat, UTS/UAS, riwayat, dan IPK |
+| 3 | 1de5bbe | Asrama dua lantai/kamar 210, tidur, komputer, Library, Project 3×3, dan Blocks |
+| 4 | 233fa7d | Bengkel, enam komponen, QTE perakitan, rancangan akhir, ruang dosen, dan penilaian |
+| 5 | Commit dokumen ini | Cerita, NPC, satpam, blur, ending, pergantian minggu, dan validasi gabungan |
 
-Validasi: career_smoke memeriksa 128 kombinasi semester/minggu, masing-masing 10 soal dengan satu jawaban benar, biaya energi sekali per aktivitas, kegagalan kelas dan pemulihan, batasan blueprint, IPK maksimum 4, dan penambahan kelas tepat dua jam. Tahap ini belum mengganti alur scene kelas; penyambungan UI dilakukan pada tahap 2.
+Satpam mencatat pelanggaran jam malam meskipun profil sedang terbuka; menunggu sampai pagi dalam popup tidak menghapus pelanggaran. Riwayat LMS menampilkan semester, minggu, dan jenis penilaian dalam label yang dapat dibaca pemain.
 
-## Tahap 2: kelas dan LMS
+Penilaian proyek sementara: 100 dikurangi lima poin per QTE gagal, maksimal pengurangan 40. Aturan ini disampaikan pada laporan tahap 4. Rancangan akhir memilih mekanisme, masukan, dan sumber energi; pilihan tersebut digunakan pada daftar komponen perakitan.
 
-Scene kelas memakai materi semester/minggu aktif, tiga kesempatan QTE di atas kepala, jeda awal empat detik dan jeda berikutnya acak. Materi yang dilewati tidak diulang. Kelas menghabiskan tepat dua jam. LMS di Word Explorer memakai tugas dan kuis kurikulum dengan sepuluh soal, tenggat enam hari, pergantian mingguan, dan riwayat nilai. Kuis/UTS/UAS memakai batas 600 detik nyata, draf jawaban persisten, pengumpulan otomatis, serta penambahan waktu game sesuai durasi akses. UTS dan UAS berulang pada minggu 8 dan 16 tiap semester. Tugas tidak memiliki timer pengerjaan.
+## Pemeriksaan otomatis
 
-Validasi: academic_flow_smoke memeriksa alur kelas, kegagalan catatan, larangan mengulang, pemulihan draf, durasi enam menit nyata, UTS, timeout, deadline, dan halaman LMS. career_smoke memeriksa data serta bobot nilai. Aplikasi desktop baru dapat diakses kembali dari komputer asrama setelah tahap 3.
+Runner: tools/run_production_tests.py. Semua pengujian memakai APPDATA/LOCALAPPDATA/XDG_DATA_HOME terisolasi di .godot/production-validation; tidak menyentuh save permainan pengguna.
 
-## Tahap berikutnya
+| Pemeriksaan | Cakupan | Hasil |
+|---|---|---|
+| career | 128 kombinasi semester/minggu; 10 soal unik dan empat pilihan; biaya energi sekali; pemulihan; blueprint; IPK; kelas +120 menit; pergantian minggu/semester | Lolos |
+| academic_flow | Kelas aktif; QTE di kepala; kegagalan catatan; larangan pengulangan; draf kuis; enam menit nyata; UTS; timeout; tenggat LMS | Lolos |
+| academic_flow --reload | Catatan dan nilai dari proses baru | Lolos |
+| dorm_study | Tidur terlambat; Library/keyword; 3×3; pintu empat lokasi asrama; komputer; Blocks; kembali ke kamar | Lolos |
+| dorm_study --reload | Lokasi kamar, catatan lengkap, blueprint | Lolos |
+| workshop_flow | Blueprint wajib; komponen salah; QTE gagal/berhasil; nilai 95; pengumpulan sekali; rancangan dan proyek akhir | Lolos |
+| world_life | New Game normal; empat chapter; efek sekali; satpam 22.00; asrama aman; blur; tidur di kelas; tiga kondisi ending; Load ending | Lolos |
+| game_save | New Game/Load; posisi; progres; reset; pembatalan; pengaturan tetap | Lolos |
+| game_save --reload | Checkpoint dari proses baru | Lolos |
+| main_menu | Tombol Load; pengaturan; konfirmasi; pembatalan | Lolos |
+| main_menu --reload | Pengaturan dan progres dari proses baru | Lolos |
+| player_profile | Nama/ID; status; waktu profil dan Settings; jurnal/filter; migrasi save versi 1 | Lolos |
+| resolution | Semua ukuran langsung diterapkan, dipertahankan, tanpa mengubah volume yang belum disimpan | Lolos |
+| mc_idle | Tujuh frame sesuai urutan dan looping idle | Lolos |
+| blueprint | Kompatibilitas komponen enam potongan lama | Lolos |
+| blueprint --reload | Progres blueprint lama dari proses baru | Lolos |
+| side_scroller | Gerakan; portal tiga world; E; pintu; interior; fade; jam HUD; tidak melompat | Lolos |
 
-## Tahap 4: bengkel dan pengumpulan proyek
+Hasil suite terakhir: 17 lulus, 0 gagal. Log tersedia di .godot/production-validation/1795324494139777000. classroom_smoke kini menjalankan pemeriksaan academic_flow, menggantikan asumsi enam materi contoh untuk seluruh permainan.
 
-Meja bengkel dapat diakses dengan E di ruang laboratorium. Tiap semester memiliki enam komponen sesuai kurikulum. Pemain mengambil komponen yang diminta objective, memasangnya pada dudukan, lalu menyelesaikan QTE. Komponen yang salah ditolak; QTE gagal mengembalikan komponen ke rak. Blueprint sembilan bagian harus lengkap sebelum perakitan. Progres enam komponen dan kegagalan sambungan disimpan. Preview mesin menampilkan dudukan dan komponen yang sudah dipasang.
+## Pemeriksaan grafis
 
-Pada semester delapan pemain memilih mekanisme, masukan, dan sumber energi dari komponen terdahulu. Pilihan rancangan disimpan dan memengaruhi daftar komponen proyek akhir. Ruang dosen memiliki pintu dari halaman kampus; dosen menerima mesin lengkap dan memberikan nilai 100 dikurangi lima per kegagalan QTE (pengurangan maksimum 40). Pengumpulan hanya sekali dan memperbarui IPK serta riwayat LMS.
+Kelas dan QTE, kuis, desktop/Library/Project, bengkel, profil/Settings pada jendela kecil, pergantian resolusi aktual, blur kewarasan, dan Happy Ending telah dijalankan dengan renderer grafis. Alur cerita sampai ending juga lolos pada renderer bawaan Forward+ / D3D12, selain pemeriksaan Compatibility / OpenGL. HUD tetap tajam saat dunia blur. QTE bengkel memakai popup tersendiri di tengah layar agar lingkaran dan zona aman tidak terpotong; alur bengkel diuji ulang sesudah perbaikan tampilan. Happy Ending memiliki dua adegan dummy: ziarah bersama ayah dan perjalanan sesudahnya.
 
-Validasi: workshop_flow_smoke memeriksa kunci blueprint, pengambilan komponen, QTE gagal/berhasil, enam tahap perakitan, nilai 95 setelah satu kegagalan, penolakan pengumpulan ganda, rancangan semester delapan, dan persistensi proyek akhir.
+## Pemetaan GDD
 
-## Tahap 3: asrama dan aplikasi komputer
+- Simulasi sampai kelulusan: kalender delapan semester, kurikulum, nilai, proyek akhir, dan tiga ending.
+- Kelas: duduk, QTE tidak menentu, kesulitan meningkat, catatan kosong, tidak mengulang materi, dan ujian minggu 8/16.
+- Komputer: tugas/kuis mingguan 10 soal, tenggat enam hari, riwayat, Library/keyword, Project 3×3, Blocks, serta aplikasi desktop terdahulu.
+- Bengkel dan dosen: mengambil/memasang komponen, QTE sambungan, mesin lengkap, pengumpulan dan penilaian.
+- Status: energi, istirahat, kewarasan/tekanan, blur pada 80, tidur saat energi habis, dan IPK otomatis.
+- Dunia: side scroller, E/bubble, fade, portal transparan, asrama dua lantai/kamar 210, ruang dosen, NPC, dan satpam malam.
+- Cerita: empat chapter, kabar kehilangan di semester lima, pemulihan tekad, ending sesuai proyek akhir/IPK, serta adegan ziarah/perjalanan.
+- Finishing: identitas New Game, autosave/Load, reset, jurnal, menu, Settings dalam profil, resolusi langsung, dan dokumentasi alur.
 
-Asrama memiliki eksterior, lantai 1, lantai 2, dan kamar 210 dengan tempat tidur serta meja komputer. Interaksi E memakai area fisik, bukan tombol desktop di HUD. Mematikan komputer kembali ke kamar melalui fade. Library menampilkan materi kelas yang selesai atau minggu yang terlewat; keyword yang benar memulihkan catatan dan memberikan potongan. Project menampilkan siluet 3×3, potongan yang dimiliki, dan penempatan yang memeriksa kecocokan. Blocks diadaptasi dari implementasi origin/main dengan penempatan, pembersihan garis, skor, dan kondisi kehabisan langkah. Waktu normal tetap berjalan pada komputer.
+Instruksi pengguna menggantikan bagian GDD yang bertentangan: tidak ada lompatan; nama pemain dapat dipilih; kalender memakai 16 minggu per semester; kuis/ujian memakai durasi akses sebenarnya; Profil tidak menghentikan waktu kecuali Settings. Tombol Buka Desktop di HUD tetap dihapus: akses komputer melalui objek di kamar.
 
-Tidur delapan jam memulihkan energi dengan penalti terlambat, sedangkan istirahat singkat memulihkan sebagian energi dan mencatat kekurangan tidur. Kewarasan kembali ke 50. Tidur memajukan kalender dan memperbarui IPK semester aktif.
-
-Validasi: dorm_study_smoke menguji penalti tidur pukul 23.00, pemulihan melalui sembilan bacaan, kecocokan puzzle, empat lokasi asrama, interaksi komputer, penempatan Blocks, kembali dari desktop, dan pemuatan kembali progres.
-
-5. Energi/kewarasan, satpam, NPC, cerita, tiga ending, dan pemeriksaan integrasi.
+Panduan menjalankan seluruh alur: docs/blueprint.md. Kualitas visual lingkungan, NPC, mesin, dan cutscene masih dummy sesuai izin; dokumen ini tidak menyatakan bahwa aset final atau build distribusi telah dibuat.

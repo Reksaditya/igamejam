@@ -18,6 +18,8 @@ var _delay: float = 4.0
 var _index: int = 0
 var _class_started: bool = false
 var _summary: CanvasLayer
+var _retry: Button
+var _retry_action: Callable
 
 
 func _ready() -> void:
@@ -59,6 +61,16 @@ func _ready() -> void:
 	_teaching.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_teaching.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	teaching_panel.add_child(_teaching)
+	_retry = Button.new()
+	_retry.text = "Coba simpan kembali"
+	_retry.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	_retry.offset_left = -260
+	_retry.offset_right = -30
+	_retry.offset_top = -64
+	_retry.offset_bottom = -20
+	_retry.pressed.connect(func(): _retry_action.call())
+	_retry.hide()
+	add_child(_retry)
 	_next_section()
 
 
@@ -69,6 +81,9 @@ func _next_section() -> void:
 	if _index == 3:
 		if CareerProgress.finish_class(term, study_week) != OK:
 			_teaching.text = "Catatan belum tersimpan. Keluar lalu lanjutkan kelas untuk mencoba kembali."
+			_phase = 3
+			_retry_action = _next_section
+			_retry.show()
 			return
 		GameClock.complete_class(self)
 		_class_started = false
@@ -76,6 +91,8 @@ func _next_section() -> void:
 		return
 	var lesson := Curriculum.lesson(term, study_week)
 	_teaching.text = "%s\n%s" % [lesson.title, lesson.sections[_index]]
+	if PlayerStats.get_energy() <= 0:
+		_teaching.text = "Energi habis. Kamu tertidur di kelas dan melewatkan materi. Pulihkan energi dan lengkapi catatan di asrama."
 	_phase = 0
 	_delay = 4.0 if data.attempted.is_empty() else randf_range(5.0, 11.0)
 	_qte.hide()
@@ -85,7 +102,7 @@ func _process(delta: float) -> void:
 	if not is_instance_valid(_qte) or not is_instance_valid(player) or is_instance_valid(_summary):
 		return
 	_qte.position = player.get_global_transform_with_canvas() * Vector2(0, -102) - Vector2(55, 110)
-	if _phase == 1:
+	if _phase == 1 or _phase == 3:
 		return
 	_delay -= delta
 	if _delay > 0:
@@ -106,7 +123,13 @@ func _process(delta: float) -> void:
 
 
 func _resolved(success: bool) -> void:
-	CareerProgress.finish_section(term, study_week, _index, success)
+	if CareerProgress.finish_section(term, study_week, _index, success) != OK:
+		_phase = 3
+		_retry_action = _resolved.bind(success)
+		_retry.show()
+		_teaching.text = "Hasil QTE belum tersimpan. Coba simpan kembali untuk melanjutkan."
+		return
+	_retry.hide()
 	_phase = 2
 	_delay = 1.2
 
@@ -117,6 +140,7 @@ func _show_summary() -> void:
 	if is_instance_valid(_qte):
 		_qte.hide()
 		_teaching.get_parent().hide()
+		_retry.hide()
 	_summary = ActivityPanel.new()
 	add_child(_summary)
 	var data := CareerProgress.class_data(term, study_week)

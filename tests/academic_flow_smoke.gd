@@ -2,6 +2,7 @@ extends SceneTree
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
@@ -72,10 +73,11 @@ func _run() -> void:
 	assert(stats.get_energy() == energy)
 	for index: int in 10:
 		assessment.answers[index] = assessment.questions[index].correct
+	var quiz_start: int = clock.get_absolute_minutes()
 	clock._assessment_started_msec -= 360000
 	assessment.submit()
 	assert(career.state.results["s1_w1_kuis"] == 100)
-	assert(clock.get_absolute_minutes() == class_start + 126)
+	assert(clock.get_absolute_minutes() == quiz_start + 6)
 	assessment.close()
 	await process_frame
 	stats.set_energy(100)
@@ -101,6 +103,7 @@ func _run() -> void:
 	var dashboard := load("res://scenes/interaction/desktop/word_explorer_home.tscn").instantiate() as Control
 	current_scene.add_child(dashboard)
 	assert(dashboard.get_child_count() >= 8)
+	assert(dashboard._history_title("s1_w8_uts") == "Semester 1 · Minggu 8 · UTS")
 	assert(root.get_node("GameSave").save_now() == OK)
 	print("PASS: curriculum classroom, overhead QTE, no replay, class +2h, quiz draft/reload, six real minutes, UTS week 8, timeout, task deadline, LMS history")
 	quit()

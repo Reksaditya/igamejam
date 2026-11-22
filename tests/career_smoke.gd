@@ -4,6 +4,7 @@ const Curriculum = preload("res://scripts/academic/curriculum.gd")
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
@@ -19,7 +20,10 @@ func _run() -> void:
 			assert(not lesson.material.is_empty() and lesson.sections.size() == 3)
 			var questions := Curriculum.questions(term, week, "kuis")
 			assert(questions.size() == 10)
+			var prompts: Array[String] = []
 			for question: Dictionary in questions:
+				assert(not prompts.has(question.prompt))
+				prompts.append(question.prompt)
 				assert(question.options.size() == 4 and question.correct in range(4))
 				assert(question.options.count(question.options[question.correct]) == 1)
 	assert(career.begin_activity("class", "class_s1_w1") == OK)
@@ -49,6 +53,10 @@ func _run() -> void:
 	assert(career.record_result(1, 16, "project", 100) == OK)
 	assert(is_equal_approx(career.semester_grade(1), 4.0))
 	assert(career.record_result(1, 1, "tugas", 0) == ERR_ALREADY_EXISTS)
+	assert(career.can_advance_week())
+	assert(career.advance_week() == OK)
+	assert(clock.get_week() == 2 and clock.get_formatted_time() == "06:00")
+	assert(not career.can_advance_week())
 	clock.restore_save_state({"minutes": 600, "remainder": 0})
 	var owner := Node.new()
 	root.add_child(owner)
@@ -59,5 +67,9 @@ func _run() -> void:
 	assert(clock.get_absolute_minutes() == 720)
 	assert(not clock.complete_class(owner))
 	owner.queue_free()
+	clock.restore_save_state({"minutes": 105 * 1440 + 600, "remainder": 0})
+	assert(career.advance_week() == OK)
+	assert(career.semester() == 2 and career.week() == 1)
+	assert(stats.get_gpa() == 2.0)
 	print("PASS: 8 semesters, 128 weeks, ten valid questions per assessment, energy once per activity, irreversible classroom attempts, dorm review, puzzle gates, exact GPA weights, class +120 minutes")
 	quit()

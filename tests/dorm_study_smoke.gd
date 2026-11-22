@@ -2,6 +2,7 @@ extends SceneTree
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
@@ -48,9 +49,17 @@ func _run() -> void:
 	assert(career.blueprint_ready(1))
 	library.queue_free()
 	project.queue_free()
-	for path: String in ["dorm_exterior", "dorm_floor1", "dorm_floor2", "dorm_room210"]:
-		change_scene_to_file("res://scenes/movement/" + path + ".tscn")
+	change_scene_to_file("res://scenes/movement/dorm_exterior.tscn")
+	await scene_changed
+	for target: String in ["dorm_floor1", "dorm_floor2", "dorm_room210"]:
+		var door := current_scene.get_node("Door" if target == "dorm_floor1" else "Stairs")
+		current_scene.get_node("Player").position = door.position + Vector2(0, 52)
+		for frame: int in 6:
+			await physics_frame
+		assert(door._request_open())
 		await scene_changed
+		await _transition()
+		assert(current_scene.scene_file_path.ends_with(target + ".tscn"))
 		assert(saves.save_now() == OK)
 	assert(current_scene.get_node("Door").destination.ends_with("dorm_floor2.tscn"))
 	var player := current_scene.get_node("Player")

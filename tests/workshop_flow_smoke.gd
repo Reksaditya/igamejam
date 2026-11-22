@@ -2,6 +2,7 @@ extends SceneTree
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
@@ -45,7 +46,14 @@ func _run() -> void:
 			await process_frame
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png("res://.godot/career-workshop.png")
-		workshop._qte._resolve(true)
+		if index == 2:
+			workshop._qte._elapsed = workshop._qte.duration_seconds * (workshop._qte._target_start + workshop._qte.target_width * 0.5)
+			var event := InputEventAction.new()
+			event.action = "class_focus"
+			event.pressed = true
+			workshop._qte._input(event)
+		else:
+			workshop._qte._resolve(true)
 	assert(career.state.assembled["1"].size() == 6)
 	workshop.close()
 	await process_frame

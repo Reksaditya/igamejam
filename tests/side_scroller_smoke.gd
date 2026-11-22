@@ -2,9 +2,11 @@ extends SceneTree
 
 const COURTYARD := "res://scenes/movement/top_down_movement.tscn"
 const LAB := "res://scenes/movement/campus_lab.tscn"
+const DORM := "res://scenes/movement/dorm_exterior.tscn"
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
@@ -22,6 +24,8 @@ func _run() -> void:
 	Input.action_release("move_right")
 	assert(player.position.x > start_x + 20.0)
 	var floor_y := player.position.y
+	player.position.x = 600
+	await _wait_frames(4)
 	for key: Key in [KEY_SPACE, KEY_W, KEY_UP, KEY_E]:
 		_press_key(key)
 		await _wait_frames(10)
@@ -32,9 +36,11 @@ func _run() -> void:
 	await _check_door_range()
 	await _cross_exit(true, LAB, 120.0)
 	await _check_door_range()
-	await _cross_exit(false, COURTYARD, 1800.0)
-	await _cross_exit(false, LAB, 1800.0)
+	await _cross_exit(true, DORM, 120.0)
 	await _cross_exit(true, COURTYARD, 120.0)
+	await _cross_exit(false, DORM, 1800.0)
+	await _cross_exit(false, LAB, 1800.0)
+	await _cross_exit(false, COURTYARD, 1800.0)
 	assert(root.get_node("GameClock") == clock)
 	assert(not current_scene.has_node("DesktopAccess"))
 	assert(current_scene.get_node("PlayerProfile")._hud_clock.text == clock.get_formatted_time())

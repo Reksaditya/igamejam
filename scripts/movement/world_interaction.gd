@@ -63,9 +63,12 @@ func interact() -> bool:
 		_panel.label("Tidur 8 jam memulihkan energi. Tidur setelah pukul 22.00 mengurangi pemulihan 10 poin per jam keterlambatan.")
 		_panel.button("Tidur 8 jam", _rest.bind(8))
 		_panel.button("Istirahat singkat 1 jam", _rest.bind(1))
+		if CareerProgress.can_advance_week():
+			_panel.label("Kegiatan minggu ini selesai. Kamu dapat memakai sisa minggu untuk istirahat dan melanjutkan kalender. Proyek yang belum dikumpulkan tidak memperoleh nilai.", 16)
+			_panel.button("Istirahat sampai minggu berikutnya", _next_week)
 	else:
 		_panel.label(caption, 26)
-		_panel.label("Ikuti kelas, kerjakan kegiatan LMS, dan lengkapi rancangan mesin. Jangan lupa beristirahat sebelum pukul 22.00.")
+		_panel.label("Jam malam mulai pukul 22.00. Kamar 210 berada di lantai dua. Tidur delapan jam dan masuk asrama sebelum terlambat." if action == "guard" else "Catatan kelas yang kosong bisa dilengkapi lewat Library di komputer asrama. Setelah blueprint lengkap, rakit mesinnya di bengkel dan laporkan kepada dosen. Kita juga perlu beristirahat sebelum pukul 22.00.")
 	_panel.add_close()
 	return true
 
@@ -75,4 +78,12 @@ func _rest(hours: int) -> void:
 	_panel.clear()
 	_panel.label("Istirahat selesai" if error == OK else "Istirahat belum tersimpan. Coba kembali.", 26)
 	_panel.label("Energi %.0f/100 · Kewarasan %.0f/100 · %s" % [PlayerStats.get_energy(), PlayerStats.get_sanity(), GameClock.get_formatted_time()])
+	_panel.add_close()
+
+
+func _next_week() -> void:
+	var error := CareerProgress.advance_week()
+	_panel.clear()
+	_panel.label("Minggu berikutnya dimulai" if error == OK else "Selesaikan kegiatan minggu ini dahulu.", 26)
+	_panel.label("Semester %d · Minggu %d · %s" % [CareerProgress.semester(), CareerProgress.week(), GameClock.get_formatted_time()])
 	_panel.add_close()

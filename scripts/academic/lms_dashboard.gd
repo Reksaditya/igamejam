@@ -41,7 +41,7 @@ func _rebuild() -> void:
 	var keys: Array = CareerProgress.state.results.keys()
 	keys.sort()
 	for id: String in keys:
-		_label("%s · %.0f/100" % [id.replace("_", " · "), CareerProgress.state.results[id]], 18)
+		_label("%s · %.0f/100" % [_history_title(id), CareerProgress.state.results[id]], 18)
 	if keys.is_empty():
 		_label("Belum ada nilai tersimpan.", 18)
 
@@ -52,6 +52,13 @@ func _label(value: String, font_size: int) -> void:
 	item.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	item.add_theme_font_size_override("font_size", font_size)
 	add_child(item)
+
+
+func _history_title(id: String) -> String:
+	var parts := id.split("_")
+	if parts.size() != 3:
+		return id.capitalize()
+	return "Semester %d · Minggu %d · %s" % [parts[0].trim_prefix("s").to_int(), parts[1].trim_prefix("w").to_int(), parts[2].to_upper()]
 
 
 func _open(term: int, week: int, kind: String) -> void:
