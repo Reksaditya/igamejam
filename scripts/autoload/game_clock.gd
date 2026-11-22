@@ -4,7 +4,7 @@ signal minute_changed(absolute_minutes: int)
 
 const MINUTES_PER_DAY: int = 1440
 
-@export_range(0.01, 60.0, 0.01, "or_greater") var seconds_per_minute: float = 1.0:
+@export_range(0.01, 60.0, 0.01, "or_greater") var seconds_per_minute: float = 0.5:
 	set(value):
 		seconds_per_minute = maxf(value, 0.01)
 		if is_node_ready():
@@ -15,6 +15,8 @@ var _assessment_tokens: Dictionary[int, bool] = {}
 var _next_assessment_token: int = 0
 var _assessment_started_msec: int = 0
 var _assessment_remainder_msec: int = 0
+var _class_owner: Node
+var _class_start: int = 0
 
 @onready var _timer: Timer = $MinuteTimer
 
@@ -48,6 +50,7 @@ func get_save_state() -> Dictionary:
 
 
 func restore_save_state(state: Dictionary) -> void:
+	_class_owner = null
 	_assessment_tokens.clear()
 	_absolute_minutes = maxi(0, state.get("minutes", 0))
 	_assessment_remainder_msec = clampi(state.get("remainder", 0), 0, 59999)
@@ -63,6 +66,39 @@ func begin_assessment() -> int:
 	_next_assessment_token += 1
 	_assessment_tokens[_next_assessment_token] = true
 	return _next_assessment_token
+
+
+func begin_class(owner: Node) -> bool:
+	if is_instance_valid(_class_owner) or not _assessment_tokens.is_empty():
+		return false
+	_class_owner = owner
+	_class_start = _absolute_minutes
+	_timer.paused = true
+	owner.tree_exiting.connect(cancel_class.bind(owner), CONNECT_ONE_SHOT)
+	return true
+
+
+func complete_class(owner: Node) -> bool:
+	if owner != _class_owner:
+		return false
+	_class_owner = null
+	_absolute_minutes = _class_start + 120
+	_timer.paused = false
+	_timer.start(seconds_per_minute)
+	minute_changed.emit(_absolute_minutes)
+	return true
+
+
+func cancel_class(owner: Node) -> void:
+	if owner == _class_owner:
+		_class_owner = null
+		_timer.paused = false
+
+
+func advance_minutes(minutes: int) -> void:
+	_absolute_minutes += maxi(0, minutes)
+	_timer.start(seconds_per_minute)
+	minute_changed.emit(_absolute_minutes)
 
 
 func end_assessment(token: int) -> void:

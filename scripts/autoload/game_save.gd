@@ -4,7 +4,7 @@ const SAVE_PATH := "user://game_save.cfg"
 const INITIAL_SCENE := "res://scenes/movement/top_down_movement.tscn"
 const DESKTOP_SCENE := "res://scenes/interaction/desktop/desktop.tscn"
 const WORLD_SCENES := [INITIAL_SCENE, "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn"]
-const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg"]
+const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "career_progress.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg"]
 
 var last_save_error: Error = OK
 var _enabled: bool = false
@@ -26,6 +26,7 @@ func _ready() -> void:
 	BlueprintProgress.changed.connect(request_autosave)
 	PlayerStats.changed.connect(request_autosave)
 	PlayerJournal.changed.connect(request_autosave)
+	CareerProgress.changed.connect(request_autosave)
 
 
 func _process(delta: float) -> void:
@@ -132,6 +133,7 @@ func start_new_game(player_name: String = "Yohan") -> Error:
 	ClassroomProgress.reload_progress()
 	BlueprintProgress.reload_progress()
 	PlayerJournal.reload_progress()
+	CareerProgress.reload_progress()
 	PlayerStats.restore_save_state(stats)
 	GameClock.restore_save_state(clock)
 	_clear_spawn()
@@ -171,6 +173,7 @@ func load_game(allow_legacy: bool = false) -> Error:
 	ClassroomProgress.reload_progress()
 	BlueprintProgress.reload_progress()
 	PlayerJournal.reload_progress()
+	CareerProgress.reload_progress()
 	var stats := PlayerStats.DEFAULTS.duplicate()
 	for key: String in stats:
 		stats[key] = snapshot.get_value("profile", key, stats[key])

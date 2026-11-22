@@ -57,6 +57,18 @@ func record_project(id: String, title: String, absolute_week: int = -1) -> Error
 	return _record("project", id, title, "Proyek telah selesai dibuat.", absolute_week)
 
 
+func record_entry(kind: String, source: String, title: String, body: String, absolute_week: int) -> Error:
+	for entry: Dictionary in _entries:
+		if entry.source == source:
+			var old_body: String = entry.body
+			entry.body = body
+			var error := _save_entries()
+			if error != OK:
+				entry.body = old_body
+			return error
+	return _record(kind, source, title, body, absolute_week)
+
+
 func record_desktop_note(path: String, body: String, absolute_week: int = -1) -> Error:
 	var source := "desktop_" + path.trim_prefix("user://")
 	for entry: Dictionary in _entries:
