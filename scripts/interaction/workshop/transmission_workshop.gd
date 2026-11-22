@@ -103,6 +103,8 @@ func _update_layout() -> void:
 	var narrow := width < 760
 	%Bench.vertical = narrow
 	%Machine.custom_minimum_size.y = clampf(size.x * 0.66, 350.0, 620.0) if narrow else 0.0
+	if has_node("%BenchSpacer"):
+		%BenchSpacer.visible = not narrow
 	if has_node("%KeybindHintText"):
 		%KeybindHintText.text = "Seret: Blueprint / Slider · Tab: Fokus · Enter: Pakai" if width < 560 else "Seret: Blueprint / Slider  ·  Klik: Putar / Crank  ·  Tab / Panah: Fokus  ·  Enter / Spasi: Aktifkan"
 

@@ -25,15 +25,43 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Reader"]
-content_margin_left = 10.0
-content_margin_top = 8.0
-content_margin_right = 10.0
-content_margin_bottom = 8.0
-bg_color = Color(0.09, 0.14, 0.15, 0.88)
+content_margin_left = 8.0
+content_margin_top = 7.0
+content_margin_right = 8.0
+content_margin_bottom = 7.0
+bg_color = Color(0.05, 0.09, 0.1, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.22, 0.32, 0.35, 0.72)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_BenchTray"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.08, 0.13, 0.14, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.28, 0.39, 0.42, 0.72)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0.04, 0.06, 0.07, 0.42)
+shadow_size = 4
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_DockDivider"]
+color = Color(0.28, 0.39, 0.42, 0.45)
+thickness = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Hint"]
 content_margin_left = 10.0
@@ -194,12 +222,18 @@ horizontal_alignment = 1
 
 [node name="CardStack" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(228, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
+size_flags_vertical = 3
 mouse_filter = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
+
+[node name="BenchSpacer" type="Control" parent="Margin/Layout/Scroll/Bench/CardStack"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="Blueprint" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
 unique_name_in_owner = true
@@ -226,36 +260,41 @@ size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("5_plate")
 
-[node name="Legend" type="MarginContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
+[node name="Legend" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_Whisper")
 
 [node name="LegendText" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/Legend"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.95, 0.94, 0.87, 1)
-theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 14
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 13
 autowrap_mode = 3
 
-[node name="ReaderSlot" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
+[node name="DockPanel" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_BenchTray")
+
+[node name="DockContent" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="ReaderSlot" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_Reader")
 script = ExtResource("10_reader")
 
-[node name="ReaderRow" type="HBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot"]
+[node name="ReaderRow" type="HBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/ReaderSlot"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="ReaderFace" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow"]
+[node name="ReaderFace" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/ReaderSlot/ReaderRow"]
 custom_minimum_size = Vector2(87, 34)
 layout_mode = 2
 size_flags_vertical = 4
@@ -263,7 +302,7 @@ mouse_filter = 2
 clip_contents = true
 color = Color(0.15, 0.22, 0.24, 1)
 
-[node name="SlotMouth" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow/ReaderFace"]
+[node name="SlotMouth" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/ReaderSlot/ReaderRow/ReaderFace"]
 z_index = 1
 offset_left = 66.0
 offset_top = 4.0
@@ -272,7 +311,7 @@ offset_bottom = 30.0
 mouse_filter = 2
 color = Color(0.04, 0.07, 0.08, 1)
 
-[node name="Card" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow/ReaderFace"]
+[node name="Card" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/ReaderSlot/ReaderRow/ReaderFace"]
 unique_name_in_owner = true
 visible = false
 offset_left = 8.0
@@ -282,7 +321,7 @@ offset_bottom = 26.0
 mouse_filter = 2
 color = Color(0.35, 0.66, 0.77, 1)
 
-[node name="Stripe" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow/ReaderFace/Card"]
+[node name="Stripe" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/ReaderSlot/ReaderRow/ReaderFace/Card"]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 35.0
@@ -290,7 +329,7 @@ offset_bottom = 6.0
 mouse_filter = 2
 color = Color(0.75, 0.9, 0.93, 1)
 
-[node name="ReaderLight" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow"]
+[node name="ReaderLight" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/ReaderSlot/ReaderRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(8, 8)
 layout_mode = 2
@@ -298,43 +337,47 @@ size_flags_vertical = 4
 mouse_filter = 2
 color = Color(0.71, 0.33, 0.27, 1)
 
-[node name="Insert" type="Button" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow"]
+[node name="Insert" type="Button" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/ReaderSlot/ReaderRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Masukkan terpilih"
 
-[node name="BlueprintDock" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
+[node name="DockDivider" type="HSeparator" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_DockDivider")
+
+[node name="BlueprintDock" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 6
 
-[node name="DockTitle" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/BlueprintDock"]
+[node name="DockTitle" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/BlueprintDock"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.92, 0.95, 0.92, 1)
-theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 0
+theme_override_fonts/font = ExtResource("11_display_bold")
 theme_override_font_sizes/font_size = 13
 text = "Blueprint (seret ke Slot)"
 
-[node name="BlueprintList" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/BlueprintDock"]
+[node name="BlueprintList" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/BlueprintDock"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 5
 
-[node name="NoBlueprints" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/BlueprintDock"]
+[node name="NoBlueprints" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/BlueprintDock"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.9)
-theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 12
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 13
 text = "Dapatkan Blueprint dari Perpustakaan atau Catatan kelas."
 autowrap_mode = 3
 
