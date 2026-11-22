@@ -54,7 +54,7 @@ func interact() -> bool:
 	seated = true
 	_player.set_studying(true)
 	var visual := _player.get_node("Visual") as Node2D
-	visual.scale = Vector2(absf(visual.scale.x), absf(visual.scale.y) * 0.8)
+	visual.scale.x = absf(visual.scale.x)
 	update_seat()
 	_prompt.text = "E · Berdiri"
 	_prompt.show()

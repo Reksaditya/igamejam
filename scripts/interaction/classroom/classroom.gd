@@ -21,6 +21,7 @@ func _ready() -> void:
 		_seats.append(get_node(id) as Area2D)
 	if not classroom_enabled:
 		$Computer.hide()
+		$Desks.hide()
 		for seat: Area2D in _seats:
 			seat.hide()
 		$Hud.hide()
@@ -84,7 +85,7 @@ func _pose_player(seat: Area2D) -> void:
 	actor.set_studying(true)
 	actor.global_position = seat.get_node("SeatPoint").global_position
 	var visual := actor.get_node("Visual") as Node2D
-	visual.scale = Vector2(absf(visual.scale.x), visual.scale.y * 0.8)
+	visual.scale.x = absf(visual.scale.x)
 
 
 func _stand_up() -> void:

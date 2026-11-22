@@ -7,6 +7,20 @@
 [ext_resource type="Texture2D" path="res://assets/characters/mc/idle/5.png" id="5_frame"]
 [ext_resource type="Texture2D" path="res://assets/characters/mc/idle/6.png" id="6_frame"]
 [ext_resource type="Texture2D" path="res://assets/characters/mc/idle/7.png" id="7_frame"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/walk/1.png" id="8_walk"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/walk/2.png" id="9_walk"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/walk/3.png" id="10_walk"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/walk/4.png" id="11_walk"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/walk/5.png" id="12_walk"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/walk/6.png" id="13_walk"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/side_idle/1.png" id="14_side"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/side_idle/2.png" id="15_side"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/side_idle/3.png" id="16_side"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/side_idle/4.png" id="17_side"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/side_idle/5.png" id="18_side"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/side_idle/6.png" id="19_side"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/side_idle/7.png" id="20_side"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/sit/1.png" id="21_sit"]
 
 [resource]
 animations = [{
@@ -22,4 +36,34 @@ animations = [{
 "loop": true,
 "name": &"idle",
 "speed": 7.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": ExtResource("8_walk")},
+{"duration": 1.0, "texture": ExtResource("9_walk")},
+{"duration": 1.0, "texture": ExtResource("10_walk")},
+{"duration": 1.0, "texture": ExtResource("11_walk")},
+{"duration": 1.0, "texture": ExtResource("12_walk")},
+{"duration": 1.0, "texture": ExtResource("13_walk")}
+],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": ExtResource("14_side")},
+{"duration": 1.0, "texture": ExtResource("15_side")},
+{"duration": 1.0, "texture": ExtResource("16_side")},
+{"duration": 1.0, "texture": ExtResource("17_side")},
+{"duration": 1.0, "texture": ExtResource("18_side")},
+{"duration": 1.0, "texture": ExtResource("19_side")},
+{"duration": 1.0, "texture": ExtResource("20_side")}
+],
+"loop": true,
+"name": &"side_idle",
+"speed": 7.0
+}, {
+"frames": [{"duration": 1.0, "texture": ExtResource("21_sit")}],
+"loop": true,
+"name": &"sit",
+"speed": 1.0
 }]

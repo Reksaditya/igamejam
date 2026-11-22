@@ -4,14 +4,14 @@
 
 New Game meminta nama pemain, membuat ID 12 digit berawalan 607, lalu memulai hari pertama pukul 06.00. Jika save sudah ada, konfirmasi dan input nama harus diselesaikan sebelum data lama diganti. Load melanjutkan autosave, termasuk lokasi, waktu, identitas, catatan, nilai, rancangan, dan perakitan. Pengaturan tidak dihapus oleh New Game.
 
-Berjalan dengan A/D atau panah kiri/kanan; Shift untuk berlari. Interaksi memakai E atau bubble yang muncul ketika mendekati objek. Lompatan tetap dinonaktifkan sesuai permintaan. Batas tepi world transparan. Interaksi pintu dan komputer menggunakan fade.
+Berjalan dengan A/D atau panah kiri/kanan; Shift untuk berlari. MC memakai animasi jalan enam frame, beralih ke side idle tujuh frame ketika berhenti, lalu idle depan setelah tiga detik tanpa berjalan. Arah side idle mengikuti arah jalan terakhir. Interaksi memakai E atau bubble yang muncul ketika mendekati objek. Lompatan tetap dinonaktifkan sesuai permintaan. Batas tepi world transparan. Interaksi pintu dan komputer menggunakan fade.
 
 ## Lokasi dan alur
 
 Kamar 210 kini memakai furniture kiriman pengguna, kursi interaktif, dan area gerak berukuran 60% lebar serta tinggi viewport. Detail aset dan perilaku resize/save tersedia di [panduan kamar](dorm-room.md).
 
 - Halaman kampus: pintu tengah menuju lorong kelas F1; pintu di sisi kanan bangunan menuju ruang dosen. Tepi kanan menuju gedung lab; tepi kiri menuju asrama.
-- Lorong kelas: tangga dengan E menghubungkan F1, F2, dan F3. Pintu ganda menuju kelas di lantai tersebut. Keluar gedung dari sisi kiri F1. Detail: docs/classroom-corridor.md.
+- Lorong kelas: tangga dengan E menghubungkan F1, F2, dan F3. Area tangga naik khusus untuk naik, dan akses tangga turun khusus untuk turun; tidak ada popup pilihan lantai. Pintu ganda menuju kelas di lantai tersebut. Keluar gedung dari sisi kiri F1. Detail: docs/classroom-corridor.md.
 - Gedung lab: pintu menuju bengkel. Meja perakitan dapat diakses dengan E.
 - Asrama: pintu masuk menuju lantai 1. Tangga di kanan menuju lantai 2. Pintu kamar 210 berada di sisi kiri lantai 2.
 - Kamar 210: tempat tidur di kiri dan meja komputer di kanan. Komputer menyediakan Word Explorer/LMS, Library, Project, Blocks, Notepad, dan aplikasi desktop sebelumnya. Sandi awal komputer 123. Matikan komputer untuk kembali ke kamar.
