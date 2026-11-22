@@ -1,6 +1,10 @@
 [gd_resource type="Theme" format=3 uid="uid://delc85qw5od24"]
 
-[ext_resource type="FontFile" uid="uid://curjthd7i3kdi" path="res://assets/fonts/dotgothic16/DotGothic16-Regular.ttf" id="1_shell"]
+[ext_resource type="FontFile" uid="uid://btaew8rsc3xvx" path="res://assets/fonts/nunito/Nunito-Medium.ttf" id="1_body"]
+[ext_resource type="FontFile" uid="uid://d3a7dxtv066mj" path="res://assets/fonts/nunito/Nunito-SemiBold.ttf" id="2_ui_bold"]
+[ext_resource type="FontFile" uid="uid://b2hc3kthyamng" path="res://assets/fonts/rubik/Rubik-SemiBold.ttf" id="3_display"]
+[ext_resource type="FontFile" uid="uid://crklr4uy6hlf0" path="res://assets/fonts/rubik/Rubik-Bold.ttf" id="4_display_bold"]
+[ext_resource type="FontFile" uid="uid://dqoefhylj4wkh" path="res://assets/fonts/jetbrains_mono/JetBrainsMono-Medium.ttf" id="5_mono"]
 
 [sub_resource type="StyleBoxFlat" id="Dialog"]
 content_margin_left = 12.0
@@ -348,7 +352,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [resource]
-default_font = ExtResource("1_shell")
+default_font = ExtResource("1_body")
 default_font_size = 15
 AcceptDialog/styles/panel = SubResource("Dialog")
 AppFrame/base_type = &"PanelContainer"
@@ -365,13 +369,14 @@ BrowserButton/styles/normal = SubResource("BrowserButton")
 BrowserButton/styles/pressed = SubResource("BrowserButton")
 BrowserHeading/base_type = &"Label"
 BrowserHeading/font_sizes/font_size = 22
+BrowserHeading/fonts/font = ExtResource("4_display_bold")
 BrowserToolbar/base_type = &"PanelContainer"
 BrowserToolbar/styles/panel = SubResource("Toolbar")
 Button/colors/font_color = Color(0.91, 0.94, 0.99, 1)
 Button/colors/font_focus_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_color = Color(1, 1, 1, 1)
 Button/colors/font_pressed_color = Color(0.91, 0.94, 0.99, 1)
-Button/fonts/font = ExtResource("1_shell")
+Button/fonts/font = ExtResource("2_ui_bold")
 Button/styles/focus = SubResource("ControlFocus")
 Button/styles/hover = SubResource("ButtonHover")
 Button/styles/normal = SubResource("Button")
@@ -402,11 +407,11 @@ LineEdit/colors/caret_color = Color(0.91, 0.94, 0.99, 1)
 LineEdit/colors/font_color = Color(0.91, 0.94, 0.99, 1)
 LineEdit/colors/font_selected_color = Color(1, 1, 1, 1)
 LineEdit/colors/selection_color = Color(0.24, 0.38, 0.6, 1)
-LineEdit/fonts/font = ExtResource("1_shell")
+LineEdit/fonts/font = ExtResource("1_body")
 LineEdit/styles/focus = SubResource("ControlFocus")
 LineEdit/styles/normal = SubResource("Input")
 MenuButton/colors/font_color = Color(0.91, 0.94, 0.99, 1)
-MenuButton/fonts/font = ExtResource("1_shell")
+MenuButton/fonts/font = ExtResource("2_ui_bold")
 MenuButton/styles/focus = SubResource("ControlFocus")
 MenuButton/styles/hover = SubResource("ButtonHover")
 MenuButton/styles/pressed = SubResource("ButtonHover")
@@ -425,17 +430,19 @@ NotepadToolbar/styles/panel = SubResource("NotepadToolbar")
 PanelContainer/styles/panel = SubResource("Page")
 PopupMenu/colors/font_color = Color(0.91, 0.94, 0.99, 1)
 PopupMenu/colors/font_hover_color = Color(1, 1, 1, 1)
-PopupMenu/fonts/font = ExtResource("1_shell")
+PopupMenu/fonts/font = ExtResource("1_body")
 PopupMenu/styles/hover = SubResource("ButtonHover")
 PopupMenu/styles/panel = SubResource("Dialog")
 ShellLabel/base_type = &"Label"
 ShellLabel/colors/font_color = Color(0.94, 0.96, 1, 1)
 ShellLabel/font_sizes/font_size = 14
-ShellLabel/fonts/font = ExtResource("1_shell")
+ShellLabel/fonts/font = ExtResource("2_ui_bold")
 Taskbar/base_type = &"PanelContainer"
 Taskbar/styles/panel = SubResource("Taskbar")
 TaskbarClock/base_type = &"ShellLabel"
 TaskbarClock/colors/font_color = Color(0.94, 0.96, 1, 1)
+TaskbarClock/font_sizes/font_size = 14
+TaskbarClock/fonts/font = ExtResource("5_mono")
 TaskbarTurnOff/base_type = &"Button"
 TaskbarTurnOff/colors/font_color = Color(0.94, 0.96, 1, 1)
 TaskbarTurnOff/colors/font_disabled_color = Color(0.64, 0.72, 0.82, 1)
@@ -445,7 +452,7 @@ TaskbarTurnOff/colors/icon_hover_color = Color(1, 1, 1, 1)
 TaskbarTurnOff/colors/icon_normal_color = Color(0.93, 0.96, 1, 1)
 TaskbarTurnOff/colors/icon_pressed_color = Color(0.84, 0.91, 1, 1)
 TaskbarTurnOff/font_sizes/font_size = 14
-TaskbarTurnOff/fonts/font = ExtResource("1_shell")
+TaskbarTurnOff/fonts/font = ExtResource("2_ui_bold")
 TaskbarTurnOff/styles/disabled = SubResource("TurnOffDisabled")
 TaskbarTurnOff/styles/focus = SubResource("ControlFocus")
 TaskbarTurnOff/styles/hover = SubResource("TurnOffHover")
@@ -460,7 +467,7 @@ TextEdit/styles/focus = SubResource("ControlFocus")
 TextEdit/styles/normal = SubResource("Input")
 Window/colors/title_color = Color(0.94, 0.96, 1, 1)
 Window/constants/title_height = 32
-Window/fonts/title_font = ExtResource("1_shell")
+Window/fonts/title_font = ExtResource("3_display")
 Window/styles/embedded_border = SubResource("DialogFrame")
 Window/styles/embedded_unfocused_border = SubResource("DialogFrame")
 WindowButton/base_type = &"Button"
@@ -469,13 +476,14 @@ WindowButton/styles/normal = SubResource("WindowButton")
 WindowButton/styles/pressed = SubResource("ButtonHover")
 WindowClose/base_type = &"WindowButton"
 WindowClose/colors/font_color = Color(1, 0.88, 0.88, 1)
-WindowClose/fonts/font = ExtResource("1_shell")
+WindowClose/fonts/font = ExtResource("4_display_bold")
 WindowClose/styles/hover = SubResource("CloseHover")
 WindowClose/styles/normal = SubResource("Close")
 WindowClose/styles/pressed = SubResource("CloseHover")
 WindowTitle/base_type = &"ShellLabel"
 WindowTitle/colors/font_color = Color(0.91, 0.94, 0.99, 1)
 WindowTitle/font_sizes/font_size = 15
+WindowTitle/fonts/font = ExtResource("3_display")
 WindowTitleActive/base_type = &"PanelContainer"
 WindowTitleActive/styles/panel = SubResource("TitleActive")
 WindowTitleFocused/base_type = &"PanelContainer"

@@ -7,6 +7,7 @@ const ReaderSlot = preload("res://scripts/interaction/workshop/blueprint_reader_
 const SliderHandle = preload("res://scripts/interaction/workshop/slider_handle.gd")
 const Save = preload("res://scripts/autoload/playthrough_save.gd")
 const SAVE_PATH := "user://workshop_progress.cfg"
+const PLATE_BUTTON_FONT: Font = preload("res://assets/fonts/jetbrains_mono/JetBrainsMono-SemiBold.ttf")
 
 @export var puzzles: Array[Puzzle]
 @export_file("*.tscn") var return_scene := "res://scenes/movement/campus_lab_room.tscn"
@@ -444,7 +445,8 @@ func _make_plate_button(caption: String, description: String) -> Button:
 	button.tooltip_text = description
 	button.accessibility_name = description
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	button.add_theme_font_size_override("font_size", 16)
+	button.add_theme_font_override("font", PLATE_BUTTON_FONT)
+	button.add_theme_font_size_override("font_size", 15)
 	_plate.add_child(button)
 	_watch_pointer(button)
 	return button

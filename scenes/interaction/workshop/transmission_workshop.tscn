@@ -10,6 +10,9 @@
 [ext_resource type="Resource" path="res://scenes/interaction/workshop/puzzle_03_hard.tres" id="8_p3"]
 [ext_resource type="Resource" path="res://scenes/interaction/workshop/puzzle_04_expert.tres" id="9_p4"]
 [ext_resource type="Script" path="res://scripts/interaction/workshop/blueprint_reader_slot.gd" id="10_reader"]
+[ext_resource type="FontFile" uid="uid://crklr4uy6hlf0" path="res://assets/fonts/rubik/Rubik-Bold.ttf" id="11_display_bold"]
+[ext_resource type="FontFile" uid="uid://b2hc3kthyamng" path="res://assets/fonts/rubik/Rubik-SemiBold.ttf" id="12_display"]
+[ext_resource type="FontFile" uid="uid://dqoefhylj4wkh" path="res://assets/fonts/jetbrains_mono/JetBrainsMono-Medium.ttf" id="13_mono"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Whisper"]
 content_margin_left = 12.0
@@ -168,6 +171,7 @@ mouse_filter = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.83, 1)
 theme_override_colors/font_outline_color = Color(0.07, 0.11, 0.12, 1)
 theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("11_display_bold")
 theme_override_font_sizes/font_size = 24
 text = "Blueprint diperlukan"
 horizontal_alignment = 1
@@ -211,6 +215,7 @@ theme_override_constants/separation = 4
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89, 0.95, 0.95, 1)
+theme_override_fonts/font = ExtResource("12_display")
 theme_override_font_sizes/font_size = 16
 text = "Lembar detail transmisi"
 
@@ -356,6 +361,7 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.92)
+theme_override_fonts/font = ExtResource("13_mono")
 theme_override_font_sizes/font_size = 12
 text = "Seret: Blueprint / Slider  ·  Klik: Putar / Crank  ·  Tab / Panah: Fokus  ·  Enter / Spasi: Aktifkan"
 horizontal_alignment = 2

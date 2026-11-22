@@ -2,6 +2,7 @@ extends PanelContainer
 
 const Blueprint = preload("res://scripts/interaction/desktop/project/blueprint.gd")
 const BlueprintState = preload("res://scripts/interaction/desktop/project/blueprint_progress.gd").State
+const DISPLAY_FONT: Font = preload("res://assets/fonts/rubik/Rubik-SemiBold.ttf")
 
 @export var blueprints: Array[Blueprint]
 @export var demo_blueprints := false
@@ -52,6 +53,7 @@ func _add_blueprint(blueprint: Blueprint) -> void:
 	var title := Label.new()
 	title.text = blueprint.title
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.add_theme_font_override("font", DISPLAY_FONT)
 	title.add_theme_font_size_override("font_size", 18)
 	title.add_theme_color_override("font_color", Color("#1b3346"))
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

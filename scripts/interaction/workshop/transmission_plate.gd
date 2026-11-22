@@ -6,6 +6,7 @@ const BRASS := Color("#ecb670")
 const STEEL := Color("#add1ce")
 const INK := Color("#182527")
 const CLUE := Color("#ffe0a1")
+const PLATE_FONT: Font = preload("res://assets/fonts/jetbrains_mono/JetBrainsMono-SemiBold.ttf")
 
 var puzzle: Puzzle
 var sheet := false
@@ -399,13 +400,13 @@ func _line_arrow(canvas: CanvasItem, from: Vector2, to: Vector2, color: Color, w
 
 
 func _plate_label(value: String, at: Vector2) -> void:
-	var font := get_theme_default_font()
+	var font := PLATE_FONT
 	var width := font.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x + 14.0
 	draw_rect(Rect2(at - Vector2(width * 0.5, 15), Vector2(width, 20)), INK)
 	draw_string(font, at - Vector2(width * 0.5 - 7, 0), value, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, STEEL)
 
 
 func _diagram_label(value: String, at: Vector2) -> void:
-	var font := get_theme_default_font()
+	var font := PLATE_FONT
 	var width := font.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, 24).x
 	draw_string(font, at - Vector2(width * 0.5, 0), value, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color("#e4f1f1"))
