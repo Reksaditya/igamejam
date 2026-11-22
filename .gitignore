@@ -3,3 +3,4 @@
 /android/
 
 /.codex/config.toml
+__pycache__/

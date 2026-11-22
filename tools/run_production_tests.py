@@ -9,6 +9,7 @@ import time
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--godot", default=shutil.which("godot") or shutil.which("godot4"))
+    parser.add_argument("--pack", type=Path)
     args = parser.parse_args()
     if not args.godot:
         parser.error("Berikan lokasi executable Godot melalui --godot")
@@ -27,6 +28,8 @@ def main():
         for reload in ([False, True] if name in reloads else [False]):
             label = name + ("_reload" if reload else "")
             command = [args.godot, "--headless", "--path", str(repo), "--script", f"res://tests/{name}_smoke.gd", "--quit-after", "3600"]
+            if args.pack:
+                command = [args.godot, "--headless", "--main-pack", str(args.pack.resolve()), "--script", str(repo / "tests" / f"{name}_smoke.gd"), "--quit-after", "3600"]
             if reload:
                 command += ["--", "--reload"]
             try:
