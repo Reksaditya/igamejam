@@ -12,6 +12,11 @@
 [ext_resource type="Script" path="res://scripts/interaction/workshop/blueprint_reader_slot.gd" id="10_reader"]
 [ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="11_display_bold"]
 [ext_resource type="FontFile" uid="uid://dil78upyuf7a2" path="res://assets/fonts/pixelify_sans/PixelifySans-Medium.ttf" id="12_display"]
+[ext_resource type="Script" path="res://scripts/interaction/desktop/project/blueprint.gd" id="13_blueprint_script"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/project/core_drive.tres" id="14_bp_core_drive"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/project/sediment_sorter.tres" id="15_bp_sediment"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/project/sieve_shaker.tres" id="16_bp_sieve"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/project/core_centrifuge.tres" id="17_bp_centrifuge"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Whisper"]
 content_margin_left = 12.0
@@ -89,6 +94,54 @@ shadow_color = Color(0.1, 0.12, 0.13, 0.5)
 shadow_size = 4
 shadow_offset = Vector2(3, 4)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_CrankNormal"]
+content_margin_left = 12.0
+content_margin_top = 5.0
+content_margin_right = 12.0
+content_margin_bottom = 5.0
+bg_color = Color(0.62, 0.43, 0.17, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.96, 0.83, 0.55, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_CrankHover"]
+content_margin_left = 12.0
+content_margin_top = 5.0
+content_margin_right = 12.0
+content_margin_bottom = 5.0
+bg_color = Color(0.75, 0.53, 0.22, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 0.91, 0.69, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_CrankPressed"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 4.0
+bg_color = Color(0.49, 0.34, 0.13, 1)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.96, 0.83, 0.55, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="TransmissionWorkshop" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -99,6 +152,7 @@ grow_vertical = 2
 theme = ExtResource("3_theme")
 script = ExtResource("1_workshop")
 puzzles = Array[ExtResource("6_puzzle_script")]([ExtResource("7_p1"), ExtResource("2_puzzle"), ExtResource("8_p3"), ExtResource("9_p4")])
+blueprints = Array[ExtResource("13_blueprint_script")]([ExtResource("14_bp_core_drive"), ExtResource("15_bp_sediment"), ExtResource("16_bp_sieve"), ExtResource("17_bp_centrifuge")])
 
 [node name="Room" type="Control" parent="."]
 layout_mode = 1
@@ -185,6 +239,13 @@ script = ExtResource("5_plate")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(101, 27)
 mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.97, 0.89, 1)
+theme_override_colors/font_hover_color = Color(1, 0.99, 0.94, 1)
+theme_override_colors/font_focus_color = Color(1, 0.99, 0.94, 1)
+theme_override_colors/font_pressed_color = Color(0.98, 0.93, 0.8, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_CrankNormal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_CrankHover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_CrankPressed")
 text = "Uji Crank"
 
 [node name="Gate" type="Label" parent="Margin/Layout/Scroll/Bench/Machine/Plate"]
@@ -364,11 +425,13 @@ theme_override_fonts/font = ExtResource("11_display_bold")
 theme_override_font_sizes/font_size = 13
 text = "Blueprint (seret ke Slot)"
 
-[node name="BlueprintList" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/BlueprintDock"]
+[node name="BlueprintList" type="GridContainer" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/BlueprintDock"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 5
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
 
 [node name="NoBlueprints" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/DockPanel/DockContent/BlueprintDock"]
 unique_name_in_owner = true

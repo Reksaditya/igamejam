@@ -1,5 +1,6 @@
 extends Control
 
+const Blueprint = preload("res://scripts/interaction/desktop/project/blueprint.gd")
 const Puzzle = preload("res://scripts/interaction/workshop/transmission_puzzle.gd")
 const Plate = preload("res://scripts/interaction/workshop/transmission_plate.gd")
 const BlueprintCard = preload("res://scripts/interaction/workshop/blueprint_card.gd")
@@ -10,6 +11,7 @@ const SAVE_PATH := "user://workshop_progress.cfg"
 const PLATE_BUTTON_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
 
 @export var puzzles: Array[Puzzle]
+@export var blueprints: Array[Blueprint]
 @export_file("*.tscn") var return_scene := "res://scenes/movement/campus_lab_room.tscn"
 @export var return_spawn: StringName = &"WorkshopSpawn"
 @export var return_label := "Kembali ke lab"
@@ -166,6 +168,7 @@ func _rebuild_blueprint_dock() -> void:
 		%BlueprintList.add_child(card)
 		card.configure(
 			entry,
+			_artwork_for_puzzle(entry),
 			get_instance_id(),
 			_is_puzzle_completed(entry),
 			_active_puzzle == entry,
@@ -175,6 +178,15 @@ func _rebuild_blueprint_dock() -> void:
 		card.card_activated.connect(_insert_blueprint_by_id)
 		card.drag_started.connect(_on_card_selected)
 		_blueprint_cards[entry.puzzle_id] = card
+
+
+func _artwork_for_puzzle(entry: Puzzle) -> Texture2D:
+	if entry == null:
+		return null
+	for bp: Blueprint in blueprints:
+		if bp != null and (bp.blueprint_id == entry.linked_blueprint_id or bp.workshop_puzzle_id == entry.puzzle_id):
+			return bp.artwork
+	return null
 
 
 func _pick_default_puzzle_id(owned: Array[Puzzle]) -> String:
@@ -191,6 +203,7 @@ func _refresh_blueprint_dock_states() -> void:
 			continue
 		card.configure(
 			card.puzzle,
+			_artwork_for_puzzle(card.puzzle),
 			get_instance_id(),
 			_is_puzzle_completed(card.puzzle),
 			_active_puzzle == card.puzzle,
@@ -214,6 +227,8 @@ func _can_accept_blueprint_drop(puzzle_id: String) -> bool:
 
 
 func _on_insert_button_pressed() -> void:
+	if _adjusting or _dragging_slider >= 0 or _testing or _inserting or _relocking or _leaving:
+		return
 	if _unlocked:
 		_eject_blueprint("Blueprint dikeluarkan.")
 	elif not _selected_puzzle_id.is_empty():
@@ -283,7 +298,7 @@ func _load_puzzle_into_bench(target: Puzzle) -> void:
 
 	_build_dynamic_plate_controls()
 	_record_blueprint_work(_completed)
-	_feedback("Perakitan selesai. Siap diuji." if _completed else "Atur Gear lalu uji Crank.")
+	_feedback("Perakitan selesai." if _completed else "")
 	_refresh_blueprint_dock_states()
 	_refresh_plate()
 	_update_controls()
@@ -498,12 +513,14 @@ func _sync_cue() -> void:
 	_plate.preview_carrier = carrier if show_preview and carrier >= 0 else -1
 	_plate.preview_slider = slider_idx if show_preview and slider_idx >= 0 else -1
 	_status.text = hint if not hint.is_empty() else _test_feedback
+	%Feedback.visible = not _status.text.is_empty()
 	_plate.refresh()
 
 
 func _feedback(message: String) -> void:
 	_test_feedback = message
 	_status.text = message
+	%Feedback.visible = not message.is_empty()
 
 
 func _layout_plate_buttons() -> void:
@@ -572,7 +589,7 @@ func _rotate_carrier(carrier: int) -> void:
 
 	var turn := _track_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	turn.tween_method(_set_visual_turn.bind(carrier), _plate.turns[carrier], _plate.turns[carrier] + float(step_count), 0.22)
-	_feedback("Siap diuji.")
+	_feedback("")
 	await turn.finished
 	if not is_instance_valid(self) or not is_inside_tree() or _active_puzzle == null:
 		return
@@ -626,7 +643,7 @@ func _on_slider_drag_ended(slider: int, target_stop: int) -> void:
 	if _active_puzzle.can_move_slider(_rotations, _slider_stops, slider, target_stop):
 		_slider_stops[slider] = target_stop
 		_record_blueprint_work(false)
-		_feedback("Siap diuji.")
+		_feedback("")
 	else:
 		_feedback("Titik henti terhalang Gear lain.")
 
@@ -650,7 +667,7 @@ func _on_slider_step(slider: int) -> void:
 
 	_slider_stops[slider] = next_stop
 	_record_blueprint_work(false)
-	_feedback("Siap diuji.")
+	_feedback("")
 	await _animate_slider_to_stop(slider, next_stop, 0.18)
 
 
@@ -774,24 +791,24 @@ func _refresh_plate() -> void:
 
 
 func _update_controls() -> void:
-	var busy := _inserting or _adjusting or _testing or _leaving or _relocking or _dragging_slider >= 0
+	var ui_locked := _inserting or _testing or _leaving or _relocking
 	_crank.visible = _unlocked and _active_puzzle != null
-	%Feedback.visible = _unlocked or not _test_feedback.is_empty()
+	%Feedback.visible = not _status.text.is_empty()
 	%Legend.visible = _unlocked and _active_puzzle != null
-	_crank.disabled = not _unlocked or _active_puzzle == null or busy
-	_return.disabled = busy or return_scene.is_empty()
+	_crank.disabled = not _unlocked or _active_puzzle == null or ui_locked
+	_return.disabled = ui_locked or return_scene.is_empty()
 
 	if _unlocked and _active_puzzle != null:
 		_insert.text = "Keluarkan Blueprint"
-		_insert.disabled = busy
+		_insert.disabled = ui_locked
 	else:
 		var has_selected := not _selected_puzzle_id.is_empty() and _find_owned_puzzle(_selected_puzzle_id) != null
 		_insert.text = "Masukkan terpilih" if has_selected else "Menunggu Blueprint"
-		_insert.disabled = not has_selected or busy
+		_insert.disabled = not has_selected or ui_locked
 
 	for card: BlueprintCard in _blueprint_cards.values():
 		if is_instance_valid(card):
-			card.disabled = busy
+			card.disabled = ui_locked
 
 	if _active_puzzle != null:
 		%LegendText.text = (
@@ -803,15 +820,15 @@ func _update_controls() -> void:
 	for carrier: int in range(_carrier_buttons.size()):
 		if is_instance_valid(_carrier_buttons[carrier]):
 			_carrier_buttons[carrier].visible = _unlocked
-			_carrier_buttons[carrier].disabled = not _unlocked or busy
+			_carrier_buttons[carrier].disabled = not _unlocked or ui_locked
 		if is_instance_valid(_gear_buttons[carrier]):
-			_gear_buttons[carrier].visible = _unlocked and not _adjusting
-			_gear_buttons[carrier].disabled = not _unlocked or busy
+			_gear_buttons[carrier].visible = _unlocked
+			_gear_buttons[carrier].disabled = not _unlocked or ui_locked
 
 	for handle: SliderHandle in _slider_handles:
 		if is_instance_valid(handle):
 			handle.visible = _unlocked
-			handle.disabled = not _unlocked or (_adjusting or _testing or _leaving or _relocking or _inserting)
+			handle.disabled = not _unlocked or ui_locked
 
 	for fixed: Control in _fixed_gears:
 		if is_instance_valid(fixed):

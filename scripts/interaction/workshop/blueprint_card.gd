@@ -1,25 +1,28 @@
 extends Button
 
 const Puzzle = preload("res://scripts/interaction/workshop/transmission_puzzle.gd")
+const CARD_MIN_SIZE := Vector2(96.0, 68.0)
 
 signal card_selected(puzzle_id: String)
 signal card_activated(puzzle_id: String)
 signal drag_started(puzzle_id: String)
 
 var puzzle: Puzzle
+var artwork: Texture2D
 var source_id := 0
 var completed := false
 var active := false
 var selected := false
 
-var _title_label: Label
-var _meta_label: Label
-var _badge_label: Label
-var _badge_panel: PanelContainer
+var _artwork_rect: TextureRect
+var _fallback_preview: Control
+var _status_badge: PanelContainer
+var _status_icon: Label
 
 
 func _init() -> void:
-	custom_minimum_size = Vector2(0.0, 48.0)
+	custom_minimum_size = CARD_MIN_SIZE
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	clip_contents = true
 	_build_content()
@@ -29,44 +32,42 @@ func _build_content() -> void:
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	margin.add_theme_constant_override("margin_left", 9)
-	margin.add_theme_constant_override("margin_top", 5)
-	margin.add_theme_constant_override("margin_right", 9)
-	margin.add_theme_constant_override("margin_bottom", 5)
+	for side: String in ["margin_left", "margin_top", "margin_right", "margin_bottom"]:
+		margin.add_theme_constant_override(side, 5)
 	add_child(margin)
 
-	var row := HBoxContainer.new()
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_theme_constant_override("separation", 8)
-	margin.add_child(row)
+	_artwork_rect = TextureRect.new()
+	_artwork_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_artwork_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_artwork_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_artwork_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_artwork_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_artwork_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	margin.add_child(_artwork_rect)
 
-	var info := VBoxContainer.new()
-	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	info.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	info.add_theme_constant_override("separation", 1)
-	row.add_child(info)
+	_fallback_preview = Control.new()
+	_fallback_preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_fallback_preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_fallback_preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_fallback_preview.visible = false
+	_fallback_preview.draw.connect(_draw_fallback_blueprint.bind(_fallback_preview))
+	margin.add_child(_fallback_preview)
 
-	_title_label = Label.new()
-	_title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_title_label.add_theme_font_size_override("font_size", 14)
-	_title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	info.add_child(_title_label)
+	_status_badge = PanelContainer.new()
+	_status_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_status_badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_status_badge.offset_left = -22.0
+	_status_badge.offset_top = 4.0
+	_status_badge.offset_right = -4.0
+	_status_badge.offset_bottom = 22.0
+	_status_badge.visible = false
+	add_child(_status_badge)
 
-	_meta_label = Label.new()
-	_meta_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_meta_label.add_theme_font_size_override("font_size", 12)
-	info.add_child(_meta_label)
-
-	_badge_panel = PanelContainer.new()
-	_badge_panel.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_badge_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(_badge_panel)
-
-	_badge_label = Label.new()
-	_badge_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_badge_label.add_theme_font_size_override("font_size", 12)
-	_badge_panel.add_child(_badge_label)
+	_status_icon = Label.new()
+	_status_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_status_icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_status_icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_status_badge.add_child(_status_icon)
 
 
 func _ready() -> void:
@@ -74,8 +75,9 @@ func _ready() -> void:
 	refresh_visual()
 
 
-func configure(target_puzzle: Puzzle, owner_source_id: int, is_completed: bool, is_active: bool, is_selected: bool) -> void:
+func configure(target_puzzle: Puzzle, target_artwork: Texture2D, owner_source_id: int, is_completed: bool, is_active: bool, is_selected: bool) -> void:
 	puzzle = target_puzzle
+	artwork = target_artwork
 	source_id = owner_source_id
 	completed = is_completed
 	active = is_active
@@ -86,49 +88,36 @@ func configure(target_puzzle: Puzzle, owner_source_id: int, is_completed: bool, 
 func refresh_visual() -> void:
 	if puzzle == null:
 		return
-	_title_label.text = puzzle.title
-	var slider_note := "  ·  Slider" if puzzle.slider_count() > 0 else ""
-	_meta_label.text = "%s%s" % [puzzle.difficulty, slider_note]
+	_artwork_rect.texture = artwork
+	_artwork_rect.visible = artwork != null
+	_fallback_preview.visible = artwork == null
+	if _fallback_preview.visible:
+		_fallback_preview.queue_redraw()
+
 	accessibility_name = "Blueprint %s, %s" % [puzzle.title, "Selesai" if completed else ("Aktif" if active else "Siap")]
-	tooltip_text = "Seret ke Slot di atas atau tekan Enter"
+	tooltip_text = "%s (%s) — Seret ke Slot atau tekan Enter" % [puzzle.title, puzzle.difficulty]
 
-	var badge_text := "Aktif" if active else ("Selesai" if completed else "Siap")
-	_badge_label.text = badge_text
-
-	var bg := Color("#16282c")
-	var hover_bg := Color("#1d353b")
-	var border := Color("#426066")
-	var badge_bg := Color("#213c44")
-	var badge_border := Color("#4e8496")
-	var badge_text_color := Color("#cbe9f0")
+	var bg := Color("#143040")
+	var hover_bg := Color("#1c4257")
+	var border := Color("#4e7c90")
 
 	if active:
-		bg = Color("#183439")
-		hover_bg = Color("#204348")
+		bg = Color("#183e4e")
+		hover_bg = Color("#215165")
 		border = Color("#7bd4eb")
-		badge_bg = Color("#204c56")
-		badge_border = Color("#7bd4eb")
-		badge_text_color = Color("#e2f8ff")
 	elif completed:
-		bg = Color("#132524")
-		hover_bg = Color("#1a3230")
-		border = Color("#549e72")
-		badge_bg = Color("#1e4431")
-		badge_border = Color("#59aa79")
-		badge_text_color = Color("#cef2da")
+		bg = Color("#143030")
+		hover_bg = Color("#1b3f3e")
+		border = Color("#59aa79")
 	elif selected:
-		bg = Color("#1b3238")
-		hover_bg = Color("#223f46")
+		bg = Color("#183a4d")
+		hover_bg = Color("#204b63")
 		border = Color("#ffe0a1")
-
-	_title_label.add_theme_color_override("font_color", Color("#edf4f3"))
-	_meta_label.add_theme_color_override("font_color", Color("#a9c0c2"))
-	_badge_label.add_theme_color_override("font_color", badge_text_color)
 
 	_apply_card_style("normal", bg, border, 2 if (selected or active) else 1)
 	_apply_card_style("hover", hover_bg, border.lightened(0.18), 2 if (selected or active) else 1)
 	_apply_card_style("pressed", hover_bg, Color("#ffe0a1"), 2)
-	_apply_card_style("disabled", Color("#111b1d"), Color("#2c3c3e"), 1)
+	_apply_card_style("disabled", Color("#112028"), Color("#2c414d"), 1)
 
 	var focus_style := StyleBoxFlat.new()
 	focus_style.draw_center = false
@@ -137,16 +126,27 @@ func refresh_visual() -> void:
 	focus_style.set_corner_radius_all(4)
 	add_theme_stylebox_override("focus", focus_style)
 
+	_update_status_badge()
+
+
+func _update_status_badge() -> void:
+	if not completed and not active:
+		_status_badge.visible = false
+		return
+	_status_badge.visible = true
+	_status_icon.text = "✓" if completed else "●"
+	_status_icon.add_theme_font_size_override("font_size", 12 if completed else 10)
+	_status_icon.add_theme_color_override("font_color", Color("#cef2da") if completed else Color("#dff8ff"))
 	var badge_style := StyleBoxFlat.new()
-	badge_style.bg_color = badge_bg
-	badge_style.border_color = badge_border
+	badge_style.bg_color = Color("#1e4431") if completed else Color("#1c4b59")
+	badge_style.border_color = Color("#59aa79") if completed else Color("#7bd4eb")
 	badge_style.set_border_width_all(1)
 	badge_style.set_corner_radius_all(3)
-	badge_style.content_margin_left = 6.0
-	badge_style.content_margin_right = 6.0
-	badge_style.content_margin_top = 2.0
-	badge_style.content_margin_bottom = 2.0
-	_badge_panel.add_theme_stylebox_override("panel", badge_style)
+	badge_style.content_margin_left = 4.0
+	badge_style.content_margin_right = 4.0
+	badge_style.content_margin_top = 0.0
+	badge_style.content_margin_bottom = 0.0
+	_status_badge.add_theme_stylebox_override("panel", badge_style)
 
 
 func _apply_card_style(state: String, bg: Color, border: Color, border_width: int) -> void:
@@ -170,6 +170,9 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
 		card_activated.emit(puzzle.puzzle_id)
 		accept_event()
+	elif event.is_action_pressed("ui_accept"):
+		card_activated.emit(puzzle.puzzle_id)
+		accept_event()
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
@@ -179,19 +182,52 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	preview.z_as_relative = false
 	preview.z_index = 64
-	preview.size = Vector2(160.0, 44.0)
-	preview.draw.connect(_draw_drag_preview.bind(preview, puzzle.title, puzzle.difficulty))
+
+	var frame := PanelContainer.new()
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.size = Vector2(116.0, 82.0)
+	frame.position = Vector2(-58.0, -41.0)
+	frame.modulate = Color(1.0, 1.0, 1.0, 0.90)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("#183a4d")
+	style.border_color = Color("#89d8ed")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(4)
+	style.set_content_margin_all(5)
+	style.shadow_color = Color(0.03, 0.06, 0.08, 0.5)
+	style.shadow_size = 4
+	style.shadow_offset = Vector2(2, 3)
+	frame.add_theme_stylebox_override("panel", style)
+	preview.add_child(frame)
+
+	if artwork != null:
+		var thumb := TextureRect.new()
+		thumb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		thumb.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		thumb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		thumb.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		thumb.texture = artwork
+		frame.add_child(thumb)
+	else:
+		var fallback := Control.new()
+		fallback.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		fallback.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		fallback.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		fallback.draw.connect(_draw_fallback_blueprint.bind(fallback))
+		frame.add_child(fallback)
+
 	set_drag_preview(preview)
 	drag_started.emit(puzzle.puzzle_id)
 	return {"source": source_id, "type": "workshop_blueprint", "puzzle_id": puzzle.puzzle_id}
 
 
-func _draw_drag_preview(canvas: CanvasItem, card_title: String, card_difficulty: String) -> void:
+func _draw_fallback_blueprint(canvas: Control) -> void:
 	var rect := Rect2(Vector2.ZERO, canvas.size)
-	canvas.draw_rect(Rect2(rect.position + Vector2(2, 3), rect.size), Color(0.03, 0.06, 0.08, 0.45))
-	canvas.draw_rect(rect, Color("#245262"))
-	canvas.draw_rect(rect, Color("#89d8ed"), false, 2.0)
-	canvas.draw_rect(Rect2(Vector2(6, 7), Vector2(rect.size.x - 12.0, 3.0)), Color("#bcebf4"))
-	var font := get_theme_default_font()
-	canvas.draw_string(font, Vector2(9, 25), card_title, HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 18.0, 13, Color("#f2fafb"))
-	canvas.draw_string(font, Vector2(9, 38), card_difficulty, HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 18.0, 10, Color("#bcebf4"))
+	canvas.draw_rect(rect, Color("#1f4d66"))
+	canvas.draw_rect(rect.grow(-2.0), Color("#739baa"), false, 1.0)
+	var center := rect.get_center()
+	var r := minf(rect.size.x, rect.size.y) * 0.24
+	canvas.draw_arc(center, r, 0.0, TAU, 16, Color("#e4f1f1"), 2.0, true)
+	canvas.draw_circle(center, r * 0.32, Color("#739baa"))

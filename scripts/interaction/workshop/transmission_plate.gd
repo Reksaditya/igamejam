@@ -210,7 +210,8 @@ func _draw_overlay() -> void:
 		_draw_slider_preview(preview_slider)
 	if output_result != 0:
 		var result_color := Color("#a9e4be") if result_passed else Color("#ffae91")
-		_arrow(_overlay, puzzle.output_socket, puzzle.output_radius + 6.0, output_result, result_color, 5.5, 16.0)
+		var output_arrow_r := _clamped_arc_radius(puzzle.output_socket, -PI / 2.0 - output_result * 0.65, output_result * 4.55, puzzle.output_radius + 13.0, 15.0)
+		_arrow(_overlay, puzzle.output_socket, output_arrow_r, output_result, result_color, 5.0, 15.0)
 	if locked:
 		var face := Rect2(Vector2(4, 4), Puzzle.PLATE_SIZE - Vector2(8, 8))
 		_overlay.draw_rect(face, Color(0.04, 0.07, 0.08, 0.49))
@@ -223,13 +224,15 @@ func _draw_carrier_preview(carrier: int) -> void:
 	var next := puzzle.carrier_gear_position(carrier, turn + 1.0)
 	var radius := puzzle.carrier_radii[carrier]
 	var orbit_radius := pivot.distance_to(current)
-	var arrow_radius := clampf(orbit_radius * 0.62, 30.0, maxf(30.0, orbit_radius - 6.0))
+	var start_angle := (current - pivot).angle() + 0.06
+	var sweep := PI / 2.0 - 0.12
+	var arrow_radius := _clamped_arc_radius(pivot, start_angle, sweep, orbit_radius + radius + 10.0, 14.0)
 	draw_gear(_overlay, next, Color(1.0, 0.84, 0.54, 0.34), 0.0, radius)
 	_overlay.draw_arc(next, radius + 4.5, 0, TAU, 40, Color(INK, 0.82), 5.0, true)
 	_overlay.draw_arc(next, radius + 4.5, 0, TAU, 40, Color(1.0, 0.87, 0.58, 0.88), 2.5, true)
 	_overlay.draw_arc(current, radius + 4.5, 0, TAU, 40, Color(INK, 0.82), 5.0, true)
 	_overlay.draw_arc(current, radius + 4.5, 0, TAU, 40, CLUE, 2.5, true)
-	_arc_arrow(_overlay, pivot, arrow_radius, (current - pivot).angle(), PI / 2.0, CLUE, 5.0, 14.0)
+	_arc_arrow(_overlay, pivot, arrow_radius, start_angle, sweep, CLUE, 5.0, 14.0)
 
 
 func _draw_slider_preview(slider_idx: int) -> void:
@@ -320,8 +323,10 @@ func _draw_sheet(face: Rect2) -> void:
 		draw_circle(endpoint, 6.0, Color("#e4f1f1"), false, 2.0, true)
 
 	_diagram_label("M", puzzle.motor_socket - Vector2(0, puzzle.motor_radius + 10.0))
-	_diagram_label("OUT", puzzle.output_socket + Vector2(0, puzzle.output_radius + 26.0))
-	_arrow(self, puzzle.output_socket, puzzle.output_radius + 4.0, puzzle.required_output_direction, CLUE, 5.5, 16.0)
+	var sheet_arrow_r := _clamped_arc_radius(puzzle.output_socket, -PI / 2.0 - puzzle.required_output_direction * 0.65, puzzle.required_output_direction * 4.55, puzzle.output_radius + 13.0, 15.0)
+	var out_label_y := minf(puzzle.output_socket.y + sheet_arrow_r + 24.0, Puzzle.PLATE_SIZE.y - 16.0)
+	_diagram_label("OUT", Vector2(puzzle.output_socket.x, out_label_y))
+	_arrow(self, puzzle.output_socket, sheet_arrow_r, puzzle.required_output_direction, CLUE, 5.0, 15.0)
 
 
 func _socket(point: Vector2, selected := false) -> void:
@@ -354,6 +359,23 @@ static func draw_gear(canvas: CanvasItem, point: Vector2, metal: Color, phase :=
 
 func _arrow(canvas: CanvasItem, center: Vector2, radius: float, direction: int, color: Color, width := 5.5, head_size := 15.0) -> void:
 	_arc_arrow(canvas, center, radius, -PI / 2.0 - direction * 0.65, direction * 4.55, color, width, head_size)
+
+
+func _clamped_arc_radius(center: Vector2, start: float, sweep: float, desired_radius: float, head_size: float) -> float:
+	var pad := head_size * 0.55 + 10.0
+	var max_r := desired_radius
+	for i: int in range(13):
+		var t := float(i) / 12.0
+		var u := Vector2.from_angle(start + sweep * t)
+		if u.x > 0.001:
+			max_r = minf(max_r, (Puzzle.PLATE_SIZE.x - pad - center.x) / u.x)
+		elif u.x < -0.001:
+			max_r = minf(max_r, (center.x - pad) / -u.x)
+		if u.y > 0.001:
+			max_r = minf(max_r, (Puzzle.PLATE_SIZE.y - pad - center.y) / u.y)
+		elif u.y < -0.001:
+			max_r = minf(max_r, (center.y - pad) / -u.y)
+	return clampf(desired_radius, 18.0, maxf(18.0, max_r))
 
 
 func _arc_arrow(canvas: CanvasItem, center: Vector2, radius: float, start: float, sweep: float, color: Color, width := 5.0, head_size := 14.0) -> void:
