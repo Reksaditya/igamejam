@@ -52,7 +52,7 @@ var _fan_tween: Tween
 @export var click_sound: AudioStream
 @export var fan_ambient: AudioStream
 @export_range(-40.0, 0.0, 0.5, "suffix:dB") var mouse_click_volume_db: float = -8.0
-@export_range(-40.0, 0.0, 0.5, "suffix:dB") var fan_ambient_volume_db: float = -18.0
+@export_range(-40.0, 6.0, 0.5, "suffix:dB") var fan_ambient_volume_db: float = -6.0
 
 @export_group("Return")
 @export_file("*.tscn") var return_scene: String

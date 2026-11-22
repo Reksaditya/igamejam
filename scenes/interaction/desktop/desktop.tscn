@@ -95,64 +95,64 @@ script = ExtResource("8_grid")
 [node name="NotepadLauncher" parent="Display/DesktopItems/Launchers" unique_id=1136255648 instance=ExtResource("4_document")]
 custom_minimum_size = Vector2(126, 96)
 layout_mode = 0
-offset_left = 154.0
-offset_top = 17.0
-offset_right = 280.0
-offset_bottom = 113.0
+offset_left = 290.0
+offset_top = 123.0
+offset_right = 416.0
+offset_bottom = 219.0
 tooltip_text = "Notepad"
 accessibility_name = "Notepad"
 submission_filename = ""
 display_title = "Notepad"
 icon_kind = 2
-default_cell = Vector2i(1, 0)
+default_cell = Vector2i(2, 1)
 
 [node name="WordExplorerLauncher" parent="Display/DesktopItems/Launchers" unique_id=343467220 instance=ExtResource("6_explorer")]
 custom_minimum_size = Vector2(126, 96)
 layout_mode = 0
 offset_left = 426.0
-offset_top = 123.0
+offset_top = 17.0
 offset_right = 552.0
-offset_bottom = 219.0
+offset_bottom = 113.0
 tooltip_text = "Word Explorer"
 accessibility_name = "Word Explorer"
 display_title = "Word Explorer"
-default_cell = Vector2i(3, 1)
+default_cell = Vector2i(3, 0)
 
 [node name="FileManagerLauncher" parent="Display/DesktopItems/Launchers" unique_id=1840225634 instance=ExtResource("9_files")]
 custom_minimum_size = Vector2(126, 96)
 layout_mode = 0
-offset_left = 154.0
-offset_top = 229.0
-offset_right = 280.0
-offset_bottom = 325.0
+offset_left = 290.0
+offset_top = 335.0
+offset_right = 416.0
+offset_bottom = 431.0
 tooltip_text = "File Manager"
 accessibility_name = "File Manager"
 display_title = "File Manager"
 folder = false
-default_cell = Vector2i(1, 2)
+default_cell = Vector2i(2, 3)
 
 [node name="ProjectLauncher" parent="Display/DesktopItems/Launchers" unique_id=1400766186 instance=ExtResource("13_project")]
 custom_minimum_size = Vector2(126, 96)
 layout_mode = 0
-offset_left = 562.0
-offset_top = 229.0
-offset_right = 688.0
-offset_bottom = 325.0
+offset_left = 698.0
+offset_top = 17.0
+offset_right = 824.0
+offset_bottom = 113.0
 tooltip_text = "Project"
 accessibility_name = "Project"
 display_title = "Project"
-default_cell = Vector2i(4, 2)
+default_cell = Vector2i(5, 0)
 
 [node name="BlocksLauncher" parent="Display/DesktopItems/Launchers" unique_id=1403528437 instance=ExtResource("17_blocks")]
 custom_minimum_size = Vector2(126, 96)
 layout_mode = 0
-offset_left = 698.0
-offset_top = 335.0
-offset_right = 824.0
-offset_bottom = 431.0
+offset_left = 834.0
+offset_top = 229.0
+offset_right = 960.0
+offset_bottom = 325.0
 tooltip_text = "Blocks n Blast"
 accessibility_name = "Blocks n Blast"
-default_cell = Vector2i(5, 3)
+default_cell = Vector2i(6, 2)
 
 [node name="Windows" type="Control" parent="Display" unique_id=651136829]
 z_index = 2
