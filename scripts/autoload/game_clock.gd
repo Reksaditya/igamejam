@@ -103,6 +103,17 @@ func restore_save_state(state: Dictionary) -> void:
 	_publish_minute()
 
 
+func reset_timeline() -> void:
+	if _activity != Activity.NONE:
+		_clear_activity()
+	_assessment_tokens.clear()
+	_timeline_active = false
+	_absolute_minutes = MORNING_MINUTES
+	_assessment_remainder_msec = 0
+	_reset_tick()
+	minute_changed.emit(_absolute_minutes)
+
+
 func begin_assessment() -> int:
 	if _activity != Activity.NONE:
 		return 0

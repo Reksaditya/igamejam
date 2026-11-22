@@ -1,6 +1,8 @@
 extends Node
 
 const SAVE_PATH := "user://game_save.cfg"
+const RESET_ON_LAUNCH_SETTING := "application/config/reset_progress_on_launch"
+const KEEP_SAVE_ARGS := ["--keep-save", "--reload", "--legacy", "--interrupted"]
 const INITIAL_SCENE := "res://scenes/movement/top_down_movement.tscn"
 const DESKTOP_SCENE := "res://scenes/interaction/desktop/desktop.tscn"
 const WORKSHOP_SCENE := "res://scenes/interaction/workshop/transmission_workshop.tscn"
@@ -13,6 +15,7 @@ const CAMPUS_FILES := ["classroom_notes.cfg", "transmission_progress.cfg",
 	"classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg"]
 
 var last_save_error: Error = OK
+var reset_on_launch: bool = true
 var _enabled: bool = false
 var _busy: bool = false
 var _queued: bool = false
@@ -32,6 +35,39 @@ func _ready() -> void:
 	BlueprintProgress.changed.connect(request_autosave)
 	ProjectBlueprints.changed.connect(request_autosave)
 	PlayerStats.changed.connect(request_autosave)
+	reset_on_launch = bool(ProjectSettings.get_setting(RESET_ON_LAUNCH_SETTING, true))
+	if should_reset_on_launch():
+		reset_persistent_data()
+
+
+func should_reset_on_launch() -> bool:
+	if not reset_on_launch:
+		return false
+	var user_args := OS.get_cmdline_user_args()
+	for flag: String in KEEP_SAVE_ARGS:
+		if flag in user_args:
+			return false
+	return true
+
+
+func reset_persistent_data() -> Error:
+	_busy = true
+	var error := _replace_files({}, true)
+	if error == OK:
+		_resume_scene = INITIAL_SCENE
+		_world_scene = INITIAL_SCENE
+		_position = Vector2(320, 592)
+		_facing = 1.0
+		_restore_position = false
+		_enabled = false
+		ClassroomProgress.reload_progress()
+		BlueprintProgress.reload_progress()
+		StudyNotes.reload_progress()
+		GameClock.reset_timeline()
+		PlayerStats.restore_save_state(PlayerStats.DEFAULTS)
+		_clear_spawn()
+	_busy = false
+	return error
 
 
 func _process(delta: float) -> void:
