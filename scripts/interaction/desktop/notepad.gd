@@ -29,11 +29,12 @@ func _ready() -> void:
 
 	var menu: PopupMenu = %FileMenu.get_popup()
 	menu.theme_type_variation = &"NotepadFilePopup"
-	menu.add_item("Open…", FileAction.OPEN)
-	menu.add_item("Save", FileAction.SAVE)
-	menu.add_item("Save As…", FileAction.SAVE_AS)
+	menu.add_item("Buka…", FileAction.OPEN)
+	menu.add_item("Simpan", FileAction.SAVE)
+	menu.add_item("Simpan Sebagai…", FileAction.SAVE_AS)
 	menu.id_pressed.connect(_on_file_action)
 	_picker.file_selected.connect(_on_file_selected)
+	_discard_dialog.get_cancel_button().text = "Batal"
 	_discard_dialog.confirmed.connect(_open_pending_document)
 	_discard_dialog.canceled.connect(_clear_pending_document)
 
@@ -41,7 +42,7 @@ func _ready() -> void:
 func _on_file_action(action: int) -> void:
 	var error := DirAccess.make_dir_recursive_absolute(NOTES_DIRECTORY)
 	if error != OK:
-		_show_file_error("Could not create the notes folder.", error)
+		_show_file_error("Gagal membuat folder catatan.", error)
 		return
 
 	if action == FileAction.SAVE and not _document_path.is_empty():
@@ -50,7 +51,7 @@ func _on_file_action(action: int) -> void:
 
 	_picker.root_subfolder = NOTES_DIRECTORY
 	_picker.file_mode = FileDialog.FILE_MODE_OPEN_FILE if action == FileAction.OPEN else FileDialog.FILE_MODE_SAVE_FILE
-	_picker.title = "Open note" if action == FileAction.OPEN else "Save note as"
+	_picker.title = "Buka catatan" if action == FileAction.OPEN else "Simpan catatan sebagai"
 	_picker.current_file = "" if action == FileAction.OPEN else _document_path.get_file()
 	_picker.popup_centered_clamped(Vector2i(560, 360))
 
@@ -58,7 +59,7 @@ func _on_file_action(action: int) -> void:
 func _on_file_selected(selected_path: String) -> void:
 	var path := selected_path.replace("\\", "/").simplify_path()
 	if not path.begins_with(NOTES_DIRECTORY + "/") or path.get_extension().to_lower() != "txt":
-		_show_file_error("Choose a .txt file in the notes folder.", ERR_INVALID_PARAMETER)
+		_show_file_error("Pilih berkas .txt di dalam folder catatan.", ERR_INVALID_PARAMETER)
 		return
 
 	if _picker.file_mode == FileDialog.FILE_MODE_OPEN_FILE:
@@ -70,19 +71,19 @@ func _on_file_selected(selected_path: String) -> void:
 func _read_document(path: String) -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
-		_show_file_error("Could not open the note.", FileAccess.get_open_error())
+		_show_file_error("Gagal membuka catatan.", FileAccess.get_open_error())
 		return
 	var length := file.get_length()
 	var bytes := file.get_buffer(length)
 	if bytes.size() != length:
-		_show_file_error("Could not read the whole note.", ERR_FILE_CANT_READ)
+		_show_file_error("Gagal membaca seluruh isi catatan.", ERR_FILE_CANT_READ)
 		return
 
 	if bytes.slice(0, 3) == PackedByteArray([0xef, 0xbb, 0xbf]):
 		bytes = bytes.slice(3)
 	var text := bytes.get_string_from_utf8()
 	if text.to_utf8_buffer() != bytes:
-		_show_file_error("Could not read the note as UTF-8.", ERR_FILE_CORRUPT)
+		_show_file_error("Gagal membaca catatan sebagai teks UTF-8.", ERR_FILE_CORRUPT)
 		return
 
 	_open_path = path
@@ -113,7 +114,7 @@ func _save_document(path: String) -> void:
 	var backup_path := temporary_path + ".bak"
 	var file := FileAccess.open(temporary_path, FileAccess.WRITE)
 	if file == null:
-		_show_file_error("Could not write the note.", FileAccess.get_open_error())
+		_show_file_error("Gagal menulis catatan.", FileAccess.get_open_error())
 		return
 
 	var text := _editor.text
@@ -125,9 +126,9 @@ func _save_document(path: String) -> void:
 		error = _replace_note_file(temporary_path, path, backup_path)
 	if error != OK:
 		DirAccess.remove_absolute(temporary_path)
-		var message := "Could not save the note."
+		var message := "Gagal menyimpan catatan."
 		if FileAccess.file_exists(backup_path):
-			message += "\nThe previous note is backed up as " + backup_path.get_file() + "."
+			message += "\nCatatan sebelumnya dicadangkan sebagai " + backup_path.get_file() + "."
 		_show_file_error(message, error)
 		return
 

@@ -6,5 +6,5 @@
 
 [resource]
 script = ExtResource("1_folder")
-folder_name = "Documents"
+folder_name = "Dokumen"
 files = Array[PackedScene]([ExtResource("readme"), ExtResource("notes")])

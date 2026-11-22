@@ -78,7 +78,7 @@ func _next_segment() -> void:
 		return
 	var lesson := BlueprintProgress.PROJECT.lessons[_indices[_segment]]
 	%Teaching.text = lesson.title + "\n" + lesson.material
-	%StudyStatus.text = "Sedang belajar · Tekan Space saat penanda QTE berada di zona hijau."
+	%StudyStatus.text = "Sedang belajar · Tekan Spasi saat penanda QTE berada di zona hijau."
 	_phase = Phase.WAITING
 	_remaining = first_qte_delay if _segment == 0 else randf_range(minimum_qte_delay, maxf(minimum_qte_delay, maximum_qte_delay))
 
@@ -168,7 +168,7 @@ func _open_blueprint() -> void:
 func _update_blueprint_status() -> void:
 	var saved := _blueprint_error == OK
 	%Blueprint.text = "Buka blueprint" if saved else "Coba simpan lagi"
-	%Material.text = "Catatan lengkap. Blueprint tersedia di Project." if saved else "Catatan lengkap."
+	%Material.text = "Catatan lengkap. Blueprint tersedia di Proyek." if saved else "Catatan lengkap."
 	if not saved:
 		%Status.text = "Blueprint belum tersimpan. Coba simpan lagi. " + error_string(_blueprint_error)
 	elif not _save_error:

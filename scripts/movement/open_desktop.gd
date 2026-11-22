@@ -19,7 +19,7 @@ func _pressed() -> void:
 	_loading = true
 	disabled = true
 	var original_text := text
-	text = "Opening desktop…"
+	text = "Membuka desktop…"
 	var desktop: PackedScene
 	if DisplayServer.get_name() != "headless":
 		var error := OK
@@ -49,4 +49,4 @@ func _finish_loading(original_text: String, failed: bool) -> void:
 	disabled = false
 	text = original_text
 	if failed:
-		tooltip_text = "Could not open the desktop."
+		tooltip_text = "Gagal membuka desktop."

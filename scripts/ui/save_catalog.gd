@@ -1,7 +1,7 @@
 extends RefCounted
 
 const Results = preload("res://scripts/interaction/desktop/lms/lms_results.gd")
-const RESULT_TITLES := {"classroom_midterm_week_8": "UTS · Minggu 8", "classroom_final_week_16": "UAS · Minggu 16", "dinosaur_basics": "Kuis LMS · Dinosaur Basics", "submit_field_notes": "Tugas LMS · Field Notes"}
+const RESULT_TITLES := {"classroom_midterm_week_8": "UTS · Minggu 8", "classroom_final_week_16": "UAS · Minggu 16", "dinosaur_basics": "Kuis LMS · Dasar Dinosaurus", "submit_field_notes": "Tugas LMS · Catatan Lapangan"}
 
 
 static func get_entries() -> Array[Dictionary]:

@@ -7,5 +7,5 @@ custom_minimum_size = Vector2(126, 76)
 mouse_default_cursor_shape = 2
 theme_type_variation = &"DesktopItem"
 script = ExtResource("1_launcher")
-display_title = "App shortcut"
+display_title = "Pintasan aplikasi"
 icon_kind = 3

@@ -6,5 +6,5 @@
 
 [resource]
 script = ExtResource("1_folder")
-folder_name = "Files"
+folder_name = "Berkas"
 subfolders = Array[Resource]([ExtResource("documents"), ExtResource("images")])

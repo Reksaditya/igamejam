@@ -3,7 +3,7 @@ extends CenterContainer
 signal authenticated
 
 @export var password: String = "123"
-@export var account_name: String = "User"
+@export var account_name: String = "Pengguna"
 
 @onready var _password: LineEdit = %Password
 @onready var _message: Label = %Message
@@ -21,6 +21,6 @@ func _submit(value: String) -> void:
 		_password.clear()
 		authenticated.emit()
 	else:
-		_message.text = "Incorrect password"
+		_message.text = "Kata sandi salah"
 		_password.select_all()
 		_password.grab_focus()

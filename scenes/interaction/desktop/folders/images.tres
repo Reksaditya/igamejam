@@ -5,5 +5,5 @@
 
 [resource]
 script = ExtResource("1_folder")
-folder_name = "Images"
+folder_name = "Gambar"
 files = Array[PackedScene]([ExtResource("desktop_photo")])

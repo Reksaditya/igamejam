@@ -40,7 +40,7 @@ func _ready() -> void:
 func set_content(title: String, app: Control) -> void:
 	_title.text = title
 	_title_bar.accessibility_name = title
-	_close.accessibility_name = "Close " + title
+	_close.accessibility_name = "Tutup " + title
 	app.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	app.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_body.add_child(app)
@@ -104,7 +104,7 @@ func _toggle_maximize() -> void:
 
 
 func _refresh_maximize_button() -> void:
-	_maximize.tooltip_text = "Restore window" if _maximized else "Maximize window"
+	_maximize.tooltip_text = "Kembalikan ukuran jendela" if _maximized else "Maksimalkan jendela"
 	_maximize.accessibility_name = _maximize.tooltip_text
 	_maximize_glyph.queue_redraw()
 

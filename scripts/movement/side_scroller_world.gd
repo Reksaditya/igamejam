@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var world_title: String = "WORLD 01 · HALAMAN KAMPUS"
+@export var world_title: String = "AREA 01 · HALAMAN KAMPUS"
 @export_file("*.tscn") var left_destination: String
 @export_file("*.tscn") var right_destination: String
 

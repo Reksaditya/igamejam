@@ -22,8 +22,8 @@ theme_override_constants/separation = 8
 [node name="Up" type="Button" parent="Layout/Navigation"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Up"
-tooltip_text = "Open parent folder"
+text = "Naik"
+tooltip_text = "Buka folder induk"
 mouse_default_cursor_shape = 2
 
 [node name="Location" type="Label" parent="Layout/Navigation"]

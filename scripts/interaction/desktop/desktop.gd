@@ -42,7 +42,7 @@ var _turning_off := false
 @export_group("Return")
 @export_file("*.tscn") var return_scene: String
 @export var return_spawn: StringName
-@export var return_label := "Turn off"
+@export var return_label := "Matikan"
 
 @onready var _display: Control = $Display
 @onready var _wallpaper: TextureRect = $Display/Wallpaper
@@ -132,7 +132,7 @@ func _refresh_wallpaper() -> void:
 func _update_energy() -> void:
 	var percentage := roundi(PlayerStats.get_energy() / PlayerStats.ENERGY_MAX * 100.0)
 	%Energy.text = "%d%%" % percentage
-	%Energy.accessibility_name = "Energi %d percent" % percentage
+	%Energy.accessibility_name = "Energi %d persen" % percentage
 
 
 func _draw_energy_icon() -> void:
@@ -145,7 +145,7 @@ func _draw_energy_icon() -> void:
 
 
 func _update_clock(absolute_minutes: int) -> void:
-	_clock.text = "Day %d   %s" % [GameClock.get_day(), GameClock.get_formatted_time()]
+	_clock.text = "Hari %d   %s" % [GameClock.get_day(), GameClock.get_formatted_time()]
 	var since_late := posmod(absolute_minutes - 23 * 60, GameClock.MINUTES_PER_DAY)
 	var blend := clampf(minf(since_late / 180.0, (420 - since_late) / 240.0), 0.0, 1.0)
 	_clock.add_theme_color_override("font_color", _normal_clock_color.lerp(LATE_CLOCK_COLOR, blend))
@@ -160,7 +160,7 @@ func _configure_return() -> void:
 			return_spawn = context.get("spawn", return_spawn)
 	_turn_off.disabled = return_scene.is_empty()
 	_turn_off.text = return_label
-	_turn_off.tooltip_text = "No return scene configured." if return_scene.is_empty() else return_label
+	_turn_off.tooltip_text = "Belum ada tujuan kembali yang diatur." if return_scene.is_empty() else return_label
 	_turn_off.pressed.connect(_request_turn_off)
 	SceneTransition.transition_finished.connect(_on_return_finished)
 
@@ -180,7 +180,7 @@ func _on_return_finished(error: Error) -> void:
 	_turning_off = false
 	_turn_off.disabled = false
 	if error != OK:
-		%ReturnError.dialog_text = "Could not return. " + error_string(error)
+		%ReturnError.dialog_text = "Gagal kembali. " + error_string(error)
 		%ReturnError.popup_centered_clamped(Vector2i(340, 0))
 
 

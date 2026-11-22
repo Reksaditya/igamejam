@@ -94,10 +94,10 @@ offset_left = 18.0
 offset_top = 17.0
 offset_right = 144.0
 offset_bottom = 113.0
-tooltip_text = "Notepad"
-accessibility_name = "Notepad"
+tooltip_text = "Catatan"
+accessibility_name = "Catatan"
 submission_filename = ""
-display_title = "Notepad"
+display_title = "Catatan"
 icon_kind = 2
 default_cell = Vector2i(0, 0)
 
@@ -108,8 +108,9 @@ offset_left = 426.0
 offset_top = 123.0
 offset_right = 552.0
 offset_bottom = 219.0
-tooltip_text = "Word Explorer"
-accessibility_name = "Word Explorer"
+tooltip_text = "Peramban"
+accessibility_name = "Peramban"
+display_title = "Peramban"
 default_cell = Vector2i(3, 1)
 
 [node name="FileManagerLauncher" parent="Display/DesktopItems/Launchers" unique_id=1840225634 instance=ExtResource("9_files")]
@@ -119,8 +120,9 @@ offset_left = 154.0
 offset_top = 229.0
 offset_right = 280.0
 offset_bottom = 325.0
-tooltip_text = "File Manager"
-accessibility_name = "File Manager"
+tooltip_text = "Pengelola Berkas"
+accessibility_name = "Pengelola Berkas"
+display_title = "Pengelola Berkas"
 folder = false
 default_cell = Vector2i(1, 2)
 
@@ -131,8 +133,9 @@ offset_left = 834.0
 offset_top = 17.0
 offset_right = 960.0
 offset_bottom = 113.0
-tooltip_text = "Project"
-accessibility_name = "Project"
+tooltip_text = "Proyek"
+accessibility_name = "Proyek"
+display_title = "Proyek"
 default_cell = Vector2i(6, 0)
 
 [node name="BlocksLauncher" parent="Display/DesktopItems/Launchers" unique_id=1403528437 instance=ExtResource("17_blocks")]
@@ -180,8 +183,8 @@ size_flags_vertical = 4
 theme_type_variation = &"TaskbarTurnOff"
 disabled = true
 mouse_default_cursor_shape = 2
-text = "Turn off"
-tooltip_text = "No return scene configured."
+text = "Matikan"
+tooltip_text = "Belum ada tujuan kembali yang diatur."
 
 [node name="Spacer" type="Control" parent="Display/Taskbar/Bar"]
 layout_mode = 2
@@ -206,7 +209,7 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"TaskbarClock"
-text = "Day 1   06:00"
+text = "Hari 1   06:00"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -227,5 +230,5 @@ stream = ExtResource("10_startup_sound")
 
 [node name="ReturnError" type="AcceptDialog" parent="."]
 unique_name_in_owner = true
-title = "Could not turn off"
+title = "Gagal mematikan"
 dialog_autowrap = true

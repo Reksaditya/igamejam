@@ -63,7 +63,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"WindowClose"
 text = "X"
-tooltip_text = "Close window (Ctrl+W)"
+tooltip_text = "Tutup jendela (Ctrl+W)"
 
 [node name="Body" type="ScrollContainer" parent="Layout"]
 unique_name_in_owner = true

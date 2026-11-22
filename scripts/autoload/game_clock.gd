@@ -243,5 +243,5 @@ func _publish_minute() -> void:
 		config.set_value("chapter_timeline", "absolute_minutes", _absolute_minutes)
 		var error := Save.write_config(config, SAVE_PATH, false)
 		if error != OK:
-			push_warning("Could not save chapter time (%s)." % error_string(error))
+			push_warning("Gagal menyimpan waktu bab (%s)." % error_string(error))
 	minute_changed.emit(_absolute_minutes)

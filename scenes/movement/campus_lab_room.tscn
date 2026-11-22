@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/movement/door_interaction.tscn" id="2_bench"]
 
 [node name="CampusLabRoom" instance=ExtResource("1_room")]
-world_title = "INTERIOR · RUANG LABORATORIUM"
+world_title = "DALAM RUANGAN · RUANG LABORATORIUM"
 
 [node name="Background" parent="."]
 laboratory = true
@@ -22,7 +22,7 @@ position = Vector2(1235, 592)
 position = Vector2(1280, 587)
 destination = "res://scenes/interaction/workshop/transmission_workshop.tscn"
 destination_spawn = &""
-action_text = "Use bench"
+action_text = "Meja rakit"
 
 [node name="BenchSign" type="Polygon2D" parent="WorkshopBench"]
 position = Vector2(0, -61)
@@ -36,5 +36,5 @@ offset_right = 24.0
 offset_bottom = -52.0
 mouse_filter = 2
 theme_override_font_sizes/font_size = 11
-text = "BENCH"
+text = "MEJA"
 horizontal_alignment = 1

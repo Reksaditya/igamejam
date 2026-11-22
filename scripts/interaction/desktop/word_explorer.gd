@@ -10,7 +10,7 @@ const PAGE_SCENE := preload("res://scenes/interaction/desktop/browser_page.tscn"
 class Tab:
 	var address := ""
 	var draft := ""
-	var title := "New tab"
+	var title := "Tab baru"
 	var button: Button
 	var close: Button
 	var pane: PanelContainer
@@ -66,7 +66,7 @@ func set_exam_host(host: Control) -> void:
 func _open_new_tab() -> void:
 	if _exam_active:
 		return
-	_select_tab(_add_tab("New tab"))
+	_select_tab(_add_tab("Tab baru"))
 	_address.grab_focus()
 
 
@@ -93,7 +93,7 @@ func _add_tab(title: String) -> Tab:
 	row.add_child(tab.button)
 	tab.close = Button.new()
 	tab.close.draw.connect(_draw_tab_action.bind(tab.close, false))
-	tab.close.tooltip_text = "Close tab"
+	tab.close.tooltip_text = "Tutup tab"
 	tab.close.custom_minimum_size.x = 29
 	tab.close.pressed.connect(_close_tab.bind(tab))
 	row.add_child(tab.close)
@@ -188,11 +188,11 @@ func _load_address(tab: Tab, address: String) -> void:
 				_finish_navigation(tab)
 			return
 	if tab.address.is_empty():
-		tab.title = "New tab"
+		tab.title = "Tab baru"
 	else:
 		tab.title = "404"
 		var error_page := Label.new()
-		error_page.text = "404 Page Not Found."
+		error_page.text = "404 · Halaman tidak ditemukan."
 		error_page.theme_type_variation = &"BrowserHeading"
 		error_page.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		error_page.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -210,7 +210,7 @@ func _route_title(address: String) -> String:
 func _update_tab_label(tab: Tab) -> void:
 	tab.button.text = tab.title
 	tab.button.tooltip_text = tab.address
-	tab.close.accessibility_name = "Close " + tab.title + " tab"
+	tab.close.accessibility_name = "Tutup tab " + tab.title
 
 
 func _clear_page(tab: Tab) -> void:
@@ -226,7 +226,7 @@ func _show_loading(tab: Tab) -> void:
 	loading.name = "Loading"
 	loading.add_theme_constant_override("separation", 8)
 	var status := Label.new()
-	status.text = "Loading…"
+	status.text = "Memuat…"
 	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	loading.add_child(status)
 	var progress := ProgressBar.new()

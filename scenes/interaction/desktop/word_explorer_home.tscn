@@ -25,7 +25,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"LmsHeading"
-text = "The University"
+text = "Universitas"
 autowrap_mode = 3
 
 [node name="Profile" type="Control" parent="Header"]
@@ -34,8 +34,8 @@ custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
-tooltip_text = "Unassigned profile"
-accessibility_name = "Unassigned profile"
+tooltip_text = "Profil belum diatur"
+accessibility_name = "Profil belum diatur"
 
 [node name="Sections" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
