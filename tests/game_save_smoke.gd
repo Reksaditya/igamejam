@@ -8,6 +8,7 @@ const Results = preload("res://scripts/interaction/desktop/lms/lms_results.gd")
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
@@ -48,6 +49,9 @@ func _run() -> void:
 	assert(current_scene.get_node("%Load").disabled)
 	assert(not saves.has_save())
 	current_scene._new_game()
+	await process_frame
+	current_scene.get_node("%PlayerName").text = "Yohan"
+	current_scene._create_game()
 	await scene_changed
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)
@@ -61,7 +65,6 @@ func _run() -> void:
 	assert(notes.finish_material(0, true) == OK)
 	assert(blueprint.complete_study("transmission_motor") == OK)
 	assert(blueprint.place_piece(0, 0) == OK)
-	assert(root.get_node("ProjectBlueprints").grant("sediment_sorter") == OK)
 	assert(Results.save_result("save_test_quiz", 7, 10) == OK)
 	assert(root.get_node("GameSettings").save_settings(0.35, 1) == OK)
 	assert(DirAccess.make_dir_recursive_absolute("user://notes/lab") == OK)
@@ -84,8 +87,8 @@ func _run() -> void:
 	current_scene._new_game()
 	var confirm := current_scene.get_node("%NewGameConfirm") as ConfirmationDialog
 	assert(confirm.visible)
-	assert(confirm.get_node("Content/Question").text == "Apakah Anda yakin ingin memulai permainan baru?")
-	assert(confirm.get_node("Content/Subheader").text == "Seluruh data permainan yang tersimpan sebelumnya akan hilang.")
+	assert(confirm.get_node("Content/Question").text == "apakah anda yakin ingin memulai kehidupan baru?")
+	assert(confirm.get_node("Content/Subheader").text == "seluruh data yang anda save sebelumnya akan hilang")
 	confirm.hide()
 	assert(FileAccess.get_file_as_string(saves.SAVE_PATH) == checkpoint)
 	assert(notes.has_note(0))
@@ -102,7 +105,6 @@ func _run() -> void:
 	assert(clock.get_absolute_minutes() == 1776)
 	assert(notes.has_note(0))
 	assert(blueprint.is_placed(0))
-	assert(root.get_node("ProjectBlueprints").is_owned("sediment_sorter"))
 	assert(Results.read_result("save_test_quiz").score == 7)
 	change_scene_to_file(LAB)
 	await scene_changed
@@ -138,14 +140,17 @@ func _run() -> void:
 	current_scene._new_game()
 	assert(current_scene.get_node("%NewGameConfirm").visible)
 	current_scene.get_node("%NewGameConfirm").confirmed.emit()
+	current_scene.get_node("%NewGameConfirm").hide()
+	await process_frame
+	current_scene.get_node("%PlayerName").text = "Yohan Baru"
+	current_scene._create_game()
 	await scene_changed
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)
 	assert(current_scene.get_node("Player").position.x == 320.0)
-	assert(clock.get_absolute_minutes() == clock.MORNING_MINUTES)
+	assert(clock.get_absolute_minutes() == 360)
 	assert(not notes.has_attempted(0))
 	assert(not blueprint.has_piece(0))
-	assert(not root.get_node("ProjectBlueprints").is_owned("sediment_sorter"))
 	assert(Results.read_result("save_test_quiz").is_empty())
 	assert(not FileAccess.file_exists("user://classroom_classroom_midterm_week_8.cfg"))
 	assert(not FileAccess.file_exists("user://notes/lab/report.txt"))

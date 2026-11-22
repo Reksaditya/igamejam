@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var world_title: String = "AREA 01 · HALAMAN KAMPUS"
+@export var world_title: String = "WORLD 01 · HALAMAN KAMPUS"
 @export_file("*.tscn") var left_destination: String
 @export_file("*.tscn") var right_destination: String
 
@@ -10,7 +10,6 @@ var _transitioning: bool = false
 
 
 func _ready() -> void:
-	%WorldTitle.text = world_title
 	$LeftExit.body_entered.connect(_on_exit_entered.bind(left_destination, &"RightSpawn"))
 	$RightExit.body_entered.connect(_on_exit_entered.bind(right_destination, &"LeftSpawn"))
 	var spawn: StringName = get_tree().get_meta(&"side_scroller_spawn", &"InitialSpawn")

@@ -5,8 +5,9 @@ signal project_completed(project_id: String)
 
 const Definition = preload("res://scripts/interaction/blueprint/blueprint_definition.gd")
 const PROJECT: Definition = preload("res://scenes/interaction/blueprint/transmission.tres")
-const SAVE_PATH := "user://transmission_progress.cfg"
-const LEGACY_SAVE_PATH := "user://blueprint_progress.cfg"
+const SAVE_PATH := "user://blueprint_progress.cfg"
+const LEGACY_SAVE_PATH := "user://transmission_progress.cfg"
+const Save = preload("res://scripts/autoload/playthrough_save.gd")
 
 var _learned := PackedInt32Array()
 var _placed := PackedInt32Array()
@@ -19,11 +20,9 @@ func _ready() -> void:
 func reload_progress() -> void:
 	_learned.clear()
 	_placed.clear()
-	var save := ConfigFile.new()
-	if save.load(SAVE_PATH) != OK:
-		save.clear()
-		if save.load(LEGACY_SAVE_PATH) != OK:
-			return
+	var save := Save.load_config(SAVE_PATH)
+	if not save.has_section("project"):
+		save = Save.load_config(LEGACY_SAVE_PATH)
 	if save.get_value("project", "id", "") != PROJECT.id:
 		return
 	if save.get_value("project", "version", 0) != 1:
@@ -83,16 +82,12 @@ func place_piece(piece: int, slot: int) -> Error:
 
 
 func _save() -> Error:
-	var save := ConfigFile.new()
+	var save := Save.load_config(SAVE_PATH)
 	save.set_value("project", "version", 1)
 	save.set_value("project", "id", PROJECT.id)
 	save.set_value("project", "learned", _learned)
 	save.set_value("project", "placed", _placed)
-	var temporary_path := SAVE_PATH + ".tmp"
-	var error := save.save(temporary_path)
-	if error == OK:
-		error = DirAccess.rename_absolute(temporary_path, SAVE_PATH)
-	return error
+	return Save.write_config(save, SAVE_PATH)
 
 
 func _read_indices(value: Variant) -> PackedInt32Array:

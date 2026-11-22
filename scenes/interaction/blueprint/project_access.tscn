@@ -15,11 +15,11 @@ offset_top = 16.0
 offset_right = 230.0
 offset_bottom = 52.0
 theme = ExtResource("3_theme")
-text = "Blueprint Proyek"
+text = "Project Blueprint"
 
 [node name="StudyWindow" type="Window" parent="."]
 unique_name_in_owner = true
-title = "Desktop Belajar · Proyek Lab"
+title = "Desktop Belajar · Project Lab"
 size = Vector2i(620, 560)
 visible = false
 transient = true

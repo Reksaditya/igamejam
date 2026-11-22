@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" path="res://scenes/movement/top_down_movement.tscn" id="1_world"]
 
 [node name="CampusLab" instance=ExtResource("1_world")]
-world_title = "AREA 02 · GEDUNG LABORATORIUM"
+world_title = "WORLD 02 · GEDUNG LABORATORIUM"
 left_destination = "res://scenes/movement/top_down_movement.tscn"
-right_destination = "res://scenes/movement/top_down_movement.tscn"
+right_destination = "res://scenes/movement/dorm_exterior.tscn"
 
 [node name="Background" parent="." index="0"]
 laboratory = true

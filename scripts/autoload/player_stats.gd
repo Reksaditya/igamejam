@@ -5,11 +5,27 @@ signal changed
 const ENERGY_MAX := 100.0
 const SANITY_MAX := 100.0
 const GPA_MAX := 4.0
-const DEFAULTS := {"energy": 100.0, "sanity": 40.0, "gpa": 0.0}
 
-var _energy := 100.0
-var _sanity := 40.0
-var _gpa := 0.0
+const DEFAULTS := {"energy": 100.0, "sanity": 40.0, "gpa": 0.0, "player_name": "Yohan", "student_id": ""}
+
+var player_name: String = "Yohan"
+var student_id: String = ""
+var _energy: float = 100.0
+var _sanity: float = 40.0
+var _gpa: float = 0.0
+
+
+func _ready() -> void:
+	restore_save_state(DEFAULTS)
+
+
+static func make_new_state(name: String) -> Dictionary:
+	var state := DEFAULTS.duplicate()
+	var random := RandomNumberGenerator.new()
+	random.randomize()
+	state.player_name = name.strip_edges().left(32)
+	state.student_id = "607%09d" % random.randi_range(0, 999999999)
+	return state
 
 
 func get_energy() -> float:
@@ -25,41 +41,38 @@ func get_gpa() -> float:
 
 
 func set_energy(value: float) -> void:
-	_update(value, _sanity, _gpa)
+	if is_finite(value):
+		_energy = clampf(value, 0.0, 100.0)
+		changed.emit()
 
 
 func set_sanity(value: float) -> void:
-	_update(_energy, value, _gpa)
+	if is_finite(value):
+		_sanity = clampf(value, 0.0, 100.0)
+		changed.emit()
 
 
 func set_gpa(value: float) -> void:
-	_update(_energy, _sanity, value)
+	if is_finite(value):
+		_gpa = clampf(value, 0.0, 4.0)
+		changed.emit()
 
 
 func get_save_state() -> Dictionary:
-	return {"energy": _energy, "sanity": _sanity, "gpa": _gpa}
+	return {"energy": _energy, "sanity": _sanity, "gpa": _gpa, "player_name": player_name, "student_id": student_id}
 
 
 func restore_save_state(state: Dictionary) -> void:
-	_update(
-		_read_stat(state, "energy"),
-		_read_stat(state, "sanity"),
-		_read_stat(state, "gpa")
-	)
-
-
-func _read_stat(state: Dictionary, key: String) -> float:
-	var value: Variant = state.get(key, DEFAULTS[key])
-	return float(value) if (value is int or value is float) and is_finite(value) else DEFAULTS[key]
-
-
-func _update(energy: float, sanity: float, gpa: float) -> void:
-	energy = clampf(energy, 0.0, ENERGY_MAX) if is_finite(energy) else _energy
-	sanity = clampf(sanity, 0.0, SANITY_MAX) if is_finite(sanity) else _sanity
-	gpa = clampf(gpa, 0.0, GPA_MAX) if is_finite(gpa) else _gpa
-	if _energy == energy and _sanity == sanity and _gpa == gpa:
-		return
-	_energy = energy
-	_sanity = sanity
-	_gpa = gpa
+	_energy = clampf(_read_number(state, "energy"), 0.0, 100.0)
+	_sanity = clampf(_read_number(state, "sanity"), 0.0, 100.0)
+	_gpa = clampf(_read_number(state, "gpa"), 0.0, 4.0)
+	var name: Variant = state.get("player_name", "Yohan")
+	player_name = name.strip_edges().left(32) if name is String and not name.strip_edges().is_empty() else "Yohan"
+	var id: Variant = state.get("student_id", "")
+	student_id = id if id is String and id.length() == 12 and id.begins_with("607") and id.is_valid_int() else make_new_state(player_name).student_id
 	changed.emit()
+
+
+func _read_number(state: Dictionary, key: String) -> float:
+	var value: Variant = state.get(key, DEFAULTS[key])
+	return float(value) if (value is float or value is int) and is_finite(value) else DEFAULTS[key]

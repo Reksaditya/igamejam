@@ -1,0 +1,25 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/characters/mc/idle/1.png" id="1_frame"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/idle/2.png" id="2_frame"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/idle/3.png" id="3_frame"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/idle/4.png" id="4_frame"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/idle/5.png" id="5_frame"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/idle/6.png" id="6_frame"]
+[ext_resource type="Texture2D" path="res://assets/characters/mc/idle/7.png" id="7_frame"]
+
+[resource]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": ExtResource("1_frame")},
+{"duration": 1.0, "texture": ExtResource("2_frame")},
+{"duration": 1.0, "texture": ExtResource("3_frame")},
+{"duration": 1.0, "texture": ExtResource("4_frame")},
+{"duration": 1.0, "texture": ExtResource("5_frame")},
+{"duration": 1.0, "texture": ExtResource("6_frame")},
+{"duration": 1.0, "texture": ExtResource("7_frame")}
+],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}]

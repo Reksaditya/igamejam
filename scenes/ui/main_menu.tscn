@@ -64,25 +64,25 @@ theme_override_constants/separation = 12
 [node name="NewGame" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Permainan Baru"
+text = "New Game"
 mouse_default_cursor_shape = 2
 
 [node name="Load" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Muat Permainan"
+text = "Load"
 mouse_default_cursor_shape = 2
 
 [node name="Settings" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Pengaturan"
+text = "Settings"
 mouse_default_cursor_shape = 2
 
 [node name="Quit" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Keluar"
+text = "Quit"
 mouse_default_cursor_shape = 2
 
 [node name="SettingsPanel" type="VBoxContainer" parent="Margin/Scroll/Center/Layout/Card"]
@@ -94,7 +94,7 @@ theme_override_constants/separation = 14
 [node name="SettingsTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Pengaturan"
+text = "Settings"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 28
 
@@ -158,7 +158,7 @@ theme_override_font_sizes/font_size = 16
 
 [node name="NewGameConfirm" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
-title = "Permainan Baru"
+title = "New Game"
 transient = true
 exclusive = true
 ok_button_text = "Ya, mulai baru"
@@ -171,7 +171,7 @@ theme_override_constants/separation = 16
 [node name="Question" type="Label" parent="NewGameConfirm/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(480, 0)
-text = "Apakah Anda yakin ingin memulai permainan baru?"
+text = "apakah anda yakin ingin memulai kehidupan baru?"
 autowrap_mode = 3
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 24
@@ -179,8 +179,30 @@ theme_override_font_sizes/font_size = 24
 [node name="Subheader" type="Label" parent="NewGameConfirm/Content"]
 layout_mode = 2
 custom_minimum_size = Vector2(480, 0)
-text = "Seluruh data permainan yang tersimpan sebelumnya akan hilang."
+text = "seluruh data yang anda save sebelumnya akan hilang"
 autowrap_mode = 3
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 16
 theme_override_colors/font_color = Color(0.9, 0.76, 0.58, 1)
+
+[node name="NameDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Kehidupan Baru"
+transient = true
+exclusive = true
+ok_button_text = "Mulai"
+cancel_button_text = "Batal"
+
+[node name="Content" type="VBoxContainer" parent="NameDialog"]
+custom_minimum_size = Vector2(400, 100)
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="NameDialog/Content"]
+layout_mode = 2
+text = "Siapa namamu?"
+
+[node name="PlayerName" type="LineEdit" parent="NameDialog/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+max_length = 32
+placeholder_text = "Nama player"

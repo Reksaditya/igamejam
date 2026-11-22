@@ -4,7 +4,7 @@ signal closed
 
 enum Phase { WAITING, FOCUS, FEEDBACK, NOTES }
 
-const BLUEPRINT_SCENE := preload("res://scenes/interaction/desktop/project/project_app.tscn")
+const BLUEPRINT_SCENE := preload("res://scenes/interaction/blueprint/blueprint_popup.tscn")
 
 @export_range(2.0, 10.0, 0.5) var first_qte_delay: float = 4.0
 @export_range(2.0, 30.0, 0.5) var minimum_qte_delay: float = 5.0
@@ -20,13 +20,14 @@ var _remaining: float = 0.0
 var _was_paused: bool = false
 var _owns_pause: bool = false
 var _popup: Window
-var _desktop_button: Button
-var _desktop_was_disabled: bool = false
 var _save_error: bool = false
-var _blueprint_error: Error = OK
+var _class_week: int = 1
 
 
 func _ready() -> void:
+	_class_week = GameClock.get_week()
+	_popup = BLUEPRINT_SCENE.instantiate()
+	add_child(_popup)
 	%Close.pressed.connect(_close)
 	%Blueprint.pressed.connect(_open_blueprint)
 	%Qte.resolved.connect(_on_qte_resolved)
@@ -39,10 +40,6 @@ func _ready() -> void:
 	if not is_instance_valid(player):
 		_close()
 		return
-	_desktop_button = player.get_parent().get_node_or_null("DesktopAccess/OpenDesktop") as Button
-	if _desktop_button != null:
-		_desktop_was_disabled = _desktop_button.disabled
-		_desktop_button.disabled = true
 	player.position = seat_position
 	player.set_studying(true)
 	player.get_node("Camera2D").reset_smoothing()
@@ -78,7 +75,7 @@ func _next_segment() -> void:
 		return
 	var lesson := BlueprintProgress.PROJECT.lessons[_indices[_segment]]
 	%Teaching.text = lesson.title + "\n" + lesson.material
-	%StudyStatus.text = "Sedang belajar · Tekan Spasi saat penanda QTE berada di zona hijau."
+	%StudyStatus.text = "Sedang belajar · Tekan Space saat penanda QTE berada di zona hijau."
 	_phase = Phase.WAITING
 	_remaining = first_qte_delay if _segment == 0 else randf_range(minimum_qte_delay, maxf(minimum_qte_delay, maximum_qte_delay))
 
@@ -109,8 +106,6 @@ func _on_qte_resolved(success: bool) -> void:
 	_remaining = 1.2
 	var error := ClassroomProgress.finish_material(_indices[_segment], success)
 	_save_error = _save_error or error != OK
-	if error == OK and ClassroomProgress.is_complete():
-		_blueprint_error = ClassroomProgress.unlock_blueprint()
 	%StudyStatus.text = "Fokus terjaga." if success else "Fokus terputus."
 
 
@@ -131,6 +126,8 @@ func _show_notes() -> void:
 	_owns_pause = true
 	get_tree().paused = true
 	var finished := ClassroomProgress.is_class_finished()
+	if finished and not notes_only and PlayerJournal.record_classroom(_class_week) != OK:
+		_save_error = true
 	%Heading.text = "Catatan akhir kelas" if finished else "Sesi pembelajaran terhenti"
 	%Week.text = "Minggu %d · Hari %d" % [GameClock.get_week(), GameClock.get_day()]
 	var complete := ClassroomProgress.is_complete()
@@ -141,45 +138,22 @@ func _show_notes() -> void:
 	%Blueprint.visible = complete
 	_refresh_notes()
 	%Notes.visible = finished
-	if complete:
-		if _blueprint_error == OK:
-			_blueprint_error = ClassroomProgress.unlock_blueprint()
-		_update_blueprint_status()
+	if complete and ClassroomProgress.unlock_blueprint() != OK:
+		%Status.text = "Blueprint belum tersimpan. Tekan Buka blueprint untuk mencoba kembali."
 	%Close.grab_focus()
 
 
 func _open_blueprint() -> void:
-	_blueprint_error = ClassroomProgress.unlock_blueprint()
-	_update_blueprint_status()
-	if _blueprint_error != OK:
-		return
-	if _popup == null:
-		_popup = Window.new()
-		_popup.title = "Blueprint"
-		_popup.min_size = Vector2i(280, 260)
-		_popup.close_requested.connect(_popup.hide)
-		add_child(_popup)
-		var viewer := BLUEPRINT_SCENE.instantiate() as Control
-		_popup.add_child(viewer)
-		viewer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_popup.popup_centered_clamped(Vector2i(440, 340), 0.9)
-
-
-func _update_blueprint_status() -> void:
-	var saved := _blueprint_error == OK
-	%Blueprint.text = "Buka blueprint" if saved else "Coba simpan lagi"
-	%Material.text = "Catatan lengkap. Blueprint tersedia di Proyek." if saved else "Catatan lengkap."
-	if not saved:
-		%Status.text = "Blueprint belum tersimpan. Coba simpan lagi. " + error_string(_blueprint_error)
-	elif not _save_error:
-		%Status.text = ""
+	var error := ClassroomProgress.unlock_blueprint()
+	if error == OK:
+		_popup.open()
+	else:
+		%Status.text = "Blueprint belum dapat dibuka. " + error_string(error)
 
 
 func _restore_player() -> void:
 	if is_instance_valid(player):
 		player.set_studying(false)
-	if is_instance_valid(_desktop_button):
-		_desktop_button.disabled = _desktop_was_disabled
 
 
 func _close() -> void:

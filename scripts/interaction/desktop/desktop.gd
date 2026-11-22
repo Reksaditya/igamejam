@@ -313,6 +313,9 @@ func _configure_return() -> void:
 func _request_turn_off() -> void:
 	if _turning_off or SceneTransition.is_active() or return_scene.is_empty():
 		return
+	var checkpoint := get_node_or_null("/root/GameSave")
+	if checkpoint != null:
+		checkpoint.save_now()
 	_turning_off = true
 	_turn_off.disabled = true
 	_launchers.cancel_drag()

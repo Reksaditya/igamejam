@@ -46,8 +46,8 @@ func _input(event: InputEvent) -> void:
 	if not _active or not event.is_action_pressed("class_focus") or event.is_echo():
 		return
 	var progress := _elapsed / duration_seconds
-	_resolve(progress >= _target_start and progress <= _target_start + target_width)
 	get_viewport().set_input_as_handled()
+	_resolve(progress >= _target_start and progress <= _target_start + target_width)
 
 
 func _resolve(success: bool) -> void:

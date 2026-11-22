@@ -2,25 +2,31 @@
 
 [ext_resource type="PackedScene" path="res://scenes/movement/top_down_movement.tscn" id="1_world"]
 [ext_resource type="PackedScene" path="res://scenes/interaction/classroom/classroom.tscn" id="2_class"]
+[ext_resource type="Script" path="res://scripts/movement/classroom_background.gd" id="3_background"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(48, 720)
 
 [node name="CampusClassroom" instance=ExtResource("1_world")]
-world_title = "DALAM RUANGAN · RUANG KELAS"
+world_title = "INTERIOR · RUANG KELAS"
 left_destination = ""
 right_destination = ""
 
 [node name="Background" parent="." index="0"]
+texture_filter = 1
+script = ExtResource("3_background")
 interior = true
 
 [node name="Door" parent="."]
-destination = "res://scenes/movement/top_down_movement.tscn"
+destination = "res://scenes/movement/classroom_corridor_floor1.tscn"
 destination_spawn = &"DoorSpawn"
 action_text = "Keluar"
 
 [node name="InitialSpawn" parent="."]
 position = Vector2(1060, 592)
+
+[node name="Player" parent="."]
+z_index = 1
 
 [node name="LeftExit" parent="."]
 visible = false

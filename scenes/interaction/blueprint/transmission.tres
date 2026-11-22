@@ -61,7 +61,7 @@ correct_option = 2
 [resource]
 script = ExtResource("1_definition")
 id = "transmission"
-title = "Proyek Lab · Struktur Transmisi"
+title = "Project Lab · Struktur Transmisi"
 image = ExtResource("3_image")
 columns = 3
 rows = 2

@@ -51,13 +51,11 @@ def set_scene_options(stage, path, script_id, settings):
 def configure_browser(stage):
     browser = stage / "scenes/interaction/desktop/word_explorer.tscn"
     source = browser.read_text(encoding="utf-8")
+    shared = source[source.index('[sub_resource type="StyleBoxFlat"'):source.index('[node name="WordExplorer"')]
     layout = source[source.index('[node name="Layout"'):]
-    browser.write_text('''[gd_scene format=3 uid="uid://dpdtl5dkg6qe1"]
-
-[ext_resource type="Script" path="res://scripts/interaction/desktop/word_explorer.gd" id="1_app"]
-[ext_resource type="PackedScene" path="res://scenes/preview/browser_home.tscn" id="2_page"]
-[ext_resource type="Script" path="res://scripts/interaction/desktop/browser_route.gd" id="3_route"]
-[ext_resource type="Script" path="res://scripts/interaction/desktop/browser_tab.gd" id="5_tab"]
+    header = source[:source.index('[sub_resource')]
+    header = re.sub(r'^\[ext_resource .*id="(?:2_page|4_study|8_academic)"\]\n', "", header, flags=re.MULTILINE)
+    browser.write_text(header + '''[ext_resource type="PackedScene" path="res://scenes/preview/browser_home.tscn" id="2_page"]
 
 [sub_resource type="Resource" id="Route_preview"]
 script = ExtResource("3_route")
@@ -69,7 +67,7 @@ script = ExtResource("5_tab")
 title = "Home"
 address = "preview.local"
 
-[node name="WordExplorer" type="MarginContainer"]
+''' + shared + '''[node name="WordExplorer" type="MarginContainer"]
 script = ExtResource("1_app")
 home_address = "preview.local"
 default_tabs = Array[ExtResource("5_tab")]([SubResource("Tab_preview")])
@@ -114,6 +112,9 @@ def prepare(stage, template):
     source = desktop.read_text(encoding="utf-8")
     source = re.sub(r'^\[ext_resource [^\n]*path="res://scenes/interaction/desktop/login_screen\.tscn"[^\n]*\]\n', "", source, flags=re.MULTILINE)
     source = re.sub(r"^login_scene = [^\n]*\n", "", source, flags=re.MULTILINE)
+    source = re.sub(r'^\[ext_resource .*id="(?:22_academic|23_academic_library|24_academic_project)"\]\n', "", source, flags=re.MULTILINE)
+    source = re.sub(r'^\[node name="Academic(?:Library|Project)Launcher".*?\n(?=\[node )', "", source,
+                    flags=re.MULTILINE | re.DOTALL)
     desktop.write_text(source, encoding="utf-8")
     set_scene_options(stage, DESKTOP, "1_desktop",
                       f'return_scene = "{MENU}"\nreturn_label = "Preview menu"\n')

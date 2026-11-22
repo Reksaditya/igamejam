@@ -27,7 +27,7 @@ func _test_scattered_desktop() -> void:
 		await process_frame
 
 	var grid := desktop.get_node("%Launchers") as IconGrid
-	assert(grid._cells.size() == 5, "Desktop should lay out all 5 launchers")
+	assert(grid._cells.size() == 7, "Desktop should lay out all seven launchers")
 
 	var seen_cells: Dictionary[Vector2i, bool] = {}
 	var has_right_scatter := false

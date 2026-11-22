@@ -134,6 +134,11 @@ func _save_document(path: String) -> void:
 
 	_document_path = path
 	_saved_text = text
+	var journal := get_node_or_null("/root/PlayerJournal")
+	if journal != null:
+		var journal_error: Error = journal.record_desktop_note(path, text)
+		if journal_error != OK:
+			_show_file_error("Catatan tersimpan, tetapi jurnal belum diperbarui.", journal_error)
 
 
 func _replace_note_file(temporary_path: String, path: String, backup_path: String) -> Error:

@@ -2,19 +2,23 @@ extends SceneTree
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
 func _run() -> void:
 	var progress := root.get_node("BlueprintProgress")
+	var projects := root.get_node("ProjectBlueprints")
 	var reload_test := "--reload" in OS.get_cmdline_user_args()
 	if reload_test:
 		assert(progress.is_complete(), "Completed blueprint must survive a new session")
 		assert(progress.get_placed_count() == 6)
+		assert(projects.is_owned("sediment_sorter"))
 		assert(progress.place_piece(0, 0) == ERR_INVALID_PARAMETER)
 		print("PASS: blueprint reload and duplicate placement")
 		quit()
 		return
+	assert(projects.grant("sediment_sorter") == OK)
 	assert(progress.get_placed_count() == 0, "Use an isolated APPDATA directory for this test")
 	assert(progress.complete_study("unknown_lesson") == ERR_INVALID_PARAMETER)
 	assert(progress.place_piece(0, 0) == ERR_INVALID_PARAMETER, "Locked pieces cannot be placed")
@@ -50,6 +54,7 @@ func _run() -> void:
 		popup._select(index)
 		popup._place(index)
 	assert(progress.is_complete())
+	assert(projects.is_owned("sediment_sorter"), "Classroom writes must preserve desktop blueprint ownership")
 	assert(completions.size() == 1, "Completion signal must fire exactly once")
 	assert(progress.place_piece(5, 5) == ERR_INVALID_PARAMETER)
 	popup.hide()
@@ -60,10 +65,11 @@ func _run() -> void:
 	var desktop := load("res://scenes/interaction/desktop/desktop.tscn").instantiate() as Control
 	desktop.login_scene = null
 	root.add_child(desktop)
-	while desktop._boot_cover.visible:
-		await process_frame
+	await process_frame
 	var launcher := load("res://scenes/interaction/blueprint/blueprint_launcher.tscn").instantiate() as Button
 	desktop.get_node("%Launchers").add_child(launcher)
+	while desktop._boot_cover.visible:
+		await process_frame
 	desktop._open_launcher(launcher)
 	assert(desktop._open_windows.size() == 1)
 	var app: Control = desktop._open_windows[launcher].get_content()

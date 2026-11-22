@@ -1,7 +1,7 @@
 extends RefCounted
 
 const Results = preload("res://scripts/interaction/desktop/lms/lms_results.gd")
-const RESULT_TITLES := {"classroom_midterm_week_8": "UTS · Minggu 8", "classroom_final_week_16": "UAS · Minggu 16", "dinosaur_basics": "Kuis LMS · Dasar Dinosaurus", "submit_field_notes": "Tugas LMS · Catatan Lapangan"}
+const RESULT_TITLES := {"classroom_midterm_week_8": "UTS · Minggu 8", "classroom_final_week_16": "UAS · Minggu 16", "dinosaur_basics": "Kuis LMS · Dinosaur Basics", "submit_field_notes": "Tugas LMS · Field Notes"}
 
 
 static func get_entries() -> Array[Dictionary]:
@@ -15,19 +15,11 @@ static func get_entries() -> Array[Dictionary]:
 			if attempted > 0:
 				entries.append({"title": "Autosave · Catatan kelas", "details": "%d / 6 bagian catatan lengkap\n%d / 6 materi sudah dilewati" % [completed, attempted]})
 	var blueprint := ConfigFile.new()
-	if blueprint.load(BlueprintProgress.SAVE_PATH) != OK:
-		blueprint.clear()
-		blueprint.load(BlueprintProgress.LEGACY_SAVE_PATH)
-	if blueprint.get_value("project", "version", 0) == 1 and blueprint.get_value("project", "id", "") == "transmission":
+	if blueprint.load("user://blueprint_progress.cfg") == OK and blueprint.get_value("project", "version", 0) == 1 and blueprint.get_value("project", "id", "") == "transmission":
 		var learned := _count_indices(blueprint.get_value("project", "learned", PackedInt32Array()))
 		var placed := _count_indices(blueprint.get_value("project", "placed", PackedInt32Array()))
 		if learned > 0:
 			entries.append({"title": "Autosave · Blueprint mesin", "details": "%d / 6 potongan diperoleh\n%d / 6 potongan terpasang" % [learned, mini(learned, placed)]})
-	var desktop := ConfigFile.new()
-	for path: String in [StudyNotes.SAVE_PATH, GameClock.SAVE_PATH, BlueprintProgress.LEGACY_SAVE_PATH]:
-		if desktop.load(path) == OK:
-			entries.append({"title": "Autosave · Progres desktop", "details": "Data desktop tersimpan"})
-			break
 	var directory := DirAccess.open(Results.DIRECTORY)
 	if directory != null:
 		var files := directory.get_files()

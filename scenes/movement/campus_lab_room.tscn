@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/movement/door_interaction.tscn" id="2_bench"]
 
 [node name="CampusLabRoom" instance=ExtResource("1_room")]
-world_title = "DALAM RUANGAN · RUANG LABORATORIUM"
+world_title = "INTERIOR · RUANG LABORATORIUM"
 
 [node name="Background" parent="."]
 laboratory = true

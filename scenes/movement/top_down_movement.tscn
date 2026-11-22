@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://bwpsfuplu8cvf"]
 
 [ext_resource type="Script" uid="uid://by6o0jk14a7eh" path="res://scripts/movement/player.gd" id="1_player"]
-[ext_resource type="Script" path="res://scripts/movement/open_desktop.gd" id="2_desktop"]
-[ext_resource type="Theme" path="res://scenes/interaction/desktop/desktop_theme.tres" id="3_theme"]
 [ext_resource type="Script" path="res://scripts/movement/side_scroller_world.gd" id="4_world"]
 [ext_resource type="Script" path="res://scripts/movement/dummy_background.gd" id="5_background"]
 [ext_resource type="PackedScene" path="res://scenes/movement/door_interaction.tscn" id="6_door"]
-[ext_resource type="Script" path="res://scripts/movement/stats_hud.gd" id="7_stats"]
+[ext_resource type="SpriteFrames" path="res://scenes/movement/mc_idle_frames.tres" id="7_idle"]
+[ext_resource type="PackedScene" path="res://scenes/ui/player_profile.tscn" id="8_profile"]
+[ext_resource type="Script" path="res://scripts/movement/world_features.gd" id="9_features"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
 radius = 21.0
@@ -20,11 +20,19 @@ size = Vector2(48, 720)
 
 [node name="CampusCourtyard" type="Node2D"]
 script = ExtResource("4_world")
-left_destination = "res://scenes/movement/campus_lab.tscn"
+left_destination = "res://scenes/movement/dorm_exterior.tscn"
 right_destination = "res://scenes/movement/campus_lab.tscn"
 
 [node name="Background" type="Node2D" parent="."]
 script = ExtResource("5_background")
+
+[node name="PlayerProfile" parent="." instance=ExtResource("8_profile")]
+
+[node name="WorldFeatures" type="Node2D" parent="."]
+script = ExtResource("9_features")
+
+[node name="LecturerSpawn" type="Marker2D" parent="."]
+position = Vector2(1470, 592)
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2(960, 670)
@@ -35,7 +43,7 @@ shape = SubResource("RectangleShape2D_ground")
 
 [node name="Door" parent="." instance=ExtResource("6_door")]
 position = Vector2(925, 540)
-destination = "res://scenes/movement/campus_classroom.tscn"
+destination = "res://scenes/movement/classroom_corridor_floor1.tscn"
 
 [node name="DoorSpawn" type="Marker2D" parent="."]
 position = Vector2(925, 592)
@@ -62,25 +70,14 @@ script = ExtResource("1_player")
 position = Vector2(0, -14)
 scale = Vector2(1.5, 1.5)
 
-[node name="Body" type="Polygon2D" parent="Player/Visual"]
-color = Color(0.22, 0.43, 0.56, 1)
-polygon = PackedVector2Array(-12, -9, 12, -9, 14, 15, -14, 15)
-
-[node name="Head" type="Polygon2D" parent="Player/Visual"]
-color = Color(0.95, 0.77, 0.57, 1)
-polygon = PackedVector2Array(-11, -27, 11, -27, 11, -10, -11, -10)
-
-[node name="Hair" type="Polygon2D" parent="Player/Visual"]
-color = Color(0.2, 0.25, 0.3, 1)
-polygon = PackedVector2Array(-12, -28, 12, -28, 12, -22, -12, -22)
-
-[node name="Facing" type="Polygon2D" parent="Player/Visual"]
-color = Color(0.12, 0.2, 0.26, 1)
-polygon = PackedVector2Array(5, -20, 9, -20, 9, -16, 5, -16)
-
-[node name="Legs" type="Polygon2D" parent="Player/Visual"]
-color = Color(0.16, 0.23, 0.3, 1)
-polygon = PackedVector2Array(-12, 14, 12, 14, 12, 28, 3, 28, 3, 19, -3, 19, -3, 28, -12, 28)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player/Visual"]
+texture_filter = 1
+position = Vector2(-33.6, -32.64)
+scale = Vector2(0.16, 0.16)
+sprite_frames = ExtResource("7_idle")
+animation = &"idle"
+autoplay = "idle"
+centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(0, -14)
@@ -118,37 +115,3 @@ polygon = PackedVector2Array(-24, -360, 24, -360, 24, 360, -24, 360)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightExit"]
 shape = SubResource("RectangleShape2D_exit")
-
-[node name="DesktopAccess" type="CanvasLayer" parent="."]
-
-[node name="OpenDesktop" type="Button" parent="DesktopAccess"]
-offset_left = 304.0
-offset_top = 16.0
-offset_right = 492.0
-offset_bottom = 52.0
-theme = ExtResource("3_theme")
-text = "Buka Desktop"
-script = ExtResource("2_desktop")
-
-[node name="WorldTitle" type="Label" parent="DesktopAccess"]
-unique_name_in_owner = true
-offset_left = 512.0
-offset_top = 20.0
-offset_right = 940.0
-offset_bottom = 48.0
-theme = ExtResource("3_theme")
-
-[node name="Controls" type="Label" parent="DesktopAccess"]
-offset_left = 304.0
-offset_top = 64.0
-offset_right = 940.0
-offset_bottom = 90.0
-theme = ExtResource("3_theme")
-text = "A / D atau panah: berjalan · E: interaksi di depan pintu · Shift: lari"
-
-[node name="StatsHud" type="PanelContainer" parent="DesktopAccess"]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 290.0
-mouse_filter = 2
-script = ExtResource("7_stats")

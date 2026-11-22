@@ -1,7 +1,7 @@
 extends Node2D
 
-const LESSON_SCENE := preload("res://scenes/interaction/classroom/class_lesson.tscn")
-const EXAM_SCENE := preload("res://scenes/interaction/classroom/class_exam.tscn")
+const Lesson = preload("res://scripts/academic/class_lesson.gd")
+const Assessment = preload("res://scripts/academic/assessment.gd")
 const MIDTERM := preload("res://scenes/interaction/classroom/midterm.tres")
 const FINAL := preload("res://scenes/interaction/classroom/final.tres")
 
@@ -11,17 +11,29 @@ const FINAL := preload("res://scenes/interaction/classroom/final.tres")
 var _week: int = 1
 var _lesson: CanvasLayer
 var _exam: CanvasLayer
+var _seats: Array[Area2D] = []
+var _active_seat: Area2D
+var _manual_seated: bool = false
 
 
 func _ready() -> void:
+	for id: String in ["Seat", "Seat2", "Seat3", "Seat4"]:
+		_seats.append(get_node(id) as Area2D)
 	if not classroom_enabled:
 		$Computer.hide()
-		$Seat.hide()
+		for seat: Area2D in _seats:
+			seat.hide()
 		$Hud.hide()
 		return
+	var visual := get_parent().get_node("Player/Visual") as Node2D
+	visual.scale = Vector2(3, 3)
+	visual.position.y = -66
 	$Computer.interaction_requested.connect(_open_exam)
-	$Seat.interaction_requested.connect(_open_lesson)
+	for seat: Area2D in _seats:
+		seat.interaction_requested.connect(_interact_seat.bind(seat))
 	%Review.pressed.connect(_open_notes)
+	GameClock.minute_changed.connect(_clock_changed)
+	CareerProgress.changed.connect(_refresh_classroom)
 	if SceneTransition.is_active():
 		SceneTransition.transition_finished.connect(_after_transition, CONNECT_ONE_SHOT)
 	else:
@@ -36,7 +48,7 @@ func _after_transition(error: Error) -> void:
 func _enter_class() -> void:
 	if not classroom_enabled or not is_inside_tree():
 		return
-	_week = week_override if week_override > 0 else GameClock.get_week()
+	_week = week_override if week_override > 0 else CareerProgress.week()
 	var exam_week := _week == 8 or _week == 16
 	$Computer.available = exam_week
 	_refresh_classroom()
@@ -44,34 +56,80 @@ func _enter_class() -> void:
 
 func _refresh_classroom() -> void:
 	var exam_week := _week == 8 or _week == 16
-	var finished := ClassroomProgress.is_class_finished()
-	$Seat.available = not exam_week and not finished and not is_instance_valid(_lesson)
+	var finished: bool = CareerProgress.class_data(CareerProgress.semester(), _week).finished
+	var actor := get_parent().get_node("Player") as CharacterBody2D
+	for seat: Area2D in _seats:
+		seat.available = not is_instance_valid(_lesson) and not is_instance_valid(_exam) and (not _manual_seated or seat == _active_seat)
+		var prompt := seat.get_node("Prompt") as Button
+		prompt.text = "E · Berdiri" if _manual_seated and seat == _active_seat else ("E · Duduk" if exam_week or finished else "E · Duduk dan Belajar")
+		prompt.visible = seat.available and seat.overlaps_body(actor)
 	%Review.visible = not exam_week and finished
 	%ClassStatus.text = "Minggu %d · %s" % [_week, "Ujian: dekati komputer kelas, lalu tekan E." if exam_week else ("Kelas selesai. Materi tidak dapat diulang di kelas." if finished else "Dekati kursi, tekan E untuk duduk dan mulai belajar.")]
 
 
-func _open_lesson() -> void:
+func _interact_seat(seat: Area2D) -> void:
+	if _manual_seated:
+		_stand_up()
+	elif _week == 8 or _week == 16 or CareerProgress.class_data(CareerProgress.semester(), _week).finished:
+		_active_seat = seat
+		_manual_seated = true
+		_pose_player(seat)
+		_refresh_classroom()
+	else:
+		_open_lesson(seat)
+
+
+func _pose_player(seat: Area2D) -> void:
+	var actor := get_parent().get_node("Player") as CharacterBody2D
+	actor.set_studying(true)
+	actor.global_position = seat.get_node("SeatPoint").global_position
+	var visual := actor.get_node("Visual") as Node2D
+	visual.scale = Vector2(absf(visual.scale.x), visual.scale.y * 0.8)
+
+
+func _stand_up() -> void:
+	var actor := get_parent().get_node("Player") as CharacterBody2D
+	actor.set_studying(false)
+	if is_instance_valid(_active_seat):
+		actor.global_position = _active_seat.global_position
+	_active_seat = null
+	_manual_seated = false
+	_refresh_classroom()
+
+
+func _open_lesson(seat: Area2D = null) -> void:
 	if is_instance_valid(_lesson) or is_instance_valid(_exam) or SceneTransition.is_active():
 		return
-	if _week == 8 or _week == 16 or ClassroomProgress.get_unattempted_indices().is_empty():
+	if _week == 8 or _week == 16 or CareerProgress.class_data(CareerProgress.semester(), _week).finished:
 		return
 	var actor := get_parent().get_node("Player") as CharacterBody2D
-	if not $Seat.overlaps_body(actor):
+	if seat == null:
+		seat = $Seat
+	if not seat.overlaps_body(actor):
 		return
-	_lesson = LESSON_SCENE.instantiate() as CanvasLayer
+	_lesson = Lesson.new()
+	_lesson.term = CareerProgress.semester()
+	_lesson.study_week = _week
 	_lesson.player = actor
-	_lesson.seat_position = $Seat.global_position
+	_lesson.seat_position = seat.get_node("SeatPoint").global_position
 	_lesson.closed.connect(_on_lesson_closed)
+	_lesson.completed.connect(_return_to_corridor)
+	_active_seat = seat
 	add_child(_lesson)
-	$Seat.available = false
-	$Seat/Prompt.hide()
+	if actor.is_studying():
+		_pose_player(seat)
+	_refresh_classroom()
 	$Hud.hide()
 
 
 func _open_notes() -> void:
-	if not ClassroomProgress.is_class_finished() or is_instance_valid(_lesson) or is_instance_valid(_exam):
+	if not CareerProgress.class_data(CareerProgress.semester(), _week).finished or is_instance_valid(_lesson) or is_instance_valid(_exam):
 		return
-	_lesson = LESSON_SCENE.instantiate() as CanvasLayer
+	if _manual_seated:
+		_stand_up()
+	_lesson = Lesson.new()
+	_lesson.term = CareerProgress.semester()
+	_lesson.study_week = _week
 	_lesson.notes_only = true
 	_lesson.closed.connect(_on_lesson_closed)
 	add_child(_lesson)
@@ -80,14 +138,27 @@ func _open_notes() -> void:
 
 func _on_lesson_closed() -> void:
 	_lesson = null
+	_stand_up()
 	$Hud.show()
 	_refresh_classroom()
+
+
+func _return_to_corridor() -> void:
+	var door := get_parent().get_node("Door") as Area2D
+	SceneTransition.change_scene.call_deferred(door.destination, door.destination_spawn)
 
 
 func _open_exam() -> void:
 	if (_week != 8 and _week != 16) or is_instance_valid(_lesson) or is_instance_valid(_exam):
 		return
-	_exam = EXAM_SCENE.instantiate() as CanvasLayer
-	_exam.assignment = MIDTERM if _week == 8 else FINAL
+	_exam = Assessment.new()
+	_exam.term = CareerProgress.semester()
+	_exam.study_week = _week
+	_exam.kind = "uts" if _week == 8 else "uas"
 	add_child(_exam)
 	_exam.closed.connect(func() -> void: _exam = null)
+
+
+func _clock_changed(_minutes: int) -> void:
+	if not is_instance_valid(_lesson) and not is_instance_valid(_exam):
+		_enter_class()

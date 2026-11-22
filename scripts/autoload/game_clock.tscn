@@ -4,3 +4,6 @@
 
 [node name="GameClock" type="Node"]
 script = ExtResource("1_clock")
+
+[node name="MinuteTimer" type="Timer" parent="."]
+ignore_time_scale = true

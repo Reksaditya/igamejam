@@ -8,6 +8,13 @@
 [ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="6_pixel_bold"]
 [ext_resource type="Texture2D" uid="uid://c7ge7su4ji3ub" path="res://assets/textures/desktop/icon_browser.png" id="7_globe"]
 
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/academic_home.tscn" id="8_academic"]
+
+[sub_resource type="Resource" id="Route_academic"]
+script = ExtResource("3_route")
+address = "www.homeworkplace.com/courses"
+page = ExtResource("8_academic")
+
 [sub_resource type="Resource" id="Route_homework"]
 script = ExtResource("3_route")
 address = "www.homeworkplace.com"
@@ -27,6 +34,11 @@ address = "www.placetostudy.com"
 script = ExtResource("5_tab")
 title = "Tugas"
 address = "www.homeworkplace.com"
+
+[sub_resource type="Resource" id="Tab_academic"]
+script = ExtResource("5_tab")
+title = "Mata Kuliah"
+address = "www.homeworkplace.com/courses"
 
 [sub_resource type="StyleBoxFlat" id="FirefoxTabStrip"]
 content_margin_left = 4.0
@@ -193,9 +205,9 @@ content_margin_bottom = 2.0
 [node name="WordExplorer" type="MarginContainer"]
 texture_filter = 1
 script = ExtResource("1_app")
-default_tabs = Array[ExtResource("5_tab")]([SubResource("Tab_library"), SubResource("Tab_homework")])
+default_tabs = Array[ExtResource("5_tab")]([SubResource("Tab_library"), SubResource("Tab_homework"), SubResource("Tab_academic")])
 start_tab = 1
-local_routes = Array[ExtResource("3_route")]([SubResource("Route_homework"), SubResource("Route_study")])
+local_routes = Array[ExtResource("3_route")]([SubResource("Route_homework"), SubResource("Route_study"), SubResource("Route_academic")])
 
 [node name="Layout" type="VBoxContainer" parent="."]
 layout_mode = 2

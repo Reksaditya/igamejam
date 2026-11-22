@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cutoxf8leboyp"
-path="res://.godot/imported/power_icon.svg-d7e6b86ccb0781de3d1989406ff3bc97.ctex"
+uid="uid://bjvnuuu71vsq4"
+path="res://.godot/imported/bed.png-8d23086ea1a0d3f58a3654d73989d484.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/power_icon.svg"
-dest_files=["res://.godot/imported/power_icon.svg-d7e6b86ccb0781de3d1989406ff3bc97.ctex"]
+source_file="res://assets/furniture/dorm/bed.png"
+dest_files=["res://.godot/imported/bed.png-8d23086ea1a0d3f58a3654d73989d484.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
