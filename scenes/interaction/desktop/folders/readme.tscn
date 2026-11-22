@@ -1,9 +1,0 @@
-[gd_scene format=3]
-
-[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/document_launcher.tscn" id="1_launcher"]
-[node name="Readme" instance=ExtResource("1_launcher")]
-display_title = "Readme.txt"
-submission_filename = "Readme.txt"
-starting_text = "My files
-
-Open a document or image from this folder."

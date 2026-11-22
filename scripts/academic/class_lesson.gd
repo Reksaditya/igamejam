@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 signal closed
+signal completed
 
 const Qte = preload("res://scripts/interaction/classroom/focus_qte.gd")
 const ActivityPanel = preload("res://scripts/ui/activity_panel.gd")
@@ -101,7 +102,9 @@ func _next_section() -> void:
 func _process(delta: float) -> void:
 	if not is_instance_valid(_qte) or not is_instance_valid(player) or is_instance_valid(_summary):
 		return
-	_qte.position = player.get_global_transform_with_canvas() * Vector2(0, -102) - Vector2(55, 110)
+	var sprite := player.get_node("Visual/AnimatedSprite2D") as AnimatedSprite2D
+	var head := sprite.get_global_transform_with_canvas() * Vector2(sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame).get_width() * 0.5, 0)
+	_qte.position = head - Vector2(55, 130)
 	if _phase == 1 or _phase == 3:
 		return
 	_delay -= delta
@@ -151,7 +154,15 @@ func _show_summary() -> void:
 		_summary.label(lesson.sections[index] if data.complete.has(index) else "________________ (catatan kosong)")
 	_summary.label("Materi yang dilewati tidak dapat diulang di kelas. Lengkapi catatan melalui Library pada komputer asrama.", 16)
 	_summary.add_close()
-	_summary.closed.connect(_close)
+	if not notes_only:
+		_summary.close_button.text = "Kembali ke lorong"
+	_summary.closed.connect(_on_summary_closed)
+
+
+func _on_summary_closed() -> void:
+	if not notes_only:
+		completed.emit()
+	_close()
 
 
 func _close() -> void:

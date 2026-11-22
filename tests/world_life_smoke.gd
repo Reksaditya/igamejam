@@ -69,7 +69,7 @@ func _run() -> void:
 	await scene_changed
 	var classroom := current_scene.get_node("ClassActivity")
 	var player := current_scene.get_node("Player")
-	player.position = Vector2(700, 592)
+	player.position = classroom.get_node("Seat").global_position
 	stats.set_energy(0)
 	for frame: int in 6:
 		await physics_frame
@@ -83,7 +83,8 @@ func _run() -> void:
 	assert(career.class_data(1, 2).complete.is_empty())
 	await process_frame
 	lesson._summary.close()
-	await process_frame
+	await scene_changed
+	await root.get_node("SceneTransition").transition_finished
 	for term: int in range(1, 9):
 		for week: int in range(1, 17):
 			assert(career.record_result(term, week, "tugas", 100) == OK)

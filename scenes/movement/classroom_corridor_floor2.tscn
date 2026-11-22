@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/movement/classroom_corridor_floor1.tscn" id="1_corridor"]
+
+[node name="ClassroomCorridorFloor2" instance=ExtResource("1_corridor")]
+world_title = "LORONG KELAS · LANTAI 2"
+floor_number = 2
+
+[node name="Door" parent="."]
+destination = "res://scenes/movement/campus_classroom_floor2.tscn"
+
+[node name="Exit" parent="."]
+visible = false
+monitoring = false

@@ -8,9 +8,17 @@ Berjalan dengan A/D atau panah kiri/kanan; Shift untuk berlari. Interaksi memaka
 
 ## Lokasi dan alur
 
+<<<<<<<<< Temporary merge branch 1
+Setelah seluruh catatan lengkap, kelas langsung memberikan blueprint `sediment_sorter`. Tombol **Buka blueprint** menampilkan gambar utuh. Jika pemberian gagal disimpan, tombol **Coba simpan lagi** dapat digunakan tanpa mengulang kelas.
+=========
 Kamar 210 kini memakai furniture kiriman pengguna, kursi interaktif, dan area gerak berukuran 60% lebar serta tinggi viewport. Detail aset dan perilaku resize/save tersedia di [panduan kamar](dorm-room.md).
 
-Setelah seluruh catatan lengkap, kelas langsung memberikan blueprint `sediment_sorter`. Tombol **Buka blueprint** menampilkan gambar utuh. Jika pemberian gagal disimpan, tombol **Coba simpan lagi** dapat digunakan tanpa mengulang kelas.
+- Halaman kampus: pintu tengah menuju kelas; pintu di sisi kanan bangunan menuju ruang dosen. Tepi kanan menuju gedung lab; tepi kiri menuju asrama.
+- Gedung lab: pintu menuju bengkel. Meja perakitan dapat diakses dengan E.
+- Asrama: pintu masuk menuju lantai 1. Tangga di kanan menuju lantai 2. Pintu kamar 210 berada di sisi kiri lantai 2.
+- Kamar 210: tempat tidur di kiri dan meja komputer di kanan. Komputer menyediakan Word Explorer/LMS, Library, Project, Blocks, Notepad, dan aplikasi desktop sebelumnya. Sandi awal komputer 123. Matikan komputer untuk kembali ke kamar.
+- Ruang dosen: laporkan mesin yang selesai untuk memperoleh nilai proyek.
+>>>>>>>>> Temporary merge branch 2
 
 ## Integrasi kelas, Library, dan lab
 
@@ -24,13 +32,13 @@ Minggu 8 dan 16 digunakan untuk UTS/UAS melalui komputer kelas. Tugas dan kuis t
 
 ## LMS, nilai, dan IPK
 
-Selama ujian kelas, `GameClock.begin_assessment()` menghentikan waktu game. Kuis LMS memakai token terpisah dan menambah 10 menit game saat hasil tersimpan, tanpa biaya saat dibatalkan. Tugas LMS tetap mengikuti jam normal. `end_assessment()` menambahkan durasi akses sebenarnya ke jam game, termasuk ketika sesi ditutup. Pecahan menit dibawa ke sesi berikutnya. Pengerjaan enam menit mulai 14.30 menghasilkan 14.36. Fungsi ini aman terhadap pelepasan berulang dan sesi yang saling bertumpuk. Jam dan pecahan menit kini ikut disimpan dalam autosave sesi.
+Word Explorer membuka LMS Universitas Redline. Tiap minggu ada tugas dan kuis, masing-masing sepuluh soal pilihan ganda. Tugas tidak memiliki timer pengerjaan; kuis, UTS, dan UAS dibatasi sepuluh menit nyata. Tugas/kuis ditutup setelah enam hari. Jawaban kosong bernilai nol. Timer habis mengumpulkan jawaban otomatis. Draf mempertahankan jawaban dan tenggat waktu nyata ketika aplikasi ditutup.
 
 Nilai tersimpan hanya sekali dan dapat dilihat di riwayat. Tugas/kuis dirata-rata atas 16 minggu; nilai yang belum dikumpulkan bernilai nol. Bobot semester: tugas 10%, kuis 15%, UTS 22,5%, UAS 22,5%, proyek 30%. Total persentase dibagi 25 menghasilkan IPK 0–4. IPK kumulatif merata-ratakan semester yang sedang berlangsung dan semester sebelumnya.
 
-Game dimulai dari main menu. **New Game** langsung membuka halaman kampus pada hari 1 pukul 06.00 jika belum ada progres. Bila sudah ada data, muncul pertanyaan **apakah anda yakin ingin memulai kehidupan baru?** dengan subheader **seluruh data yang anda save sebelumnya akan hilang**. **Batal** mempertahankan data; **Ya, mulai baru** menghapus catatan kelas, status materi, blueprint, hasil LMS/ujian, draf ujian, dan catatan desktop. Pengaturan volume dan resolusi tetap dipertahankan.
+## Blueprint dan proyek
 
-`GameSave` menyimpan checkpoint versi 2 ke `user://game_save.cfg` setiap dua detik selama permainan, ketika memasuki world, setelah perubahan catatan/blueprint, dan ketika jendela game ditutup. Checkpoint memuat scene, posisi dan arah karakter, kalender global, serta salinan data progres permainan. Penulisan rutin memakai file sementara lalu mengganti checkpoint sebelumnya. Pergantian scene yang sedang berjalan tidak ditangkap sebagai lokasi akhir.
+Setiap semester memiliki sembilan potongan. Aplikasi Project menampilkan siluet 3×3. Pilih potongan milik pemain, lalu tempatkan di posisi yang sesuai. Potongan yang salah tidak dikonsumsi. Blueprint lengkap membuka perakitan di bengkel.
 
 Bengkel memiliki enam komponen sesuai semester. Ambil komponen yang diminta objective, pilih Pasang, lalu selesaikan QTE. Komponen salah ditolak dan kegagalan QTE mengembalikan komponen ke rak. Preview menampilkan dudukan yang sudah terisi. Progres perakitan bertahan saat keluar atau Load.
 
@@ -40,7 +48,7 @@ Laporkan mesin lengkap kepada dosen. Nilai awal proyek 100, dikurangi lima per k
 
 ## Energi, kewarasan, dan istirahat
 
-Atur ID, judul, dan tekstur utuh pada resource blueprint desktop, lalu tambahkan resource ke **Blueprints** di `project_app.tscn`. Untuk penghargaan buku, set **Reward Type** ke **Blueprint** dan isi **Blueprint ID** yang sama. Untuk Workshop, isi **Linked Blueprint ID** pada resource puzzle. Pertahankan ID yang sudah dipakai save lama. Resource `scenes/interaction/blueprint/transmission.tres` tetap menyediakan materi kelas dan gambar untuk demo blueprint lama yang terpisah.
+Energi awal 100. Kelas menghabiskan 15, tugas/kuis 5, ujian 30, proyek 20, dan belajar ulang 5. Biaya tidak dipotong berulang untuk kegiatan yang sama ketika dilanjutkan. Energi nol membuat pemain tertidur di kelas dan semua catatan sesi tersebut kosong; perakitan memerlukan energi.
 
 Aktivitas menambah tingkat kewarasan/tekanan sebesar 10, mengikuti arah angka GDD: nilai 80 atau lebih menimbulkan blur pada dunia, sementara HUD tetap terbaca. Istirahat mengembalikannya ke 50. Tidur delapan jam memulihkan energi dengan penalti 10 poin per jam setelah pukul 22.00. Istirahat singkat hanya memulihkan sebagian energi dan menambah kekurangan tidur; tidur cukup mengurangi kekurangan tersebut.
 
@@ -60,6 +68,6 @@ GameSave menyimpan snapshot versi 2 setiap dua detik, saat progres berubah, dan 
 
 ## Validasi
 
-Jalankan tools/run_production_tests.py dengan --godot menunjuk executable Godot 4.7.2. Runner membuat direktori APPDATA/LOCALAPPDATA terisolasi di .godot/production-validation, menyimpan log, menguji 13 kelompok fitur dan lima pengujian ulang dari proses baru, lalu mengembalikan kode gagal jika ada runtime error atau hasil uji tidak lengkap.
+Jalankan tools/run_production_tests.py dengan --godot menunjuk executable Godot 4.7.2. Runner membuat direktori APPDATA/LOCALAPPDATA terisolasi di .godot/production-validation, menyimpan log, menguji 12 kelompok fitur dan lima pengujian ulang dari proses baru, lalu mengembalikan kode gagal jika ada runtime error atau hasil uji tidak lengkap.
 
 Pengujian grafis tambahan memakai opsi --capture pada academic_flow_smoke, dorm_study_smoke, workshop_flow_smoke, world_life_smoke, dan player_profile_smoke. Tangkapan layar berada di .godot. Aset lingkungan, NPC, mesin, dan cutscene masih dummy sesuai persetujuan pengguna; karakter memakai tujuh frame idle yang telah diberikan.

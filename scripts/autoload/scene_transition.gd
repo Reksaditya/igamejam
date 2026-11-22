@@ -27,13 +27,12 @@ func change_scene(destination: String, spawn: StringName) -> void:
 	_screen.color.a = 0.0
 	_screen.show()
 	await _fade_to(1.0)
-	if not spawn.is_empty():
-		get_tree().set_meta(&"side_scroller_spawn", spawn)
+	get_tree().set_meta(&"side_scroller_spawn", spawn)
 	var error := get_tree().change_scene_to_file(destination)
 	if error == OK:
 		await get_tree().scene_changed
 		await get_tree().process_frame
-	elif not spawn.is_empty():
+	else:
 		get_tree().remove_meta(&"side_scroller_spawn")
 	await _fade_to(0.0)
 	_screen.hide()

@@ -19,7 +19,6 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	var step := board.get_cell_size()
 	var preview := Control.new()
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# Desktop window canvases draw above the native preview's default Z.
 	preview.z_as_relative = false
 	preview.z_index = 64
 	preview.size = bounds.size * step

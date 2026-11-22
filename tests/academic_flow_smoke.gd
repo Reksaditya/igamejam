@@ -48,8 +48,14 @@ func _run() -> void:
 	assert(clock.get_absolute_minutes() == class_start + 120)
 	await process_frame
 	lesson._summary.close()
-	await process_frame
-	assert(not player.is_studying() and not paused)
+	await scene_changed
+	await root.get_node("SceneTransition").transition_finished
+	assert(current_scene.scene_file_path.ends_with("classroom_corridor_floor1.tscn"))
+	assert(not current_scene.get_node("Player").is_studying() and not paused)
+	change_scene_to_file("res://scenes/movement/campus_classroom.tscn")
+	await scene_changed
+	await physics_frame
+	classroom = current_scene.get_node("ClassActivity")
 	classroom._open_lesson()
 	assert(not is_instance_valid(classroom._lesson))
 	var assessment: CanvasLayer = Assessment.new()

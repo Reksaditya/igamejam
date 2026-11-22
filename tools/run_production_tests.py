@@ -9,14 +9,15 @@ import time
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--godot", default=shutil.which("godot") or shutil.which("godot4"))
+    parser.add_argument("--pack", type=Path)
     args = parser.parse_args()
     if not args.godot:
         parser.error("Berikan lokasi executable Godot melalui --godot")
     repo = Path(__file__).resolve().parents[1]
     output = repo / ".godot" / "production-validation" / str(time.time_ns())
     output.mkdir(parents=True)
-    tests = ["career", "academic_flow", "dorm_study", "dorm_room", "workshop_flow", "world_life", "game_save", "main_menu", "player_profile", "resolution", "mc_idle", "blueprint", "side_scroller"]
-    reloads = {"academic_flow", "dorm_study", "game_save", "main_menu", "blueprint"}
+    tests = ["career", "academic_flow", "classroom_seating", "classroom_corridor", "classroom_exit", "dorm_study", "dorm_room", "workshop_flow", "world_life", "game_save", "main_menu", "player_profile", "resolution", "mc_idle", "blueprint", "side_scroller"]
+    reloads = {"academic_flow", "classroom_corridor", "dorm_study", "game_save", "main_menu", "blueprint"}
     failures = []
     for name in tests:
         env = dict(os.environ)
@@ -27,6 +28,8 @@ def main():
         for reload in ([False, True] if name in reloads else [False]):
             label = name + ("_reload" if reload else "")
             command = [args.godot, "--headless", "--path", str(repo), "--script", f"res://tests/{name}_smoke.gd", "--quit-after", "3600"]
+            if args.pack:
+                command = [args.godot, "--headless", "--main-pack", str(args.pack.resolve()), "--script", str(repo / "tests" / f"{name}_smoke.gd"), "--quit-after", "3600"]
             if reload:
                 command += ["--", "--reload"]
             try:

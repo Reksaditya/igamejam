@@ -1,7 +1,6 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/movement/campus_classroom.tscn" id="1_room"]
-[ext_resource type="PackedScene" path="res://scenes/movement/door_interaction.tscn" id="2_bench"]
 
 [node name="CampusLabRoom" instance=ExtResource("1_room")]
 world_title = "INTERIOR · RUANG LABORATORIUM"
@@ -14,27 +13,3 @@ destination = "res://scenes/movement/campus_lab.tscn"
 
 [node name="ClassActivity" parent="."]
 classroom_enabled = false
-
-[node name="WorkshopSpawn" type="Marker2D" parent="."]
-position = Vector2(1235, 592)
-
-[node name="WorkshopBench" parent="." instance=ExtResource("2_bench")]
-position = Vector2(1280, 587)
-destination = "res://scenes/interaction/workshop/transmission_workshop.tscn"
-destination_spawn = &""
-action_text = "Use bench"
-
-[node name="BenchSign" type="Polygon2D" parent="WorkshopBench"]
-position = Vector2(0, -61)
-polygon = PackedVector2Array(-24, -8, 24, -8, 24, 8, -24, 8)
-color = Color(0.28, 0.39, 0.38, 1)
-
-[node name="BenchSignText" type="Label" parent="WorkshopBench"]
-offset_left = -24.0
-offset_top = -69.0
-offset_right = 24.0
-offset_bottom = -52.0
-mouse_filter = 2
-theme_override_font_sizes/font_size = 11
-text = "BENCH"
-horizontal_alignment = 1

@@ -61,10 +61,9 @@ func _run() -> void:
 	var desktop := load("res://scenes/interaction/desktop/desktop.tscn").instantiate() as Control
 	desktop.login_scene = null
 	root.add_child(desktop)
-	while desktop._boot_cover.visible:
-		await process_frame
+	await process_frame
 	var launcher := load("res://scenes/interaction/blueprint/blueprint_launcher.tscn").instantiate() as Button
-	desktop.get_node("%Launchers").add_child(launcher)
+	desktop.get_node("DesktopItems/Launchers").add_child(launcher)
 	desktop._open_launcher(launcher)
 	assert(desktop._open_windows.size() == 1)
 	var app: Control = desktop._open_windows[launcher].get_content()

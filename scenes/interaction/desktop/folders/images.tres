@@ -1,9 +1,0 @@
-[gd_resource type="Resource" format=3]
-
-[ext_resource type="Script" path="res://scripts/interaction/desktop/desktop_folder.gd" id="1_folder"]
-[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/folders/desktop_photo.tscn" id="desktop_photo"]
-
-[resource]
-script = ExtResource("1_folder")
-folder_name = "Images"
-files = Array[PackedScene]([ExtResource("desktop_photo")])

@@ -74,7 +74,7 @@ func _run() -> void:
 		assert(player.position == before_fade)
 		await scene_changed
 		await _wait_transition()
-		var room := "res://scenes/movement/campus_classroom.tscn" if world == COURTYARD else "res://scenes/movement/campus_lab_room.tscn"
+		var room := "res://scenes/movement/classroom_corridor_floor1.tscn" if world == COURTYARD else "res://scenes/movement/campus_lab_room.tscn"
 		assert(current_scene.scene_file_path == room)
 		assert(root.get_node("GameClock") == clock)
 		await _wait_frames(10)
@@ -83,9 +83,10 @@ func _run() -> void:
 		assert(not current_scene.get_node("Door/Prompt").visible)
 		await _wait_frames(10)
 		assert(current_scene.scene_file_path == room)
-		player.position.x = 925.0
+		player.position.x = 80.0 if world == COURTYARD else 925.0
 		await _wait_frames(10)
-		assert(current_scene.get_node("Door/Prompt/Button").text == "E · Keluar")
+		var exit_node := "Exit" if world == COURTYARD else "Door"
+		assert(current_scene.get_node(exit_node + "/Prompt/Button").text == ("E · Keluar gedung" if world == COURTYARD else "E · Keluar"))
 		_press_key(KEY_E)
 		await scene_changed
 		await _wait_transition()

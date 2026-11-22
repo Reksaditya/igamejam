@@ -67,10 +67,26 @@ Kelas dan QTE, kuis, desktop/Library/Project, bengkel, profil/Settings pada jend
 
 Instruksi pengguna menggantikan bagian GDD yang bertentangan: tidak ada lompatan; nama pemain dapat dipilih; kalender memakai 16 minggu per semester; kuis/ujian memakai durasi akses sebenarnya; Profil tidak menghentikan waktu kecuali Settings. Tombol Buka Desktop di HUD tetap dihapus: akses komputer melalui objek di kamar.
 
-Panduan menjalankan seluruh alur: docs/blueprint.md. Kualitas visual lingkungan, NPC, mesin, dan cutscene masih dummy sesuai izin; dokumen ini tidak menyatakan bahwa aset final atau build distribusi telah dibuat.
+Panduan menjalankan seluruh alur: docs/blueprint.md. Kualitas visual lingkungan, NPC, mesin, dan cutscene masih dummy sesuai izin. Build uji Windows tersedia melalui proses di docs/windows-build.md.
 
 ## Pembaruan kamar 210 dan furniture
 
 Asrama memiliki sepuluh pintu bernomor per lantai; kamar 210 dapat dimasuki dan kamar penghuni lain terkunci. Kamar pemain memiliki world dengan kamera tetap, empat collision batas, serta ukuran 60% lebar dan tinggi viewport. Posisi furniture dan batas diperbarui saat resolusi berubah. Furniture (96), (117), (246), dan (105) digunakan tanpa perubahan byte untuk kasur, nakas, kursi, dan jam. Lampu, meja, dan laptop berupa dummy. E pada kursi mengaktifkan duduk dan mengunci gerak; E berikutnya memulihkan gerak/pose berdiri.
 
 Save posisi kamar memakai koordinat relatif ruang gerak sehingga Load pada resolusi berbeda tetap aman; save kamar lama tetap diterima. Laptop mengembalikan pemain ke posisi meja yang baru setelah dimatikan. dorm_room_smoke menguji aset, nomor pintu, tiga resolusi, collision, E, save/load, dan desktop. Suite terbaru: 18 lulus, 0 gagal, log .godot/production-validation/1795327015551712500. Pengujian grafis kamar diulang setelah pemetaan kursi dan pose duduk disesuaikan. Panduan: docs/dorm-room.md.
+
+## Build Windows
+
+Gameplay mengikuti versi lokal 1f06ec6 sesuai pilihan pengguna. Riwayat remote reksaaditya digabungkan tanpa mengganti isi versi lokal dan tanpa force-push.
+
+Pengujian source diulang: 18 lulus, 0 gagal, log .godot/production-validation/1795339561698418000. Suite yang sama terhadap PCK hasil ekspor juga lulus 18/18, log .godot/production-validation/1795343321262043800. Helper windows_export_smoke memeriksa New Game, NIM, Settings, profil, furniture, E kursi, save dan Load menggunakan paket ekspor melalui engine editor. Ini terpisah dari pemeriksaan executable Windows.
+
+Paket Windows awal diuji ulang: 18 lulus, 0 gagal, log .godot/production-validation/1795343569375283800. ZIP lolos pemeriksaan CRC; executable dari hasil ekstraknya lolos startup headless dan grafis Compatibility dengan kode keluar 0. Ukuran ZIP 41.522.248 byte, SHA-256 e93ce314ceb039ad523620c18441229f546a8c8826b6c67b228605b142764770.
+
+Executable Windows dijalankan menggunakan renderer Compatibility dan keluar dengan kode 0 tanpa error pada log runtime. Pemeriksaan UI penuh melalui alat computer-use terhambat timeout; hasil ini tidak menyatakan seluruh tombol sudah diuji manual pada executable. Folder save pengujian terisolasi dari save pengguna. Preset, tool build, lisensi, dan panduan penggunaan disertakan; binary dan template tetap berada di .godot/builds dan tidak masuk Git.
+
+## Background kelas dan empat kursi
+
+Kelas memakai background serta aset kursi dari pengguna tanpa mengubah file PNG. Keempat posisi kursi sesuai gambar referensi dan memakai bubble/E untuk duduk. Duduk pada minggu belajar memulai QTE; setelah materi selesai atau pada minggu ujian, kursi tetap dapat dipakai duduk/berdiri tanpa mengulang materi. Skala karakter di kelas dan titik QTE disesuaikan dengan kursi. Komputer ujian diposisikan pada laptop di gambar; ruang lab mempertahankan tampilan dan perilaku sebelumnya.
+
+Pengujian grafis kursi lulus. Suite pada PCK terbaru: 19 lulus, 0 gagal, log .godot/production-validation/1795344499697672800. ZIP lolos CRC dan startup executable hasil ekstrak lulus. Ukuran ZIP terbaru 41.602.528 byte; SHA-256 94feb68ae759b6cca3020c858e6afa870b5e59f6a9b50ea5e22d39887a5f7961. Panduan dan preview: docs/classroom-seating.md.

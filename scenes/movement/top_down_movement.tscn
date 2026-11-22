@@ -4,7 +4,9 @@
 [ext_resource type="Script" path="res://scripts/movement/side_scroller_world.gd" id="4_world"]
 [ext_resource type="Script" path="res://scripts/movement/dummy_background.gd" id="5_background"]
 [ext_resource type="PackedScene" path="res://scenes/movement/door_interaction.tscn" id="6_door"]
-[ext_resource type="Script" path="res://scripts/movement/stats_hud.gd" id="7_stats"]
+[ext_resource type="SpriteFrames" path="res://scenes/movement/mc_idle_frames.tres" id="7_idle"]
+[ext_resource type="PackedScene" path="res://scenes/ui/player_profile.tscn" id="8_profile"]
+[ext_resource type="Script" path="res://scripts/movement/world_features.gd" id="9_features"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
 radius = 21.0
@@ -41,7 +43,7 @@ shape = SubResource("RectangleShape2D_ground")
 
 [node name="Door" parent="." instance=ExtResource("6_door")]
 position = Vector2(925, 540)
-destination = "res://scenes/movement/campus_classroom.tscn"
+destination = "res://scenes/movement/classroom_corridor_floor1.tscn"
 
 [node name="DoorSpawn" type="Marker2D" parent="."]
 position = Vector2(925, 592)
@@ -113,37 +115,3 @@ polygon = PackedVector2Array(-24, -360, 24, -360, 24, 360, -24, 360)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightExit"]
 shape = SubResource("RectangleShape2D_exit")
-
-[node name="DesktopAccess" type="CanvasLayer" parent="."]
-
-[node name="OpenDesktop" type="Button" parent="DesktopAccess"]
-offset_left = 206.0
-offset_top = 16.0
-offset_right = 416.0
-offset_bottom = 52.0
-theme = ExtResource("3_theme")
-text = "Buka Desktop"
-script = ExtResource("2_desktop")
-
-[node name="WorldTitle" type="Label" parent="DesktopAccess"]
-unique_name_in_owner = true
-offset_left = 436.0
-offset_top = 20.0
-offset_right = 846.0
-offset_bottom = 48.0
-theme = ExtResource("3_theme")
-
-[node name="Controls" type="Label" parent="DesktopAccess"]
-offset_left = 206.0
-offset_top = 64.0
-offset_right = 846.0
-offset_bottom = 90.0
-theme = ExtResource("3_theme")
-text = "A / D atau panah: berjalan · E: interaksi di depan pintu · Shift: lari"
-
-[node name="StatsHud" type="PanelContainer" parent="DesktopAccess"]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 190.0
-mouse_filter = 2
-script = ExtResource("7_stats")
