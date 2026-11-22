@@ -2,7 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/interaction/desktop/browser_page_layout.gd" id="1_layout"]
 
+[sub_resource type="StyleBoxFlat" id="PageSurface"]
+bg_color = Color(0.985, 0.992, 1, 1)
+
 [node name="PagePanel" type="PanelContainer"]
+theme_override_styles/panel = SubResource("PageSurface")
+
 [node name="Scroll" type="ScrollContainer" parent="."]
 layout_mode = 2
 follow_focus = true

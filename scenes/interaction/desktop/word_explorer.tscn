@@ -4,8 +4,9 @@
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/word_explorer_home.tscn" id="2_page"]
 [ext_resource type="Script" path="res://scripts/interaction/desktop/browser_route.gd" id="3_route"]
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/study/study_home.tscn" id="4_study"]
-
 [ext_resource type="Script" path="res://scripts/interaction/desktop/browser_tab.gd" id="5_tab"]
+[ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="6_pixel_bold"]
+[ext_resource type="Texture2D" uid="uid://c7ge7su4ji3ub" path="res://assets/textures/desktop/icon_browser.png" id="7_globe"]
 
 [sub_resource type="Resource" id="Route_homework"]
 script = ExtResource("3_route")
@@ -27,7 +28,170 @@ script = ExtResource("5_tab")
 title = "Tugas"
 address = "www.homeworkplace.com"
 
+[sub_resource type="StyleBoxFlat" id="FirefoxTabStrip"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+bg_color = Color(0.8, 0.86, 0.93, 1)
+border_width_bottom = 1
+border_color = Color(0.58, 0.67, 0.77, 1)
+
+[sub_resource type="StyleBoxFlat" id="FirefoxMenuNormal"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 2.0
+bg_color = Color(0.91, 0.416, 0.09, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.62, 0.247, 0.027, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="FirefoxMenuHover"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 2.0
+bg_color = Color(0.96, 0.498, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.71, 0.3, 0.04, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="FirefoxMenuPressed"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 2.0
+bg_color = Color(0.8, 0.34, 0.06, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.56, 0.22, 0.02, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="FirefoxNavToolbar"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+bg_color = Color(0.95, 0.965, 0.98, 1)
+border_width_bottom = 1
+border_color = Color(0.71, 0.76, 0.83, 1)
+
+[sub_resource type="StyleBoxFlat" id="FirefoxBackNormal"]
+bg_color = Color(0.98, 0.99, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.557, 0.624, 0.706, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="FirefoxBackHover"]
+bg_color = Color(0.882, 0.937, 0.988, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.294, 0.529, 0.761, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="FirefoxBackDisabled"]
+bg_color = Color(0.914, 0.933, 0.957, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.745, 0.784, 0.831, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="FirefoxNavBtnNormal"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.953, 0.965, 0.98, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.604, 0.659, 0.729, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="FirefoxNavBtnHover"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.875, 0.933, 0.984, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.294, 0.529, 0.761, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="FirefoxNavBtnDisabled"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="FirefoxAddressFrame"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.64, 0.71, 0.79, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="FirefoxAddressInput"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+
 [node name="WordExplorer" type="MarginContainer"]
+texture_filter = 1
 script = ExtResource("1_app")
 default_tabs = Array[ExtResource("5_tab")]([SubResource("Tab_library"), SubResource("Tab_homework")])
 start_tab = 1
@@ -39,11 +203,28 @@ theme_override_constants/separation = 0
 
 [node name="TabBar" type="PanelContainer" parent="Layout"]
 layout_mode = 2
-theme_type_variation = &"BrowserToolbar"
+theme_override_styles/panel = SubResource("FirefoxTabStrip")
 
 [node name="Controls" type="HBoxContainer" parent="Layout/TabBar"]
 layout_mode = 2
 theme_override_constants/separation = 4
+
+[node name="BrowserMenu" type="MenuButton" parent="Layout/TabBar/Controls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 0.98, 0.95, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.94, 0.88, 1)
+theme_override_fonts/font = ExtResource("6_pixel_bold")
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("FirefoxMenuNormal")
+theme_override_styles/hover = SubResource("FirefoxMenuHover")
+theme_override_styles/pressed = SubResource("FirefoxMenuPressed")
+text = "Word Explorer"
 
 [node name="TabScroll" type="ScrollContainer" parent="Layout/TabBar/Controls"]
 unique_name_in_owner = true
@@ -57,55 +238,143 @@ follow_focus = true
 [node name="Tabs" type="HBoxContainer" parent="Layout/TabBar/Controls/TabScroll"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 3
 
 [node name="NewTab" type="Button" parent="Layout/TabBar/Controls"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(26, 22)
 layout_mode = 2
-theme_type_variation = &"BrowserButton"
-theme_override_font_sizes/font_size = 14
-custom_minimum_size = Vector2(30, 22)
-size_flags_vertical = 0
-mouse_default_cursor_shape = 2
+size_flags_vertical = 4
 tooltip_text = "New tab"
 accessibility_name = "New tab"
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.102, 0.169, 0.251, 1)
+theme_override_colors/font_disabled_color = Color(0.54, 0.59, 0.66, 1)
+theme_override_styles/normal = SubResource("FirefoxNavBtnNormal")
+theme_override_styles/hover = SubResource("FirefoxNavBtnHover")
+theme_override_styles/pressed = SubResource("FirefoxNavBtnHover")
+theme_override_styles/disabled = SubResource("FirefoxNavBtnDisabled")
 
 [node name="Toolbar" type="PanelContainer" parent="Layout"]
 layout_mode = 2
-theme_type_variation = &"BrowserToolbar"
+theme_override_styles/panel = SubResource("FirefoxNavToolbar")
 
 [node name="Navigation" type="HBoxContainer" parent="Layout/Toolbar"]
 layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Back" type="Button" parent="Layout/Toolbar/Navigation"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Back"
+accessibility_name = "Back"
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.102, 0.169, 0.251, 1)
+theme_override_colors/font_disabled_color = Color(0.62, 0.67, 0.74, 1)
+theme_override_styles/normal = SubResource("FirefoxBackNormal")
+theme_override_styles/hover = SubResource("FirefoxBackHover")
+theme_override_styles/pressed = SubResource("FirefoxBackHover")
+theme_override_styles/disabled = SubResource("FirefoxBackDisabled")
+
+[node name="Forward" type="Button" parent="Layout/Toolbar/Navigation"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Forward"
+accessibility_name = "Forward"
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.102, 0.169, 0.251, 1)
+theme_override_colors/font_disabled_color = Color(0.62, 0.67, 0.74, 1)
+theme_override_styles/normal = SubResource("FirefoxNavBtnNormal")
+theme_override_styles/hover = SubResource("FirefoxNavBtnHover")
+theme_override_styles/pressed = SubResource("FirefoxNavBtnHover")
+theme_override_styles/disabled = SubResource("FirefoxNavBtnDisabled")
+
+[node name="AddressBar" type="PanelContainer" parent="Layout/Toolbar/Navigation"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("FirefoxAddressFrame")
+
+[node name="AddressRow" type="HBoxContainer" parent="Layout/Toolbar/Navigation/AddressBar"]
+layout_mode = 2
 theme_override_constants/separation = 4
+
+[node name="SiteIcon" type="TextureRect" parent="Layout/Toolbar/Navigation/AddressBar/AddressRow"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("7_globe")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Address" type="LineEdit" parent="Layout/Toolbar/Navigation/AddressBar/AddressRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 22)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/caret_color = Color(0.08, 0.14, 0.22, 1)
+theme_override_colors/font_color = Color(0.078, 0.125, 0.18, 1)
+theme_override_colors/font_placeholder_color = Color(0.45, 0.51, 0.59, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_colors/selection_color = Color(0.2, 0.48, 0.78, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("FirefoxAddressInput")
+theme_override_styles/focus = SubResource("FirefoxAddressInput")
+placeholder_text = "Search or enter address"
+keep_editing_on_text_submit = true
+accessibility_name = "Address"
+
+[node name="Reload" type="Button" parent="Layout/Toolbar/Navigation/AddressBar/AddressRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 22)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Reload"
+accessibility_name = "Reload"
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.18, 0.25, 0.34, 1)
+theme_override_colors/font_disabled_color = Color(0.62, 0.67, 0.74, 1)
+theme_override_styles/normal = SubResource("FirefoxNavBtnDisabled")
+theme_override_styles/hover = SubResource("FirefoxNavBtnHover")
+theme_override_styles/pressed = SubResource("FirefoxNavBtnHover")
+theme_override_styles/disabled = SubResource("FirefoxNavBtnDisabled")
+
+[node name="Go" type="Button" parent="Layout/Toolbar/Navigation/AddressBar/AddressRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 22)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.102, 0.169, 0.251, 1)
+theme_override_colors/font_focus_color = Color(0.102, 0.169, 0.251, 1)
+theme_override_colors/font_hover_color = Color(0.08, 0.15, 0.25, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("FirefoxNavBtnNormal")
+theme_override_styles/hover = SubResource("FirefoxNavBtnHover")
+theme_override_styles/pressed = SubResource("FirefoxNavBtnHover")
+text = "Go"
 
 [node name="Home" type="Button" parent="Layout/Toolbar/Navigation"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 24)
+custom_minimum_size = Vector2(28, 24)
 layout_mode = 2
-theme_type_variation = &"BrowserButton"
-theme_override_font_sizes/font_size = 14
+size_flags_vertical = 4
+tooltip_text = "Home"
+accessibility_name = "Home"
 mouse_default_cursor_shape = 2
-text = "Home"
-
-[node name="Address" type="LineEdit" parent="Layout/Toolbar/Navigation"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(125, 24)
-layout_mode = 2
-theme_type_variation = &"BrowserAddress"
-theme_override_font_sizes/font_size = 16
-size_flags_horizontal = 3
-accessibility_name = "Address"
-placeholder_text = "Address"
-keep_editing_on_text_submit = true
-
-[node name="Go" type="Button" parent="Layout/Toolbar/Navigation"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(37, 24)
-layout_mode = 2
-theme_type_variation = &"BrowserButton"
-theme_override_font_sizes/font_size = 14
-mouse_default_cursor_shape = 2
-text = "Go"
+theme_override_colors/font_color = Color(0.102, 0.169, 0.251, 1)
+theme_override_colors/font_disabled_color = Color(0.62, 0.67, 0.74, 1)
+theme_override_styles/normal = SubResource("FirefoxNavBtnNormal")
+theme_override_styles/hover = SubResource("FirefoxNavBtnHover")
+theme_override_styles/pressed = SubResource("FirefoxNavBtnHover")
+theme_override_styles/disabled = SubResource("FirefoxNavBtnDisabled")
 
 [node name="PageHost" type="MarginContainer" parent="Layout"]
 unique_name_in_owner = true
