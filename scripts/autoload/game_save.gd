@@ -46,7 +46,10 @@ func _notification(what: int) -> void:
 
 func register_world(world: Node2D, player: CharacterBody2D) -> void:
 	if _restore_position and world.scene_file_path == _world_scene:
-		player.position = _position
+		if world.has_method("restore_player_position"):
+			world.restore_player_position(player, _position)
+		else:
+			player.position = _position
 		var visual := player.get_node("Visual") as Node2D
 		visual.scale.x = absf(visual.scale.x) * _facing
 		_restore_position = false
@@ -97,7 +100,7 @@ func save_now() -> Error:
 			return ERR_UNAVAILABLE
 		_world_scene = scene.scene_file_path
 		_resume_scene = _world_scene
-		_position = Vector2(clampf(player.position.x, 80.0, 1840.0), clampf(player.position.y, 0.0, 592.0))
+		_position = scene.get_player_save_position(player) if scene.has_method("get_player_save_position") else Vector2(clampf(player.position.x, 80.0, 1840.0), clampf(player.position.y, 0.0, 592.0))
 		_facing = signf((player.get_node("Visual") as Node2D).scale.x)
 	elif scene.scene_file_path != DESKTOP_SCENE:
 		return ERR_UNAVAILABLE

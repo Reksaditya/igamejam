@@ -15,7 +15,7 @@ def main():
     repo = Path(__file__).resolve().parents[1]
     output = repo / ".godot" / "production-validation" / str(time.time_ns())
     output.mkdir(parents=True)
-    tests = ["career", "academic_flow", "dorm_study", "workshop_flow", "world_life", "game_save", "main_menu", "player_profile", "resolution", "mc_idle", "blueprint", "side_scroller"]
+    tests = ["career", "academic_flow", "dorm_study", "dorm_room", "workshop_flow", "world_life", "game_save", "main_menu", "player_profile", "resolution", "mc_idle", "blueprint", "side_scroller"]
     reloads = {"academic_flow", "dorm_study", "game_save", "main_menu", "blueprint"}
     failures = []
     for name in tests:

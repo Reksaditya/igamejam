@@ -68,3 +68,9 @@ Kelas dan QTE, kuis, desktop/Library/Project, bengkel, profil/Settings pada jend
 Instruksi pengguna menggantikan bagian GDD yang bertentangan: tidak ada lompatan; nama pemain dapat dipilih; kalender memakai 16 minggu per semester; kuis/ujian memakai durasi akses sebenarnya; Profil tidak menghentikan waktu kecuali Settings. Tombol Buka Desktop di HUD tetap dihapus: akses komputer melalui objek di kamar.
 
 Panduan menjalankan seluruh alur: docs/blueprint.md. Kualitas visual lingkungan, NPC, mesin, dan cutscene masih dummy sesuai izin; dokumen ini tidak menyatakan bahwa aset final atau build distribusi telah dibuat.
+
+## Pembaruan kamar 210 dan furniture
+
+Asrama memiliki sepuluh pintu bernomor per lantai; kamar 210 dapat dimasuki dan kamar penghuni lain terkunci. Kamar pemain memiliki world dengan kamera tetap, empat collision batas, serta ukuran 60% lebar dan tinggi viewport. Posisi furniture dan batas diperbarui saat resolusi berubah. Furniture (96), (117), (246), dan (105) digunakan tanpa perubahan byte untuk kasur, nakas, kursi, dan jam. Lampu, meja, dan laptop berupa dummy. E pada kursi mengaktifkan duduk dan mengunci gerak; E berikutnya memulihkan gerak/pose berdiri.
+
+Save posisi kamar memakai koordinat relatif ruang gerak sehingga Load pada resolusi berbeda tetap aman; save kamar lama tetap diterima. Laptop mengembalikan pemain ke posisi meja yang baru setelah dimatikan. dorm_room_smoke menguji aset, nomor pintu, tiga resolusi, collision, E, save/load, dan desktop. Suite terbaru: 18 lulus, 0 gagal, log .godot/production-validation/1795327015551712500. Pengujian grafis kamar diulang setelah pemetaan kursi dan pose duduk disesuaikan. Panduan: docs/dorm-room.md.

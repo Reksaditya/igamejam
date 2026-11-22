@@ -8,6 +8,8 @@ Berjalan dengan A/D atau panah kiri/kanan; Shift untuk berlari. Interaksi memaka
 
 ## Lokasi dan alur
 
+Kamar 210 kini memakai furniture kiriman pengguna, kursi interaktif, dan area gerak berukuran 60% lebar serta tinggi viewport. Detail aset dan perilaku resize/save tersedia di [panduan kamar](dorm-room.md).
+
 - Halaman kampus: pintu tengah menuju kelas; pintu di sisi kanan bangunan menuju ruang dosen. Tepi kanan menuju gedung lab; tepi kiri menuju asrama.
 - Gedung lab: pintu menuju bengkel. Meja perakitan dapat diakses dengan E.
 - Asrama: pintu masuk menuju lantai 1. Tangga di kanan menuju lantai 2. Pintu kamar 210 berada di sisi kiri lantai 2.
@@ -68,6 +70,6 @@ GameSave menyimpan snapshot versi 2 setiap dua detik, saat progres berubah, dan 
 
 ## Validasi
 
-Jalankan tools/run_production_tests.py dengan --godot menunjuk executable Godot 4.7.2. Runner membuat direktori APPDATA/LOCALAPPDATA terisolasi di .godot/production-validation, menyimpan log, menguji 12 kelompok fitur dan lima pengujian ulang dari proses baru, lalu mengembalikan kode gagal jika ada runtime error atau hasil uji tidak lengkap.
+Jalankan tools/run_production_tests.py dengan --godot menunjuk executable Godot 4.7.2. Runner membuat direktori APPDATA/LOCALAPPDATA terisolasi di .godot/production-validation, menyimpan log, menguji 13 kelompok fitur dan lima pengujian ulang dari proses baru, lalu mengembalikan kode gagal jika ada runtime error atau hasil uji tidak lengkap.
 
 Pengujian grafis tambahan memakai opsi --capture pada academic_flow_smoke, dorm_study_smoke, workshop_flow_smoke, world_life_smoke, dan player_profile_smoke. Tangkapan layar berada di .godot. Aset lingkungan, NPC, mesin, dan cutscene masih dummy sesuai persetujuan pengguna; karakter memakai tujuh frame idle yang telah diberikan.

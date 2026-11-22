@@ -19,4 +19,4 @@ action_text = "Masuk kamar 210"
 position = Vector2(650, 592)
 
 [node name="Decor" parent="."]
-title = "Asrama · Lantai 2 · Kamar 210"
+floor_number = 2

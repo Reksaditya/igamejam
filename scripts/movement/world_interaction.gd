@@ -4,6 +4,7 @@ const ActivityPanel = preload("res://scripts/ui/activity_panel.gd")
 
 @export var action: String = "sleep"
 @export var caption: String = "Istirahat"
+@export var interaction_size := Vector2(100, 140)
 
 var _player: CharacterBody2D
 var _prompt: Button
@@ -15,7 +16,7 @@ func _ready() -> void:
 	collision_mask = 2
 	var collision := CollisionShape2D.new()
 	var shape := RectangleShape2D.new()
-	shape.size = Vector2(100, 140)
+	shape.size = interaction_size
 	collision.shape = shape
 	add_child(collision)
 	_prompt = Button.new()
@@ -66,6 +67,9 @@ func interact() -> bool:
 		if CareerProgress.can_advance_week():
 			_panel.label("Kegiatan minggu ini selesai. Kamu dapat memakai sisa minggu untuk istirahat dan melanjutkan kalender. Proyek yang belum dikumpulkan tidak memperoleh nilai.", 16)
 			_panel.button("Istirahat sampai minggu berikutnya", _next_week)
+	elif action == "locked_room":
+		_panel.label(caption, 26)
+		_panel.label("Kamar ini milik penghuni lain dan terkunci. Kamarmu adalah kamar 210 di lantai dua.")
 	else:
 		_panel.label(caption, 26)
 		_panel.label("Jam malam mulai pukul 22.00. Kamar 210 berada di lantai dua. Tidur delapan jam dan masuk asrama sebelum terlambat." if action == "guard" else "Catatan kelas yang kosong bisa dilengkapi lewat Library di komputer asrama. Setelah blueprint lengkap, rakit mesinnya di bengkel dan laporkan kepada dosen. Kita juga perlu beristirahat sebelum pukul 22.00.")

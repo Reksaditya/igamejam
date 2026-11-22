@@ -63,7 +63,7 @@ func _run() -> void:
 		assert(saves.save_now() == OK)
 	assert(current_scene.get_node("Door").destination.ends_with("dorm_floor2.tscn"))
 	var player := current_scene.get_node("Player")
-	player.position = Vector2(1270, 592)
+	player.position = current_scene.get_node("ComputerSpawn").position
 	for frame: int in 6:
 		await physics_frame
 	assert(current_scene.get_node("Computer").interact(), "Computer interaction at %s; paused=%s; overlaps=%s" % [player.position, paused, current_scene.get_node("Computer").get_overlapping_bodies()])
@@ -102,7 +102,7 @@ func _run() -> void:
 	await scene_changed
 	await _transition()
 	assert(current_scene.scene_file_path.ends_with("dorm_room210.tscn"))
-	assert(current_scene.get_node("Player").position.x == 1270)
+	assert(is_equal_approx(current_scene.get_node("Player").position.x, current_scene.get_node("ComputerSpawn").position.x))
 	assert(saves.save_now() == OK)
 	print("PASS: late sleep, energy recovery, prior-week Library catch-up, keyword rewards, 3x3 silhouette puzzle, four dorm scenes, physical computer interaction, Blocks placement, desktop shutdown returns to room")
 	quit()
