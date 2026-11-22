@@ -283,6 +283,70 @@ bg_color = Color(0.18, 0.21, 0.28, 1)
 border_width_bottom = 1
 border_color = Color(0.31, 0.39, 0.5, 1)
 
+[sub_resource type="StyleBoxFlat" id="TurnOffNormal"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+bg_color = Color(0.14, 0.21, 0.33, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 0.53, 0.72, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="TurnOffHover"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+bg_color = Color(0.24, 0.34, 0.51, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.7, 0.9, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="TurnOffPressed"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+bg_color = Color(0.11, 0.17, 0.27, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.62, 0.77, 0.95, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="TurnOffDisabled"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+bg_color = Color(0.1, 0.14, 0.22, 0.45)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.28, 0.36, 0.48, 0.45)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [resource]
 default_font_size = 16
 AcceptDialog/styles/panel = SubResource("Dialog")
@@ -374,11 +438,18 @@ TaskbarClock/colors/font_color = Color(0.94, 0.96, 1, 1)
 TaskbarTurnOff/base_type = &"Button"
 TaskbarTurnOff/colors/font_color = Color(0.94, 0.96, 1, 1)
 TaskbarTurnOff/colors/font_disabled_color = Color(0.64, 0.72, 0.82, 1)
+TaskbarTurnOff/colors/icon_disabled_color = Color(0.56, 0.64, 0.75, 0.65)
+TaskbarTurnOff/colors/icon_focus_color = Color(1, 1, 1, 1)
+TaskbarTurnOff/colors/icon_hover_color = Color(1, 1, 1, 1)
+TaskbarTurnOff/colors/icon_normal_color = Color(0.93, 0.96, 1, 1)
+TaskbarTurnOff/colors/icon_pressed_color = Color(0.84, 0.91, 1, 1)
 TaskbarTurnOff/font_sizes/font_size = 14
 TaskbarTurnOff/fonts/font = ExtResource("1_shell")
-TaskbarTurnOff/styles/disabled = SubResource("Transparent")
+TaskbarTurnOff/styles/disabled = SubResource("TurnOffDisabled")
 TaskbarTurnOff/styles/focus = SubResource("ControlFocus")
-TaskbarTurnOff/styles/normal = SubResource("WindowButton")
+TaskbarTurnOff/styles/hover = SubResource("TurnOffHover")
+TaskbarTurnOff/styles/normal = SubResource("TurnOffNormal")
+TaskbarTurnOff/styles/pressed = SubResource("TurnOffPressed")
 TextEdit/colors/caret_color = Color(0.91, 0.94, 0.99, 1)
 TextEdit/colors/font_color = Color(0.91, 0.94, 0.99, 1)
 TextEdit/colors/font_placeholder_color = Color(0.65, 0.72, 0.83, 1)

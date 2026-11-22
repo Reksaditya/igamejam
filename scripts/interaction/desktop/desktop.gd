@@ -9,6 +9,11 @@ const APP_WINDOW_SCENE: PackedScene = preload("res://scenes/interaction/desktop/
 const RETURN_CONTEXT := &"desktop_return_context"
 const BOOT_SECONDS := 1.5
 const LATE_CLOCK_COLOR := Color("#ff827f")
+const CLICK_SFX_BASE_PATH := "res://assets/audio/sfx/desktop_mouse_click"
+const FAN_AMBIENT_BASE_PATH := "res://assets/audio/sfx/desktop_pc_fan"
+const AUDIO_EXTENSIONS: PackedStringArray = [".ogg", ".mp3", ".wav"]
+const FAN_SILENT_DB := -40.0
+const FAN_FADE_OUT_SECONDS := 0.35
 
 @export_group("Wallpaper")
 @export var wallpaper_texture: Texture2D:
@@ -32,6 +37,9 @@ var _exam_window: AppWindow
 var _login: Control
 var _normal_clock_color: Color
 var _turning_off := false
+var _click_players: Array[AudioStreamPlayer] = []
+var _click_pool_index := 0
+var _fan_tween: Tween
 
 @export_group("Login")
 @export var login_scene: PackedScene
@@ -39,10 +47,16 @@ var _turning_off := false
 @export_group("Themes")
 @export var light_theme: Theme
 
+@export_group("Audio")
+@export var mouse_click_stream: AudioStream
+@export var fan_ambient_stream: AudioStream
+@export_range(-40.0, 0.0, 0.5, "suffix:dB") var mouse_click_volume_db: float = -8.0
+@export_range(-40.0, 0.0, 0.5, "suffix:dB") var fan_ambient_volume_db: float = -18.0
+
 @export_group("Return")
 @export_file("*.tscn") var return_scene: String
 @export var return_spawn: StringName
-@export var return_label := "Matikan"
+@export var return_label := "Turn off"
 
 @onready var _display: Control = $Display
 @onready var _wallpaper: TextureRect = $Display/Wallpaper
@@ -53,6 +67,8 @@ var _turning_off := false
 @onready var _clock: Label = %Clock
 @onready var _turn_off: Button = %TurnOff
 @onready var _startup_sound: AudioStreamPlayer = $StartupSound
+@onready var _fan_ambient: AudioStreamPlayer = $FanAmbient
+@onready var _click_pool: Node = $MouseClickPool
 
 
 func _ready() -> void:
@@ -85,11 +101,89 @@ func _ready() -> void:
 		_login.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		_login.z_index = 10
 		_login.authenticated.connect(_unlock_desktop)
-	_startup_sound.play()
+	_setup_desktop_audio()
+	if _startup_sound.stream != null:
+		_startup_sound.play()
+	if _fan_ambient.stream != null:
+		_fade_fan_ambient(fan_ambient_volume_db, BOOT_SECONDS, false)
 	_boot_cover.show()
 	var boot := create_tween()
 	boot.tween_property(_boot_cover, "color:a", 0.0, BOOT_SECONDS)
 	boot.finished.connect(_finish_boot)
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(_fan_tween):
+		_fan_tween.kill()
+
+
+func _setup_desktop_audio() -> void:
+	var audio_bus := &"SFX" if AudioServer.get_bus_index(&"SFX") >= 0 else &"Master"
+	var click_stream := _resolve_audio_stream(mouse_click_stream, CLICK_SFX_BASE_PATH)
+	_click_players.clear()
+	if is_instance_valid(_click_pool):
+		for child: Node in _click_pool.get_children():
+			var player := child as AudioStreamPlayer
+			if player != null:
+				player.bus = audio_bus
+				player.stream = click_stream
+				player.volume_db = mouse_click_volume_db
+				_click_players.append(player)
+
+	var fan_stream := _resolve_audio_stream(fan_ambient_stream, FAN_AMBIENT_BASE_PATH)
+	if is_instance_valid(_fan_ambient):
+		_fan_ambient.bus = audio_bus
+		_fan_ambient.stream = fan_stream
+		if fan_stream is AudioStreamOggVorbis:
+			(fan_stream as AudioStreamOggVorbis).loop = true
+		elif fan_stream is AudioStreamMP3:
+			(fan_stream as AudioStreamMP3).loop = true
+		_fan_ambient.volume_db = FAN_SILENT_DB
+
+
+func _resolve_audio_stream(configured: AudioStream, base_path: String) -> AudioStream:
+	if configured != null:
+		return configured
+	for ext: String in AUDIO_EXTENSIONS:
+		var path := base_path + ext
+		if ResourceLoader.exists(path):
+			return ResourceLoader.load(path) as AudioStream
+	return null
+
+
+func _play_mouse_click() -> void:
+	if Engine.is_editor_hint() or _click_players.is_empty():
+		return
+	var player := _click_players[_click_pool_index]
+	_click_pool_index = (_click_pool_index + 1) % _click_players.size()
+	if player.stream == null:
+		return
+	player.pitch_scale = randf_range(0.96, 1.04)
+	player.volume_db = mouse_click_volume_db
+	player.play()
+
+
+func _fade_fan_ambient(target_db: float, duration: float, stop_when_done: bool) -> void:
+	if is_instance_valid(_fan_tween):
+		_fan_tween.kill()
+	if not is_instance_valid(_fan_ambient) or _fan_ambient.stream == null:
+		return
+	if not stop_when_done and not _fan_ambient.playing:
+		_fan_ambient.volume_db = FAN_SILENT_DB
+		_fan_ambient.play()
+	if stop_when_done and not _fan_ambient.playing:
+		return
+	_fan_tween = create_tween()
+	_fan_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_fan_tween.set_ignore_time_scale(true)
+	_fan_tween.tween_property(_fan_ambient, "volume_db", target_db, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	if stop_when_done:
+		_fan_tween.finished.connect(_stop_fan_ambient)
+
+
+func _stop_fan_ambient() -> void:
+	if is_instance_valid(_fan_ambient):
+		_fan_ambient.stop()
 
 
 func _finish_boot() -> void:
@@ -104,6 +198,10 @@ func _input(event: InputEvent) -> void:
 	if _boot_cover.visible:
 		get_viewport().set_input_as_handled()
 		return
+	if not _turning_off and event is InputEventMouseButton:
+		var mouse_button := event as InputEventMouseButton
+		if mouse_button.button_index == MOUSE_BUTTON_LEFT and mouse_button.pressed and not mouse_button.canceled:
+			_play_mouse_click()
 	if is_instance_valid(_login):
 		return
 	if event is InputEventMouse and not is_instance_valid(_exam_window):
@@ -132,7 +230,7 @@ func _refresh_wallpaper() -> void:
 func _update_energy() -> void:
 	var percentage := roundi(PlayerStats.get_energy() / PlayerStats.ENERGY_MAX * 100.0)
 	%Energy.text = "%d%%" % percentage
-	%Energy.accessibility_name = "Energi %d persen" % percentage
+	%Energy.accessibility_name = "Energy %d percent" % percentage
 
 
 func _draw_energy_icon() -> void:
@@ -145,7 +243,7 @@ func _draw_energy_icon() -> void:
 
 
 func _update_clock(absolute_minutes: int) -> void:
-	_clock.text = "Hari %d   %s" % [GameClock.get_day(), GameClock.get_formatted_time()]
+	_clock.text = "Day %d   %s" % [GameClock.get_day(), GameClock.get_formatted_time()]
 	var since_late := posmod(absolute_minutes - 23 * 60, GameClock.MINUTES_PER_DAY)
 	var blend := clampf(minf(since_late / 180.0, (420 - since_late) / 240.0), 0.0, 1.0)
 	_clock.add_theme_color_override("font_color", _normal_clock_color.lerp(LATE_CLOCK_COLOR, blend))
@@ -159,8 +257,9 @@ func _configure_return() -> void:
 			return_scene = context.get("scene", return_scene)
 			return_spawn = context.get("spawn", return_spawn)
 	_turn_off.disabled = return_scene.is_empty()
-	_turn_off.text = return_label
-	_turn_off.tooltip_text = "Belum ada tujuan kembali yang diatur." if return_scene.is_empty() else return_label
+	_turn_off.text = ""
+	_turn_off.accessibility_name = return_label
+	_turn_off.tooltip_text = "No return destination configured." if return_scene.is_empty() else return_label
 	_turn_off.pressed.connect(_request_turn_off)
 	SceneTransition.transition_finished.connect(_on_return_finished)
 
@@ -171,6 +270,7 @@ func _request_turn_off() -> void:
 	_turning_off = true
 	_turn_off.disabled = true
 	_launchers.cancel_drag()
+	_fade_fan_ambient(FAN_SILENT_DB, FAN_FADE_OUT_SECONDS, true)
 	SceneTransition.change_scene(return_scene, return_spawn)
 
 
@@ -180,7 +280,8 @@ func _on_return_finished(error: Error) -> void:
 	_turning_off = false
 	_turn_off.disabled = false
 	if error != OK:
-		%ReturnError.dialog_text = "Gagal kembali. " + error_string(error)
+		_fade_fan_ambient(fan_ambient_volume_db, 0.4, false)
+		%ReturnError.dialog_text = "Could not return. " + error_string(error)
 		%ReturnError.popup_centered_clamped(Vector2i(340, 0))
 
 
