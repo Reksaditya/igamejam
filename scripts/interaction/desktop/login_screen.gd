@@ -39,14 +39,7 @@ func _submit(value: String) -> void:
 
 
 func _draw_logon_backdrop() -> void:
-	if size.x <= 0.0 or size.y <= 0.0:
-		return
-	draw_rect(Rect2(Vector2.ZERO, size), Color(0.03, 0.15, 0.27, 0.42))
-	var top_band := floorf(size.y * 0.22)
-	var mid_band := floorf(size.y * 0.48)
-	draw_rect(Rect2(0.0, 0.0, size.x, top_band), Color(0.18, 0.54, 0.80, 0.14))
-	draw_rect(Rect2(0.0, top_band, size.x, mid_band), Color(0.28, 0.68, 0.90, 0.08))
-	draw_rect(Rect2(0.0, size.y - 36.0, size.x, 36.0), Color(0.02, 0.09, 0.18, 0.28))
+	draw_rect(Rect2(Vector2.ZERO, size), Color(0.03, 0.15, 0.27, 0.28))
 
 
 func _draw_avatar_sheen() -> void:

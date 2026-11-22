@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7m1b15mdgssm"
-path="res://.godot/imported/desktop_wallpaper.jpg-2462eff39d673bd32849d9e4a3c9ba9b.ctex"
+path="res://.godot/imported/desktop_wallpaper.png-fd91829a996ea11739d5e07db403e03f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/desktop_wallpaper.jpg"
-dest_files=["res://.godot/imported/desktop_wallpaper.jpg-2462eff39d673bd32849d9e4a3c9ba9b.ctex"]
+source_file="res://assets/textures/desktop_wallpaper.png"
+dest_files=["res://.godot/imported/desktop_wallpaper.png-fd91829a996ea11739d5e07db403e03f.ctex"]
 
 [params]
 

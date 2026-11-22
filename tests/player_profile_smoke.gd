@@ -70,7 +70,7 @@ func _run() -> void:
 	stats.set_energy(65)
 	stats.set_sanity(72)
 	stats.set_gpa(3.65)
-	assert(profile._hud_energy.value == 65)
+	assert(profile._hud_stats._bars[0].value == 65)
 	profile._show_status()
 	assert(profile._status.visible)
 	assert(profile._status_bars[2].value == 3.65)

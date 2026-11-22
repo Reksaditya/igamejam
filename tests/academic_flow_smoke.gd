@@ -106,9 +106,9 @@ func _run() -> void:
 	assert(not career.state.results.has("s1_w1_tugas"))
 	assessment.close()
 	await process_frame
-	var dashboard := load("res://scenes/interaction/desktop/academic_home.tscn").instantiate() as Control
+	var dashboard := load("res://scenes/interaction/desktop/word_explorer_home.tscn").instantiate() as Control
 	current_scene.add_child(dashboard)
-	assert(dashboard.get_child_count() >= 8)
+	assert(dashboard.get_node("%Sections").get_child_count() == 3)
 	assert(dashboard._history_title("s1_w8_uts") == "Semester 1 · Minggu 8 · UTS")
 	assert(root.get_node("GameSave").save_now() == OK)
 	print("PASS: curriculum classroom, overhead QTE, no replay, class +2h, quiz draft/reload, six real minutes, UTS week 8, timeout, task deadline, LMS history")

@@ -10,6 +10,9 @@ const ICON_BOOK: Texture2D = preload("res://assets/textures/desktop/icon_book.pn
 const TAB_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-Medium.ttf")
 const DISPLAY_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
 
+const LMS_ADDRESS := "www.redlineuni.com"
+const OLD_LMS_ADDRESS := "www.homeworkplace.com"
+
 const TAB_INK := Color("#17273b")
 const TAB_MUTED_INK := Color("#394b61")
 
@@ -31,7 +34,7 @@ class Tab:
 	var pending: PackedScene
 
 
-@export var home_address: String = "www.homeworkplace.com"
+@export var home_address: String = LMS_ADDRESS
 @export var default_tabs: Array[TabDefinition]
 @export_range(0, 20, 1, "or_greater") var start_tab := 0
 @export var local_routes: Array[Route]
@@ -96,7 +99,7 @@ func _setup_browser_menu() -> void:
 	popup.add_item("Home", 1)
 	popup.add_separator()
 	popup.add_item("Perpustakaan", 2)
-	popup.add_item("Tugas", 3)
+	popup.add_item("LMS", 3)
 	popup.id_pressed.connect(_on_browser_menu_selected)
 
 
@@ -111,7 +114,7 @@ func _on_browser_menu_selected(id: int) -> void:
 		2:
 			_navigate("www.placetostudy.com")
 		3:
-			_navigate("www.homeworkplace.com")
+			_navigate(home_address)
 
 
 func _open_new_tab() -> void:
@@ -381,6 +384,9 @@ func _load_address(tab: Tab, address: String, record_history := true) -> void:
 	tab.pending = null
 	_clear_page(tab)
 	tab.address = address.strip_edges()
+	var site := tab.address.to_lower().trim_prefix("https://").trim_prefix("http://").trim_suffix("/")
+	if site in [OLD_LMS_ADDRESS, OLD_LMS_ADDRESS + "/courses", LMS_ADDRESS, "redlineuni.com", "homeworkplace.com"]:
+		tab.address = home_address
 	tab.draft = tab.address
 	if record_history:
 		_record_history(tab, tab.address)
@@ -466,7 +472,7 @@ func _show_start_page(tab: Tab) -> void:
 
 	for tile_info: Array in [
 		["Perpustakaan", "www.placetostudy.com", ICON_BOOK],
-		["Tugas & LMS", "www.homeworkplace.com", ICON_GLOBE],
+		["LMS", home_address, ICON_GLOBE],
 	]:
 		var tile := Button.new()
 		tile.custom_minimum_size = Vector2(150, 76)

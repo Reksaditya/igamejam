@@ -15,7 +15,7 @@ func _ready() -> void:
 	add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	var rows := VBoxContainer.new()
 	rows.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	rows.add_theme_constant_override("separation", 9)
+	rows.add_theme_constant_override("separation", 3)
 	add_child(rows)
 	_add_stat(rows, ICON_ENERGY, PlayerStats.ENERGY_MAX, Color("#f2c46d"))
 	_add_stat(rows, ICON_SANITY, PlayerStats.SANITY_MAX, Color("#80c8ac"))
@@ -33,14 +33,15 @@ func _add_stat(rows: VBoxContainer, icon: Texture2D, maximum: float, fill: Color
 
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_theme_constant_override("separation", 8)
+	row.add_theme_constant_override("separation", 5)
 	pill.add_child(row)
 
 	var glyph := TextureRect.new()
 	glyph.texture = icon
 	glyph.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	glyph.custom_minimum_size = Vector2(24, 24)
-	glyph.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	glyph.custom_minimum_size = Vector2(16, 16)
+	glyph.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	glyph.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	glyph.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(glyph)
@@ -50,7 +51,7 @@ func _add_stat(rows: VBoxContainer, icon: Texture2D, maximum: float, fill: Color
 	meter.step = 0.0
 	meter.show_percentage = false
 	meter.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	meter.custom_minimum_size = Vector2(146, 14)
+	meter.custom_minimum_size = Vector2(52, 8)
 	meter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	meter.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	meter.add_theme_stylebox_override("background", _track_style())
@@ -60,11 +61,11 @@ func _add_stat(rows: VBoxContainer, icon: Texture2D, maximum: float, fill: Color
 
 	var value := Label.new()
 	value.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	value.custom_minimum_size.x = 68.0
+	value.custom_minimum_size.x = 62.0
 	value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	value.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	value.add_theme_font_override("font", VALUE_FONT)
-	value.add_theme_font_size_override("font_size", 15)
+	value.add_theme_font_size_override("font_size", 13)
 	value.add_theme_color_override("font_color", Color("#f2f6f8"))
 	row.add_child(value)
 	_values.append(value)
@@ -78,10 +79,10 @@ func _pill_style(accent: Color) -> StyleBoxFlat:
 	style.set_corner_radius_all(10)
 	style.shadow_color = Color(0.0, 0.0, 0.0, 0.3)
 	style.shadow_size = 4
-	style.content_margin_left = 8.0
-	style.content_margin_right = 10.0
-	style.content_margin_top = 5.0
-	style.content_margin_bottom = 5.0
+	style.content_margin_left = 5.0
+	style.content_margin_right = 6.0
+	style.content_margin_top = 2.0
+	style.content_margin_bottom = 2.0
 	return style
 
 

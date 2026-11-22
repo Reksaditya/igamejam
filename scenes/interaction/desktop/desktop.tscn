@@ -5,7 +5,7 @@
 [ext_resource type="Theme" uid="uid://delc85qw5od24" path="res://scenes/interaction/desktop/desktop_theme.tres" id="3_theme"]
 [ext_resource type="PackedScene" uid="uid://b0clhrtrjh6yy" path="res://scenes/interaction/desktop/document_launcher.tscn" id="4_document"]
 [ext_resource type="PackedScene" uid="uid://bc3pgjpwu6cw1" path="res://scenes/interaction/desktop/word_explorer_launcher.tscn" id="6_explorer"]
-[ext_resource type="Texture2D" uid="uid://7m1b15mdgssm" path="res://assets/textures/desktop_wallpaper.jpg" id="7_wallpaper_texture"]
+[ext_resource type="Texture2D" uid="uid://7m1b15mdgssm" path="res://assets/textures/desktop_wallpaper.png" id="7_wallpaper_texture"]
 [ext_resource type="Script" uid="uid://cuxunhbkbol7m" path="res://scripts/interaction/desktop/desktop_icon_grid.gd" id="8_grid"]
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/file_manager_launcher.tscn" id="9_files"]
 [ext_resource type="AudioStream" uid="uid://wjf5kkbp8vur" path="res://assets/audio/sfx/pcopening.ogg" id="10_startup_sound"]
@@ -17,9 +17,6 @@
 [ext_resource type="AudioStream" uid="uid://cxcvgcr6lwavw" path="res://assets/audio/sfx/desktop_mouse_click.ogg" id="20_click_sound"]
 [ext_resource type="AudioStream" uid="uid://7dlxblc4ulrl" path="res://assets/audio/sfx/desktop_pc_fan.ogg" id="21_fan_ambient"]
 
-[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/app_launcher.tscn" id="22_academic"]
-[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/library.tscn" id="23_academic_library"]
-[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/career_project.tscn" id="24_academic_project"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wallpaper"]
 resource_local_to_scene = true
@@ -157,18 +154,6 @@ offset_bottom = 325.0
 tooltip_text = "Blocks n Blast"
 accessibility_name = "Blocks n Blast"
 default_cell = Vector2i(6, 2)
-
-[node name="AcademicLibraryLauncher" parent="Display/DesktopItems/Launchers" instance=ExtResource("22_academic")]
-display_title = "Materi Kuliah"
-app_scene = ExtResource("23_academic_library")
-preferred_window_size = Vector2(660, 540)
-minimum_window_size = Vector2(350, 260)
-
-[node name="AcademicProjectLauncher" parent="Display/DesktopItems/Launchers" instance=ExtResource("22_academic")]
-display_title = "Proyek Kuliah"
-app_scene = ExtResource("24_academic_project")
-preferred_window_size = Vector2(660, 540)
-minimum_window_size = Vector2(350, 260)
 
 [node name="Windows" type="Control" parent="Display" unique_id=651136829]
 z_index = 2

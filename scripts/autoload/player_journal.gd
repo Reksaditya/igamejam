@@ -40,7 +40,14 @@ func _valid_entry(entry: Variant) -> bool:
 
 
 func get_entries() -> Array[Dictionary]:
-	return _entries.duplicate(true)
+	var by_source: Dictionary[String, Dictionary] = {}
+	for entry: Dictionary in _entries:
+		by_source[entry.source] = entry.duplicate(true)
+	for entry: Dictionary in CareerProgress.class_journal_entries():
+		by_source[entry.source] = entry
+	var entries: Array[Dictionary] = []
+	entries.assign(by_source.values())
+	return entries
 
 
 func record_classroom(absolute_week: int = -1) -> Error:

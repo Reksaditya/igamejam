@@ -54,7 +54,7 @@ def configure_browser(stage):
     shared = source[source.index('[sub_resource type="StyleBoxFlat"'):source.index('[node name="WordExplorer"')]
     layout = source[source.index('[node name="Layout"'):]
     header = source[:source.index('[sub_resource')]
-    header = re.sub(r'^\[ext_resource .*id="(?:2_page|4_study|8_academic)"\]\n', "", header, flags=re.MULTILINE)
+    header = re.sub(r'^\[ext_resource .*id="(?:2_page|4_study)"\]\n', "", header, flags=re.MULTILINE)
     browser.write_text(header + '''[ext_resource type="PackedScene" path="res://scenes/preview/browser_home.tscn" id="2_page"]
 
 [sub_resource type="Resource" id="Route_preview"]
@@ -112,9 +112,6 @@ def prepare(stage, template):
     source = desktop.read_text(encoding="utf-8")
     source = re.sub(r'^\[ext_resource [^\n]*path="res://scenes/interaction/desktop/login_screen\.tscn"[^\n]*\]\n', "", source, flags=re.MULTILINE)
     source = re.sub(r"^login_scene = [^\n]*\n", "", source, flags=re.MULTILINE)
-    source = re.sub(r'^\[ext_resource .*id="(?:22_academic|23_academic_library|24_academic_project)"\]\n', "", source, flags=re.MULTILINE)
-    source = re.sub(r'^\[node name="Academic(?:Library|Project)Launcher".*?\n(?=\[node )', "", source,
-                    flags=re.MULTILINE | re.DOTALL)
     desktop.write_text(source, encoding="utf-8")
     set_scene_options(stage, DESKTOP, "1_desktop",
                       f'return_scene = "{MENU}"\nreturn_label = "Preview menu"\n')

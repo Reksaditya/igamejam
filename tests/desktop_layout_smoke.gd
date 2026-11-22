@@ -27,7 +27,7 @@ func _test_scattered_desktop() -> void:
 		await process_frame
 
 	var grid := desktop.get_node("%Launchers") as IconGrid
-	assert(grid._cells.size() == 7, "Desktop should lay out all seven launchers")
+	assert(grid._cells.size() == 5, "Desktop should lay out all five launchers")
 
 	var seen_cells: Dictionary[Vector2i, bool] = {}
 	var has_right_scatter := false
@@ -115,6 +115,15 @@ func _test_centered_browser_and_library() -> void:
 
 	# Homework tab (active by default: start_tab = 1).
 	var homework_tab = explorer._active
+	assert(explorer._tabs.size() == 2 and homework_tab.address == "www.redlineuni.com")
+	explorer._navigate("https://WWW.HOMEWORKPLACE.COM/")
+	assert(homework_tab.address == "www.redlineuni.com")
+	explorer._open_new_tab()
+	explorer.get_node("%Home").pressed.emit()
+	assert(explorer._active.address == "www.redlineuni.com")
+	explorer._close_tab(explorer._active)
+	explorer._select_tab(homework_tab)
+	await _settle()
 	assert(homework_tab.page.get_theme_constant("margin_left") > 22, "Wide browser should center content with side margins > 22")
 	assert(homework_tab.page.get_theme_constant("margin_left") == homework_tab.page.get_theme_constant("margin_right"))
 	var homework_home := homework_tab.page.get_child(0) as Control
@@ -131,12 +140,12 @@ func _test_centered_browser_and_library() -> void:
 	assert(books.get_child_count() == 5, "Library should render all 5 configured books")
 
 	# Open a Blueprint book reading view and verify passages wrap cleanly without zero-width collapse.
-	var sorter_card := books.get_child(2)
+	var sorter_card := books.get_child(1)
 	var sorter_button := sorter_card.get_node("%Study") as Button
 	sorter_button.pressed.emit()
 	await _settle()
 	var reading := study_home.get_node("%Reading") as Control
-	assert(reading.visible, "Reading view must open when selecting Sorter Manual")
+	assert(reading.visible, "Reading view must open when selecting the Core Drive manual")
 	var passages := study_home.get_node("%Passages") as VBoxContainer
 	assert(passages.get_child_count() >= 1)
 	var first_paragraph := passages.get_child(0) as Label

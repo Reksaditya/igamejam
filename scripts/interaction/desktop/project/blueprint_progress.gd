@@ -70,7 +70,13 @@ func mark_worked(blueprint_id: String, completed := false) -> Error:
 
 func _owns(config: ConfigFile, blueprint_id: String) -> bool:
 	var completed: Variant = config.get_value(blueprint_id, "completed", false)
-	return completed is bool and completed
+	if completed is bool and completed:
+		return true
+	var career := get_node_or_null("/root/CareerProgress")
+	if career != null and career.owns_blueprint(blueprint_id):
+		return true
+	var classroom := get_node_or_null("/root/BlueprintProgress")
+	return blueprint_id == "sediment_sorter" and classroom != null and classroom.is_complete()
 
 
 func _is_worked_in_config(config: ConfigFile, blueprint_id: String) -> bool:

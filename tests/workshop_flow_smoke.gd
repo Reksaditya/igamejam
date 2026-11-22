@@ -11,9 +11,6 @@ func _run() -> void:
 	var clock := root.get_node("GameClock")
 	var stats := root.get_node("PlayerStats")
 	clock.restore_save_state({"minutes": 10 * 7 * 1440 + 600, "remainder": 0})
-	for week: int in range(1, 11):
-		if week != 8:
-			assert(career.review_class(1, week, career.Curriculum.lesson(1, week).keyword) == OK)
 	assert(career.submit_project(1) == ERR_UNAUTHORIZED)
 	change_scene_to_file("res://scenes/movement/campus_lab_room.tscn")
 	await scene_changed
@@ -24,8 +21,10 @@ func _run() -> void:
 	assert(not is_instance_valid(workshop._qte))
 	workshop.close()
 	await process_frame
-	for index: int in 9:
-		assert(career.place_piece(1, index, index) == OK)
+	var overnight_start: int = clock.get_absolute_minutes()
+	assert(career.review_class(1, 1, career.Curriculum.lesson(1, 1).keyword) == OK)
+	assert(clock.get_absolute_minutes() > overnight_start and clock.get_formatted_time() == "06:00")
+	assert(career.blueprint_ready(1))
 	workshop = Workshop.new()
 	current_scene.add_child(workshop)
 	await process_frame
@@ -69,9 +68,9 @@ func _run() -> void:
 	await process_frame
 	clock.restore_save_state({"minutes": 122 * 7 * 1440 + 600, "remainder": 0})
 	stats.set_energy(100)
-	career.state.pieces["8"] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-	for index: int in 9:
-		assert(career.place_piece(8, index, index) == OK)
+	for term: int in range(5, 9):
+		assert(career.blueprint_ready(term))
+		assert(not career.state.pieces.has(str(term)) and not career.state.placed.has(str(term)))
 	assert(career.assemble_component(8, 0) == ERR_UNAUTHORIZED)
 	workshop = Workshop.new()
 	current_scene.add_child(workshop)

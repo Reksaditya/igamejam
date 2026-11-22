@@ -8,16 +8,10 @@
 [ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="6_pixel_bold"]
 [ext_resource type="Texture2D" uid="uid://c7ge7su4ji3ub" path="res://assets/textures/desktop/icon_browser.png" id="7_globe"]
 
-[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/academic_home.tscn" id="8_academic"]
-
-[sub_resource type="Resource" id="Route_academic"]
-script = ExtResource("3_route")
-address = "www.homeworkplace.com/courses"
-page = ExtResource("8_academic")
 
 [sub_resource type="Resource" id="Route_homework"]
 script = ExtResource("3_route")
-address = "www.homeworkplace.com"
+address = "www.redlineuni.com"
 page = ExtResource("2_page")
 
 [sub_resource type="Resource" id="Route_study"]
@@ -32,13 +26,8 @@ address = "www.placetostudy.com"
 
 [sub_resource type="Resource" id="Tab_homework"]
 script = ExtResource("5_tab")
-title = "Tugas"
-address = "www.homeworkplace.com"
-
-[sub_resource type="Resource" id="Tab_academic"]
-script = ExtResource("5_tab")
-title = "Mata Kuliah"
-address = "www.homeworkplace.com/courses"
+title = "LMS"
+address = "www.redlineuni.com"
 
 [sub_resource type="StyleBoxFlat" id="FirefoxTabStrip"]
 content_margin_left = 4.0
@@ -54,7 +43,7 @@ content_margin_left = 8.0
 content_margin_top = 2.0
 content_margin_right = 8.0
 content_margin_bottom = 2.0
-bg_color = Color(0.91, 0.416, 0.09, 1)
+bg_color = Color(0.95, 0.45, 0.12, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -86,12 +75,24 @@ content_margin_left = 8.0
 content_margin_top = 2.0
 content_margin_right = 8.0
 content_margin_bottom = 2.0
-bg_color = Color(0.8, 0.34, 0.06, 1)
+bg_color = Color(0.94, 0.44, 0.12, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.56, 0.22, 0.02, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="FirefoxMenuFocus"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.14, 0.34, 0.58, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -205,9 +206,9 @@ content_margin_bottom = 2.0
 [node name="WordExplorer" type="MarginContainer"]
 texture_filter = 1
 script = ExtResource("1_app")
-default_tabs = Array[ExtResource("5_tab")]([SubResource("Tab_library"), SubResource("Tab_homework"), SubResource("Tab_academic")])
+default_tabs = Array[ExtResource("5_tab")]([SubResource("Tab_library"), SubResource("Tab_homework")])
 start_tab = 1
-local_routes = Array[ExtResource("3_route")]([SubResource("Route_homework"), SubResource("Route_study"), SubResource("Route_academic")])
+local_routes = Array[ExtResource("3_route")]([SubResource("Route_homework"), SubResource("Route_study")])
 
 [node name="Layout" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -226,16 +227,18 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 size_flags_vertical = 4
+focus_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(1, 0.98, 0.95, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.94, 0.88, 1)
+theme_override_colors/font_color = Color(0.094, 0.129, 0.17, 1)
+theme_override_colors/font_focus_color = Color(0.094, 0.129, 0.17, 1)
+theme_override_colors/font_hover_color = Color(0.094, 0.129, 0.17, 1)
+theme_override_colors/font_pressed_color = Color(0.094, 0.129, 0.17, 1)
 theme_override_fonts/font = ExtResource("6_pixel_bold")
 theme_override_font_sizes/font_size = 13
 theme_override_styles/normal = SubResource("FirefoxMenuNormal")
 theme_override_styles/hover = SubResource("FirefoxMenuHover")
 theme_override_styles/pressed = SubResource("FirefoxMenuPressed")
+theme_override_styles/focus = SubResource("FirefoxMenuFocus")
 text = "Word Explorer"
 
 [node name="TabScroll" type="ScrollContainer" parent="Layout/TabBar/Controls"]
