@@ -12,7 +12,7 @@ const WORLD_SCENES := [COURTYARD_SCENE, "res://scenes/movement/campus_lab.tscn",
 const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "career_progress.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg",
 	"blueprint_progress.cfg.bak", "transmission_progress.cfg", "transmission_progress.cfg.bak",
 	"study_notes.cfg", "study_notes.cfg.bak", "workshop_progress.cfg", "workshop_progress.cfg.bak",
-	"chapter_timeline.cfg", "chapter_timeline.cfg.bak"]
+	"chapter_timeline.cfg", "chapter_timeline.cfg.bak", "tutorials.cfg"]
 
 var last_save_error: Error = OK
 var _enabled: bool = false
@@ -189,6 +189,7 @@ func start_new_game(player_name: String = "Yohan") -> Error:
 	StudyNotes.reload_progress()
 	PlayerJournal.reload_progress()
 	CareerProgress.reload_progress()
+	GameSettings.reload_tutorials()
 	ProjectBlueprints.changed.emit()
 	PlayerStats.restore_save_state(stats)
 	GameClock.restore_save_state(clock)
@@ -234,6 +235,7 @@ func load_game(allow_legacy: bool = false) -> Error:
 	StudyNotes.reload_progress()
 	PlayerJournal.reload_progress()
 	CareerProgress.reload_progress()
+	GameSettings.reload_tutorials()
 	var stats := PlayerStats.DEFAULTS.duplicate()
 	for key: String in stats:
 		stats[key] = snapshot.get_value("profile", key, stats[key])

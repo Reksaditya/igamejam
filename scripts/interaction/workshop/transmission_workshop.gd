@@ -9,6 +9,7 @@ const SliderHandle = preload("res://scripts/interaction/workshop/slider_handle.g
 const Save = preload("res://scripts/autoload/playthrough_save.gd")
 const SAVE_PATH := "user://workshop_progress.cfg"
 const TUTORIAL_ID := "blueprint_workshop_intro"
+const Spotlight = preload("res://scripts/ui/tutorial_spotlight.gd")
 const PLATE_BUTTON_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
 
 @export var puzzles: Array[Puzzle]
@@ -40,8 +41,7 @@ var _keyboard_cues := false
 var _test_feedback := ""
 var _active_tweens: Array[Tween] = []
 var _sanity_blur: ColorRect
-var _tutorial_layer: CanvasLayer
-var _tutorial_button: Button
+var _tutorial: TutorialSpotlight
 
 @onready var _plate: Plate = %Plate
 @onready var _sheet: Plate = %Sheet
@@ -492,11 +492,6 @@ func _watch_pointer(control: Control) -> void:
 
 func _input(event: InputEvent) -> void:
 	if is_tutorial_visible():
-		if event is InputEventKey and event.pressed and not event.echo:
-			var key_ev := event as InputEventKey
-			if key_ev.keycode == KEY_ESCAPE or key_ev.keycode == KEY_ENTER or key_ev.keycode == KEY_KP_ENTER:
-				dismiss_tutorial()
-				get_viewport().set_input_as_handled()
 		return
 	if not _unlocked:
 		return
@@ -943,99 +938,47 @@ func _on_transition_finished(error: Error) -> void:
 
 
 func is_tutorial_visible() -> bool:
-	return is_instance_valid(_tutorial_layer) and _tutorial_layer.visible
+	return is_instance_valid(_tutorial) and _tutorial.visible
 
 
 func dismiss_tutorial() -> void:
 	GameSettings.mark_tutorial_seen(TUTORIAL_ID)
-	if is_instance_valid(_tutorial_layer):
-		_tutorial_layer.queue_free()
-		_tutorial_layer = null
-		_tutorial_button = null
+	if is_instance_valid(_tutorial):
+		var active := _tutorial
+		_tutorial = null
+		active.dismiss_immediately()
 	_focus_dock_or_return()
 
 
+func _on_tutorial_finished() -> void:
+	GameSettings.mark_tutorial_seen(TUTORIAL_ID)
+	_tutorial = null
+	_focus_dock_or_return()
+
+
+func _tutorial_crank_rect() -> Rect2:
+	if is_instance_valid(_crank) and _crank.is_visible_in_tree():
+		var rect := _crank.get_global_rect()
+		if rect.size.x > 1.0 and rect.size.y > 1.0:
+			return rect
+	var plate_rect := _plate.get_global_rect()
+	var crank_size := Vector2(120.0, 36.0)
+	var center_x := plate_rect.position.x + plate_rect.size.x * 0.28
+	var bottom_y := plate_rect.end.y - crank_size.y - 24.0
+	return Rect2(Vector2(center_x - crank_size.x * 0.5, bottom_y), crank_size)
+
+
 func _maybe_show_workshop_tutorial() -> void:
-	if is_instance_valid(_tutorial_layer) or GameSettings.has_seen_tutorial(TUTORIAL_ID):
+	if is_instance_valid(_tutorial) or GameSettings.has_seen_tutorial(TUTORIAL_ID):
 		return
-	_tutorial_layer = CanvasLayer.new()
-	_tutorial_layer.name = &"WorkshopTutorialOverlay"
-	_tutorial_layer.layer = 20
-	add_child(_tutorial_layer)
-
-	var backdrop := ColorRect.new()
-	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(0.03, 0.05, 0.09, 0.58)
-	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
-	_tutorial_layer.add_child(backdrop)
-
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_tutorial_layer.add_child(center)
-
-	var card := PanelContainer.new()
-	card.custom_minimum_size = Vector2(470.0, 0.0)
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#131f2df5")
-	style.border_color = Color("#d8b674")
-	style.border_width_left = 4
-	style.border_width_top = 2
-	style.border_width_right = 2
-	style.border_width_bottom = 2
-	style.set_corner_radius_all(10)
-	style.content_margin_left = 22
-	style.content_margin_right = 22
-	style.content_margin_top = 18
-	style.content_margin_bottom = 18
-	card.add_theme_stylebox_override("panel", style)
-	center.add_child(card)
-
-	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 10)
-	card.add_child(vbox)
-
-	var badge := Label.new()
-	badge.text = "PANDUAN PERTAMA · MEJA WORKSHOP"
-	badge.add_theme_font_override("font", PLATE_BUTTON_FONT)
-	badge.add_theme_font_size_override("font_size", 13)
-	badge.add_theme_color_override("font_color", Color("#ffd277"))
-	vbox.add_child(badge)
-
-	var title := Label.new()
-	title.text = "Cara Merakit Blueprint Transmisi"
-	title.add_theme_font_override("font", PLATE_BUTTON_FONT)
-	title.add_theme_font_size_override("font_size", 20)
-	title.add_theme_color_override("font_color", Color("#f8fafc"))
-	vbox.add_child(title)
-
-	var body := Label.new()
-	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body.custom_minimum_size = Vector2(424.0, 0.0)
-	body.add_theme_font_size_override("font_size", 14)
-	body.add_theme_color_override("font_color", Color("#d7e4ef"))
-	body.text = "1. Dapatkan Blueprint — Selesaikan catatan kelas atau kejar di Perpustakaan (PC) agar Blueprint muncul di Rak Blueprint.\n\n2. Seret ke Slot Reader — Tarik kartu gambar Blueprint ke Slot Reader (atau klik 'Masukkan terpilih') untuk membuka meja perakitan.\n\n3. Rakit & Uji Crank — Klik Carrier (A/B/C) untuk memutar roda gigi, geser Slider bila ada, lalu tekan 'Uji Crank' hingga Output sesuai arah target."
-	vbox.add_child(body)
-
-	var footer := HBoxContainer.new()
-	footer.alignment = BoxContainer.ALIGNMENT_END
-	footer.add_theme_constant_override("separation", 10)
-	vbox.add_child(footer)
-
-	var hint := Label.new()
-	hint.text = "Enter / Esc untuk menutup"
-	hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hint.add_theme_font_size_override("font_size", 12)
-	hint.add_theme_color_override("font_color", Color("#8fa7ba"))
-	footer.add_child(hint)
-
-	_tutorial_button = Button.new()
-	_tutorial_button.name = &"DismissButton"
-	_tutorial_button.text = "Mengerti"
-	_tutorial_button.custom_minimum_size = Vector2(116.0, 34.0)
-	_tutorial_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	_tutorial_button.add_theme_font_override("font", PLATE_BUTTON_FONT)
-	_tutorial_button.add_theme_font_size_override("font_size", 14)
-	_tutorial_button.pressed.connect(dismiss_tutorial)
-	footer.add_child(_tutorial_button)
-	_tutorial_button.grab_focus.call_deferred()
+	var steps: Array[Dictionary] = [
+		{"target": %BlueprintDock, "caption": "Blueprint milikmu muncul di sini."},
+		{"target": _reader_slot, "caption": "Seret gambar Blueprint ke Slot ini."},
+		{"target": _plate, "caption": "Putar Carrier atau geser Slider."},
+		{"target": _crank, "rect_provider": _tutorial_crank_rect, "fallback_target": _plate, "caption": "Tekan Uji Crank untuk mengetes mesin."},
+	]
+	_tutorial = Spotlight.new()
+	_tutorial.name = &"WorkshopTutorialOverlay"
+	_tutorial.finished.connect(_on_tutorial_finished, CONNECT_ONE_SHOT)
+	add_child(_tutorial)
+	_tutorial.start(steps)
