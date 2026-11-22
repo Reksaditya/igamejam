@@ -39,7 +39,7 @@ func _add_stat(rows: VBoxContainer, icon: Texture2D, maximum: float, fill: Color
 	var glyph := TextureRect.new()
 	glyph.texture = icon
 	glyph.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	glyph.custom_minimum_size = Vector2(16, 16)
+	glyph.custom_minimum_size = Vector2(20, 20)
 	glyph.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	glyph.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	glyph.size_flags_vertical = Control.SIZE_SHRINK_CENTER
