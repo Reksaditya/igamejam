@@ -11,7 +11,7 @@ const SAVE_PATH := "user://workshop_progress.cfg"
 @export var puzzles: Array[Puzzle]
 @export_file("*.tscn") var return_scene := "res://scenes/movement/campus_lab_room.tscn"
 @export var return_spawn: StringName = &"WorkshopSpawn"
-@export var return_label := "Back to lab"
+@export var return_label := "Kembali ke lab"
 @export var demo_blueprint := false
 
 var _catalog: Array[Puzzle] = []
@@ -71,7 +71,7 @@ func _ready() -> void:
 			_catalog.append(entry)
 
 	if _catalog.is_empty():
-		_status.text = "No bench puzzles are configured."
+		_status.text = "Belum ada teka-teki meja yang diatur."
 		%Blueprint.hide()
 		%Legend.hide()
 		%BlueprintDock.hide()
@@ -103,7 +103,7 @@ func _update_layout() -> void:
 	%Bench.vertical = narrow
 	%Machine.custom_minimum_size.y = clampf(size.x * 0.66, 350.0, 620.0) if narrow else 0.0
 	if has_node("%KeybindHintText"):
-		%KeybindHintText.text = "Drag: Card / Rail · Tab: Focus · Enter: Use" if width < 560 else "Drag: Blueprint / Rail  ·  Click: Rotate / Crank  ·  Tab / Arrows: Focus  ·  Enter / Space: Activate"
+		%KeybindHintText.text = "Seret: Kartu / Rel · Tab: Fokus · Enter: Pakai" if width < 560 else "Seret: Blueprint / Rel  ·  Klik: Putar / Engkol  ·  Tab / Panah: Fokus  ·  Enter / Spasi: Aktifkan"
 
 
 func _size_blueprint() -> void:
@@ -212,7 +212,7 @@ func _can_accept_blueprint_drop(puzzle_id: String) -> bool:
 
 func _on_insert_button_pressed() -> void:
 	if _unlocked:
-		_eject_blueprint("Blueprint ejected.")
+		_eject_blueprint("Blueprint dikeluarkan.")
 	elif not _selected_puzzle_id.is_empty():
 		_insert_blueprint_by_id(_selected_puzzle_id)
 
@@ -233,7 +233,7 @@ func _insert_blueprint_by_id(puzzle_id: String) -> void:
 
 	%Card.position.x = 8.0
 	%Card.show()
-	_feedback("Reading blueprint…")
+	_feedback("Membaca blueprint…")
 
 	var insertion := _track_tween()
 	insertion.tween_property(%Card, "position:x", 78.0, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
@@ -280,7 +280,7 @@ func _load_puzzle_into_bench(target: Puzzle) -> void:
 
 	_build_dynamic_plate_controls()
 	_record_blueprint_work(_completed)
-	_feedback("Build complete. Ready to test." if _completed else "Adjust gears and test the crank.")
+	_feedback("Perakitan selesai. Siap diuji." if _completed else "Atur roda gigi lalu uji engkol.")
 	_refresh_blueprint_dock_states()
 	_refresh_plate()
 	_update_controls()
@@ -332,7 +332,7 @@ func _clear_active_puzzle_state() -> void:
 
 
 func _relock_after_completion() -> void:
-	await _eject_blueprint("Build saved. Drag another blueprint into the slot.")
+	await _eject_blueprint("Hasil tersimpan. Seret blueprint lain ke slot.")
 
 
 func _eject_blueprint(status_message: String) -> void:
@@ -363,14 +363,14 @@ func _eject_blueprint(status_message: String) -> void:
 func _update_gate_prompt() -> void:
 	var owned := _owned_puzzles()
 	if owned.is_empty():
-		%Gate.text = "Blueprint needed"
+		%Gate.text = "Blueprint diperlukan"
 	else:
 		var any_unbuilt := false
 		for entry: Puzzle in owned:
 			if not _is_puzzle_completed(entry):
 				any_unbuilt = true
 				break
-		%Gate.text = "Drag a blueprint into the slot" if any_unbuilt else "All owned blueprints built"
+		%Gate.text = "Seret blueprint ke dalam slot" if any_unbuilt else "Semua blueprint yang dimiliki sudah selesai"
 	%Gate.visible = not _unlocked
 
 
@@ -381,7 +381,7 @@ func _build_dynamic_plate_controls() -> void:
 
 	for carrier: int in range(_active_puzzle.carrier_count()):
 		var letter := char(65 + carrier)
-		var button := _make_plate_button(letter, "Rotate carrier " + letter + " clockwise")
+		var button := _make_plate_button(letter, "Putar lengan " + letter + " searah jarum jam")
 		button.pressed.connect(_rotate_carrier.bind(carrier))
 		_carrier_buttons.append(button)
 
@@ -397,8 +397,8 @@ func _build_dynamic_plate_controls() -> void:
 		handle.slider_index = slider_idx
 		handle.plate = _plate
 		handle.puzzle = _active_puzzle
-		handle.tooltip_text = "Drag along rail or click to slide"
-		handle.accessibility_name = "Sliding rail gear %d" % (slider_idx + 1)
+		handle.tooltip_text = "Seret di sepanjang rel atau klik untuk menggeser"
+		handle.accessibility_name = "Roda gigi rel %d" % (slider_idx + 1)
 		handle.drag_started.connect(_on_slider_drag_started)
 		handle.drag_moved.connect(_on_slider_drag_moved)
 		handle.drag_ended.connect(_on_slider_drag_ended)
@@ -412,7 +412,7 @@ func _build_dynamic_plate_controls() -> void:
 		var fixed := Control.new()
 		fixed.mouse_filter = Control.MOUSE_FILTER_PASS
 		fixed.focus_mode = Control.FOCUS_NONE
-		fixed.tooltip_text = "Motor drive" if socket == Puzzle.MOTOR else ("Output gear" if socket == Puzzle.OUTPUT else "Fixed bridge gear")
+		fixed.tooltip_text = "Penggerak motor" if socket == Puzzle.MOTOR else ("Roda gigi keluaran" if socket == Puzzle.OUTPUT else "Roda gigi penghubung tetap")
 		_plate.add_child(fixed)
 		_watch_pointer(fixed)
 		_fixed_gears.append(fixed)
@@ -481,14 +481,14 @@ func _sync_cue() -> void:
 	if hovered in _fixed_gears:
 		hint = (hovered as Control).tooltip_text
 	elif _dragging_slider >= 0:
-		hint = "Slide to a rail stop."
+		hint = "Geser ke salah satu titik henti rel."
 	else:
 		if carrier < 0 and slider_idx < 0 and _keyboard_cues:
 			var focused := get_viewport().gui_get_focus_owner()
 			carrier = _carrier_buttons.find(focused as Button)
 			slider_idx = _slider_handles.find(focused as SliderHandle)
 		if (carrier >= 0 or slider_idx >= 0) and _testing:
-			hint = "Crank in motion."
+			hint = "Engkol sedang berputar."
 
 	var show_preview := not _testing and not _adjusting and not _leaving and not _relocking and _dragging_slider < 0 and hint.is_empty()
 	_plate.preview_carrier = carrier if show_preview and carrier >= 0 else -1
@@ -556,7 +556,7 @@ func _rotate_carrier(carrier: int) -> void:
 			next_rot = candidate
 			break
 	if step_count == 0:
-		_feedback("Carrier blocked by another gear.")
+		_feedback("Lengan terhalang roda gigi lain.")
 		return
 
 	_adjusting = true
@@ -568,7 +568,7 @@ func _rotate_carrier(carrier: int) -> void:
 
 	var turn := _track_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	turn.tween_method(_set_visual_turn.bind(carrier), _plate.turns[carrier], _plate.turns[carrier] + float(step_count), 0.22)
-	_feedback("Ready to test.")
+	_feedback("Siap diuji.")
 	await turn.finished
 	if not is_instance_valid(self) or not is_inside_tree() or _active_puzzle == null:
 		return
@@ -597,7 +597,7 @@ func _on_slider_drag_started(slider: int) -> void:
 	_plate.preview_carrier = -1
 	_plate.preview_slider = -1
 	_plate.dragging_slider = slider
-	_feedback("Slide to a rail stop.")
+	_feedback("Geser ke salah satu titik henti rel.")
 	_plate.refresh()
 	_update_controls()
 
@@ -622,9 +622,9 @@ func _on_slider_drag_ended(slider: int, target_stop: int) -> void:
 	if _active_puzzle.can_move_slider(_rotations, _slider_stops, slider, target_stop):
 		_slider_stops[slider] = target_stop
 		_record_blueprint_work(false)
-		_feedback("Ready to test.")
+		_feedback("Siap diuji.")
 	else:
-		_feedback("Stop blocked by another gear.")
+		_feedback("Titik henti terhalang roda gigi lain.")
 
 	await _animate_slider_to_stop(slider, _slider_stops[slider], 0.14)
 
@@ -641,12 +641,12 @@ func _on_slider_step(slider: int) -> void:
 			next_stop = candidate
 			break
 	if next_stop < 0:
-		_feedback("Rail stop blocked by another gear.")
+		_feedback("Titik henti rel terhalang roda gigi lain.")
 		return
 
 	_slider_stops[slider] = next_stop
 	_record_blueprint_work(false)
-	_feedback("Ready to test.")
+	_feedback("Siap diuji.")
 	await _animate_slider_to_stop(slider, next_stop, 0.18)
 
 
@@ -682,7 +682,7 @@ func _test_crank() -> void:
 	_testing = true
 	_plate.output_result = 0
 	_plate.spin_angles.clear()
-	_feedback("Cranking…")
+	_feedback("Memutar engkol…")
 	_update_controls()
 
 	var result := _active_puzzle.trace(_rotations, _slider_stops)
@@ -725,17 +725,17 @@ func _show_result(result: Dictionary) -> void:
 	if _active_puzzle == null:
 		return
 	if result.locked:
-		_feedback("Gear train jammed.")
+		_feedback("Rangkaian roda gigi macet.")
 		return
 	var direction: int = result.directions.get(Puzzle.OUTPUT, 0)
 	_plate.output_result = direction
 	_plate.result_passed = direction == _active_puzzle.required_output_direction
 	if direction == 0:
-		_feedback("Broken chain.")
+		_feedback("Rangkaian terputus.")
 		return
-	var heading := "Clockwise" if direction == Puzzle.Direction.CLOCKWISE else "Counterclockwise"
+	var heading := "Searah jarum jam" if direction == Puzzle.Direction.CLOCKWISE else "Berlawanan arah jarum jam"
 	if not _plate.result_passed:
-		_feedback("%s output." % heading)
+		_feedback("Keluaran %s." % heading)
 		return
 
 	var config := Save.load_config(SAVE_PATH)
@@ -746,12 +746,12 @@ func _show_result(result: Dictionary) -> void:
 		_completed = true
 		_record_blueprint_work(true)
 		_refresh_blueprint_dock_states()
-		_feedback("%s. Build complete." % heading)
+		_feedback("%s. Perakitan selesai." % heading)
 		var checkpoint := get_node_or_null("/root/GameSave")
 		if checkpoint != null:
 			checkpoint.request_autosave()
 	else:
-		_feedback("Passed. Test again to retry saving.")
+		_feedback("Lulus. Uji lagi untuk mencoba menyimpan ulang.")
 
 
 func _record_blueprint_work(completed: bool) -> void:
@@ -778,11 +778,11 @@ func _update_controls() -> void:
 	_return.disabled = busy or return_scene.is_empty()
 
 	if _unlocked and _active_puzzle != null:
-		_insert.text = "Eject blueprint"
+		_insert.text = "Keluarkan blueprint"
 		_insert.disabled = busy
 	else:
 		var has_selected := not _selected_puzzle_id.is_empty() and _find_owned_puzzle(_selected_puzzle_id) != null
-		_insert.text = "Insert selected" if has_selected else "Awaiting blueprint"
+		_insert.text = "Masukkan terpilih" if has_selected else "Menunggu blueprint"
 		_insert.disabled = not has_selected or busy
 
 	for card: BlueprintCard in _blueprint_cards.values():
@@ -791,9 +791,9 @@ func _update_controls() -> void:
 
 	if _active_puzzle != null:
 		%LegendText.text = (
-			"Rotate carriers or drag rail gears.\nTest crank to check the output."
+			"Putar lengan atau seret roda gigi rel.\nUji engkol untuk memeriksa keluaran."
 			if _active_puzzle.slider_count() > 0
-			else "Select a carrier to rotate.\nTest crank to check the output."
+			else "Pilih lengan untuk memutarnya.\nUji engkol untuk memeriksa keluaran."
 		)
 
 	for carrier: int in range(_carrier_buttons.size()):
@@ -853,7 +853,7 @@ func _kill_tweens() -> void:
 
 
 func _update_clock(_minutes: int) -> void:
-	%Clock.text = "Day %d   %s" % [GameClock.get_day(), GameClock.get_formatted_time()]
+	%Clock.text = "Hari %d   %s" % [GameClock.get_day(), GameClock.get_formatted_time()]
 
 
 func _leave() -> void:
@@ -872,5 +872,5 @@ func _on_transition_finished(error: Error) -> void:
 	_update_controls()
 	if error != OK:
 		%Feedback.show()
-		_feedback("Could not return to the lab.")
+		_feedback("Gagal kembali ke lab.")
 	_return.grab_focus()

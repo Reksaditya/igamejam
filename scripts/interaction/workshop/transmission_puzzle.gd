@@ -13,8 +13,8 @@ const OVERLAP_MARGIN := 3.5
 
 @export var puzzle_id := "transmission_bench"
 @export var linked_blueprint_id := "sediment_sorter"
-@export var title := "Sediment sorter"
-@export var difficulty := "Medium"
+@export var title := "Pemilah Sedimen"
+@export var difficulty := "Sedang"
 @export var required_output_direction: Direction = Direction.CLOCKWISE
 
 @export_group("Plate")

@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_blueprint")
 blueprint_id = "sieve_shaker"
-title = "Sieve shaker"
+title = "Pengayak Getar"
 artwork = ExtResource("2_artwork")
 workshop_puzzle_id = "slider_relay"

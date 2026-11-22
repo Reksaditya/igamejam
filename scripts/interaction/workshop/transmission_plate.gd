@@ -183,7 +183,7 @@ func _draw() -> void:
 	draw_circle(puzzle.motor_socket, motor_r + 4.0, Color("#203031"), true, -1, true)
 
 	_plate_label("MOTOR", puzzle.motor_socket - Vector2(0, motor_r + 17.0))
-	_plate_label("OUTPUT", _output_label_position())
+	_plate_label("KELUARAN", _output_label_position())
 
 
 func _output_label_position() -> Vector2:
@@ -319,7 +319,7 @@ func _draw_sheet(face: Rect2) -> void:
 		draw_circle(endpoint, 6.0, Color("#e4f1f1"), false, 2.0, true)
 
 	_diagram_label("M", puzzle.motor_socket - Vector2(0, puzzle.motor_radius + 10.0))
-	_diagram_label("OUT", puzzle.output_socket + Vector2(0, puzzle.output_radius + 26.0))
+	_diagram_label("KEL", puzzle.output_socket + Vector2(0, puzzle.output_radius + 26.0))
 	_arrow(self, puzzle.output_socket, puzzle.output_radius + 4.0, puzzle.required_output_direction, CLUE, 5.5, 16.0)
 
 

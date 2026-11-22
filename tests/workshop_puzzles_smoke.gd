@@ -120,9 +120,9 @@ func _run() -> void:
 	assert(project_app._drawings["sieve_shaker"].visible)
 	assert(not project_app._drawings["sediment_sorter"].visible)
 	assert(not project_app._drawings["core_centrifuge"].visible)
-	assert(project_app._entries["core_drive"].badge_label.text == "Completed")
-	assert(project_app._entries["sieve_shaker"].badge_label.text == "Completed")
-	assert(project_app._entries["sediment_sorter"].badge_label.text == "Locked")
+	assert(project_app._entries["core_drive"].badge_label.text == "Selesai")
+	assert(project_app._entries["sieve_shaker"].badge_label.text == "Selesai")
+	assert(project_app._entries["sediment_sorter"].badge_label.text == "Terkunci")
 
 	project_app.queue_free()
 	workshop.queue_free()

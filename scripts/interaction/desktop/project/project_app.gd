@@ -83,14 +83,14 @@ func _add_blueprint(blueprint: Blueprint) -> void:
 	locked_frame.add_child(locked_box)
 
 	var locked_heading := Label.new()
-	locked_heading.text = "Blueprint not yet unlocked"
+	locked_heading.text = "Blueprint belum terbuka"
 	locked_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	locked_heading.add_theme_font_size_override("font_size", 14)
 	locked_heading.add_theme_color_override("font_color", Color("#4a6070"))
 	locked_box.add_child(locked_heading)
 
 	var locked_hint := Label.new()
-	locked_hint.text = "Earn this blueprint by completing the class notes or opening its Library book."
+	locked_hint.text = "Dapatkan blueprint ini dengan menyelesaikan catatan kelas atau membuka bukunya di Perpustakaan."
 	locked_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	locked_hint.add_theme_font_size_override("font_size", 12)
 	locked_hint.add_theme_color_override("font_color", Color("#5c7384"))
@@ -105,7 +105,7 @@ func _add_blueprint(blueprint: Blueprint) -> void:
 	drawing.custom_minimum_size.y = 210.0
 	drawing.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	drawing.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	drawing.accessibility_name = blueprint.title + " blueprint"
+	drawing.accessibility_name = "Blueprint " + blueprint.title
 	group.add_child(drawing)
 	entry.drawing = drawing
 	_drawings[blueprint.blueprint_id] = drawing
@@ -133,16 +133,16 @@ func _refresh() -> void:
 		entry.title.add_theme_color_override("font_color", Color("#1b3346") if unlocked else Color("#5c707e"))
 		match state:
 			BlueprintState.LOCKED:
-				_apply_badge(entry, "Locked", Color("#e3eaee"), Color("#a5b7c2"), Color("#4b6170"))
+				_apply_badge(entry, "Terkunci", Color("#e3eaee"), Color("#a5b7c2"), Color("#4b6170"))
 			BlueprintState.UNLOCKED:
-				_apply_badge(entry, "Unlocked", Color("#d8ecf7"), Color("#4b90b3"), Color("#164b68"))
-				entry.note.text = "Ready to bring to the workshop bench."
+				_apply_badge(entry, "Terbuka", Color("#d8ecf7"), Color("#4b90b3"), Color("#164b68"))
+				entry.note.text = "Siap dibawa ke meja rakit."
 			BlueprintState.WORKED:
-				_apply_badge(entry, "In progress", Color("#f8ead0"), Color("#cf913a"), Color("#75480d"))
-				entry.note.text = "Worked on at the workshop bench."
+				_apply_badge(entry, "Dikerjakan", Color("#f8ead0"), Color("#cf913a"), Color("#75480d"))
+				entry.note.text = "Sedang dikerjakan di meja rakit."
 			BlueprintState.COMPLETED:
-				_apply_badge(entry, "Completed", Color("#d6efe0"), Color("#499d6a"), Color("#195732"))
-				entry.note.text = "Built and verified at the workshop bench."
+				_apply_badge(entry, "Selesai", Color("#d6efe0"), Color("#499d6a"), Color("#195732"))
+				entry.note.text = "Sudah dirakit dan teruji di meja rakit."
 
 
 func _apply_badge(entry: BlueprintEntry, caption: String, fill: Color, border: Color, text_color: Color) -> void:

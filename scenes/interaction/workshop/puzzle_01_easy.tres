@@ -7,8 +7,8 @@
 script = ExtResource("1_puzzle")
 puzzle_id = "starter_drive"
 linked_blueprint_id = "core_drive"
-title = "Core drive"
-difficulty = "Easy"
+title = "Penggerak Inti"
+difficulty = "Mudah"
 required_output_direction = -1
 motor_socket = Vector2(150, 205)
 motor_radius = 40.0

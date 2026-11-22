@@ -84,8 +84,8 @@ func _run() -> void:
 	current_scene._new_game()
 	var confirm := current_scene.get_node("%NewGameConfirm") as ConfirmationDialog
 	assert(confirm.visible)
-	assert(confirm.get_node("Content/Question").text == "apakah anda yakin ingin memulai kehidupan baru?")
-	assert(confirm.get_node("Content/Subheader").text == "seluruh data yang anda save sebelumnya akan hilang")
+	assert(confirm.get_node("Content/Question").text == "Apakah Anda yakin ingin memulai permainan baru?")
+	assert(confirm.get_node("Content/Subheader").text == "Seluruh data permainan yang tersimpan sebelumnya akan hilang.")
 	confirm.hide()
 	assert(FileAccess.get_file_as_string(saves.SAVE_PATH) == checkpoint)
 	assert(notes.has_note(0))

@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_blueprint")
 blueprint_id = "core_drive"
-title = "Core drive"
+title = "Penggerak Inti"
 artwork = ExtResource("2_artwork")
 workshop_puzzle_id = "starter_drive"

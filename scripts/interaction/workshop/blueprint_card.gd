@@ -87,12 +87,12 @@ func refresh_visual() -> void:
 	if puzzle == null:
 		return
 	_title_label.text = puzzle.title
-	var slider_note := "  ·  Rail" if puzzle.slider_count() > 0 else ""
+	var slider_note := "  ·  Rel" if puzzle.slider_count() > 0 else ""
 	_meta_label.text = "%s%s" % [puzzle.difficulty, slider_note]
-	accessibility_name = "%s blueprint, %s" % [puzzle.title, "Built" if completed else ("Active" if active else "Ready")]
-	tooltip_text = "Drag into the slot above or press Enter"
+	accessibility_name = "Blueprint %s, %s" % [puzzle.title, "Selesai" if completed else ("Aktif" if active else "Siap")]
+	tooltip_text = "Seret ke slot di atas atau tekan Enter"
 
-	var badge_text := "Active" if active else ("Built" if completed else "Ready")
+	var badge_text := "Aktif" if active else ("Selesai" if completed else "Siap")
 	_badge_label.text = badge_text
 
 	var bg := Color("#16282c")

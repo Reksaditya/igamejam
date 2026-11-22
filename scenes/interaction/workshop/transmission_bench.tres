@@ -7,8 +7,8 @@
 script = ExtResource("1_puzzle")
 puzzle_id = "transmission_bench"
 linked_blueprint_id = "sediment_sorter"
-title = "Sediment sorter"
-difficulty = "Medium"
+title = "Pemilah Sedimen"
+difficulty = "Sedang"
 required_output_direction = 1
 motor_socket = Vector2(128, 238)
 motor_radius = 45.0

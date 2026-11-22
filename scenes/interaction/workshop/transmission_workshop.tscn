@@ -103,7 +103,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
-text = "Back to lab"
+text = "Kembali ke lab"
 
 [node name="Spacer" type="Control" parent="Margin/Layout/TopBar"]
 layout_mode = 2
@@ -112,7 +112,7 @@ mouse_filter = 2
 
 [node name="Clock" type="Label" parent="Margin/Layout/TopBar"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(91, 0)
+custom_minimum_size = Vector2(104, 0)
 layout_mode = 2
 theme_type_variation = &"TaskbarClock"
 theme_override_colors/font_outline_color = Color(0.07, 0.11, 0.12, 0.9)
@@ -155,7 +155,7 @@ script = ExtResource("5_plate")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(101, 27)
 mouse_default_cursor_shape = 2
-text = "Test crank"
+text = "Uji engkol"
 
 [node name="Gate" type="Label" parent="Margin/Layout/Scroll/Bench/Machine/Plate"]
 unique_name_in_owner = true
@@ -169,7 +169,7 @@ theme_override_colors/font_color = Color(1, 0.95, 0.83, 1)
 theme_override_colors/font_outline_color = Color(0.07, 0.11, 0.12, 1)
 theme_override_constants/outline_size = 7
 theme_override_font_sizes/font_size = 24
-text = "Blueprint needed"
+text = "Blueprint diperlukan"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -212,7 +212,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 16
-text = "Transmission detail sheet"
+text = "Lembar detail transmisi"
 
 [node name="Sheet" type="Control" parent="Margin/Layout/Scroll/Bench/CardStack/Blueprint/SheetLayout"]
 unique_name_in_owner = true
@@ -299,7 +299,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-text = "Insert selected"
+text = "Masukkan terpilih"
 
 [node name="BlueprintDock" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
 unique_name_in_owner = true
@@ -314,7 +314,7 @@ theme_override_colors/font_color = Color(0.92, 0.95, 0.92, 1)
 theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 13
-text = "Blueprints (drag into slot)"
+text = "Blueprint (seret ke slot)"
 
 [node name="BlueprintList" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/BlueprintDock"]
 unique_name_in_owner = true
@@ -331,7 +331,7 @@ theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.9)
 theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 12
-text = "Earn blueprints from the Library or Class notes."
+text = "Dapatkan blueprint dari Perpustakaan atau Catatan kelas."
 autowrap_mode = 3
 
 [node name="KeybindHint" type="PanelContainer" parent="."]
@@ -357,5 +357,5 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.92)
 theme_override_font_sizes/font_size = 12
-text = "Drag: Blueprint / Rail  ·  Click: Rotate / Crank  ·  Tab / Arrows: Focus  ·  Enter / Space: Activate"
+text = "Seret: Blueprint / Rel  ·  Klik: Putar / Engkol  ·  Tab / Panah: Fokus  ·  Enter / Spasi: Aktifkan"
 horizontal_alignment = 2

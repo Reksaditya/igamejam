@@ -175,10 +175,10 @@ func _select_piece(slot: int) -> void:
 
 
 func _refresh() -> void:
-	%Score.text = "Score %d" % _score
-	%Message.text = "Drag a piece onto the board." if not _game_over else "No moves left. Final score %d." % _score
+	%Score.text = "Skor %d" % _score
+	%Message.text = "Seret kepingan ke papan." if not _game_over else "Tidak ada langkah tersisa. Skor akhir %d." % _score
 	if _pool.is_empty():
-		%Message.text = "No shapes available."
+		%Message.text = "Tidak ada bentuk tersedia."
 	%Restart.visible = _game_over and not _pool.is_empty()
 	_playfield.tiles = _board
 	_playfield.tray = _tray
@@ -191,5 +191,5 @@ func _refresh() -> void:
 		button.shape = shape
 		button.disabled = shape == null or _game_over
 		button.set_pressed_no_signal(index == _selected_slot)
-		button.accessibility_name = shape.title if shape != null else "Empty tray slot"
+		button.accessibility_name = shape.title if shape != null else "Slot baki kosong"
 		button.tooltip_text = shape.title if shape != null else ""
