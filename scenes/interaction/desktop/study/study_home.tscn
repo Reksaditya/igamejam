@@ -68,12 +68,15 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LmsHeading"
 text = "Place to Study"
+horizontal_alignment = 1
 
 [node name="Books" type="HFlowContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
+alignment = 1
+last_wrap_alignment = 2
 
 [node name="Status" type="Label" parent="."]
 unique_name_in_owner = true
@@ -81,6 +84,7 @@ visible = false
 layout_mode = 2
 theme_type_variation = &"LmsError"
 autowrap_mode = 3
+horizontal_alignment = 1
 
 [node name="Reading" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -104,12 +108,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"LmsMeta"
 autowrap_mode = 3
+horizontal_alignment = 2
 
 [node name="ReadingTitle" type="Label" parent="Reading"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LmsHeading"
 autowrap_mode = 3
+horizontal_alignment = 1
 
 [node name="Passages" type="VBoxContainer" parent="Reading"]
 unique_name_in_owner = true

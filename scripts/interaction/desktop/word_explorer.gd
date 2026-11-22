@@ -195,6 +195,7 @@ func _load_address(tab: Tab, address: String) -> void:
 		error_page.text = "404 Page Not Found."
 		error_page.theme_type_variation = &"BrowserHeading"
 		error_page.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		error_page.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		tab.page.add_child(error_page)
 	_update_tab_label(tab)
 
@@ -226,6 +227,7 @@ func _show_loading(tab: Tab) -> void:
 	loading.add_theme_constant_override("separation", 8)
 	var status := Label.new()
 	status.text = "Loading…"
+	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	loading.add_child(status)
 	var progress := ProgressBar.new()
 	progress.custom_minimum_size.y = 6.0

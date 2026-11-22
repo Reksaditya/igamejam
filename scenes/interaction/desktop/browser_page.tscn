@@ -1,5 +1,7 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://scripts/interaction/desktop/browser_page_layout.gd" id="1_layout"]
+
 [node name="PagePanel" type="PanelContainer"]
 [node name="Scroll" type="ScrollContainer" parent="."]
 layout_mode = 2
@@ -14,3 +16,4 @@ theme_override_constants/margin_left = 22
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 22
 theme_override_constants/margin_bottom = 20
+script = ExtResource("1_layout")

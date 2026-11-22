@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [node name="BookCard" type="VBoxContainer"]
+custom_minimum_size = Vector2(108, 0)
 size_flags_horizontal = 0
 theme_override_constants/separation = 8
 
@@ -8,6 +9,7 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 118)
 layout_mode = 2
+size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 
 [node name="Binding" type="ColorRect" parent="Study"]
