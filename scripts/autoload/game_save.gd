@@ -1,7 +1,9 @@
 extends Node
 
 const SAVE_PATH := "user://game_save.cfg"
+const SCHEMA_PATH := "user://save_schema.cfg"
 const SAVE_VERSION := 3
+const PERSISTENT_SCHEMA_VERSION := 4
 const INITIAL_SCENE := "res://scenes/movement/dorm_room210.tscn"
 const COURTYARD_SCENE := "res://scenes/movement/top_down_movement.tscn"
 const DESKTOP_RETURN_CONTEXT := &"desktop_return_context"
@@ -9,7 +11,7 @@ const DORM_SCENE := "res://scenes/movement/dorm_room210.tscn"
 const DESKTOP_SCENE := "res://scenes/interaction/desktop/desktop.tscn"
 const WORKSHOP_SCENE := "res://scenes/interaction/workshop/transmission_workshop.tscn"
 const WORLD_SCENES := [COURTYARD_SCENE, "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn", "res://scenes/movement/dorm_exterior.tscn", "res://scenes/movement/dorm_floor1.tscn", "res://scenes/movement/dorm_floor2.tscn", DORM_SCENE, "res://scenes/movement/lecturer_room.tscn", "res://scenes/movement/classroom_corridor_floor1.tscn", "res://scenes/movement/classroom_corridor_floor2.tscn", "res://scenes/movement/classroom_corridor_floor3.tscn", "res://scenes/movement/campus_classroom_floor2.tscn", "res://scenes/movement/campus_classroom_floor3.tscn"]
-const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "career_progress.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg",
+const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "career_progress.cfg", "career_progress.cfg.bak", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg",
 	"blueprint_progress.cfg.bak", "transmission_progress.cfg", "transmission_progress.cfg.bak",
 	"study_notes.cfg", "study_notes.cfg.bak", "workshop_progress.cfg", "workshop_progress.cfg.bak",
 	"chapter_timeline.cfg", "chapter_timeline.cfg.bak", "tutorials.cfg"]
@@ -30,6 +32,7 @@ var _desktop_return_spawn: StringName
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().auto_accept_quit = false
+	_ensure_fresh_schema()
 	get_tree().scene_changed.connect(_on_scene_changed)
 	SceneTransition.transition_finished.connect(_on_transition_finished)
 	ClassroomProgress.changed.connect(request_autosave)
@@ -40,6 +43,42 @@ func _ready() -> void:
 	PlayerStats.changed.connect(request_autosave)
 	PlayerJournal.changed.connect(request_autosave)
 	CareerProgress.changed.connect(request_autosave)
+
+
+func _ensure_fresh_schema() -> void:
+	var cfg := ConfigFile.new()
+	var current_version: int = 0
+	if cfg.load(SCHEMA_PATH) == OK:
+		var raw: Variant = cfg.get_value("schema", "version", 0)
+		if raw is int:
+			current_version = raw
+	if current_version == PERSISTENT_SCHEMA_VERSION:
+		return
+	var has_stale := FileAccess.file_exists(SAVE_PATH) or not _gameplay_paths().is_empty()
+	if has_stale:
+		_busy = true
+		var error := _replace_files({}, true)
+		_busy = false
+		if error != OK:
+			return
+		_reload_all_progress_defaults()
+	var updated := ConfigFile.new()
+	updated.set_value("schema", "version", PERSISTENT_SCHEMA_VERSION)
+	if updated.save(SCHEMA_PATH + ".tmp") == OK:
+		DirAccess.rename_absolute(SCHEMA_PATH + ".tmp", SCHEMA_PATH)
+
+
+func _reload_all_progress_defaults() -> void:
+	ClassroomProgress.reload_progress()
+	BlueprintProgress.reload_progress()
+	StudyNotes.reload_progress()
+	PlayerJournal.reload_progress()
+	CareerProgress.reload_progress()
+	GameSettings.reload_tutorials()
+	PlayerStats.restore_save_state(PlayerStats.DEFAULTS)
+	GameClock.set_room_paused(false)
+	GameClock.restore_save_state({"minutes": GameClock.MORNING_MINUTES, "remainder": 0})
+	ProjectBlueprints.changed.emit()
 
 
 func _process(delta: float) -> void:
@@ -192,6 +231,7 @@ func start_new_game(player_name: String = "Yohan") -> Error:
 	GameSettings.reload_tutorials()
 	ProjectBlueprints.changed.emit()
 	PlayerStats.restore_save_state(stats)
+	GameClock.set_room_paused(false)
 	GameClock.restore_save_state(clock)
 	_clear_spawn()
 	_restore_position = false
@@ -240,6 +280,7 @@ func load_game(allow_legacy: bool = false) -> Error:
 	for key: String in stats:
 		stats[key] = snapshot.get_value("profile", key, stats[key])
 	PlayerStats.restore_save_state(stats)
+	GameClock.set_room_paused(false)
 	GameClock.restore_save_state({"minutes": snapshot.get_value("clock", "minutes"), "remainder": snapshot.get_value("clock", "remainder", 0)})
 	_clear_spawn()
 	_restore_position = _resume_scene in WORLD_SCENES

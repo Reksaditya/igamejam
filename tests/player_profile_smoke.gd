@@ -62,6 +62,7 @@ func _run() -> void:
 	profile._volume.value = 0
 	profile._popup.hide()
 	assert(not AudioServer.is_bus_mute(0) and not paused)
+	clock.set_room_paused(false)
 	profile.open_profile()
 	var before: int = clock.get_absolute_minutes()
 	await create_timer(1.2).timeout

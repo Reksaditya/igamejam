@@ -10,6 +10,8 @@ var _transitioning: bool = false
 
 
 func _ready() -> void:
+	if scene_file_path.get_file() != "dorm_room210.tscn":
+		GameClock.set_room_paused(false)
 	$LeftExit.body_entered.connect(_on_exit_entered.bind(left_destination, &"RightSpawn"))
 	$RightExit.body_entered.connect(_on_exit_entered.bind(right_destination, &"LeftSpawn"))
 	var spawn: StringName = get_tree().get_meta(&"side_scroller_spawn", &"InitialSpawn")

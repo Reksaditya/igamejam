@@ -21,8 +21,13 @@ func _ready() -> void:
 	_build_bounds()
 	_layout(false)
 	super._ready()
+	GameClock.set_room_paused(true)
 	_confine_player()
 	get_viewport().size_changed.connect(_layout, CONNECT_DEFERRED)
+
+
+func _exit_tree() -> void:
+	GameClock.set_room_paused(false)
 
 
 func _build_bounds() -> void:

@@ -15,8 +15,9 @@ const Save = preload("res://scripts/autoload/playthrough_save.gd")
 		seconds_per_minute = maxf(value, 0.01)
 		if is_node_ready():
 			_timer.start(seconds_per_minute)
+			_sync_timer_paused()
 
-var _absolute_minutes: int = 0
+var _absolute_minutes: int = MORNING_MINUTES
 var _assessment_tokens: Dictionary[int, bool] = {}
 var _next_assessment_token: int = 0
 var _assessment_started_msec: int = 0
@@ -26,6 +27,7 @@ var _class_start: int = 0
 var _timeline_initialized := false
 var _timed_owner: Node
 var _timed_token := 0
+var _room_paused: bool = false
 
 @onready var _timer: Timer = $MinuteTimer
 
@@ -33,6 +35,24 @@ var _timed_token := 0
 func _ready() -> void:
 	_timer.timeout.connect(_advance_minute)
 	_timer.start(seconds_per_minute)
+	_sync_timer_paused()
+
+
+func set_room_paused(paused: bool) -> void:
+	_room_paused = paused
+	if is_node_ready():
+		if not _room_paused and _timer.is_stopped():
+			_timer.start(seconds_per_minute)
+		_sync_timer_paused()
+
+
+func is_room_paused() -> bool:
+	return _room_paused
+
+
+func _sync_timer_paused() -> void:
+	if is_node_ready():
+		_timer.paused = _room_paused or is_activity_running()
 
 
 func resume_timeline() -> void:
@@ -80,10 +100,10 @@ func restore_save_state(state: Dictionary) -> void:
 	_clear_timed_attempt()
 	_class_owner = null
 	_assessment_tokens.clear()
-	_absolute_minutes = maxi(0, state.get("minutes", 0))
+	_absolute_minutes = maxi(0, state.get("minutes", MORNING_MINUTES))
 	_assessment_remainder_msec = clampi(state.get("remainder", 0), 0, 59999)
-	_timer.paused = false
 	_timer.start(seconds_per_minute)
+	_sync_timer_paused()
 	minute_changed.emit(_absolute_minutes)
 
 
@@ -97,7 +117,7 @@ func begin_timed_attempt(owner: Node) -> int:
 	resume_timeline()
 	_timed_token += 1
 	_timed_owner = owner
-	_timer.paused = true
+	_sync_timer_paused()
 	owner.tree_exiting.connect(_on_timed_owner_exiting.bind(_timed_token), CONNECT_ONE_SHOT)
 	return _timed_token
 
@@ -113,7 +133,7 @@ func cancel_activity(token: int) -> bool:
 	if not is_instance_valid(_timed_owner) or token != _timed_token:
 		return false
 	_clear_timed_attempt()
-	_timer.paused = false
+	_sync_timer_paused()
 	return true
 
 
@@ -133,11 +153,12 @@ func begin_assessment() -> int:
 	if is_instance_valid(_class_owner) or is_instance_valid(_timed_owner):
 		return 0
 	_timeline_initialized = true
-	if _assessment_tokens.is_empty():
-		_assessment_started_msec = Time.get_ticks_msec()
-		_timer.paused = true
+	var was_empty := _assessment_tokens.is_empty()
 	_next_assessment_token += 1
 	_assessment_tokens[_next_assessment_token] = true
+	if was_empty:
+		_assessment_started_msec = Time.get_ticks_msec()
+		_sync_timer_paused()
 	return _next_assessment_token
 
 
@@ -147,7 +168,7 @@ func begin_class(owner: Node) -> bool:
 	_timeline_initialized = true
 	_class_owner = owner
 	_class_start = _absolute_minutes
-	_timer.paused = true
+	_sync_timer_paused()
 	owner.tree_exiting.connect(cancel_class.bind(owner), CONNECT_ONE_SHOT)
 	return true
 
@@ -157,8 +178,8 @@ func complete_class(owner: Node) -> bool:
 		return false
 	_class_owner = null
 	_absolute_minutes = _class_start + 120
-	_timer.paused = false
 	_timer.start(seconds_per_minute)
+	_sync_timer_paused()
 	minute_changed.emit(_absolute_minutes)
 	return true
 
@@ -166,13 +187,14 @@ func complete_class(owner: Node) -> bool:
 func cancel_class(owner: Node) -> void:
 	if owner == _class_owner:
 		_class_owner = null
-		_timer.paused = false
+		_sync_timer_paused()
 
 
 func advance_minutes(minutes: int) -> void:
 	_timeline_initialized = true
 	_absolute_minutes += maxi(0, minutes)
 	_timer.start(seconds_per_minute)
+	_sync_timer_paused()
 	minute_changed.emit(_absolute_minutes)
 
 
@@ -186,7 +208,7 @@ func end_assessment(token: int) -> void:
 	var minutes := floori(float(elapsed) / 60000.0)
 	_assessment_remainder_msec = elapsed % 60000
 	_absolute_minutes += minutes
-	_timer.paused = false
+	_sync_timer_paused()
 	if minutes > 0:
 		minute_changed.emit(_absolute_minutes)
 

@@ -81,6 +81,7 @@ func _ready() -> void:
 	_refresh_wallpaper()
 	if Engine.is_editor_hint():
 		return
+	GameClock.set_room_paused(false)
 
 	for child: Node in _launchers.get_children():
 		_connect_launcher(child)

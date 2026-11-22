@@ -53,6 +53,7 @@ var _tutorial: TutorialSpotlight
 
 
 func _ready() -> void:
+	GameClock.set_room_paused(false)
 	GameClock.resume_timeline()
 	GameClock.minute_changed.connect(_update_clock)
 	_update_clock(GameClock.get_absolute_minutes())
