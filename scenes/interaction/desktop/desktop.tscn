@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://clh61l0gxninh" path="res://assets/textures/desktop/power_icon_pixel.png" id="19_power_icon"]
 [ext_resource type="AudioStream" uid="uid://cxcvgcr6lwavw" path="res://assets/audio/sfx/desktop_mouse_click.ogg" id="20_click_sound"]
 [ext_resource type="AudioStream" uid="uid://7dlxblc4ulrl" path="res://assets/audio/sfx/desktop_pc_fan.ogg" id="21_fan_ambient"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/folders/hal_penting.tres" id="22_hal_penting"]
 
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wallpaper"]
@@ -154,6 +155,19 @@ offset_bottom = 325.0
 tooltip_text = "Blocks n Blast"
 accessibility_name = "Blocks n Blast"
 default_cell = Vector2i(6, 2)
+
+[node name="HalPentingLauncher" parent="Display/DesktopItems/Launchers" instance=ExtResource("9_files")]
+custom_minimum_size = Vector2(126, 96)
+layout_mode = 0
+offset_left = 834.0
+offset_top = 123.0
+offset_right = 960.0
+offset_bottom = 219.0
+tooltip_text = "Hal Penting"
+accessibility_name = "Hal Penting"
+display_title = "Hal Penting"
+folder = ExtResource("22_hal_penting")
+default_cell = Vector2i(6, 1)
 
 [node name="Windows" type="Control" parent="Display" unique_id=651136829]
 z_index = 2

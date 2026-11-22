@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/document_launcher.tscn" id="1_launcher"]
+
+[node name="Website" instance=ExtResource("1_launcher")]
+display_title = "website.txt"
+submission_filename = "website.txt"
+starting_text = "Daftar Website Penting (Word Explorer)
+
+1. LMS — Universitas Redline (www.redlineuni.com)
+   Untuk melihat dan mengerjakan Tugas, Kuis, UTS, dan UAS sesuai tenggat semester.
+
+2. Perpustakaan — Perpustakaan Belajar (www.placetostudy.com)
+   Untuk membaca materi kuliah, melengkapi catatan kelas yang terlewat, dan membuka Blueprint mesin."

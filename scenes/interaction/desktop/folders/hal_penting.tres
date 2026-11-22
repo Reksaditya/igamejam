@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DesktopFolder" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/desktop_folder.gd" id="1_folder"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/folders/website.tscn" id="2_website"]
+
+[resource]
+script = ExtResource("1_folder")
+folder_name = "Hal Penting"
+files = Array[PackedScene]([ExtResource("2_website")])
