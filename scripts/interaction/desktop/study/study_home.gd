@@ -8,6 +8,8 @@ const BOOK_CARD := preload("res://scenes/interaction/desktop/study/study_book_ca
 var _selected_book: Book
 var _transitioning := false
 var _book_focus: Control
+var _book_actions: Dictionary[Book, Button] = {}
+var _week := 0
 
 @onready var _confirm: ConfirmationDialog = %ConfirmStudy
 @onready var _black: ColorRect = %Black
@@ -18,6 +20,8 @@ func _ready() -> void:
 	for book: Book in books:
 		if book != null:
 			_add_book(book)
+	_refresh_book_availability(GameClock.get_absolute_minutes())
+	GameClock.minute_changed.connect(_refresh_book_availability)
 	%Back.pressed.connect(_close_reading)
 	_confirm.get_cancel_button().text = "Tidak"
 	_confirm.confirmed.connect(_study)
@@ -45,6 +49,24 @@ func _add_book(book: Book) -> void:
 		style.corner_radius_bottom_right = 5
 		action.add_theme_stylebox_override(state, style)
 	action.pressed.connect(_request_study.bind(book, action))
+	if book.reward_type == Book.Reward.BLUEPRINT:
+		_book_actions[book] = action
+
+
+func _refresh_book_availability(_minutes: int) -> void:
+	if _week == GameClock.get_day():
+		return
+	_week = GameClock.get_day()
+	for book: Book in _book_actions:
+		var action := _book_actions[book]
+		var info: Dictionary = CareerProgress.Curriculum.blueprint_info(book.blueprint_id)
+		action.disabled = not ProjectBlueprints.is_owned(book.blueprint_id) and not CareerProgress.can_read_blueprint(book.blueprint_id)
+		if action.disabled and not info.is_empty():
+			action.tooltip_text = "Tersedia mulai Sem %d · Hari %d (%s)." % [int(info.semester), int(info.unlock_day_in_semester), str(info.slot_label)]
+		elif not info.is_empty():
+			action.tooltip_text = "%s · Tenggat Sem %d Hari %d" % [str(info.slot_label), int(info.semester), int(info.deadline_day_in_semester)]
+		else:
+			action.tooltip_text = ""
 
 
 func _request_study(book: Book, action: Control) -> void:
@@ -53,6 +75,8 @@ func _request_study(book: Book, action: Control) -> void:
 	_status.hide()
 	_book_focus = action
 	if book.reward_type == Book.Reward.BLUEPRINT:
+		if not ProjectBlueprints.is_owned(book.blueprint_id) and not CareerProgress.can_read_blueprint(book.blueprint_id):
+			return
 		var error := ProjectBlueprints.grant(book.blueprint_id)
 		if error == OK:
 			_open_reading(book)
@@ -93,6 +117,7 @@ func _study() -> void:
 func _open_reading(book: Book) -> void:
 	%Title.hide()
 	%Books.hide()
+	%ClassReview.hide()
 	%ReadingTitle.text = book.title
 	%ReadingStatus.text = ""
 	var passages: VBoxContainer = %Passages
@@ -113,6 +138,7 @@ func _close_reading() -> void:
 	_status.hide()
 	%Title.show()
 	%Books.show()
+	%ClassReview.show()
 	if is_instance_valid(_book_focus):
 		_book_focus.grab_focus()
 

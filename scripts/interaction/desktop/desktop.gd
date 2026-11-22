@@ -42,6 +42,7 @@ var _turning_off := false
 var _click_players: Array[AudioStreamPlayer] = []
 var _click_pool_index := 0
 var _fan_tween: Tween
+var _sanity_blur: ColorRect
 
 @export_group("Login")
 @export var login_scene: PackedScene
@@ -88,6 +89,9 @@ func _ready() -> void:
 	_normal_clock_color = _clock.get_theme_color("font_color")
 	%EnergyIcon.draw.connect(_draw_energy_icon)
 	PlayerStats.changed.connect(_update_energy)
+	_setup_sanity_blur()
+	PlayerStats.changed.connect(_update_sanity_blur)
+	_update_sanity_blur()
 	_update_energy()
 	GameClock.resume_timeline()
 	GameClock.minute_changed.connect(_update_clock)
@@ -289,10 +293,30 @@ func _draw_taskbar_glass() -> void:
 
 
 func _update_clock(absolute_minutes: int) -> void:
-	_clock.text = "Day %d   %s" % [GameClock.get_day(), GameClock.get_formatted_time()]
+	_clock.text = "Sem %d · H%d   %s" % [GameClock.get_semester(), GameClock.get_day_in_semester(), GameClock.get_formatted_time()]
 	var since_late := posmod(absolute_minutes - 23 * 60, GameClock.MINUTES_PER_DAY)
 	var blend := clampf(minf(since_late / 180.0, (420 - since_late) / 240.0), 0.0, 1.0)
 	_clock.add_theme_color_override("font_color", _normal_clock_color.lerp(LATE_CLOCK_COLOR, blend))
+
+
+func _setup_sanity_blur() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 12
+	add_child(layer)
+	_sanity_blur = ColorRect.new()
+	_sanity_blur.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_sanity_blur.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var shader := Shader.new()
+	shader.code = "shader_type canvas_item; uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap; void fragment(){ COLOR = textureLod(screen_texture, SCREEN_UV, 2.0); }"
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	_sanity_blur.material = material
+	layer.add_child(_sanity_blur)
+
+
+func _update_sanity_blur() -> void:
+	if is_instance_valid(_sanity_blur):
+		_sanity_blur.visible = PlayerStats.get_sanity() >= CareerProgress.SANITY_BLUR_THRESHOLD
 
 
 func _configure_return() -> void:
@@ -310,8 +334,12 @@ func _configure_return() -> void:
 	SceneTransition.transition_finished.connect(_on_return_finished)
 
 
+func has_return_destination() -> bool:
+	return not return_scene.is_empty()
+
+
 func _request_turn_off() -> void:
-	if _turning_off or SceneTransition.is_active() or return_scene.is_empty():
+	if _turning_off or SceneTransition.is_active() or not has_return_destination():
 		return
 	var checkpoint := get_node_or_null("/root/GameSave")
 	if checkpoint != null:

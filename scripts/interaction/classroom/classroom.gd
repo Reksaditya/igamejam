@@ -6,7 +6,7 @@ const MIDTERM := preload("res://scenes/interaction/classroom/midterm.tres")
 const FINAL := preload("res://scenes/interaction/classroom/final.tres")
 
 @export var classroom_enabled: bool = true
-@export_range(0, 16) var week_override: int = 0
+@export_range(0, 12) var week_override: int = 0
 
 var _week: int = 1
 var _lesson: CanvasLayer
@@ -48,29 +48,35 @@ func _after_transition(error: Error) -> void:
 func _enter_class() -> void:
 	if not classroom_enabled or not is_inside_tree():
 		return
-	_week = week_override if week_override > 0 else CareerProgress.week()
-	var exam_week := _week == 8 or _week == 16
-	$Computer.available = exam_week
+	_week = week_override if week_override > 0 else CareerProgress.day_in_semester()
+	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
+	$Computer.available = exam_day
 	_refresh_classroom()
 
 
 func _refresh_classroom() -> void:
-	var exam_week := _week == 8 or _week == 16
+	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
 	var finished: bool = CareerProgress.class_data(CareerProgress.semester(), _week).finished
 	var actor := get_parent().get_node("Player") as CharacterBody2D
 	for seat: Area2D in _seats:
 		seat.available = not is_instance_valid(_lesson) and not is_instance_valid(_exam) and (not _manual_seated or seat == _active_seat)
 		var prompt := seat.get_node("Prompt") as Button
-		prompt.text = "E · Berdiri" if _manual_seated and seat == _active_seat else ("E · Duduk" if exam_week or finished else "E · Duduk dan Belajar")
+		prompt.text = "E · Berdiri" if _manual_seated and seat == _active_seat else ("E · Duduk" if exam_day or finished else "E · Duduk dan Belajar")
 		prompt.visible = seat.available and seat.overlaps_body(actor)
-	%Review.visible = not exam_week and finished
-	%ClassStatus.text = "Minggu %d · %s" % [_week, "Ujian: dekati komputer kelas, lalu tekan E." if exam_week else ("Kelas selesai. Materi tidak dapat diulang di kelas." if finished else "Dekati kursi, tekan E untuk duduk dan mulai belajar.")]
+	%Review.visible = not exam_day and finished
+	var exam_name := "UTS" if _week == CareerProgress.Curriculum.MIDTERM_DAY else "UAS"
+	%ClassStatus.text = "Semester %d · Hari %d/12 · %s" % [
+		CareerProgress.semester(),
+		_week,
+		"Ujian %s: dekati komputer kelas, lalu tekan E." % exam_name if exam_day else ("Kelas selesai. Materi tidak dapat diulang di kelas." if finished else "Dekati kursi, tekan E untuk duduk dan mulai belajar.")
+	]
 
 
 func _interact_seat(seat: Area2D) -> void:
+	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
 	if _manual_seated:
 		_stand_up()
-	elif _week == 8 or _week == 16 or CareerProgress.class_data(CareerProgress.semester(), _week).finished:
+	elif exam_day or CareerProgress.class_data(CareerProgress.semester(), _week).finished:
 		_active_seat = seat
 		_manual_seated = true
 		_pose_player(seat)
@@ -100,7 +106,8 @@ func _stand_up() -> void:
 func _open_lesson(seat: Area2D = null) -> void:
 	if is_instance_valid(_lesson) or is_instance_valid(_exam) or SceneTransition.is_active():
 		return
-	if _week == 8 or _week == 16 or CareerProgress.class_data(CareerProgress.semester(), _week).finished:
+	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
+	if exam_day or CareerProgress.class_data(CareerProgress.semester(), _week).finished:
 		return
 	var actor := get_parent().get_node("Player") as CharacterBody2D
 	if seat == null:
@@ -149,12 +156,13 @@ func _return_to_corridor() -> void:
 
 
 func _open_exam() -> void:
-	if (_week != 8 and _week != 16) or is_instance_valid(_lesson) or is_instance_valid(_exam):
+	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
+	if not exam_day or is_instance_valid(_lesson) or is_instance_valid(_exam):
 		return
 	_exam = Assessment.new()
 	_exam.term = CareerProgress.semester()
 	_exam.study_week = _week
-	_exam.kind = "uts" if _week == 8 else "uas"
+	_exam.kind = "uts" if _week == CareerProgress.Curriculum.MIDTERM_DAY else "uas"
 	add_child(_exam)
 	_exam.closed.connect(func() -> void: _exam = null)
 

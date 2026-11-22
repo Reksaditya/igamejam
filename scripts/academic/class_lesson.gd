@@ -148,11 +148,16 @@ func _show_summary() -> void:
 	add_child(_summary)
 	var data := CareerProgress.class_data(term, study_week)
 	var lesson := Curriculum.lesson(term, study_week)
-	_summary.label("Catatan akhir · Semester %d · Minggu %d" % [term, study_week], 26)
+	_summary.label("Catatan akhir · Semester %d · Hari %d/12" % [term, study_week], 26)
 	_summary.label(lesson.title, 24)
 	for index: int in 3:
 		_summary.label(lesson.sections[index] if data.complete.has(index) else "________________ (catatan kosong)")
-	_summary.label("Materi yang dilewati tidak dapat diulang di kelas. Lengkapi catatan melalui Library pada komputer asrama.", 16)
+	var bp_id := str(lesson.get("blueprint_id", ""))
+	if data.complete.size() == 3 and not bp_id.is_empty():
+		var bp := Curriculum.blueprint_info(bp_id)
+		if not bp.is_empty():
+			_summary.label("Blueprint terbuka: %s (%s · Tenggat Sem %d Hari %d)." % [bp.title, bp.slot_label, int(bp.semester), int(bp.deadline_day_in_semester)], 16)
+	_summary.label("Materi yang dilewati tidak dapat diulang di kelas. Lengkapi catatan melalui Perpustakaan di laptop Kamar 210.", 16)
 	_summary.add_close()
 	if not notes_only:
 		_summary.close_button.text = "Kembali ke lorong"

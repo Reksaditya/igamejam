@@ -4,6 +4,8 @@
 [ext_resource type="Script" path="res://scripts/interaction/desktop/study/study_home.gd" id="2_home"]
 [ext_resource type="Script" path="res://scripts/interaction/desktop/study/study_book.gd" id="3_book"]
 
+[ext_resource type="Script" path="res://scripts/academic/library.gd" id="4_recovery"]
+
 [sub_resource type="Resource" id="Book_dinosaur"]
 script = ExtResource("3_book")
 title = "Dasar-Dasar Dinosaurus"
@@ -16,44 +18,52 @@ linked_note_ids = PackedStringArray("dinosaur_triceratops_horns", "dinosaur_steg
 [sub_resource type="Resource" id="Book_core_drive"]
 script = ExtResource("3_book")
 book_id = "core_drive_primer"
-title = "Panduan Penggerak Inti"
+title = "Sem 1 Midterm · Penggerak Inti"
 cover_color = Color(0.18, 0.42, 0.41, 1)
-reading_text = "Mulailah dari roda gigi penggerak motor dan hitung setiap hubungan gigi untuk mengendalikan arah putaran keluaran. Dua lengan pemutar memungkinkan Anda menjembatani pelat secara rapi tanpa penghubung tambahan.
+reading_text = "Semester 1 — Paruh 1 (Tenggat: Hari 6 · Bobot 15%): Dasar-Dasar Operasi Bilangan & Mesin Sederhana (Tuas, Roda, Katrol, Bidang Miring).
 
-Blueprint lengkapnya tersedia di aplikasi Proyek setelah Anda membuka panduan ini."
+Mulailah dari roda gigi penggerak motor dan hitung setiap hubungan gigi untuk mengendalikan arah putaran keluaran. Dua lengan pemutar memungkinkan Anda menjembatani pelat secara rapi tanpa penghubung tambahan.
+
+Blueprint Midterm Semester 1 tersedia di aplikasi Proyek setelah Anda membuka panduan ini."
 reward_type = 1
 blueprint_id = "core_drive"
 
 [sub_resource type="Resource" id="Book_sorter"]
 script = ExtResource("3_book")
 book_id = "sediment_sorter_manual"
-title = "Manual Pemilah Sedimen"
+title = "Sem 1 Final · Pemilah Sedimen"
 cover_color = Color(0.12, 0.31, 0.43, 1)
-reading_text = "Pemilah sedimen menyalurkan material melalui saluran masuk dan menggunakan rotor untuk memisahkan butiran berdasarkan ukurannya. Pengukur tekanan memantau kondisi sebelum material mencapai saluran keluar.
+reading_text = "Semester 1 — Paruh 2 (Tenggat: Hari 12 · Bobot 15%): Pecahan, Desimal, Persen & Penerapan Mesin Sederhana Terpadu.
 
-Blueprint lengkapnya tersedia di aplikasi Proyek setelah Anda membuka manual ini."
+Pemilah sedimen menyalurkan material melalui saluran masuk dan memadukan prinsip tuas, roda, katrol, serta bidang miring dengan rangkaian tiga lengan pemutar yang presisi.
+
+Blueprint Final Semester 1 tersedia di aplikasi Proyek setelah Anda membuka manual ini."
 reward_type = 1
 blueprint_id = "sediment_sorter"
 
 [sub_resource type="Resource" id="Book_sieve_shaker"]
 script = ExtResource("3_book")
 book_id = "sieve_shaker_manual"
-title = "Manual Pengayak Getar"
+title = "Sem 2 Midterm · Pengayak Getar"
 cover_color = Color(0.37, 0.34, 0.56, 1)
-reading_text = "Pengayak getar menggunakan roda gigi rel geser di antara roda gigi penghubung utama dan poros keluaran. Menggeser roda gigi di sepanjang rel vertikal mengubah jalur sambungan sekaligus membalik arah putaran keluaran.
+reading_text = "Semester 2 — Paruh 1 (Tenggat: Sem 2 Hari 6 · Bobot 15%): Pola Bilangan & Mesin Sederhana Lanjutan (Baji, Sekrup, Roda-Poros).
 
-Blueprint lengkapnya tersedia di aplikasi Proyek setelah Anda membuka manual ini."
+Pengayak getar menggunakan roda gigi rel geser bersama mekanisme roda-poros dan pengikat ulir sekrup. Menggeser roda gigi di sepanjang rel vertikal mengubah jalur sambungan sekaligus membalik arah putaran keluaran.
+
+Blueprint Midterm Semester 2 tersedia di aplikasi Proyek setelah Anda membuka manual ini."
 reward_type = 1
 blueprint_id = "sieve_shaker"
 
 [sub_resource type="Resource" id="Book_core_centrifuge"]
 script = ExtResource("3_book")
 book_id = "core_centrifuge_manual"
-title = "Spesifikasi Sentrifuga Inti"
+title = "Sem 2 Final · Sentrifuga Inti"
 cover_color = Color(0.49, 0.3, 0.23, 1)
-reading_text = "Sentrifuga inti memadukan dua rel geser sejajar dengan tiga roda gigi penghubung tetap dan dua lengan pemutar. Arahkan kedua jalur rel dengan cermat untuk membalik paritas lintasan utama tanpa membuat rangkaian roda gigi macet.
+reading_text = "Semester 2 — Paruh 2 (Tenggat: Sem 2 Hari 12 · Bobot 15%): Perbandingan, Satuan Pengukuran & Penggabungan Mesin Sederhana Lanjutan.
 
-Blueprint lengkapnya tersedia di aplikasi Proyek setelah Anda membuka lembar spesifikasi ini."
+Sentrifuga inti memadukan dua rel geser sejajar dengan tiga roda gigi tetap dan dua lengan pemutar—menggabungkan prinsip baji, sekrup, dan roda-poros dalam satu sistem terpadu.
+
+Blueprint Final Semester 2 tersedia di aplikasi Proyek setelah Anda membuka spesifikasi ini."
 reward_type = 1
 blueprint_id = "core_centrifuge"
 
@@ -77,6 +87,11 @@ theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 alignment = 1
 last_wrap_alignment = 2
+
+[node name="ClassReview" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("4_recovery")
 
 [node name="Status" type="Label" parent="."]
 unique_name_in_owner = true

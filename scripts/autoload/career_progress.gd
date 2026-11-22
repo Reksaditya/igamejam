@@ -1,176 +1,287 @@
 extends Node
 
 signal changed
+signal semester_evaluated(term: int, summary: Dictionary)
 
 const Curriculum = preload("res://scripts/academic/curriculum.gd")
 const SAVE_PATH := "user://career_progress.cfg"
-const COSTS := {"class": 15.0, "tugas": 5.0, "kuis": 5.0, "uts": 30.0, "uas": 30.0, "project": 20.0, "study": 5.0}
-const WEIGHTS := {"tugas": 0.10, "kuis": 0.15, "uts": 0.225, "uas": 0.225, "project": 0.30}
+const SAVE_VERSION := 2
+
+## GDD Section 4.4 Energi costs per activity.
+const COSTS := {
+	"class": 15.0,
+	"tugas": 5.0,
+	"kuis": 5.0,
+	"uts": 30.0,
+	"uas": 30.0,
+	"project": 20.0,
+}
+
+## Exact Semester Final Score weights (sum = 100%, split Blueprint 15% Midterm + 15% Final = 30%).
+const WEIGHTS := {
+	"tugas": 0.10,
+	"kuis": 0.15,
+	"uts": 0.225,
+	"uas": 0.225,
+	"blueprint_midterm": 0.15,
+	"blueprint_final": 0.15,
+}
+
+const SANITY_NORMAL := 50.0
+const SANITY_ACTIVITY_GAIN := 10.0
+const SANITY_BLUR_THRESHOLD := 80.0
 
 var state: Dictionary = {}
-var _active_semester: int = 1
+var _active_day: int = 1
 
 
 func _ready() -> void:
 	reload_progress()
-	_active_semester = semester()
+	_active_day = GameClock.get_day()
 	GameClock.minute_changed.connect(_on_time_changed)
 
 
 func reload_progress() -> void:
-	state = {"classes": {}, "results": {}, "pieces": {}, "placed": {}, "assembled": {}, "charged": {}, "flags": {}, "ending": ""}
+	state = {
+		"classes": {},
+		"results": {},
+		"blueprints": {},
+		"blueprints_completed": {},
+		"charged": {},
+		"evaluated_semesters": {},
+		"pending_khs": 0,
+		"flags": {},
+		"ending": "",
+	}
 	var save := ConfigFile.new()
-	if save.load(SAVE_PATH) == OK and save.get_value("career", "version", 0) == 1:
+	if save.load(SAVE_PATH) == OK and save.get_value("career", "version", 0) == SAVE_VERSION:
 		for key: String in state:
 			var value: Variant = save.get_value("career", key, state[key])
 			if typeof(value) == typeof(state[key]):
 				state[key] = value
+	recalculate_gpa()
 	changed.emit()
 
 
 func semester() -> int:
-	return Curriculum.semester_at(GameClock.get_week())
+	return Curriculum.semester_for_day(GameClock.get_day())
 
 
+func day_in_semester() -> int:
+	return Curriculum.day_in_semester(GameClock.get_day())
+
+
+func half() -> int:
+	return Curriculum.half_for_day(day_in_semester())
+
+
+## Backwards-compatible alias: returns current day within the 12-day semester (1..12).
 func week() -> int:
-	return Curriculum.week_at(GameClock.get_week())
+	return day_in_semester()
 
 
-func key_for(term: int, study_week: int) -> String:
-	return "s%d_w%d" % [term, study_week]
+func key_for(term: int, day_in_sem: int) -> String:
+	return "s%d_d%d" % [term, day_in_sem]
 
 
-func class_data(term: int, study_week: int) -> Dictionary:
-	return state.classes.get(key_for(term, study_week), {"attempted": [], "complete": [], "finished": false}).duplicate(true)
+func half_result_id(term: int, part: int, kind: String) -> String:
+	return "s%d_h%d_%s" % [term, part, kind]
 
 
+func result_id(term: int, slot: int, kind: String) -> String:
+	if kind in ["tugas", "kuis"]:
+		var part := slot if slot in [1, 2] else Curriculum.half_for_day(slot)
+		return half_result_id(term, part, kind)
+	if kind == "uts" or kind == "blueprint_midterm":
+		return "s%d_d%d_%s" % [term, Curriculum.MIDTERM_DAY, kind]
+	if kind == "uas" or kind == "blueprint_final":
+		return "s%d_d%d_%s" % [term, Curriculum.FINAL_DAY, kind]
+	return "%s_%s" % [key_for(term, slot), kind]
+
+
+func class_data(term: int, day_in_sem: int) -> Dictionary:
+	return state.classes.get(key_for(term, day_in_sem), {"attempted": [], "complete": [], "finished": false}).duplicate(true)
+
+
+## GDD 4.4: Charges Energi once per unique activity id and adds +10 Kewarasan.
+## Class is allowed even when Energi <= 0 (player falls asleep in class and misses material).
+## Projects and assessments require Energi > 0 and sufficient Energi for the activity.
 func begin_activity(kind: String, id: String) -> Error:
 	if not COSTS.has(kind):
 		return ERR_INVALID_PARAMETER
 	if state.charged.has(id):
 		return OK
-	if PlayerStats.get_energy() < COSTS[kind] and not (kind == "class" and PlayerStats.get_energy() <= 0):
+	var cost: float = COSTS[kind]
+	var current_energy := PlayerStats.get_energy()
+	if kind == "project" and current_energy <= 0.0:
+		return ERR_UNAVAILABLE
+	if current_energy < cost and not (kind == "class" and current_energy <= 0.0):
 		return ERR_UNAVAILABLE
 	var previous := state.duplicate(true)
 	state.charged[id] = true
 	var error := _save(previous)
 	if error == OK:
-		PlayerStats.set_energy(PlayerStats.get_energy() - COSTS[kind])
-		PlayerStats.set_sanity(PlayerStats.get_sanity() + 10.0)
+		PlayerStats.set_energy(current_energy - cost)
+		PlayerStats.set_sanity(PlayerStats.get_sanity() + SANITY_ACTIVITY_GAIN)
 	return error
 
 
-func attempt_section(term: int, study_week: int, index: int) -> Error:
-	if index < 0 or index > 2 or study_week in [8, 16]:
+func attempt_section(term: int, day_in_sem: int, index: int) -> Error:
+	if index < 0 or index > 2 or not _is_lesson(term, day_in_sem):
 		return ERR_INVALID_PARAMETER
-	var data := class_data(term, study_week)
+	var data := class_data(term, day_in_sem)
 	if data.attempted.has(index):
 		return ERR_ALREADY_EXISTS
 	var previous := state.duplicate(true)
 	data.attempted.append(index)
-	state.classes[key_for(term, study_week)] = data
+	state.classes[key_for(term, day_in_sem)] = data
 	return _save(previous)
 
 
-func finish_section(term: int, study_week: int, index: int, success: bool) -> Error:
-	var data := class_data(term, study_week)
+func finish_section(term: int, day_in_sem: int, index: int, success: bool) -> Error:
+	var data := class_data(term, day_in_sem)
 	if not data.attempted.has(index) or data.finished:
 		return ERR_UNAUTHORIZED
 	var previous := state.duplicate(true)
 	if success and not data.complete.has(index):
 		data.complete.append(index)
-	state.classes[key_for(term, study_week)] = data
+	state.classes[key_for(term, day_in_sem)] = data
 	return _save(previous)
 
 
-func finish_class(term: int, study_week: int) -> Error:
-	var data := class_data(term, study_week)
-	if data.attempted.size() != 3:
+func finish_class(term: int, day_in_sem: int) -> Error:
+	var data := class_data(term, day_in_sem)
+	if not _is_lesson(term, day_in_sem) or data.attempted.size() != 3:
 		return ERR_UNAUTHORIZED
-	var previous := state.duplicate(true)
+	return _save_completed_lesson(term, day_in_sem, data)
+
+
+func review_details(term: int, day_in_sem: int) -> Dictionary:
+	if not _is_lesson(term, day_in_sem):
+		return {}
+	var data := class_data(term, day_in_sem)
+	var abs_day := Curriculum.absolute_day_for(term, day_in_sem)
+	var current_day := GameClock.get_day()
+	if abs_day > current_day or (abs_day == current_day and not data.finished):
+		return {}
+	var missing := PackedInt32Array()
+	for section: int in 3:
+		if not data.complete.has(section):
+			missing.append(section)
+	var now := GameClock.get_absolute_minutes()
+	var minutes := 0
+	match missing.size():
+		1: minutes = Curriculum.PROGRESSION.one_missing_minutes
+		2: minutes = Curriculum.PROGRESSION.two_missing_minutes
+		3: minutes = GameClock.MINUTES_PER_DAY - now % GameClock.MINUTES_PER_DAY + GameClock.MORNING_MINUTES
+	return {"missing": missing, "minutes": minutes, "overnight": missing.size() == 3}
+
+
+func review_class(term: int, day_in_sem: int, keyword: String) -> Error:
+	var details := review_details(term, day_in_sem)
+	if details.is_empty() or GameClock.is_activity_running():
+		return ERR_UNAUTHORIZED
+	var lesson := Curriculum.lesson(term, day_in_sem)
+	if not details.missing.is_empty() and keyword.strip_edges().nocasecmp_to(lesson.keyword) != 0:
+		return ERR_UNAUTHORIZED
+	var data := class_data(term, day_in_sem)
+	for section: int in details.missing:
+		if not data.attempted.has(section):
+			data.attempted.append(section)
+		data.complete.append(section)
+	var error := _save_completed_lesson(term, day_in_sem, data)
+	if error == OK and details.minutes > 0:
+		GameClock.advance_minutes(details.minutes)
+	return error
+
+
+func _is_lesson(term: int, day_in_sem: int) -> bool:
+	return term >= 1 and term <= Curriculum.SEMESTER_COUNT and Curriculum.is_lesson_day(day_in_sem)
+
+
+func _save_completed_lesson(term: int, day_in_sem: int, data: Dictionary) -> Error:
+	var key := key_for(term, day_in_sem)
 	data.finished = true
-	state.classes[key_for(term, study_week)] = data
-	if data.complete.size() == 3:
-		_grant_piece(term, study_week)
+	var blueprint_id := Curriculum.blueprint_for_lesson(term, day_in_sem)
+	var granted: bool = data.complete.size() == 3 and not blueprint_id.is_empty() and not ProjectBlueprints.is_owned(blueprint_id)
+	if not granted and state.classes.get(key) == data:
+		return OK
+	var previous := state.duplicate(true)
+	state.classes[key] = data
+	if granted:
+		state.blueprints[blueprint_id] = true
+	var error := _save(previous)
+	if error != OK:
+		return error
+	if granted:
+		ProjectBlueprints.grant(blueprint_id)
+	return OK
+
+
+func can_read_blueprint(blueprint_id: String) -> bool:
+	var info := Curriculum.blueprint_info(blueprint_id)
+	if info.is_empty():
+		return false
+	return GameClock.get_day() >= int(info.absolute_unlock_day)
+
+
+func owns_blueprint(blueprint_id: String) -> bool:
+	return state.get("blueprints", {}).get(blueprint_id, false) == true
+
+
+func is_blueprint_completed_on_time(blueprint_id: String) -> bool:
+	return state.get("blueprints_completed", {}).get(blueprint_id, false) == true
+
+
+func is_blueprint_overdue(blueprint_id: String) -> bool:
+	var info := Curriculum.blueprint_info(blueprint_id)
+	if info.is_empty():
+		return false
+	return GameClock.get_day() > int(info.absolute_deadline_day) and not is_blueprint_completed_on_time(blueprint_id)
+
+
+func blueprint_deadline_text(blueprint_id: String) -> String:
+	var info := Curriculum.blueprint_info(blueprint_id)
+	if info.is_empty():
+		return ""
+	return "Tenggat: Sem %d · Hari %d" % [int(info.semester), int(info.deadline_day_in_semester)]
+
+
+## Records completion of one of the 4 Workshop Blueprints (15% Midterm or 15% Final).
+## Awards 100.0 (worth +15 points out of 100) if completed on or before its deadline day; 0.0 if overdue.
+func complete_blueprint(blueprint_id: String) -> Error:
+	var info := Curriculum.blueprint_info(blueprint_id)
+	if info.is_empty():
+		return ERR_INVALID_PARAMETER
+	var term: int = int(info.semester)
+	var slot_kind := "blueprint_" + str(info.slot)
+	var deadline_day: int = int(info.absolute_deadline_day)
+	var on_time := GameClock.get_day() <= deadline_day
+	var id := result_id(term, int(info.deadline_day_in_semester), slot_kind)
+	var previous := state.duplicate(true)
+	state.blueprints[blueprint_id] = true
+	if not state.results.has(id):
+		state.results[id] = 100.0 if on_time else 0.0
+	if on_time:
+		state.blueprints_completed[blueprint_id] = true
+	elif not state.blueprints_completed.has(blueprint_id):
+		state.blueprints_completed[blueprint_id] = false
 	var error := _save(previous)
 	if error == OK:
-		error = _journal_class(term, study_week)
+		if on_time:
+			PlayerJournal.record_project(
+				"bp_" + blueprint_id,
+				"%s · %s (Sem %d)" % [str(info.title), str(info.slot_label), term],
+				GameClock.get_day()
+			)
+		recalculate_gpa()
 	return error
 
 
-func review_class(term: int, study_week: int, keyword: String) -> Error:
-	var data := class_data(term, study_week)
-	var lesson := Curriculum.lesson(term, study_week)
-	var past_week := (term - 1) * 16 + study_week < GameClock.get_week()
-	if (not data.finished and not past_week) or study_week in [8, 16] or keyword.strip_edges().to_lower() != lesson.keyword.to_lower():
-		return ERR_UNAUTHORIZED
-	var error := begin_activity("study", "review_" + key_for(term, study_week))
-	if error != OK:
-		return error
-	var previous := state.duplicate(true)
-	data.complete = [0, 1, 2]
-	data.attempted = [0, 1, 2]
-	data.finished = true
-	state.classes[key_for(term, study_week)] = data
-	_grant_piece(term, study_week)
-	error = _save(previous)
-	if error == OK:
-		error = _journal_class(term, study_week)
-	return error
-
-
-func _grant_piece(term: int, study_week: int) -> void:
-	var id := str(term)
-	var pieces: Array = state.pieces.get(id, []).duplicate()
-	var index := (study_week - 1 if study_week < 8 else study_week - 2) % 9
-	if not pieces.has(index):
-		pieces.append(index)
-	state.pieces[id] = pieces
-
-
-func place_piece(term: int, piece: int, slot: int) -> Error:
-	var id := str(term)
-	var placed: Array = state.placed.get(id, []).duplicate()
-	if piece != slot or not state.pieces.get(id, []).has(piece) or placed.has(slot):
+func record_result(term: int, slot: int, kind: String, score: float) -> Error:
+	if not WEIGHTS.has(kind) or not is_finite(score) or term < 1 or term > Curriculum.SEMESTER_COUNT:
 		return ERR_INVALID_PARAMETER
-	var previous := state.duplicate(true)
-	placed.append(slot)
-	state.placed[id] = placed
-	return _save(previous)
-
-
-func blueprint_ready(term: int) -> bool:
-	return state.placed.get(str(term), []).size() == 9
-
-
-func assemble_component(term: int, component: int) -> Error:
-	if not blueprint_ready(term):
-		return ERR_UNAUTHORIZED
-	if term == 8 and not state.flags.has("final_design"):
-		return ERR_UNAUTHORIZED
-	var assembled: Array = state.assembled.get(str(term), []).duplicate()
-	if component != assembled.size() or component >= 6:
-		return ERR_INVALID_PARAMETER
-	var error := begin_activity("project", "project_s%d" % term)
-	if error != OK:
-		return error
-	var previous := state.duplicate(true)
-	assembled.append(component)
-	state.assembled[str(term)] = assembled
-	error = _save(previous)
-	if error == OK and assembled.size() == 6:
-		error = PlayerJournal.record_project("machine_s%d" % term, "Mesin semester %d · %s" % [term, Curriculum.COURSES[term - 1][1]], (term - 1) * 16 + week())
-	return error
-
-
-func result_id(term: int, study_week: int, kind: String) -> String:
-	return "%s_%s" % [key_for(term, study_week), kind]
-
-
-func record_result(term: int, study_week: int, kind: String, score: float) -> Error:
-	if not WEIGHTS.has(kind) or not is_finite(score) or term < 1 or term > 8 or study_week < 1 or study_week > 16:
-		return ERR_INVALID_PARAMETER
-	var id := result_id(term, study_week, kind)
+	var id := result_id(term, slot, kind)
 	if state.results.has(id):
 		return ERR_ALREADY_EXISTS
 	var previous := state.duplicate(true)
@@ -181,105 +292,231 @@ func record_result(term: int, study_week: int, kind: String, score: float) -> Er
 	return error
 
 
-func submit_project(term: int) -> Error:
-	if state.assembled.get(str(term), []).size() != 6:
-		return ERR_UNAUTHORIZED
-	var failures: int = int(state.flags.get("project_failures_%d" % term, 0))
-	return record_result(term, 16, "project", 100.0 - minf(40, failures * 5.0))
+func is_assessment_overdue(term: int, slot: int, kind: String) -> bool:
+	var deadline_day := 0
+	if kind in ["tugas", "kuis"]:
+		var part := slot if slot in [1, 2] else Curriculum.half_for_day(slot)
+		deadline_day = Curriculum.deadline_day_for_half(term, part)
+	elif kind == "uts" or kind == "blueprint_midterm":
+		deadline_day = Curriculum.deadline_day_for_half(term, 1)
+	elif kind == "uas" or kind == "blueprint_final":
+		deadline_day = Curriculum.deadline_day_for_half(term, 2)
+	else:
+		return false
+	return GameClock.get_day() > deadline_day
 
 
-func record_project_failure(term: int) -> Error:
-	var previous := state.duplicate(true)
-	var key := "project_failures_%d" % term
-	state.flags[key] = int(state.flags.get(key, 0)) + 1
-	return _save(previous)
+func is_assessment_unlocked(term: int, slot: int, kind: String) -> bool:
+	var unlock_day := 1
+	if kind in ["tugas", "kuis"]:
+		var part := slot if slot in [1, 2] else Curriculum.half_for_day(slot)
+		unlock_day = Curriculum.absolute_day_for(term, 1 if part == 1 else Curriculum.MIDTERM_DAY + 1)
+	elif kind == "uts":
+		unlock_day = Curriculum.absolute_day_for(term, Curriculum.MIDTERM_DAY)
+	elif kind == "uas":
+		unlock_day = Curriculum.absolute_day_for(term, Curriculum.FINAL_DAY)
+	return GameClock.get_day() >= unlock_day
 
 
-func set_final_design(values: Array[String]) -> Error:
-	if values.size() != 3 or values[0] not in ["Engkol", "Cam", "Roda gigi"] or values[1] not in ["Sensor", "Saklar"] or values[2] not in ["Baterai", "Baterai dan saklar"]:
-		return ERR_INVALID_PARAMETER
-	if state.flags.has("final_design"):
-		return ERR_ALREADY_EXISTS
-	var previous := state.duplicate(true)
-	state.flags.final_design = values
-	return _save(previous)
+static func letter_grade_for(score: float) -> String:
+	if score >= 85.0:
+		return "A"
+	if score >= 75.0:
+		return "B"
+	if score >= 65.0:
+		return "C"
+	if score >= 50.0:
+		return "D"
+	return "E"
+
+
+## Computes exact semester breakdown (0-100), Huruf Mutu (A-E), and IPS (0.00-4.00).
+## Split Blueprints: Midterm = 15% (+15 pts), Final = 15% (+15 pts), total 30% (+30 pts).
+func semester_breakdown(term: int) -> Dictionary:
+	var t1: float = float(state.results.get(result_id(term, 1, "tugas"), 0.0))
+	var t2: float = float(state.results.get(result_id(term, 2, "tugas"), 0.0))
+	var k1: float = float(state.results.get(result_id(term, 1, "kuis"), 0.0))
+	var k2: float = float(state.results.get(result_id(term, 2, "kuis"), 0.0))
+	var tugas := (t1 + t2) * 0.5
+	var kuis := (k1 + k2) * 0.5
+	var uts: float = float(state.results.get(result_id(term, Curriculum.MIDTERM_DAY, "uts"), 0.0))
+	var uas: float = float(state.results.get(result_id(term, Curriculum.FINAL_DAY, "uas"), 0.0))
+	var bp_mid: float = float(state.results.get(result_id(term, Curriculum.MIDTERM_DAY, "blueprint_midterm"), 0.0))
+	var bp_fin: float = float(state.results.get(result_id(term, Curriculum.FINAL_DAY, "blueprint_final"), 0.0))
+	var final_score := clampf(
+		tugas * WEIGHTS.tugas
+		+ kuis * WEIGHTS.kuis
+		+ uts * WEIGHTS.uts
+		+ uas * WEIGHTS.uas
+		+ bp_mid * WEIGHTS.blueprint_midterm
+		+ bp_fin * WEIGHTS.blueprint_final,
+		0.0,
+		100.0
+	)
+	var ips := clampf(final_score / 25.0, 0.0, 4.0)
+	return {
+		"semester": term,
+		"tugas": tugas,
+		"kuis": kuis,
+		"uts": uts,
+		"uas": uas,
+		"blueprint_midterm": bp_mid,
+		"blueprint_final": bp_fin,
+		"final_score": final_score,
+		"letter_grade": letter_grade_for(final_score),
+		"ips": ips,
+	}
+
+
+func semester_score(term: int) -> float:
+	return float(semester_breakdown(term).final_score)
 
 
 func semester_grade(term: int) -> float:
-	var tugas := 0.0
-	var kuis := 0.0
-	for study_week: int in range(1, 17):
-		tugas += float(state.results.get(result_id(term, study_week, "tugas"), 0.0)) / 16.0
-		kuis += float(state.results.get(result_id(term, study_week, "kuis"), 0.0)) / 16.0
-	return (tugas * WEIGHTS.tugas + kuis * WEIGHTS.kuis + float(state.results.get(result_id(term, 8, "uts"), 0.0)) * WEIGHTS.uts + float(state.results.get(result_id(term, 16, "uas"), 0.0)) * WEIGHTS.uas + float(state.results.get(result_id(term, 16, "project"), 0.0)) * WEIGHTS.project) / 25.0
+	return float(semester_breakdown(term).ips)
 
 
+## IPK = average IPS across completed (evaluated) semesters; 0.00 before Semester 1 finishes.
 func recalculate_gpa() -> void:
-	var terms := semester()
-	var total := 0.0
-	for term: int in range(1, terms + 1):
-		total += semester_grade(term)
-	PlayerStats.set_gpa(total / terms)
+	var evaluated: Dictionary = state.get("evaluated_semesters", {})
+	if evaluated.is_empty():
+		PlayerStats.set_gpa(0.0)
+		return
+	var total_ips := 0.0
+	var count := 0
+	for term: int in range(1, Curriculum.SEMESTER_COUNT + 1):
+		var key := str(term)
+		if evaluated.has(key) and evaluated[key] is Dictionary:
+			total_ips += float(evaluated[key].get("ips", 0.0))
+			count += 1
+	PlayerStats.set_gpa(clampf(total_ips / float(maxi(1, count)), 0.0, 4.0))
+
+
+## Idempotent end-of-semester evaluation (never double-graded).
+func evaluate_semester(term: int) -> Dictionary:
+	var key := str(term)
+	if term < 1 or term > Curriculum.SEMESTER_COUNT:
+		return {}
+	var evaluated: Dictionary = state.get("evaluated_semesters", {})
+	if evaluated.has(key) and evaluated[key] is Dictionary:
+		return evaluated[key]
+	var summary := semester_breakdown(term)
+	var previous := state.duplicate(true)
+	state.evaluated_semesters[key] = summary
+	var total_ips := 0.0
+	var count := 0
+	for t: int in range(1, Curriculum.SEMESTER_COUNT + 1):
+		var k := str(t)
+		if state.evaluated_semesters.has(k):
+			total_ips += float(state.evaluated_semesters[k].get("ips", 0.0))
+			count += 1
+	var ipk := clampf(total_ips / float(maxi(1, count)), 0.0, 4.0)
+	summary["ipk"] = ipk
+	state.evaluated_semesters[key] = summary
+	state.pending_khs = term
+	var error := _save(previous)
+	if error == OK:
+		PlayerStats.set_gpa(ipk)
+		if term == Curriculum.SEMESTER_COUNT:
+			_finalize_ending()
+		semester_evaluated.emit(term, summary)
+	return summary
+
+
+func get_pending_khs() -> Dictionary:
+	var term := int(state.get("pending_khs", 0))
+	if term <= 0:
+		return {}
+	return state.get("evaluated_semesters", {}).get(str(term), {})
+
+
+func acknowledge_khs() -> Error:
+	if int(state.get("pending_khs", 0)) == 0:
+		return OK
+	var previous := state.duplicate(true)
+	state.pending_khs = 0
+	return _save(previous)
 
 
 func _on_time_changed(_minutes: int) -> void:
-	if semester() != _active_semester:
-		_active_semester = semester()
-		recalculate_gpa()
+	var current_day := GameClock.get_day()
+	if current_day == _active_day:
+		return
+	_active_day = current_day
+	# End-of-semester rollover check: Day > 12 evaluates Sem 1; Day > 24 evaluates Sem 2.
+	if current_day > Curriculum.DAYS_PER_SEMESTER and not state.evaluated_semesters.has("1"):
+		evaluate_semester(1)
+	if current_day > Curriculum.TOTAL_DAYS and not state.evaluated_semesters.has("2"):
+		evaluate_semester(2)
+
+
+## Exact GDD Section 4.4 sleep & rest rules:
+## - Sleep 8h at <= 22:59 -> Energi = 100.0; >= 23:00 -> clamp(100 - hours_past_22 * 10, 0, 100)
+##   (23:00 -> 90, 00:00 -> 80, 01:00 -> 70, ...)
+## - Short rest 1h -> Energi = clamp(Energi + 15, 0, 100)
+## - Both reset Kewarasan to Normal (50.0).
+static func wake_energy_for_minute(minute_of_day: int) -> float:
+	var m := posmod(minute_of_day, GameClock.MINUTES_PER_DAY)
+	var hours_past_22 := 0.0
+	if m >= 22 * 60:
+		hours_past_22 = floorf(float(m - 22 * 60) / 60.0)
+	elif m < 6 * 60:
+		hours_past_22 = 2.0 + floorf(float(m) / 60.0)
+	return clampf(100.0 - hours_past_22 * 10.0, 0.0, 100.0)
 
 
 func rest(hours: int) -> Error:
 	if hours not in [1, 8]:
 		return ERR_INVALID_PARAMETER
-	var previous := state.duplicate(true)
-	var hour := float(GameClock.get_absolute_minutes() % 1440) / 60.0
-	var late := maxf(0, hour - 22.0) if hour >= 6 else hour + 2.0
-	var debt: int = int(state.flags.get("sleep_debt", 0))
-	debt = maxi(0, debt - 8) if hours == 8 else mini(10, debt + 1)
-	state.flags.sleep_debt = debt
-	var error := _save(previous)
-	if error != OK:
-		return error
-	PlayerStats.set_energy(maxf(0, 100.0 - late * 10.0 - debt * 5.0) if hours == 8 else minf(100.0 - debt * 5.0, PlayerStats.get_energy() + 10.0))
-	PlayerStats.set_sanity(50)
+	var wake_energy := wake_energy_for_minute(GameClock.get_absolute_minutes()) if hours == 8 else clampf(PlayerStats.get_energy() + 15.0, 0.0, 100.0)
+	PlayerStats.set_energy(wake_energy)
+	PlayerStats.set_sanity(SANITY_NORMAL)
 	GameClock.advance_minutes(hours * 60)
-	recalculate_gpa()
 	return OK
 
 
-func can_advance_week() -> bool:
+## Sleeps until next morning 06:00 using the exact same GDD 4.4 late-sleep penalty + Kewarasan reset.
+func sleep_until_morning() -> Error:
+	var now := GameClock.get_absolute_minutes()
+	var wake_energy := wake_energy_for_minute(now)
+	var minute_of_day := posmod(now, GameClock.MINUTES_PER_DAY)
+	var delta := (GameClock.MINUTES_PER_DAY - minute_of_day) + GameClock.MORNING_MINUTES
+	if minute_of_day < GameClock.MORNING_MINUTES:
+		delta = GameClock.MORNING_MINUTES - minute_of_day
+	PlayerStats.set_energy(wake_energy)
+	PlayerStats.set_sanity(SANITY_NORMAL)
+	GameClock.advance_minutes(delta)
+	return OK
+
+
+func can_advance_day() -> bool:
 	var term := semester()
-	var study_week := week()
-	for kind: String in ["tugas", "kuis"]:
-		if not state.results.has(result_id(term, study_week, kind)):
-			return false
-	if study_week in [8, 16]:
-		return state.results.has(result_id(term, study_week, "uts" if study_week == 8 else "uas"))
-	return class_data(term, study_week).finished
+	var day := day_in_semester()
+	if day == Curriculum.MIDTERM_DAY:
+		return state.results.has(result_id(term, day, "uts"))
+	if day == Curriculum.FINAL_DAY:
+		return state.results.has(result_id(term, day, "uas"))
+	return class_data(term, day).finished
+
+
+## Backwards-compatible alias for bed interaction.
+func can_advance_week() -> bool:
+	return can_advance_day()
 
 
 func advance_week() -> Error:
-	if not can_advance_week():
-		return ERR_UNAUTHORIZED
-	var previous := state.duplicate(true)
-	state.flags.sleep_debt = 0
-	var error := _save(previous)
-	if error != OK:
-		return error
-	PlayerStats.set_energy(100)
-	PlayerStats.set_sanity(50)
-	GameClock.advance_minutes(GameClock.get_week() * 7 * 1440 + 360 - GameClock.get_absolute_minutes())
-	return OK
+	return sleep_until_morning()
 
 
 func pending_story() -> String:
 	if not state.flags.has("story_intro"):
 		return "intro"
-	if semester() >= 3 and not state.flags.has("story_busy"):
+	var abs_day := GameClock.get_day()
+	if abs_day >= 7 and not state.flags.has("story_busy"):
 		return "busy"
-	if GameClock.get_week() >= 72 and not state.flags.has("story_loss"):
+	if abs_day >= 16 and not state.flags.has("story_loss"):
 		return "loss"
-	if semester() >= 6 and not state.flags.has("story_promise"):
+	if abs_day >= 19 and not state.flags.has("story_promise"):
 		return "promise"
 	return ""
 
@@ -294,49 +531,82 @@ func acknowledge_story(id: String) -> Error:
 	state.flags[key] = true
 	var error := _save(previous)
 	if error == OK and id == "loss":
-		PlayerStats.set_energy(PlayerStats.get_energy() - 40)
-		PlayerStats.set_sanity(PlayerStats.get_sanity() + 40)
+		PlayerStats.set_energy(PlayerStats.get_energy() - 40.0)
+		PlayerStats.set_sanity(PlayerStats.get_sanity() + 40.0)
 	elif error == OK and id == "promise":
-		PlayerStats.set_energy(PlayerStats.get_energy() + 20)
-		PlayerStats.set_sanity(50)
+		PlayerStats.set_energy(PlayerStats.get_energy() + 20.0)
+		PlayerStats.set_sanity(SANITY_NORMAL)
 	return error
 
 
 func should_graduate() -> bool:
-	return GameClock.get_week() > 128 or (semester() == 8 and week() == 16 and state.results.has("s8_w16_uas") and state.results.has("s8_w16_project"))
+	if state.evaluated_semesters.has("2"):
+		return true
+	if GameClock.get_day() > Curriculum.TOTAL_DAYS:
+		return true
+	return semester() == Curriculum.SEMESTER_COUNT and day_in_semester() == Curriculum.FINAL_DAY and state.results.has(result_id(2, Curriculum.FINAL_DAY, "uas"))
 
 
-static func ending_for(gpa: float, final_passed: bool) -> String:
-	if not final_passed:
+static func ending_for(gpa: float, passed: bool) -> String:
+	if not passed:
 		return "bad"
 	return "happy" if gpa >= 3.5 else "basic"
+
+
+func _finalize_ending() -> Error:
+	if not state.ending.is_empty():
+		return OK
+	var s1: Dictionary = state.evaluated_semesters.get("1", semester_breakdown(1))
+	var s2: Dictionary = state.evaluated_semesters.get("2", semester_breakdown(2))
+	var passed := str(s1.get("letter_grade", "E")) != "E" and str(s2.get("letter_grade", "E")) != "E"
+	var ipk := PlayerStats.get_gpa()
+	var previous := state.duplicate(true)
+	state.ending = ending_for(ipk, passed)
+	state.flags["graduation_gpa"] = ipk
+	return _save(previous)
 
 
 func complete_career() -> Error:
 	if not should_graduate():
 		return ERR_UNAUTHORIZED
-	if not state.ending.is_empty():
-		return OK
-	recalculate_gpa()
-	var previous := state.duplicate(true)
-	var final_passed := float(state.results.get("s8_w16_project", 0.0)) >= 60.0
-	state.ending = ending_for(PlayerStats.get_gpa(), final_passed)
-	state.flags.graduation_gpa = PlayerStats.get_gpa()
-	return _save(previous)
+	if not state.evaluated_semesters.has("1"):
+		evaluate_semester(1)
+	if not state.evaluated_semesters.has("2"):
+		evaluate_semester(2)
+	return _finalize_ending()
 
 
-func _journal_class(term: int, study_week: int) -> Error:
-	var data := class_data(term, study_week)
-	var lesson := Curriculum.lesson(term, study_week)
-	var lines := PackedStringArray()
-	for index: int in 3:
-		lines.append(lesson.sections[index] if data.complete.has(index) else "________________ (catatan kosong)")
-	return PlayerJournal.record_entry("notes", "career_" + key_for(term, study_week), lesson.title, "\n\n".join(lines), (term - 1) * 16 + study_week)
+func class_journal_entries() -> Array[Dictionary]:
+	var entries: Array[Dictionary] = []
+	for key: String in state.classes:
+		var data: Dictionary = state.classes[key]
+		if not data.get("finished", false):
+			continue
+		var parts := key.split("_")
+		if parts.size() != 2:
+			continue
+		var term := parts[0].trim_prefix("s").to_int()
+		var day_num := parts[1].trim_prefix("d").to_int()
+		if not _is_lesson(term, day_num):
+			continue
+		var lesson := Curriculum.lesson(term, day_num)
+		var lines := PackedStringArray()
+		for index: int in 3:
+			lines.append(lesson.sections[index] if data.complete.has(index) else "________________ (catatan kosong)")
+		entries.append({
+			"kind": "notes",
+			"source": "career_" + key,
+			"title": lesson.title,
+			"body": "\n\n".join(lines),
+			"semester": term,
+			"week": day_num,
+		})
+	return entries
 
 
 func _save(previous: Dictionary) -> Error:
 	var save := ConfigFile.new()
-	save.set_value("career", "version", 1)
+	save.set_value("career", "version", SAVE_VERSION)
 	for key: String in state:
 		save.set_value("career", key, state[key])
 	var error := save.save(SAVE_PATH + ".tmp")

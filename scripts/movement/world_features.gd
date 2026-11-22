@@ -85,7 +85,7 @@ func _build_blur() -> void:
 
 
 func _update_blur() -> void:
-	_blur.visible = PlayerStats.get_sanity() >= 80
+	_blur.visible = PlayerStats.get_sanity() >= CareerProgress.SANITY_BLUR_THRESHOLD
 
 
 func _clock_changed(minutes: int) -> void:
@@ -103,6 +103,12 @@ func _process(delta: float) -> void:
 		return
 	if CareerProgress.should_graduate():
 		CareerProgress.complete_career()
+	var pending_khs := CareerProgress.get_pending_khs()
+	if not pending_khs.is_empty():
+		_overlay = StoryPanel.new()
+		_overlay.khs_summary = pending_khs
+		add_child(_overlay)
+		return
 	if not CareerProgress.state.ending.is_empty():
 		_overlay = StoryPanel.new()
 		_overlay.ending = true

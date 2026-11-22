@@ -1,7 +1,7 @@
 extends SceneTree
 
 const MENU := "res://scenes/ui/main_menu.tscn"
-const INITIAL := "res://scenes/movement/top_down_movement.tscn"
+const INITIAL := "res://scenes/movement/dorm_room210.tscn"
 const LAB := "res://scenes/movement/campus_lab.tscn"
 const DESKTOP := "res://scenes/interaction/desktop/desktop.tscn"
 const Results = preload("res://scripts/interaction/desktop/lms/lms_results.gd")
@@ -40,7 +40,7 @@ func _run() -> void:
 		await scene_changed
 		await _frames(2)
 		assert(current_scene.scene_file_path == INITIAL)
-		assert(current_scene.get_node("Player").position.x == 777.0)
+		assert(absf(current_scene.get_node("Player").position.x - 620.0) < 4.0)
 		assert(clock.get_absolute_minutes() == 123)
 		assert(not notes.has_attempted(0))
 		print("PASS: last position and clock restored after a fresh process")
@@ -58,7 +58,8 @@ func _run() -> void:
 	assert(not paused)
 	assert(saves.has_save())
 	var player := current_scene.get_node("Player") as CharacterBody2D
-	player.position = Vector2(1350, 592)
+	var saved_x: float = current_scene.room_rect.get_center().x + 40.0
+	player.position.x = saved_x
 	player.get_node("Visual").scale.x = -1.5
 	clock.restore_save_state({"minutes": 1776, "remainder": 1234})
 	assert(notes.begin_material(0) == OK)
@@ -100,7 +101,7 @@ func _run() -> void:
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)
 	player = current_scene.get_node("Player") as CharacterBody2D
-	assert(player.position.x == 1350.0)
+	assert(absf(player.position.x - saved_x) < 4.0)
 	assert(player.get_node("Visual").scale.x == -1.5)
 	assert(clock.get_absolute_minutes() == 1776)
 	assert(notes.has_note(0))
@@ -125,6 +126,17 @@ func _run() -> void:
 	await scene_changed
 	current_scene.get_node("StartupSound").stop()
 	await _frames(2)
+	assert(current_scene.get_node("%TurnOff").disabled)
+	assert(saves.save_now() == ERR_UNAVAILABLE)
+	change_scene_to_file(saves.DORM_SCENE)
+	await scene_changed
+	assert(saves.open_desktop_from(current_scene, &"ComputerSpawn"))
+	await scene_changed
+	var transition := root.get_node("SceneTransition")
+	if transition.is_active():
+		await transition.transition_finished
+	current_scene.get_node("StartupSound").stop()
+	await _frames(2)
 	assert(saves.save_now() == OK)
 	saves._enabled = false
 	change_scene_to_file(MENU)
@@ -147,7 +159,7 @@ func _run() -> void:
 	await scene_changed
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)
-	assert(current_scene.get_node("Player").position.x == 320.0)
+	assert(absf(current_scene.get_node("Player").position.x - current_scene.get_node("InitialSpawn").position.x) < 4.0)
 	assert(clock.get_absolute_minutes() == 360)
 	assert(not notes.has_attempted(0))
 	assert(not blueprint.has_piece(0))
@@ -158,7 +170,7 @@ func _run() -> void:
 	assert(is_equal_approx(root.get_node("GameSettings").master_volume, 0.35))
 	for directory: String in DirAccess.open("user://").get_directories():
 		assert(not directory.begins_with(".reset_backup_"))
-	current_scene.get_node("Player").position.x = 777.0
+	current_scene.get_node("Player").position.x = 620.0
 	clock.restore_save_state({"minutes": 123, "remainder": 0})
 	print("PASS: first New Game, automatic checkpoint, direct Load, position/facing/clock/progress restore, desktop resume, confirmation cancellation, confirmed full gameplay reset, preserved settings, close autosave")
 	saves._notification(Node.NOTIFICATION_WM_CLOSE_REQUEST)

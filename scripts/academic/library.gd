@@ -1,66 +1,117 @@
 extends VBoxContainer
 
 const Curriculum = preload("res://scripts/academic/curriculum.gd")
+const SECTION_NAMES := ["Materi", "Penerapan", "Keselamatan"]
 
 var _list: OptionButton
 var _material: Label
+var _cost: Label
 var _keyword: LineEdit
+var _study_button: Button
 var _feedback: Label
 var _books: Array[Vector2i] = []
+var _week := 0
 
 
 func _ready() -> void:
-	add_theme_constant_override("separation", 12)
-	var title := Label.new()
-	title.text = "Library · Buku dan catatan perkuliahan"
-	add_child(title)
+	add_theme_constant_override("separation", 8)
+	var title := _label("Lengkapi catatan kelas")
+	title.theme_type_variation = &"LmsSubheading"
 	_list = OptionButton.new()
-	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	add_child(_list)
-	for term: int in range(1, CareerProgress.semester() + 1):
-		for week: int in range(1, 17):
-			var absolute_week := (term - 1) * 16 + week
-			if week in [8, 16] or absolute_week > GameClock.get_week():
-				continue
-			if absolute_week == GameClock.get_week() and not CareerProgress.class_data(term, week).finished:
-				continue
-			_books.append(Vector2i(term, week))
-			_list.add_item("S%d · M%d · %s" % [term, week, Curriculum.lesson(term, week).title])
-	_material = Label.new()
-	_material.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_child(_material)
-	_keyword = LineEdit.new()
-	_keyword.placeholder_text = "Tuliskan keyword dari bacaan"
-	_keyword.max_length = 64
-	add_child(_keyword)
-	var study := Button.new()
-	study.text = "Lengkapi catatan dan pelajari potongan blueprint"
-	study.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	study.pressed.connect(_study)
-	add_child(study)
-	_feedback = Label.new()
-	_feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_child(_feedback)
+	_list.fit_to_longest_item = false
 	_list.item_selected.connect(_read)
-	study.disabled = _books.is_empty()
-	_keyword.editable = not _books.is_empty()
+	add_child(_list)
+	_material = _label("")
+	_cost = _label("")
+	_keyword = LineEdit.new()
+	_keyword.placeholder_text = "Kata kunci dari bacaan"
+	_keyword.max_length = 64
+	_keyword.text_submitted.connect(func(_value: String) -> void: _study())
+	add_child(_keyword)
+	_study_button = Button.new()
+	_study_button.text = "Lengkapi catatan"
+	_study_button.theme_type_variation = &"LmsPrimaryButton"
+	_study_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_study_button.pressed.connect(_study)
+	add_child(_study_button)
+	_feedback = _label("")
+	CareerProgress.changed.connect(_refresh)
+	GameClock.minute_changed.connect(_on_minute_changed)
+	_refresh()
+
+
+func _label(value: String) -> Label:
+	var item := Label.new()
+	item.text = value
+	item.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(item)
+	return item
+
+
+func _on_minute_changed(_minutes: int) -> void:
+	if _week != GameClock.get_day():
+		_refresh()
+
+
+func _refresh() -> void:
+	_week = GameClock.get_day()
+	var previous := Vector2i.ZERO
+	if _list.selected >= 0:
+		previous = _books[_list.selected]
+	_list.clear()
+	_books.clear()
+	var selection := 0
+	for term: int in range(CareerProgress.semester(), 0, -1):
+		for day_num: int in range(Curriculum.DAYS_PER_SEMESTER, 0, -1):
+			if CareerProgress.review_details(term, day_num).is_empty():
+				continue
+			var entry := Vector2i(term, day_num)
+			if entry == previous:
+				selection = _books.size()
+			_books.append(entry)
+			_list.add_item("Sem %d · Hari %d · %s" % [term, day_num, Curriculum.lesson(term, day_num).title])
+	_list.disabled = _books.is_empty()
 	if _books.is_empty():
-		_material.text = "Belum ada materi terdahulu. Ikuti kelas terlebih dahulu. Buku minggu yang terlewat tersedia di sini."
+		_material.text = "Materi kelas tersedia setelah kelas selesai atau harinya berlalu."
+		_cost.hide()
+		_keyword.hide()
+		_study_button.hide()
 	else:
-		_read(0)
+		_list.select(selection)
+		_read(selection, previous != _books[selection])
 
 
-func _read(index: int) -> void:
+func _read(index: int, reset_input := true) -> void:
 	var book := _books[index]
 	var lesson := Curriculum.lesson(book.x, book.y)
-	_material.text = "%s\n\n%s\n\nKeyword: %s\n\nBaca materi, lalu tuliskan keyword untuk melengkapi catatan. Belajar memerlukan 5 energi." % [lesson.title, "\n\n".join(lesson.sections), lesson.keyword]
-	_keyword.clear()
-	_feedback.text = ""
+	var details := CareerProgress.review_details(book.x, book.y)
+	var missing: PackedInt32Array = details.missing
+	var sections := PackedStringArray()
+	for section: int in missing:
+		sections.append("%s: %s" % [SECTION_NAMES[section], lesson.sections[section]])
+	if missing.is_empty():
+		_material.text = "Catatan sudah lengkap.\n\n" + "\n\n".join(lesson.sections)
+	else:
+		_material.text = "Bagian yang belum tercatat\n\n%s\n\nKata kunci: %s" % ["\n\n".join(sections), lesson.keyword]
+	_cost.text = "Waktu belajar: semalam, hingga besok pukul 06.00." if details.overnight else "Waktu belajar: %d menit dalam game." % details.minutes
+	_cost.show()
+	_keyword.visible = not missing.is_empty()
+	_study_button.visible = not missing.is_empty()
+	if reset_input:
+		_keyword.clear()
+		_feedback.text = ""
 
 
 func _study() -> void:
-	if _books.is_empty():
+	if _list.selected < 0 or not _study_button.visible:
 		return
 	var book := _books[_list.selected]
 	var error := CareerProgress.review_class(book.x, book.y, _keyword.text)
-	_feedback.text = "Catatan telah lengkap. Potongan tersedia di aplikasi Project." if error == OK else "Periksa keyword dan energi. Belajar belum berhasil disimpan."
+	match error:
+		OK:
+			_keyword.clear()
+			_feedback.text = "Catatan dilengkapi."
+		ERR_UNAUTHORIZED:
+			_feedback.text = "Periksa kata kunci atau selesaikan kegiatan yang sedang berjalan."
+		_:
+			_feedback.text = "Catatan belum tersimpan. Coba simpan kembali."

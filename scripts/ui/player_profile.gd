@@ -691,7 +691,7 @@ func _refresh_clock(absolute_minutes: int) -> void:
 	var time := GameClock.get_formatted_time()
 	var minute_of_day := posmod(absolute_minutes, GameClock.MINUTES_PER_DAY)
 	var semester_num := CareerProgress.semester()
-	var semester_week := CareerProgress.week()
+	var day_in_sem := CareerProgress.day_in_semester()
 	var period := _period_info(minute_of_day)
 
 	_hud_dial.set_minute_of_day(minute_of_day)
@@ -699,9 +699,16 @@ func _refresh_clock(absolute_minutes: int) -> void:
 	_hud_clock_style.border_color = accent
 	_hud_semester.text = "SEM %d" % semester_num
 	_hud_semester.add_theme_color_override("font_color", accent)
-	_hud_day.text = "HARI %d" % GameClock.get_day()
+	_hud_day.text = "HARI %d/12" % day_in_sem
 	_hud_clock.text = time
-	_hud_week.text = "Minggu %d" % semester_week
+	if day_in_sem == CareerProgress.Curriculum.MIDTERM_DAY:
+		_hud_week.text = "HARI UJIAN · UTS"
+	elif day_in_sem == CareerProgress.Curriculum.FINAL_DAY:
+		_hud_week.text = "HARI UJIAN · UAS"
+	elif day_in_sem < CareerProgress.Curriculum.MIDTERM_DAY:
+		_hud_week.text = "Paruh 1 · UTS H6"
+	else:
+		_hud_week.text = "Paruh 2 · UAS H12"
 
 	_hud_period_style.bg_color = period.bg
 	_hud_period_style.border_color = period.border
@@ -709,7 +716,7 @@ func _refresh_clock(absolute_minutes: int) -> void:
 	_hud_period.text = period.label
 	_hud_period.add_theme_color_override("font_color", period.text)
 
-	var summary := "Semester %d · Minggu %d · Hari %d (%s %s)" % [semester_num, semester_week, GameClock.get_day(), time, period.label]
+	var summary := "Semester %d · Hari %d/12 (%s %s)" % [semester_num, day_in_sem, time, period.label]
 	_hud_clock.tooltip_text = summary
 	_hud_clock_panel.accessibility_name = summary
 	_profile_clock.text = time

@@ -1,31 +1,29 @@
 extends "res://scripts/ui/activity_panel.gd"
 
+const Curriculum = preload("res://scripts/academic/curriculum.gd")
+
 
 func _ready() -> void:
 	super._ready()
-	window.title = "Ruang Dosen · Pengumpulan Proyek"
+	window.title = "Ruang Dosen · Evaluasi Proyek & KHS"
 	_refresh()
 
 
 func _refresh() -> void:
 	clear()
-	label("Dosen · Penilaian proyek", 28)
-	label("Kumpulkan mesin yang telah dirakit. Nilai mempertimbangkan kelengkapan enam komponen dan percobaan sambungan. Setiap kegagalan QTE mengurangi 5 poin, maksimal 40 poin.", 18)
-	for term: int in range(1, CareerProgress.semester() + 1):
-		var id := CareerProgress.result_id(term, 16, "project")
-		if CareerProgress.state.results.has(id):
-			label("Semester %d · Nilai proyek %.0f/100" % [term, CareerProgress.state.results[id]])
-		else:
-			var count: int = CareerProgress.state.assembled.get(str(term), []).size()
-			var action := button("Kumpulkan proyek semester %d · %d/6 komponen" % [term, count], _submit.bind(term))
-			action.disabled = count != 6
-	label("IPK saat ini: %.2f" % PlayerStats.get_gpa())
+	label("Dosen Teknik · Ringkasan Proyek & Nilai", 26)
+	label("Setiap semester memiliki dua Blueprint di Bengkel: Blueprint Midterm (15%, tenggat Hari 6) dan Blueprint Final (15%, tenggat Hari 12).", 16)
+	for term: int in range(1, Curriculum.SEMESTER_COUNT + 1):
+		var breakdown := CareerProgress.semester_breakdown(term)
+		label("Semester %d · %s" % [term, Curriculum.course_title(term)], 20)
+		for info: Dictionary in Curriculum.blueprints_for_semester(term):
+			var bp_id := str(info.blueprint_id)
+			var status := (
+				"Selesai tepat waktu (+15%)"
+				if CareerProgress.is_blueprint_completed_on_time(bp_id)
+				else ("Tenggat lewat (0%)" if CareerProgress.is_blueprint_overdue(bp_id) else "Belum selesai di Bengkel")
+			)
+			label("  • %s — %s (%s): %s" % [str(info.slot_label), str(info.title), CareerProgress.blueprint_deadline_text(bp_id), status], 16)
+		label("  Estimasi Nilai Sem %d: %.1f / 100 (%s · IPS %.2f)" % [term, breakdown.final_score, breakdown.letter_grade, breakdown.ips], 16)
+	label("IPK Resmi Saat Ini: %.2f" % PlayerStats.get_gpa(), 20)
 	add_close()
-
-
-func _submit(term: int) -> void:
-	var error := CareerProgress.submit_project(term)
-	if error == OK:
-		_refresh()
-	else:
-		label("Proyek belum dapat dikumpulkan. Periksa kelengkapan atau coba kembali.", 16)

@@ -30,6 +30,7 @@ func _ready() -> void:
 			_add_blueprint(blueprint)
 	%Empty.visible = _entries.is_empty()
 	ProjectBlueprints.changed.connect(_refresh)
+	CareerProgress.changed.connect(_refresh)
 	_refresh()
 
 
@@ -125,26 +126,45 @@ func _add_blueprint(blueprint: Blueprint) -> void:
 func _refresh() -> void:
 	for blueprint_id: String in _entries:
 		var entry := _entries[blueprint_id]
+		var info: Dictionary = CareerProgress.Curriculum.blueprint_info(blueprint_id)
 		var state: int = ProjectBlueprints.get_state(blueprint_id, entry.blueprint.workshop_puzzle_id)
 		if demo_blueprints and state == BlueprintState.LOCKED:
 			state = BlueprintState.UNLOCKED
 		var unlocked := state != BlueprintState.LOCKED
+		var on_time := CareerProgress.is_blueprint_completed_on_time(blueprint_id)
+		var overdue := CareerProgress.is_blueprint_overdue(blueprint_id)
+		var meta_prefix := ""
+		if not info.is_empty():
+			meta_prefix = "Sem %d · %s · %s — %s. " % [
+				int(info.semester),
+				str(info.slot_label),
+				CareerProgress.blueprint_deadline_text(blueprint_id),
+				str(info.topic),
+			]
 		entry.drawing.visible = unlocked
 		entry.locked_frame.visible = not unlocked
-		entry.note.visible = unlocked
+		entry.note.visible = true
 		entry.title.add_theme_color_override("font_color", Color("#1b3346") if unlocked else Color("#5c707e"))
 		match state:
 			BlueprintState.LOCKED:
-				_apply_badge(entry, "Terkunci", Color("#e3eaee"), Color("#a5b7c2"), Color("#4b6170"))
+				if overdue:
+					_apply_badge(entry, "Tenggat Lewat", Color("#f6dede"), Color("#c96b6b"), Color("#781e1e"))
+				else:
+					_apply_badge(entry, "Terkunci", Color("#e3eaee"), Color("#a5b7c2"), Color("#4b6170"))
+				entry.note.text = meta_prefix + "Selesaikan kelas atau baca panduannya di Perpustakaan."
 			BlueprintState.UNLOCKED:
-				_apply_badge(entry, "Terbuka", Color("#d8ecf7"), Color("#4b90b3"), Color("#164b68"))
-				entry.note.text = "Siap dibawa ke meja rakit."
+				if overdue:
+					_apply_badge(entry, "Tenggat Lewat", Color("#f6dede"), Color("#c96b6b"), Color("#781e1e"))
+					entry.note.text = meta_prefix + "Tenggat nilai (15%) telah terlampaui."
+				else:
+					_apply_badge(entry, "Terbuka", Color("#d8ecf7"), Color("#4b90b3"), Color("#164b68"))
+					entry.note.text = meta_prefix + "Siap dibawa ke meja rakit Bengkel (-20 Energi)."
 			BlueprintState.WORKED:
 				_apply_badge(entry, "Dikerjakan", Color("#f8ead0"), Color("#cf913a"), Color("#75480d"))
-				entry.note.text = "Sedang dikerjakan di meja rakit."
+				entry.note.text = meta_prefix + "Sedang dikerjakan di meja rakit Bengkel."
 			BlueprintState.COMPLETED:
 				_apply_badge(entry, "Selesai", Color("#d6efe0"), Color("#499d6a"), Color("#195732"))
-				entry.note.text = "Sudah dirakit dan teruji di meja rakit."
+				entry.note.text = meta_prefix + ("Sudah dirakit tepat waktu (+15% nilai semester)." if on_time else "Sudah dirakit dan teruji di meja rakit.")
 
 
 func _apply_badge(entry: BlueprintEntry, caption: String, fill: Color, border: Color, text_color: Color) -> void:

@@ -38,6 +38,7 @@ var _relocking := false
 var _keyboard_cues := false
 var _test_feedback := ""
 var _active_tweens: Array[Tween] = []
+var _sanity_blur: ColorRect
 
 @onready var _plate: Plate = %Plate
 @onready var _sheet: Plate = %Sheet
@@ -62,6 +63,9 @@ func _ready() -> void:
 	_reader_slot.can_accept_drop = _can_accept_blueprint_drop
 	_reader_slot.blueprint_dropped.connect(_insert_blueprint_by_id)
 	ProjectBlueprints.changed.connect(_on_blueprints_changed)
+	_setup_sanity_blur()
+	PlayerStats.changed.connect(_update_sanity_blur)
+	_update_sanity_blur()
 	%CardStack.resized.connect(_size_blueprint)
 	get_window().size_changed.connect(_update_layout)
 	resized.connect(_update_layout)
@@ -241,6 +245,14 @@ func _insert_blueprint_by_id(puzzle_id: String) -> void:
 	var target := _find_owned_puzzle(puzzle_id)
 	if target == null:
 		return
+	if not demo_blueprint:
+		if PlayerStats.get_energy() <= 0.0:
+			_feedback("Energi habis. Istirahat dahulu di Kamar 210 sebelum merakit proyek.")
+			return
+		var charge_err := CareerProgress.begin_activity("project", "bp_" + target.linked_blueprint_id)
+		if charge_err != OK:
+			_feedback("Energi tidak cukup (-20 Energi diperlukan). Istirahat dahulu di Kamar 210.")
+			return
 
 	_inserting = true
 	if _unlocked:
@@ -779,6 +791,28 @@ func _record_blueprint_work(completed: bool) -> void:
 	if demo_blueprint or _active_puzzle == null:
 		return
 	ProjectBlueprints.mark_worked(_active_puzzle.linked_blueprint_id, completed)
+	if completed:
+		CareerProgress.complete_blueprint(_active_puzzle.linked_blueprint_id)
+
+
+func _setup_sanity_blur() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 12
+	add_child(layer)
+	_sanity_blur = ColorRect.new()
+	_sanity_blur.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_sanity_blur.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var shader := Shader.new()
+	shader.code = "shader_type canvas_item; uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear_mipmap; void fragment(){ COLOR = textureLod(screen_texture, SCREEN_UV, 2.0); }"
+	var material := ShaderMaterial.new()
+	material.shader = shader
+	_sanity_blur.material = material
+	layer.add_child(_sanity_blur)
+
+
+func _update_sanity_blur() -> void:
+	if is_instance_valid(_sanity_blur):
+		_sanity_blur.visible = PlayerStats.get_sanity() >= CareerProgress.SANITY_BLUR_THRESHOLD
 
 
 func _refresh_plate() -> void:
