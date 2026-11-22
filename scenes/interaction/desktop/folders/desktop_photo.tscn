@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/image_launcher.tscn" id="1_launcher"]
+[ext_resource type="Texture2D" path="res://assets/textures/desktop_wallpaper.jpg" id="2_picture"]
+
+[node name="DesktopPhoto" instance=ExtResource("1_launcher")]
+display_title = "Wallpaper.jpg"
+submission_filename = "Wallpaper.jpg"
+image = ExtResource("2_picture")

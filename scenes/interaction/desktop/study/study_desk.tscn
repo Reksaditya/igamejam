@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://scenes/interaction/desktop/lms/lms_theme.tres" id="1_theme"]
+
+[ext_resource type="Shader" path="res://scenes/interaction/desktop/study/notebook_blur.gdshader" id="2_blur"]
+
+[sub_resource type="ShaderMaterial" id="Blur"]
+shader = ExtResource("2_blur")
+
+[sub_resource type="StyleBoxFlat" id="Paper"]
+content_margin_left = 24.0
+content_margin_top = 18.0
+content_margin_right = 24.0
+content_margin_bottom = 18.0
+bg_color = Color(1, 0.975, 0.9, 1)
+border_width_left = 4
+border_color = Color(0.66, 0.27, 0.26, 1)
+shadow_color = Color(0.18, 0.09, 0.06, 0.4)
+shadow_size = 8
+shadow_offset = Vector2(3, 4)
+
+[node name="Desk" type="ColorRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("1_theme")
+material = SubResource("Blur")
+
+[node name="Padding" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 26
+
+[node name="Center" type="CenterContainer" parent="Padding"]
+layout_mode = 2
+
+[node name="Notebook" type="PanelContainer" parent="Padding/Center"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("Paper")
+
+[node name="Layout" type="VBoxContainer" parent="Padding/Center/Notebook"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="Padding/Center/Notebook/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Padding/Center/Notebook/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"LmsSubheading"
+text = "Notebook"
+
+[node name="ReturnToQuiz" type="Button" parent="Padding/Center/Notebook/Layout/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back to quiz"
+tooltip_text = "Tab"
+
+[node name="Scroll" type="ScrollContainer" parent="Padding/Center/Notebook/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+focus_mode = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Entries" type="VBoxContainer" parent="Padding/Center/Notebook/Layout/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10

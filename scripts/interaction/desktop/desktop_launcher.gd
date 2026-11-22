@@ -3,7 +3,7 @@ extends Button
 
 signal open_requested(launcher: Button)
 
-enum IconKind { TEXT_DOCUMENT, IMAGE, NOTEPAD, BROWSER, FOLDER }
+enum IconKind { TEXT_DOCUMENT, IMAGE, NOTEPAD, BROWSER, FOLDER, BOOK, BLUEPRINT, BLOCKS }
 
 const ITEM_SIZE := Vector2(126, 96)
 const CAPTION_WIDTH: float = 118.0
@@ -26,6 +26,7 @@ const BLUE: Color = Color("#546faa")
 @export var minimum_window_size := Vector2(260, 180)
 
 var _caption: Label
+var _box_selected := false
 
 
 func _ready() -> void:
@@ -57,7 +58,15 @@ func _update_caption() -> void:
 		_caption.text = display_title
 
 
+func set_box_selected(selected: bool) -> void:
+	if _box_selected != selected:
+		_box_selected = selected
+		queue_redraw()
+
+
 func _draw() -> void:
+	if _box_selected:
+		draw_style_box(get_theme_stylebox("selected", "DesktopItem"), Rect2(Vector2.ZERO, size))
 	draw_set_transform(Vector2(floorf((size.x - 40.0) / 2.0), 7.0))
 	match icon_kind:
 		IconKind.FOLDER:
@@ -93,6 +102,26 @@ func _draw() -> void:
 			draw_rect(Rect2(7, 19, 26, 3), PAPER)
 			draw_rect(Rect2(7, 26, 18, 2), INK)
 			draw_rect(Rect2(7, 30, 12, 2), INK)
+
+		IconKind.BOOK:
+			draw_rect(Rect2(5, 2, 30, 36), INK)
+			draw_rect(Rect2(7, 4, 25, 30), Color("#a94d58"))
+			draw_rect(Rect2(8, 32, 24, 4), PAPER)
+			draw_rect(Rect2(10, 4, 3, 28), INK)
+			draw_rect(Rect2(17, 11, 10, 2), PAPER)
+
+		IconKind.BLUEPRINT:
+			draw_rect(Rect2(2, 6, 36, 29), INK)
+			draw_rect(Rect2(4, 8, 32, 25), Color("#27566f"))
+			draw_circle(Vector2(19, 20), 5, PAPER, false, 1.0)
+			draw_polyline(PackedVector2Array([Vector2(8, 15), Vector2(13, 15), Vector2(14, 20), Vector2(24, 20), Vector2(28, 26), Vector2(33, 26)]), Color("#94d8e6"), 1.5)
+
+		IconKind.BLOCKS:
+			draw_rect(Rect2(3, 3, 34, 34), INK)
+			draw_rect(Rect2(5, 5, 30, 30), Color("#203f53"))
+			for cell: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 2), Vector2i(3, 2)]:
+				var fill := Color("#71d3b0") if cell.x < 2 else Color("#f6bf70")
+				draw_rect(Rect2(Vector2(7, 7) + Vector2(cell) * 7, Vector2.ONE * 6), fill)
 
 
 func get_attachment_metadata() -> Dictionary:

@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/project/project_app.gd" id="1_app"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/project/sediment_sorter.tres" id="2_sorter"]
+[ext_resource type="Script" path="res://scripts/interaction/desktop/project/blueprint.gd" id="3_blueprint"]
+
+[sub_resource type="StyleBoxFlat" id="ProjectPaper"]
+content_margin_left = 16.0
+content_margin_top = 13.0
+content_margin_right = 16.0
+content_margin_bottom = 13.0
+bg_color = Color(0.94, 0.96, 0.97, 1)
+
+[node name="Project" type="PanelContainer"]
+theme_override_styles/panel = SubResource("ProjectPaper")
+script = ExtResource("1_app")
+blueprints = Array[ExtResource("3_blueprint")]([ExtResource("2_sorter")])
+
+[node name="Scroll" type="ScrollContainer" parent="."]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Drawings" type="VBoxContainer" parent="Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Empty" type="Label" parent="Scroll/Drawings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.16, 0.26, 0.34, 1)
+text = "No blueprints are configured."

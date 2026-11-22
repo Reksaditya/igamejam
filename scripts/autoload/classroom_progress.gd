@@ -3,6 +3,7 @@ extends Node
 signal changed
 
 const SAVE_PATH := "user://classroom_notes.cfg"
+const PROJECT_BLUEPRINT_ID := "sediment_sorter"
 
 var _notes := PackedInt32Array()
 var _attempted := PackedInt32Array()
@@ -87,11 +88,7 @@ func finish_material(index: int, success: bool) -> Error:
 func unlock_blueprint() -> Error:
 	if not is_complete():
 		return ERR_UNAUTHORIZED
-	for lesson: Resource in BlueprintProgress.PROJECT.lessons:
-		var error := BlueprintProgress.complete_study(lesson.id)
-		if error != OK:
-			return error
-	return OK
+	return ProjectBlueprints.grant(PROJECT_BLUEPRINT_ID)
 
 
 func _save() -> Error:

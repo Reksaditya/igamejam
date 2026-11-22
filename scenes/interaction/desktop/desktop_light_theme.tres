@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://cqbx0heiy2n72"]
 
-[ext_resource type="FontFile" uid="uid://3u2ud3kb3vs5" path="res://assets/fonts/pixelify_sans/pixelify_sans.ttf" id="1_pixel"]
+[ext_resource type="FontFile" uid="uid://3u2ud3kb3vs5" path="res://assets/fonts/pixelify_sans/pixelify_sans.ttf" id="1_shell"]
 
 [sub_resource type="StyleBoxFlat" id="Dialog"]
 content_margin_left = 12.0
@@ -29,11 +29,47 @@ shadow_color = Color(0.035, 0.055, 0.12, 0.42)
 shadow_size = 6
 shadow_offset = Vector2(2, 3)
 
+[sub_resource type="StyleBoxFlat" id="BrowserButtonHover"]
+content_margin_left = 6.0
+content_margin_top = 0.0
+content_margin_right = 6.0
+content_margin_bottom = 0.0
+bg_color = Color(0.8, 0.88, 0.97, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.39, 0.54, 0.73, 1)
+
+[sub_resource type="StyleBoxFlat" id="BrowserInput"]
+content_margin_left = 8.0
+content_margin_top = 0.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.51, 0.6, 0.72, 1)
+
+[sub_resource type="StyleBoxFlat" id="BrowserButton"]
+content_margin_left = 6.0
+content_margin_top = 0.0
+content_margin_right = 6.0
+content_margin_bottom = 0.0
+bg_color = Color(0.98, 0.99, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.49, 0.59, 0.71, 1)
+
 [sub_resource type="StyleBoxFlat" id="Toolbar"]
-content_margin_left = 10.0
-content_margin_top = 8.0
-content_margin_right = 10.0
-content_margin_bottom = 9.0
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
 bg_color = Color(0.88, 0.92, 0.97, 1)
 border_width_bottom = 1
 border_color = Color(0.63, 0.7, 0.8, 1)
@@ -243,6 +279,16 @@ default_font_size = 16
 AcceptDialog/styles/panel = SubResource("Dialog")
 AppFrame/base_type = &"PanelContainer"
 AppFrame/styles/panel = SubResource("Frame")
+BrowserActiveTab/base_type = &"BrowserButton"
+BrowserActiveTab/styles/normal = SubResource("BrowserButtonHover")
+BrowserActiveTab/styles/pressed = SubResource("BrowserButtonHover")
+BrowserAddress/base_type = &"LineEdit"
+BrowserAddress/styles/normal = SubResource("BrowserInput")
+BrowserButton/base_type = &"Button"
+BrowserButton/styles/hover = SubResource("BrowserButtonHover")
+BrowserButton/styles/hover_pressed = SubResource("BrowserButtonHover")
+BrowserButton/styles/normal = SubResource("BrowserButton")
+BrowserButton/styles/pressed = SubResource("BrowserButton")
 BrowserHeading/base_type = &"Label"
 BrowserHeading/font_sizes/font_size = 25
 BrowserToolbar/base_type = &"PanelContainer"
@@ -256,6 +302,7 @@ Button/colors/icon_focus_color = Color(0.14, 0.24, 0.39, 1)
 Button/colors/icon_hover_color = Color(0.14, 0.24, 0.39, 1)
 Button/colors/icon_normal_color = Color(0.2, 0.31, 0.47, 1)
 Button/colors/icon_pressed_color = Color(0.14, 0.24, 0.39, 1)
+Button/fonts/font = ExtResource("1_shell")
 Button/styles/focus = SubResource("ControlFocus")
 Button/styles/hover = SubResource("ButtonHover")
 Button/styles/normal = SubResource("Button")
@@ -264,13 +311,16 @@ DesktopCaption/base_type = &"ShellLabel"
 DesktopCaption/colors/font_color = Color(1, 0.99, 0.94, 1)
 DesktopCaption/colors/font_outline_color = Color(0.045, 0.075, 0.14, 1)
 DesktopCaption/constants/outline_size = 4
+DesktopCaption/font_sizes/font_size = 16
 DesktopItem/base_type = &"Button"
 DesktopItem/styles/focus = SubResource("Focus")
 DesktopItem/styles/hover = SubResource("IconHover")
 DesktopItem/styles/normal = SubResource("Transparent")
 DesktopItem/styles/pressed = SubResource("IconPressed")
+DesktopItem/styles/selected = SubResource("IconPressed")
 FileCaption/base_type = &"ShellLabel"
 FileCaption/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+FileCaption/font_sizes/font_size = 16
 FileDialog/colors/file_icon_color = Color(0.26, 0.4, 0.58, 1)
 FileDialog/colors/folder_icon_color = Color(0.6, 0.4, 0.18, 1)
 FileItem/base_type = &"DesktopItem"
@@ -285,9 +335,11 @@ LineEdit/colors/caret_color = Color(0.09, 0.15, 0.24, 1)
 LineEdit/colors/font_color = Color(0.09, 0.15, 0.24, 1)
 LineEdit/colors/font_selected_color = Color(1, 1, 1, 1)
 LineEdit/colors/selection_color = Color(0.24, 0.38, 0.6, 1)
+LineEdit/fonts/font = ExtResource("1_shell")
 LineEdit/styles/focus = SubResource("ControlFocus")
 LineEdit/styles/normal = SubResource("Input")
 MenuButton/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+MenuButton/fonts/font = ExtResource("1_shell")
 MenuButton/styles/focus = SubResource("ControlFocus")
 MenuButton/styles/hover = SubResource("ButtonHover")
 MenuButton/styles/pressed = SubResource("ButtonHover")
@@ -306,12 +358,13 @@ NotepadToolbar/styles/panel = SubResource("NotepadToolbar")
 PanelContainer/styles/panel = SubResource("Page")
 PopupMenu/colors/font_color = Color(0.09, 0.15, 0.24, 1)
 PopupMenu/colors/font_hover_color = Color(0.09, 0.15, 0.24, 1)
+PopupMenu/fonts/font = ExtResource("1_shell")
 PopupMenu/styles/hover = SubResource("ButtonHover")
 PopupMenu/styles/panel = SubResource("Dialog")
 ShellLabel/base_type = &"Label"
 ShellLabel/colors/font_color = Color(0.09, 0.15, 0.24, 1)
-ShellLabel/font_sizes/font_size = 16
-ShellLabel/fonts/font = ExtResource("1_pixel")
+ShellLabel/font_sizes/font_size = 14
+ShellLabel/fonts/font = ExtResource("1_shell")
 TextEdit/colors/caret_color = Color(0.09, 0.15, 0.24, 1)
 TextEdit/colors/font_color = Color(0.09, 0.15, 0.24, 1)
 TextEdit/colors/font_placeholder_color = Color(0.36, 0.42, 0.52, 1)
@@ -321,7 +374,7 @@ TextEdit/styles/focus = SubResource("ControlFocus")
 TextEdit/styles/normal = SubResource("Input")
 Window/colors/title_color = Color(1, 1, 1, 1)
 Window/constants/title_height = 32
-Window/fonts/title_font = ExtResource("1_pixel")
+Window/fonts/title_font = ExtResource("1_shell")
 Window/styles/embedded_border = SubResource("DialogFrame")
 Window/styles/embedded_unfocused_border = SubResource("DialogFrame")
 WindowButton/base_type = &"Button"
@@ -330,7 +383,7 @@ WindowButton/styles/normal = SubResource("WindowButton")
 WindowButton/styles/pressed = SubResource("ButtonHover")
 WindowClose/base_type = &"WindowButton"
 WindowClose/colors/font_color = Color(0.37, 0.11, 0.17, 1)
-WindowClose/fonts/font = ExtResource("1_pixel")
+WindowClose/fonts/font = ExtResource("1_shell")
 WindowClose/styles/hover = SubResource("CloseHover")
 WindowClose/styles/normal = SubResource("Close")
 WindowClose/styles/pressed = SubResource("CloseHover")

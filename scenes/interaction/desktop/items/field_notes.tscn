@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/document_launcher.tscn" id="1_document"]
+
+[node name="FieldNotes" instance=ExtResource("1_document")]
+display_title = "Field notes"
+submission_filename = "field_notes.txt"
+starting_text = "Things to look up
+
+lark"

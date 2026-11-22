@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/project/blueprint.gd" id="1_blueprint"]
+[ext_resource type="Texture2D" path="res://assets/textures/project_airplane.png" id="2_artwork"]
+
+[resource]
+script = ExtResource("1_blueprint")
+blueprint_id = "sediment_sorter"
+title = "Sediment sorter"
+artwork = ExtResource("2_artwork")
