@@ -66,19 +66,19 @@ func _add_stat(rows: VBoxContainer, icon: Texture2D, maximum: float, fill: Color
 	value.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	value.add_theme_font_override("font", VALUE_FONT)
 	value.add_theme_font_size_override("font_size", 13)
-	value.add_theme_color_override("font_color", Color("#f2f6f8"))
+	value.add_theme_color_override("font_color", Color("#f0f0f2"))
 	row.add_child(value)
 	_values.append(value)
 
 
-func _pill_style(accent: Color) -> StyleBoxFlat:
+func _pill_style(_accent: Color) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#121c22e0")
-	style.border_color = Color(accent.lerp(Color("#6b828e"), 0.55), 0.65)
+	style.bg_color = Color("#18181be0")
+	style.border_color = Color("#4a4a52b8")
 	style.set_border_width_all(1)
-	style.set_corner_radius_all(10)
-	style.shadow_color = Color(0.0, 0.0, 0.0, 0.3)
-	style.shadow_size = 4
+	style.set_corner_radius_all(6)
+	style.shadow_color = Color(0.0, 0.0, 0.0, 0.25)
+	style.shadow_size = 2
 	style.content_margin_left = 5.0
 	style.content_margin_right = 6.0
 	style.content_margin_top = 2.0
@@ -88,10 +88,10 @@ func _pill_style(accent: Color) -> StyleBoxFlat:
 
 func _track_style() -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#0b1216eb")
-	style.border_color = Color("#3b4f5a80")
+	style.bg_color = Color("#101012eb")
+	style.border_color = Color("#3a3a40a0")
 	style.set_border_width_all(1)
-	style.set_corner_radius_all(7)
+	style.set_corner_radius_all(5)
 	return style
 
 

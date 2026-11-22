@@ -3,234 +3,44 @@ extends CanvasLayer
 const PORTRAIT := preload("res://assets/characters/mc/idle/1.png")
 const MENU_THEME := preload("res://scenes/ui/menu_theme.tres")
 const HUD_FONT := preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
-const CLOCK_DAY_ACCENT := Color("#ffd277")
-const CLOCK_NIGHT_ACCENT := Color("#91bde9")
-const HUD_SURFACE := Color("#0d1824e8")
-const HUD_INK := Color("#f9faf5")
-const HUD_MUTED := Color("#a5bccd")
 
+const HUD_SURFACE := Color("#161618de")
+const HUD_BORDER := Color("#4a4a52")
+const HUD_INK := Color("#f0f0f2")
+const HUD_MUTED := Color("#b8b8be")
+const HUD_OUTLINE := Color(0.06, 0.06, 0.07, 0.96)
 
-class DayNightDial extends Control:
-	const DIAL_SIZE := Vector2(72.0, 72.0)
-	const BODY_EXTENT := 7.5
-	const STARS := [
-		Vector2(-0.52, -0.44),
-		Vector2(-0.22, -0.62),
-		Vector2(0.16, -0.58),
-		Vector2(0.50, -0.36),
-		Vector2(-0.04, -0.32),
-	]
-
-	var minute_of_day: int = 360
-
-
-	func _init() -> void:
-		custom_minimum_size = DIAL_SIZE
-		size = DIAL_SIZE
-		clip_contents = true
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-
-	func set_minute_of_day(value: int) -> void:
-		var normalized := posmod(value, GameClock.MINUTES_PER_DAY)
-		if minute_of_day == normalized:
-			return
-		minute_of_day = normalized
-		queue_redraw()
-
-
-	func is_daytime() -> bool:
-		return minute_of_day >= 360 and minute_of_day < 1080
-
-
-	func phase_progress() -> float:
-		if is_daytime():
-			return clampf(float(minute_of_day - 360) / 720.0, 0.0, 1.0)
-		var night_elapsed := posmod(minute_of_day - 1080, GameClock.MINUTES_PER_DAY)
-		return clampf(float(night_elapsed) / 720.0, 0.0, 1.0)
-
-
-	func get_sky_radius() -> float:
-		var side := minf(size.x, size.y)
-		return maxf(8.0, side * 0.5 - 8.0)
-
-
-	func get_celestial_center() -> Vector2:
-		var center := size * 0.5
-		var sky_r := get_sky_radius()
-		var arc_origin := center + Vector2(0.0, sky_r * 0.22)
-		var arc_r := sky_r * 0.58
-		var angle := lerpf(0.32, PI - 0.32, phase_progress())
-		var raw := arc_origin + Vector2(-cos(angle) * arc_r, -sin(angle) * arc_r)
-		var max_offset := maxf(0.0, sky_r - BODY_EXTENT - 2.0)
-		var offset := raw - center
-		if offset.length() > max_offset and offset.length() > 0.001:
-			raw = center + offset.normalized() * max_offset
-		var margin := BODY_EXTENT + 2.0
-		raw.x = clampf(raw.x, margin, maxf(margin, size.x - margin))
-		raw.y = clampf(raw.y, margin, maxf(margin, size.y - margin))
-		return raw
-
-
-	func _draw() -> void:
-		var center := size * 0.5
-		var sky_r := get_sky_radius()
-		var daytime := is_daytime()
-		var accent := CLOCK_DAY_ACCENT if daytime else CLOCK_NIGHT_ACCENT
-
-		# Outer Persona dial bezel strictly inside DIAL_SIZE bounds.
-		draw_circle(center + Vector2(1.5, 2.0), sky_r + 3.5, Color("#060d17cc"), true, -1.0, true)
-		draw_circle(center, sky_r + 3.0, accent, true, -1.0, true)
-		draw_circle(center, sky_r + 1.4, Color("#e7edf2"), true, -1.0, true)
-
-		var sky := _sky_palette()
-		var sky_top: Color = sky[0]
-		var sky_mid: Color = sky[1]
-		var sky_horizon: Color = sky[2]
-
-		# Base upper sky fill + mathematically clipped gradient bands.
-		draw_circle(center, sky_r, sky_top, true, -1.0, true)
-		_draw_circle_band(center, sky_r, center.y - sky_r * 0.22, center.y + sky_r * 0.16, sky_mid)
-		_draw_circle_band(center, sky_r, center.y + sky_r * 0.12, center.y + sky_r * 0.44, sky_horizon)
-
-		# Subtle dotted arc track showing the sun/moon path.
-		var arc_origin := center + Vector2(0.0, sky_r * 0.22)
-		var arc_r := sky_r * 0.58
-		var track_color := Color(1.0, 0.98, 0.9, 0.24 if daytime else 0.18)
-		for step: int in range(9):
-			var t := float(step) / 8.0
-			var a := lerpf(0.32, PI - 0.32, t)
-			var pt := arc_origin + Vector2(-cos(a) * arc_r, -sin(a) * arc_r)
-			if pt.distance_to(center) <= sky_r - 3.0:
-				draw_circle(pt, 0.95, track_color, true, -1.0, true)
-
-		# Twinkling pixel stars during twilight and night.
-		var star_alpha := _star_alpha()
-		if star_alpha > 0.02:
-			for idx: int in range(STARS.size()):
-				var star_dir: Vector2 = STARS[idx]
-				var star_pos := center + star_dir * sky_r
-				var star_r := 1.4 if idx % 2 == 0 else 1.0
-				draw_circle(star_pos, star_r, Color(0.92, 0.96, 1.0, star_alpha), true, -1.0, false)
-
-		# Moving Sun (06:00-17:59) or Crescent Moon (18:00-05:59).
-		var body_pos := get_celestial_center()
-		if daytime:
-			draw_circle(body_pos, 7.4, Color(1.0, 0.84, 0.44, 0.28), true, -1.0, true)
-			for ray: int in range(8):
-				var ray_angle := float(ray) * TAU / 8.0 + phase_progress() * 0.65
-				var ray_dir := Vector2(cos(ray_angle), sin(ray_angle))
-				draw_line(body_pos + ray_dir * 4.8, body_pos + ray_dir * 7.2, Color("#ffe89e"), 1.35, true)
-			draw_circle(body_pos, 4.5, Color("#ffd277"), true, -1.0, true)
-			draw_circle(body_pos + Vector2(-1.1, -1.1), 2.1, Color("#fff7d6"), true, -1.0, true)
-		else:
-			draw_circle(body_pos, 7.2, Color(0.57, 0.74, 0.92, 0.25), true, -1.0, true)
-			draw_circle(body_pos, 4.9, Color("#eef5ff"), true, -1.0, true)
-			draw_circle(body_pos + Vector2(2.1, -1.2), 4.2, sky_top.lerp(sky_mid, 0.35), true, -1.0, true)
-
-		# Clipped horizon silhouette across the lower chord of the sky disc.
-		var horizon_y := center.y + sky_r * 0.36
-		var ground_color := Color("#122234") if daytime else Color("#09111d")
-		_draw_circle_band(center, sky_r, horizon_y, center.y + sky_r, ground_color)
-		var half_chord := sqrt(maxf(0.0, sky_r * sky_r - pow(horizon_y - center.y, 2.0)))
-		if half_chord > 2.0:
-			var rim := Color(accent, 0.72)
-			draw_line(Vector2(center.x - half_chord + 1.0, horizon_y), Vector2(center.x + half_chord - 1.0, horizon_y), rim, 1.3, true)
-
-		# Crisp inner ring to keep the sky dial edge razor sharp.
-		draw_arc(center, sky_r, 0.0, TAU, 48, Color("#0a1420cc"), 1.3, true)
-
-
-	func _draw_circle_band(center: Vector2, radius: float, y_top: float, y_bottom: float, color: Color) -> void:
-		var top_y := clampf(y_top, center.y - radius, center.y + radius)
-		var bot_y := clampf(y_bottom, center.y - radius, center.y + radius)
-		if bot_y <= top_y + 0.25:
-			return
-		var steps := 10
-		var left_pts: PackedVector2Array = PackedVector2Array()
-		var right_pts: PackedVector2Array = PackedVector2Array()
-		for i: int in range(steps + 1):
-			var y := lerpf(top_y, bot_y, float(i) / float(steps))
-			var dy := y - center.y
-			var dx := sqrt(maxf(0.0, radius * radius - dy * dy))
-			left_pts.append(Vector2(center.x - dx, y))
-			right_pts.append(Vector2(center.x + dx, y))
-		var poly := PackedVector2Array()
-		for pt: Vector2 in left_pts:
-			poly.append(pt)
-		for i: int in range(right_pts.size() - 1, -1, -1):
-			poly.append(right_pts[i])
-		if poly.size() >= 3:
-			draw_colored_polygon(poly, color)
-
-
-	func _sky_palette() -> Array[Color]:
-		var hour := float(minute_of_day) / 60.0
-		if hour >= 5.5 and hour < 7.5:
-			var t := (hour - 5.5) / 2.0
-			return [
-				Color("#1c2b4d").lerp(Color("#4c88c4"), t),
-				Color("#5f4c6e").lerp(Color("#88b8de"), t),
-				Color("#d68760").lerp(Color("#f4cb8c"), t),
-			]
-		if hour >= 7.5 and hour < 11.5:
-			var t := (hour - 7.5) / 4.0
-			return [
-				Color("#4c88c4").lerp(Color("#2f7fc9"), t),
-				Color("#88b8de").lerp(Color("#69b1e6"), t),
-				Color("#f4cb8c").lerp(Color("#cbe7fa"), t),
-			]
-		if hour >= 11.5 and hour < 15.0:
-			return [Color("#2f7fc9"), Color("#69b1e6"), Color("#cbe7fa")]
-		if hour >= 15.0 and hour < 18.0:
-			var t := (hour - 15.0) / 3.0
-			return [
-				Color("#2f7fc9").lerp(Color("#364572"), t),
-				Color("#69b1e6").lerp(Color("#b06558"), t),
-				Color("#cbe7fa").lerp(Color("#f0a45a"), t),
-			]
-		if hour >= 18.0 and hour < 20.0:
-			var t := (hour - 18.0) / 2.0
-			return [
-				Color("#364572").lerp(Color("#0d192e"), t),
-				Color("#b06558").lerp(Color("#162844"), t),
-				Color("#f0a45a").lerp(Color("#243b5e"), t),
-			]
-		return [Color("#0d192e"), Color("#162844"), Color("#243b5e")]
-
-
-	func _star_alpha() -> float:
-		var hour := float(minute_of_day) / 60.0
-		if hour >= 20.0 or hour < 5.0:
-			return 0.88
-		if hour >= 18.0 and hour < 20.0:
-			return lerpf(0.25, 0.88, (hour - 18.0) / 2.0)
-		if hour >= 5.0 and hour < 6.0:
-			return lerpf(0.88, 0.0, hour - 5.0)
-		return 0.0
-
+## Room-by-room routing table toward today's classroom.
+const CLASS_ROUTE := {
+	"dorm_room210.tscn": {"target": "Door", "label": "Keluar kamar", "edge": "left"},
+	"dorm_floor2.tscn": {"target": "Door", "label": "Turun Lt. 1", "edge": "right"},
+	"dorm_floor1.tscn": {"target": "Door", "label": "Keluar asrama", "edge": "left"},
+	"dorm_exterior.tscn": {"target": "RightExit", "label": "Ke Kampus", "edge": "right"},
+	"campus_lab.tscn": {"target": "LeftExit", "label": "Ke Kampus", "edge": "left"},
+	"campus_lab_room.tscn": {"target": "Door", "label": "Keluar lab", "edge": "left"},
+	"lecturer_room.tscn": {"target": "Door", "label": "Keluar ruang dosen", "edge": "left"},
+	"top_down_movement.tscn": {"target": "Door", "label": "Gedung Kelas", "edge": "right"},
+	"classroom_corridor_floor1.tscn": {"target": "Door", "label": "Pintu Kelas", "edge": "right"},
+	"classroom_corridor_floor2.tscn": {"target": "Door", "label": "Pintu Kelas", "edge": "right"},
+	"classroom_corridor_floor3.tscn": {"target": "Door", "label": "Pintu Kelas", "edge": "right"},
+}
 
 var _opener: Button
 var _hud_stats: PanelContainer
 var _hud_name: Label
 var _hud_name_plate: PanelContainer
 var _hud_clock_panel: PanelContainer
-var _hud_clock_style: StyleBoxFlat
-var _hud_dial: DayNightDial
 var _hud_semester: Label
 var _hud_day: Label
-var _hud_week: Label
-var _hud_period: Label
-var _hud_period_badge: PanelContainer
-var _hud_period_style: StyleBoxFlat
+var _hud_clock: Label
 var _hud_quest_panel: PanelContainer
-var _hud_quest_style: StyleBoxFlat
 var _hud_quest_badge: Label
 var _hud_quest_title: Label
-var _hud_quest_detail: Label
 var _hud_toast: PanelContainer
 var _hud_toast_label: Label
 var _toast_tween: Tween
+var _wayfinding_label: Label
+var _wayfinding_time: float = 0.0
 var _popup: Window
 var _overview: HBoxContainer
 var _status: VBoxContainer
@@ -246,7 +56,6 @@ var _semester: OptionButton
 var _week: OptionButton
 var _entries: VBoxContainer
 var _message: Label
-var _hud_clock: Label
 var _profile_clock: Label
 var _profile_date: Label
 var _settings: VBoxContainer
@@ -272,9 +81,10 @@ func _ready() -> void:
 	_refresh_quest_hud()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var player := get_parent().get_node_or_null("Player")
 	_opener.disabled = get_tree().paused or SceneTransition.is_active() or (player != null and player.is_studying())
+	_update_wayfinding_pointer(delta)
 
 
 func _exit_tree() -> void:
@@ -310,12 +120,12 @@ func _bar(parent: Node, maximum: float = 100.0) -> ProgressBar:
 	bar.show_percentage = false
 	bar.custom_minimum_size = Vector2(0, 16)
 	var background := StyleBoxFlat.new()
-	background.bg_color = Color("18232e")
+	background.bg_color = Color("#18181b")
 	background.set_corner_radius_all(4)
 	background.set_border_width_all(1)
-	background.border_color = Color("b79a68")
+	background.border_color = HUD_BORDER
 	var fill := StyleBoxFlat.new()
-	fill.bg_color = Color("64b5a0")
+	fill.bg_color = Color("#80c8ac")
 	fill.set_corner_radius_all(4)
 	bar.add_theme_stylebox_override("background", background)
 	bar.add_theme_stylebox_override("fill", fill)
@@ -347,6 +157,7 @@ func _build_hud() -> void:
 	root.theme = MENU_THEME
 	add_child(root)
 	_build_clock_hud(root)
+	_build_wayfinding_pointer(root)
 
 	var cluster := HBoxContainer.new()
 	cluster.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -386,9 +197,9 @@ func _build_hud() -> void:
 	_hud_name_plate.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	var name_style := StyleBoxFlat.new()
 	name_style.bg_color = HUD_SURFACE
-	name_style.border_color = Color("#7a95a699")
+	name_style.border_color = HUD_BORDER
 	name_style.set_border_width_all(1)
-	name_style.set_corner_radius_all(6)
+	name_style.set_corner_radius_all(4)
 	name_style.content_margin_left = 8
 	name_style.content_margin_right = 8
 	name_style.content_margin_top = 2
@@ -411,30 +222,30 @@ func _build_hud() -> void:
 func _style_portrait_button(button: Button) -> void:
 	var normal := StyleBoxFlat.new()
 	normal.bg_color = HUD_SURFACE
-	normal.border_color = Color("#d8b674d8")
-	normal.set_border_width_all(2)
-	normal.set_corner_radius_all(8)
-	normal.shadow_color = Color(0.0, 0.0, 0.0, 0.36)
-	normal.shadow_size = 4
-	normal.shadow_offset = Vector2(0, 2)
+	normal.border_color = HUD_BORDER
+	normal.set_border_width_all(1)
+	normal.set_corner_radius_all(6)
+	normal.shadow_color = Color(0.0, 0.0, 0.0, 0.28)
+	normal.shadow_size = 3
+	normal.shadow_offset = Vector2(0, 1)
 
 	var hover := normal.duplicate() as StyleBoxFlat
-	hover.bg_color = Color("#16283af2")
-	hover.border_color = CLOCK_DAY_ACCENT
+	hover.bg_color = Color("#242428f2")
+	hover.border_color = Color("#7a7a84")
 
 	var pressed := normal.duplicate() as StyleBoxFlat
-	pressed.bg_color = Color("#0b141ef5")
-	pressed.border_color = Color("#f6e1a8")
+	pressed.bg_color = Color("#101012f5")
+	pressed.border_color = Color("#a8a8b2")
 
 	var disabled := normal.duplicate() as StyleBoxFlat
-	disabled.bg_color = Color("#0d1824a8")
-	disabled.border_color = Color("#6b7f8e88")
+	disabled.bg_color = Color("#141416a8")
+	disabled.border_color = Color("#3a3a4088")
 
 	var focus := StyleBoxFlat.new()
 	focus.draw_center = false
-	focus.border_color = CLOCK_DAY_ACCENT
+	focus.border_color = Color("#d8d8de")
 	focus.set_border_width_all(2)
-	focus.set_corner_radius_all(8)
+	focus.set_corner_radius_all(6)
 
 	button.add_theme_stylebox_override("normal", normal)
 	button.add_theme_stylebox_override("hover", hover)
@@ -454,107 +265,51 @@ func _build_clock_hud(root: Control) -> void:
 	var left_stack := VBoxContainer.new()
 	left_stack.name = &"LeftHudStack"
 	left_stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	left_stack.add_theme_constant_override("separation", 6)
+	left_stack.add_theme_constant_override("separation", 5)
 	left_stack.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	left_stack.offset_left = 14
 	left_stack.offset_top = 12
 	root.add_child(left_stack)
 
+	# Ultra-simple, neutral grey-black Day & Time strip (no dial, no extra chrome).
 	_hud_clock_panel = PanelContainer.new()
-	_hud_clock_panel.clip_contents = true
+	_hud_clock_panel.name = &"SimpleClockStrip"
 	_hud_clock_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_hud_clock_panel.custom_minimum_size = Vector2(228, 0)
+	_hud_clock_panel.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 
-	_hud_clock_style = StyleBoxFlat.new()
-	_hud_clock_style.bg_color = HUD_SURFACE
-	_hud_clock_style.border_color = CLOCK_DAY_ACCENT
-	_hud_clock_style.border_width_left = 4
-	_hud_clock_style.border_width_top = 1
-	_hud_clock_style.border_width_right = 1
-	_hud_clock_style.border_width_bottom = 2
-	_hud_clock_style.set_corner_radius_all(8)
-	_hud_clock_style.content_margin_left = 8
-	_hud_clock_style.content_margin_right = 12
-	_hud_clock_style.content_margin_top = 5
-	_hud_clock_style.content_margin_bottom = 5
-	_hud_clock_panel.add_theme_stylebox_override("panel", _hud_clock_style)
+	var clock_style := StyleBoxFlat.new()
+	clock_style.bg_color = HUD_SURFACE
+	clock_style.border_color = HUD_BORDER
+	clock_style.set_border_width_all(1)
+	clock_style.set_corner_radius_all(4)
+	clock_style.content_margin_left = 10
+	clock_style.content_margin_right = 10
+	clock_style.content_margin_top = 5
+	clock_style.content_margin_bottom = 5
+	_hud_clock_panel.add_theme_stylebox_override("panel", clock_style)
 	left_stack.add_child(_hud_clock_panel)
 
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_theme_constant_override("separation", 10)
+	row.add_theme_constant_override("separation", 6)
 	_hud_clock_panel.add_child(row)
 
-	_hud_dial = DayNightDial.new()
-	_hud_dial.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(_hud_dial)
-
-	var readout := VBoxContainer.new()
-	readout.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	readout.alignment = BoxContainer.ALIGNMENT_CENTER
-	readout.add_theme_constant_override("separation", 1)
-	row.add_child(readout)
-
-	var cal_row := HBoxContainer.new()
-	cal_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	cal_row.add_theme_constant_override("separation", 5)
-	readout.add_child(cal_row)
-
-	_hud_semester = _hud_label(cal_row, "SEM 1", 13, CLOCK_DAY_ACCENT)
-	_hud_label(cal_row, "·", 13, Color("#738b9c"))
-	_hud_day = _hud_label(cal_row, "HARI 1", 13, Color("#e7edf2"))
-
-	var time_row := HBoxContainer.new()
-	time_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	time_row.add_theme_constant_override("separation", 7)
-	readout.add_child(time_row)
-
-	_hud_clock = _hud_label(time_row, "06:00", 22, HUD_INK)
-	_hud_clock.add_theme_color_override("font_outline_color", Color("#060d17cc"))
-	_hud_clock.add_theme_constant_override("outline_size", 3)
-
-	_hud_period_badge = PanelContainer.new()
-	_hud_period_badge.clip_contents = true
-	_hud_period_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_hud_period_badge.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_hud_period_style = StyleBoxFlat.new()
-	_hud_period_style.set_border_width_all(1)
-	_hud_period_style.set_corner_radius_all(4)
-	_hud_period_style.content_margin_left = 6
-	_hud_period_style.content_margin_right = 6
-	_hud_period_style.content_margin_top = 1
-	_hud_period_style.content_margin_bottom = 1
-	_hud_period_badge.add_theme_stylebox_override("panel", _hud_period_style)
-	time_row.add_child(_hud_period_badge)
-	_hud_period = _hud_label(_hud_period_badge, "Pagi", 12, Color("#fff3cf"))
-	_hud_period.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-
-	_hud_week = _hud_label(readout, "Minggu 1", 12, HUD_MUTED)
+	_hud_semester = _hud_label(row, "SEM 1", 15, HUD_MUTED)
+	_hud_label(row, "·", 15, Color("#6a6a72"))
+	_hud_day = _hud_label(row, "HARI 1/12", 15, HUD_INK)
+	_hud_label(row, " ", 15, HUD_MUTED)
+	_hud_clock = _hud_label(row, "06:00", 17, HUD_INK)
 
 	_build_quest_hud(left_stack)
 	_build_missed_toast(root)
 
 
 func _build_quest_hud(parent: Control) -> void:
+	# Background-free class schedule: uses StyleBoxEmpty (zero rectangle/panel backing).
 	_hud_quest_panel = PanelContainer.new()
 	_hud_quest_panel.name = &"ScheduleQuestPanel"
-	_hud_quest_panel.clip_contents = true
 	_hud_quest_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_hud_quest_panel.custom_minimum_size = Vector2(228, 0)
-
-	_hud_quest_style = StyleBoxFlat.new()
-	_hud_quest_style.bg_color = HUD_SURFACE
-	_hud_quest_style.border_color = Color("#7ec0ee")
-	_hud_quest_style.border_width_left = 4
-	_hud_quest_style.border_width_top = 1
-	_hud_quest_style.border_width_right = 1
-	_hud_quest_style.border_width_bottom = 1
-	_hud_quest_style.set_corner_radius_all(7)
-	_hud_quest_style.content_margin_left = 10
-	_hud_quest_style.content_margin_right = 10
-	_hud_quest_style.content_margin_top = 5
-	_hud_quest_style.content_margin_bottom = 6
-	_hud_quest_panel.add_theme_stylebox_override("panel", _hud_quest_style)
+	_hud_quest_panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	parent.add_child(_hud_quest_panel)
 
 	var box := VBoxContainer.new()
@@ -562,16 +317,22 @@ func _build_quest_hud(parent: Control) -> void:
 	box.add_theme_constant_override("separation", 1)
 	_hud_quest_panel.add_child(box)
 
-	_hud_quest_badge = _hud_label(box, "JADWAL KELAS", 11, Color("#86c5f4"))
-	_hud_quest_title = _hud_label(box, "Kelas 08:00 · Batas 09:00", 13, HUD_INK)
-	_hud_quest_title.clip_text = true
-	_hud_quest_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_hud_quest_title.custom_minimum_size.x = 204.0
+	_hud_quest_badge = _outlined_hud_label(box, "JADWAL KELAS", 12, HUD_MUTED)
+	_hud_quest_title = _outlined_hud_label(box, "→ Kelas 08:00", 14, HUD_INK)
 
-	_hud_quest_detail = _hud_label(box, "", 11, HUD_MUTED)
-	_hud_quest_detail.clip_text = true
-	_hud_quest_detail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_hud_quest_detail.custom_minimum_size.x = 204.0
+
+func _build_wayfinding_pointer(root: Control) -> void:
+	_wayfinding_label = Label.new()
+	_wayfinding_label.name = &"ClassWayfindingPointer"
+	_wayfinding_label.visible = false
+	_wayfinding_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_wayfinding_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_wayfinding_label.add_theme_font_override("font", HUD_FONT)
+	_wayfinding_label.add_theme_font_size_override("font_size", 15)
+	_wayfinding_label.add_theme_color_override("font_color", HUD_INK)
+	_wayfinding_label.add_theme_color_override("font_outline_color", HUD_OUTLINE)
+	_wayfinding_label.add_theme_constant_override("outline_size", 4)
+	root.add_child(_wayfinding_label)
 
 
 func _build_missed_toast(root: Control) -> void:
@@ -580,26 +341,23 @@ func _build_missed_toast(root: Control) -> void:
 	_hud_toast.visible = false
 	_hud_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hud_toast.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	_hud_toast.offset_top = 16
+	_hud_toast.offset_top = 14
 	_hud_toast.offset_left = -220
 	_hud_toast.offset_right = 220
 
 	var toast_style := StyleBoxFlat.new()
-	toast_style.bg_color = Color("#2d1115f0")
-	toast_style.border_color = Color("#ff7b6b")
-	toast_style.border_width_left = 4
-	toast_style.border_width_top = 1
-	toast_style.border_width_right = 1
-	toast_style.border_width_bottom = 2
-	toast_style.set_corner_radius_all(8)
+	toast_style.bg_color = Color("#18181bf0")
+	toast_style.border_color = Color("#5a5a64")
+	toast_style.set_border_width_all(1)
+	toast_style.set_corner_radius_all(4)
 	toast_style.content_margin_left = 14
 	toast_style.content_margin_right = 14
-	toast_style.content_margin_top = 8
-	toast_style.content_margin_bottom = 8
+	toast_style.content_margin_top = 7
+	toast_style.content_margin_bottom = 7
 	_hud_toast.add_theme_stylebox_override("panel", toast_style)
 	root.add_child(_hud_toast)
 
-	_hud_toast_label = _hud_label(_hud_toast, "", 13, Color("#ffd8d1"))
+	_hud_toast_label = _hud_label(_hud_toast, "", 13, HUD_INK)
 	_hud_toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_hud_toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_hud_toast_label.custom_minimum_size.x = 380.0
@@ -613,14 +371,83 @@ func _hud_label(parent: Node, value: String, font_size: int, color: Color) -> La
 	return label
 
 
-func _period_info(minute_of_day: int) -> Dictionary:
-	if minute_of_day >= 360 and minute_of_day < 660:
-		return {"label": "Pagi", "bg": Color("#4a3a18f0"), "border": CLOCK_DAY_ACCENT, "text": Color("#fff3cf")}
-	if minute_of_day >= 660 and minute_of_day < 900:
-		return {"label": "Siang", "bg": Color("#193c58f0"), "border": Color("#86c5f4"), "text": Color("#e6f6ff")}
-	if minute_of_day >= 900 and minute_of_day < 1080:
-		return {"label": "Sore", "bg": Color("#4c2a1bf0"), "border": Color("#f09d62"), "text": Color("#ffead9")}
-	return {"label": "Malam", "bg": Color("#182444f0"), "border": CLOCK_NIGHT_ACCENT, "text": Color("#dcebff")}
+func _outlined_hud_label(parent: Node, value: String, font_size: int, color: Color) -> Label:
+	var label := _hud_label(parent, value, font_size, color)
+	label.add_theme_color_override("font_outline_color", HUD_OUTLINE)
+	label.add_theme_constant_override("outline_size", 3)
+	return label
+
+
+func _current_scene_filename() -> String:
+	var parent := get_parent()
+	if parent != null and not parent.scene_file_path.is_empty():
+		return parent.scene_file_path.get_file()
+	if get_tree() != null and get_tree().current_scene != null:
+		return get_tree().current_scene.scene_file_path.get_file()
+	return ""
+
+
+func _is_in_classroom_scene() -> bool:
+	return _current_scene_filename().begins_with("campus_classroom")
+
+
+func _should_show_class_wayfinding(state_id: String) -> bool:
+	if _is_in_classroom_scene():
+		return false
+	return state_id in ["class_upcoming", "class_open", "exam_ready"]
+
+
+func get_wayfinding_route() -> Dictionary:
+	return CLASS_ROUTE.get(_current_scene_filename(), {})
+
+
+func _update_wayfinding_pointer(delta: float) -> void:
+	if not is_inside_tree() or get_viewport() == null or not is_instance_valid(_wayfinding_label):
+		return
+	var status := CareerProgress.get_today_schedule_status()
+	var state_id := str(status.get("state", "class_upcoming"))
+	if not _should_show_class_wayfinding(state_id):
+		_wayfinding_label.hide()
+		return
+	var route := get_wayfinding_route()
+	if route.is_empty():
+		_wayfinding_label.hide()
+		return
+	var parent := get_parent()
+	if parent == null:
+		_wayfinding_label.hide()
+		return
+	var target := parent.get_node_or_null(str(route.target)) as Node2D
+	if target == null:
+		_wayfinding_label.hide()
+		return
+
+	_wayfinding_time += delta
+	var bob := sin(_wayfinding_time * 4.5) * 4.0
+	var view_size := get_viewport().get_visible_rect().size
+	if view_size.x <= 1.0 or view_size.y <= 1.0:
+		view_size = Vector2(1280.0, 720.0)
+	var screen_pos := get_viewport().get_canvas_transform() * target.global_position
+	var label_text := str(route.label)
+	var is_open := state_id == "class_open" or state_id == "exam_ready"
+	_wayfinding_label.add_theme_color_override("font_color", Color("#f5d78b") if is_open else HUD_INK)
+
+	var margin_x := 86.0
+	if screen_pos.x < 36.0:
+		_wayfinding_label.text = "← %s" % label_text
+		_wayfinding_label.size = _wayfinding_label.get_combined_minimum_size()
+		_wayfinding_label.position = Vector2(18.0 + bob, clampf(view_size.y * 0.45, 96.0, view_size.y - 80.0))
+	elif screen_pos.x > view_size.x - 36.0:
+		_wayfinding_label.text = "%s →" % label_text
+		_wayfinding_label.size = _wayfinding_label.get_combined_minimum_size()
+		_wayfinding_label.position = Vector2(view_size.x - _wayfinding_label.size.x - 18.0 + bob, clampf(view_size.y * 0.45, 96.0, view_size.y - 80.0))
+	else:
+		_wayfinding_label.text = "%s\n▼" % label_text
+		_wayfinding_label.size = _wayfinding_label.get_combined_minimum_size()
+		var target_x := clampf(screen_pos.x - _wayfinding_label.size.x * 0.5, 16.0, maxf(16.0, view_size.x - _wayfinding_label.size.x - margin_x))
+		var target_y := clampf(screen_pos.y - 160.0 + bob, 68.0, view_size.y - _wayfinding_label.size.y - 24.0)
+		_wayfinding_label.position = Vector2(target_x, target_y)
+	_wayfinding_label.show()
 
 
 func _build_popup() -> void:
@@ -779,36 +606,16 @@ func _fit_popup() -> void:
 		_popup.popup_centered_clamped(Vector2i(780, 570))
 
 
-func _refresh_clock(absolute_minutes: int) -> void:
+func _refresh_clock(_absolute_minutes: int) -> void:
 	var time := GameClock.get_formatted_time()
-	var minute_of_day := posmod(absolute_minutes, GameClock.MINUTES_PER_DAY)
 	var semester_num := CareerProgress.semester()
 	var day_in_sem := CareerProgress.day_in_semester()
-	var period := _period_info(minute_of_day)
 
-	_hud_dial.set_minute_of_day(minute_of_day)
-	var accent := CLOCK_DAY_ACCENT if _hud_dial.is_daytime() else CLOCK_NIGHT_ACCENT
-	_hud_clock_style.border_color = accent
 	_hud_semester.text = "SEM %d" % semester_num
-	_hud_semester.add_theme_color_override("font_color", accent)
 	_hud_day.text = "HARI %d/12" % day_in_sem
 	_hud_clock.text = time
-	if day_in_sem == CareerProgress.Curriculum.MIDTERM_DAY:
-		_hud_week.text = "HARI UJIAN · UTS"
-	elif day_in_sem == CareerProgress.Curriculum.FINAL_DAY:
-		_hud_week.text = "HARI UJIAN · UAS"
-	elif day_in_sem < CareerProgress.Curriculum.MIDTERM_DAY:
-		_hud_week.text = "Paruh 1 · UTS H6"
-	else:
-		_hud_week.text = "Paruh 2 · UAS H12"
 
-	_hud_period_style.bg_color = period.bg
-	_hud_period_style.border_color = period.border
-	_hud_period_badge.queue_redraw()
-	_hud_period.text = period.label
-	_hud_period.add_theme_color_override("font_color", period.text)
-
-	var summary := "Semester %d · Hari %d/12 (%s %s)" % [semester_num, day_in_sem, time, period.label]
+	var summary := "Semester %d · Hari %d/12 · %s" % [semester_num, day_in_sem, time]
 	_hud_clock.tooltip_text = summary
 	_hud_clock_panel.accessibility_name = summary
 	_profile_clock.text = time
@@ -822,45 +629,39 @@ func _refresh_quest_hud() -> void:
 	var status := CareerProgress.get_today_schedule_status()
 	var state_id := str(status.get("state", "class_upcoming"))
 	_hud_quest_badge.text = str(status.get("badge", "JADWAL KELAS"))
-	_hud_quest_title.text = str(status.get("title", ""))
-	_hud_quest_detail.text = str(status.get("detail", ""))
 
-	var border := Color("#86c5f4")
-	var bg := HUD_SURFACE
-	var badge_color := Color("#86c5f4")
+	var route := get_wayfinding_route()
+	var route_hint := str(route.get("label", ""))
+	var arrow := "←" if str(route.get("edge", "right")) == "left" else "→"
 	match state_id:
 		"class_open":
-			border = CLOCK_DAY_ACCENT
-			bg = Color("#1d1a10ea")
-			badge_color = CLOCK_DAY_ACCENT
+			_hud_quest_badge.add_theme_color_override("font_color", Color("#f2c46d"))
+			_hud_quest_title.add_theme_color_override("font_color", HUD_INK)
+			_hud_quest_title.text = ("%s %s · %s" % [arrow, str(status.get("title", "")), route_hint]) if (not route_hint.is_empty() and not _is_in_classroom_scene()) else str(status.get("title", ""))
 		"class_missed":
-			border = Color("#ff7b6b")
-			bg = Color("#261116ee")
-			badge_color = Color("#ff9b85")
+			_hud_quest_badge.add_theme_color_override("font_color", Color("#ff9b85"))
+			_hud_quest_title.add_theme_color_override("font_color", Color("#ffd4ca"))
+			_hud_quest_title.text = "Kelas terlewat · Kejar di Perpustakaan"
 		"class_done", "exam_done":
-			border = Color("#64b5a0")
-			bg = Color("#0f201ee8")
-			badge_color = Color("#7ed4bd")
+			_hud_quest_badge.add_theme_color_override("font_color", Color("#80c8ac"))
+			_hud_quest_title.add_theme_color_override("font_color", HUD_INK)
+			_hud_quest_title.text = str(status.get("title", "Kelas selesai"))
 		"exam_ready":
-			border = CLOCK_DAY_ACCENT
-			bg = Color("#201a0ee8")
-			badge_color = CLOCK_DAY_ACCENT
+			_hud_quest_badge.add_theme_color_override("font_color", Color("#f2c46d"))
+			_hud_quest_title.add_theme_color_override("font_color", HUD_INK)
+			_hud_quest_title.text = ("%s %s · %s" % [arrow, str(status.get("title", "")), route_hint]) if (not route_hint.is_empty() and not _is_in_classroom_scene()) else str(status.get("title", ""))
 		_:
-			border = Color("#86c5f4")
-			bg = HUD_SURFACE
-			badge_color = Color("#86c5f4")
+			_hud_quest_badge.add_theme_color_override("font_color", HUD_MUTED)
+			_hud_quest_title.add_theme_color_override("font_color", HUD_INK)
+			_hud_quest_title.text = ("%s Kelas 08:00 · %s" % [arrow, route_hint]) if (not route_hint.is_empty() and not _is_in_classroom_scene()) else "Kelas 08:00 · Batas 09:00"
 
-	_hud_quest_style.border_color = border
-	_hud_quest_style.bg_color = bg
-	_hud_quest_badge.add_theme_color_override("font_color", badge_color)
-	_hud_quest_panel.queue_redraw()
+	_update_wayfinding_pointer(0.0)
 
 
-func _on_class_missed(_term: int, _day_in_sem: int) -> void:
-	_refresh_quest_hud()
+func show_notice(message: String, duration: float = 3.5) -> void:
 	if not is_inside_tree() or not is_instance_valid(_hud_toast):
 		return
-	_hud_toast_label.text = "KELAS TERLEWAT — Terlambat > 1 jam (Batas 09:00). Kejar catatan di Perpustakaan."
+	_hud_toast_label.text = message
 	if is_instance_valid(_toast_tween):
 		_toast_tween.kill()
 	_hud_toast.modulate.a = 0.0
@@ -868,10 +669,15 @@ func _on_class_missed(_term: int, _day_in_sem: int) -> void:
 	_toast_tween = create_tween()
 	_toast_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	_toast_tween.set_ignore_time_scale(true)
-	_toast_tween.tween_property(_hud_toast, "modulate:a", 1.0, 0.25)
-	_toast_tween.tween_interval(4.0)
-	_toast_tween.tween_property(_hud_toast, "modulate:a", 0.0, 0.35)
+	_toast_tween.tween_property(_hud_toast, "modulate:a", 1.0, 0.2)
+	_toast_tween.tween_interval(duration)
+	_toast_tween.tween_property(_hud_toast, "modulate:a", 0.0, 0.3)
 	_toast_tween.tween_callback(_hud_toast.hide)
+
+
+func _on_class_missed(_term: int, _day_in_sem: int) -> void:
+	_refresh_quest_hud()
+	show_notice("KELAS TERLEWAT — Terlambat > 1 jam (Batas 09:00). Kejar catatan di Perpustakaan.", 4.0)
 
 
 func open_profile() -> void:

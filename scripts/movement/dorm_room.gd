@@ -115,7 +115,7 @@ func _confine_player() -> void:
 
 func _draw() -> void:
 	var view := get_viewport().get_visible_rect().size
-	draw_rect(Rect2(Vector2.ZERO, view), Color("#111c2a"))
+	draw_rect(Rect2(Vector2.ZERO, view), Color("#141416"))
 	draw_rect(room_rect.grow(6), Color("#625346"))
 	draw_rect(room_rect, Color("#e4d7ba"))
 	draw_rect(Rect2(room_rect.position.x, floor_y - 80, room_rect.size.x, 80), Color("#acbbae"))

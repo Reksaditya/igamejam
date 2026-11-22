@@ -90,7 +90,7 @@ func _slide_cover(style: TransitionStyle) -> void:
 	_screen.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	_screen.size = view_size
 	_screen.position = Vector2(start_x, 0.0)
-	_screen.color = Color(0.03, 0.06, 0.10, 0.08)
+	_screen.color = Color(0.05, 0.05, 0.06, 0.08)
 	var tween := create_tween()
 	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	tween.set_ignore_time_scale(true)

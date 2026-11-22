@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/interaction/classroom/classroom.gd" id="1_class"]
 [ext_resource type="Script" path="res://scripts/interaction/classroom/classroom_computer.gd" id="2_computer"]
-[ext_resource type="Theme" path="res://scenes/interaction/desktop/desktop_theme.tres" id="3_theme"]
+[ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="3_theme"]
 [ext_resource type="PackedScene" path="res://scenes/interaction/classroom/classroom_chair.tscn" id="4_seat"]
 [ext_resource type="Texture2D" path="res://assets/classroom/chair2.png" id="5_chair2"]
 [ext_resource type="Texture2D" path="res://assets/classroom/chair3.png" id="6_chair3"]
