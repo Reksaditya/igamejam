@@ -48,8 +48,8 @@ var _fan_tween: Tween
 @export var light_theme: Theme
 
 @export_group("Audio")
-@export var mouse_click_stream: AudioStream
-@export var fan_ambient_stream: AudioStream
+@export var click_sound: AudioStream
+@export var fan_ambient: AudioStream
 @export_range(-40.0, 0.0, 0.5, "suffix:dB") var mouse_click_volume_db: float = -8.0
 @export_range(-40.0, 0.0, 0.5, "suffix:dB") var fan_ambient_volume_db: float = -18.0
 
@@ -119,7 +119,7 @@ func _exit_tree() -> void:
 
 func _setup_desktop_audio() -> void:
 	var audio_bus := &"SFX" if AudioServer.get_bus_index(&"SFX") >= 0 else &"Master"
-	var click_stream := _resolve_audio_stream(mouse_click_stream, CLICK_SFX_BASE_PATH)
+	var click_stream := _resolve_audio_stream(click_sound, CLICK_SFX_BASE_PATH)
 	_click_players.clear()
 	if is_instance_valid(_click_pool):
 		for child: Node in _click_pool.get_children():
@@ -130,7 +130,7 @@ func _setup_desktop_audio() -> void:
 				player.volume_db = mouse_click_volume_db
 				_click_players.append(player)
 
-	var fan_stream := _resolve_audio_stream(fan_ambient_stream, FAN_AMBIENT_BASE_PATH)
+	var fan_stream := _resolve_audio_stream(fan_ambient, FAN_AMBIENT_BASE_PATH)
 	if is_instance_valid(_fan_ambient):
 		_fan_ambient.bus = audio_bus
 		_fan_ambient.stream = fan_stream

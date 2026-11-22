@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/blocks/blocks_launcher.tscn" id="17_blocks"]
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/login_screen.tscn" id="18_login"]
 [ext_resource type="Texture2D" uid="uid://cutoxf8leboyp" path="res://assets/textures/power_icon.svg" id="19_power_icon"]
+[ext_resource type="AudioStream" uid="uid://cxcvgcr6lwavw" path="res://assets/audio/sfx/desktop_mouse_click.ogg" id="20_click_sound"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wallpaper"]
 resource_local_to_scene = true
@@ -33,6 +34,7 @@ script = ExtResource("1_desktop")
 login_scene = ExtResource("18_login")
 wallpaper_texture = ExtResource("7_wallpaper_texture")
 light_theme = ExtResource("11_light")
+click_sound = ExtResource("20_click_sound")
 
 [node name="Display" type="Control" parent="." unique_id=197261132]
 clip_contents = true
