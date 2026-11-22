@@ -101,7 +101,9 @@ func _next_section() -> void:
 func _process(delta: float) -> void:
 	if not is_instance_valid(_qte) or not is_instance_valid(player) or is_instance_valid(_summary):
 		return
-	_qte.position = player.get_global_transform_with_canvas() * Vector2(0, -102) - Vector2(55, 110)
+	var sprite := player.get_node("Visual/AnimatedSprite2D") as AnimatedSprite2D
+	var head := sprite.get_global_transform_with_canvas() * Vector2(sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame).get_width() * 0.5, 0)
+	_qte.position = head - Vector2(55, 130)
 	if _phase == 1 or _phase == 3:
 		return
 	_delay -= delta

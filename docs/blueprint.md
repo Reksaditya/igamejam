@@ -70,6 +70,6 @@ GameSave menyimpan snapshot versi 2 setiap dua detik, saat progres berubah, dan 
 
 ## Validasi
 
-Jalankan tools/run_production_tests.py dengan --godot menunjuk executable Godot 4.7.2. Runner membuat direktori APPDATA/LOCALAPPDATA terisolasi di .godot/production-validation, menyimpan log, menguji 13 kelompok fitur dan lima pengujian ulang dari proses baru, lalu mengembalikan kode gagal jika ada runtime error atau hasil uji tidak lengkap.
+Jalankan tools/run_production_tests.py dengan --godot menunjuk executable Godot 4.7.2. Runner membuat direktori APPDATA/LOCALAPPDATA terisolasi di .godot/production-validation, menyimpan log, menguji 14 kelompok fitur dan lima pengujian ulang dari proses baru, lalu mengembalikan kode gagal jika ada runtime error atau hasil uji tidak lengkap. Background kelas dan empat kursi interaktif dijelaskan di docs/classroom-seating.md.
 
 Pengujian grafis tambahan memakai opsi --capture pada academic_flow_smoke, dorm_study_smoke, workshop_flow_smoke, world_life_smoke, dan player_profile_smoke. Tangkapan layar berada di .godot. Aset lingkungan, NPC, mesin, dan cutscene masih dummy sesuai persetujuan pengguna; karakter memakai tujuh frame idle yang telah diberikan.
