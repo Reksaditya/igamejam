@@ -39,13 +39,13 @@ func _draw() -> void:
 
 func _draw_floating_piece(canvas: CanvasItem, piece: Shape, origin: Vector2, step: Vector2) -> void:
 	for cell: Vector2i in piece.cells:
-		var rect := Rect2(origin + Vector2(cell) * step, step)
-		canvas.draw_rect(Rect2(rect.position + Vector2(2, 3), rect.size), Color("#101b2677"))
-	for cell: Vector2i in piece.cells:
-		canvas.draw_rect(Rect2(origin + Vector2(cell) * step, step), Color("#27343e"))
+		var rect := Rect2(origin + Vector2(cell) * step, step).grow(-1.0)
+		canvas.draw_rect(Rect2(rect.position + Vector2(2, 3), rect.size), Color(0.08, 0.14, 0.2, 0.26))
 	_draw_piece(canvas, piece, origin, step)
 
 
 func _draw_piece(canvas: CanvasItem, piece: Shape, origin: Vector2, step: Vector2) -> void:
 	for cell: Vector2i in piece.cells:
-		Shape.draw_cell(canvas, Rect2(origin + Vector2(cell) * step, step), piece.color)
+		var rect := Rect2(origin + Vector2(cell) * step, step)
+		canvas.draw_rect(rect.grow(-0.5), Color(0.2, 0.28, 0.34, 0.55), false, 1.0)
+		Shape.draw_cell(canvas, rect, piece.color)
