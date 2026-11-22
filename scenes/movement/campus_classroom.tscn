@@ -18,12 +18,15 @@ script = ExtResource("3_background")
 interior = true
 
 [node name="Door" parent="."]
-destination = "res://scenes/movement/top_down_movement.tscn"
+destination = "res://scenes/movement/classroom_corridor_floor1.tscn"
 destination_spawn = &"DoorSpawn"
 action_text = "Keluar"
 
 [node name="InitialSpawn" parent="."]
 position = Vector2(1060, 592)
+
+[node name="Player" parent="."]
+z_index = 1
 
 [node name="LeftExit" parent="."]
 visible = false

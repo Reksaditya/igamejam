@@ -43,7 +43,7 @@ shape = SubResource("RectangleShape2D_ground")
 
 [node name="Door" parent="." instance=ExtResource("6_door")]
 position = Vector2(925, 540)
-destination = "res://scenes/movement/campus_classroom.tscn"
+destination = "res://scenes/movement/classroom_corridor_floor1.tscn"
 
 [node name="DoorSpawn" type="Marker2D" parent="."]
 position = Vector2(925, 592)

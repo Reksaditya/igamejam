@@ -1,0 +1,87 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/movement/top_down_movement.tscn" id="1_world"]
+[ext_resource type="Script" path="res://scripts/movement/classroom_corridor.gd" id="2_corridor"]
+[ext_resource type="PackedScene" path="res://scenes/movement/door_interaction.tscn" id="3_door"]
+[ext_resource type="Script" path="res://scripts/interaction/classroom/classroom_computer.gd" id="4_interaction"]
+[ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="5_theme"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_stairs"]
+size = Vector2(160, 180)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(48, 720)
+
+[node name="ClassroomCorridorFloor1" instance=ExtResource("1_world")]
+texture_filter = 1
+script = ExtResource("2_corridor")
+world_title = "LORONG KELAS · LANTAI 1"
+left_destination = ""
+right_destination = ""
+
+[node name="Background" parent="."]
+visible = false
+
+[node name="Door" parent="."]
+position = Vector2(1170, 540)
+destination = "res://scenes/movement/campus_classroom.tscn"
+destination_spawn = &"InteriorSpawn"
+action_text = "Masuk kelas"
+
+[node name="InitialSpawn" parent="."]
+position = Vector2(1060, 592)
+
+[node name="DoorSpawn" parent="."]
+position = Vector2(1170, 592)
+
+[node name="Player" parent="."]
+z_index = 1
+
+[node name="Visual" parent="Player"]
+position = Vector2(0, -66)
+scale = Vector2(3, 3)
+
+[node name="LeftExit" parent="."]
+monitoring = false
+
+[node name="RightExit" parent="."]
+monitoring = false
+
+[node name="Exit" parent="." instance=ExtResource("3_door")]
+position = Vector2(80, 540)
+destination = "res://scenes/movement/top_down_movement.tscn"
+destination_spawn = &"DoorSpawn"
+action_text = "Keluar gedung"
+
+[node name="Stairs" type="Area2D" parent="."]
+position = Vector2(1800, 540)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_interaction")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stairs"]
+shape = SubResource("RectangleShape2D_stairs")
+
+[node name="Prompt" type="Button" parent="Stairs"]
+visible = false
+offset_left = -120.0
+offset_top = -220.0
+offset_right = 120.0
+offset_bottom = -175.0
+focus_mode = 0
+theme = ExtResource("5_theme")
+text = "E · Naik ke lantai 2"
+
+[node name="StairsSpawn" type="Marker2D" parent="."]
+position = Vector2(1640, 592)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+position = Vector2(0, 360)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1920, 360)
+shape = SubResource("RectangleShape2D_wall")

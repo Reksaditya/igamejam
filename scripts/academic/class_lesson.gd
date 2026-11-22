@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 signal closed
+signal completed
 
 const Qte = preload("res://scripts/interaction/classroom/focus_qte.gd")
 const ActivityPanel = preload("res://scripts/ui/activity_panel.gd")
@@ -153,7 +154,15 @@ func _show_summary() -> void:
 		_summary.label(lesson.sections[index] if data.complete.has(index) else "________________ (catatan kosong)")
 	_summary.label("Materi yang dilewati tidak dapat diulang di kelas. Lengkapi catatan melalui Library pada komputer asrama.", 16)
 	_summary.add_close()
-	_summary.closed.connect(_close)
+	if not notes_only:
+		_summary.close_button.text = "Kembali ke lorong"
+	_summary.closed.connect(_on_summary_closed)
+
+
+func _on_summary_closed() -> void:
+	if not notes_only:
+		completed.emit()
+	_close()
 
 
 func _close() -> void:

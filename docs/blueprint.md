@@ -10,7 +10,8 @@ Berjalan dengan A/D atau panah kiri/kanan; Shift untuk berlari. Interaksi memaka
 
 Kamar 210 kini memakai furniture kiriman pengguna, kursi interaktif, dan area gerak berukuran 60% lebar serta tinggi viewport. Detail aset dan perilaku resize/save tersedia di [panduan kamar](dorm-room.md).
 
-- Halaman kampus: pintu tengah menuju kelas; pintu di sisi kanan bangunan menuju ruang dosen. Tepi kanan menuju gedung lab; tepi kiri menuju asrama.
+- Halaman kampus: pintu tengah menuju lorong kelas F1; pintu di sisi kanan bangunan menuju ruang dosen. Tepi kanan menuju gedung lab; tepi kiri menuju asrama.
+- Lorong kelas: tangga dengan E menghubungkan F1, F2, dan F3. Pintu ganda menuju kelas di lantai tersebut. Keluar gedung dari sisi kiri F1. Detail: docs/classroom-corridor.md.
 - Gedung lab: pintu menuju bengkel. Meja perakitan dapat diakses dengan E.
 - Asrama: pintu masuk menuju lantai 1. Tangga di kanan menuju lantai 2. Pintu kamar 210 berada di sisi kiri lantai 2.
 - Kamar 210: tempat tidur di kiri dan meja komputer di kanan. Komputer menyediakan Word Explorer/LMS, Library, Project, Blocks, Notepad, dan aplikasi desktop sebelumnya. Sandi awal komputer 123. Matikan komputer untuk kembali ke kamar.
@@ -28,7 +29,7 @@ Setelah kelas atau ujian dan tugas/kuis minggu aktif selesai, tempat tidur menye
 
 Duduk dengan E. QTE pertama muncul empat detik kemudian, lalu QTE selanjutnya setelah jeda acak 5–11 detik. QTE berada di atas kepala; tekan Space ketika penanda berada di zona hijau. Tiga bagian catatan disimpan per minggu. Kesulitan meningkat pada bagian akhir materi. Percobaan ditandai sebelum QTE muncul, sehingga keluar dari game tidak memberikan kesempatan mengulang bagian tersebut di kelas.
 
-Catatan akhir baru tersedia setelah kelas selesai. Kegagalan menyisakan bagian kosong. Buka Library pada komputer asrama, baca materi yang selesai atau minggu yang terlewat, lalu tuliskan keyword bacaan. Keyword benar melengkapi catatan dan memberikan satu potongan blueprint. Materi masa depan tidak tersedia. Jurnal profil mengelompokkan catatan dan proyek per semester/minggu; data terdahulu tanpa tanggal masuk Arsip Lama.
+Catatan akhir baru tersedia setelah kelas selesai. Setelah popup catatan akhir ditutup, pemain kembali ke lorong lantai yang sama melalui fade. Membaca ulang catatan lama tidak memicu perpindahan. Kegagalan menyisakan bagian kosong. Buka Library pada komputer asrama, baca materi yang selesai atau minggu yang terlewat, lalu tuliskan keyword bacaan. Keyword benar melengkapi catatan dan memberikan satu potongan blueprint. Materi masa depan tidak tersedia. Jurnal profil mengelompokkan catatan dan proyek per semester/minggu; data terdahulu tanpa tanggal masuk Arsip Lama.
 
 Minggu 8 dan 16 digunakan untuk UTS/UAS melalui komputer kelas. Tugas dan kuis tetap tersedia pada minggu tersebut.
 
@@ -70,6 +71,6 @@ GameSave menyimpan snapshot versi 2 setiap dua detik, saat progres berubah, dan 
 
 ## Validasi
 
-Jalankan tools/run_production_tests.py dengan --godot menunjuk executable Godot 4.7.2. Runner membuat direktori APPDATA/LOCALAPPDATA terisolasi di .godot/production-validation, menyimpan log, menguji 14 kelompok fitur dan lima pengujian ulang dari proses baru, lalu mengembalikan kode gagal jika ada runtime error atau hasil uji tidak lengkap. Background kelas dan empat kursi interaktif dijelaskan di docs/classroom-seating.md.
+Jalankan tools/run_production_tests.py dengan --godot menunjuk executable Godot 4.7.2. Runner membuat direktori APPDATA/LOCALAPPDATA terisolasi di .godot/production-validation, menyimpan log, menguji 16 kelompok fitur dan enam pengujian ulang dari proses baru, lalu mengembalikan kode gagal jika ada runtime error atau hasil uji tidak lengkap. Background kelas dan empat kursi interaktif dijelaskan di docs/classroom-seating.md; lorong tiga lantai di docs/classroom-corridor.md.
 
 Pengujian grafis tambahan memakai opsi --capture pada academic_flow_smoke, dorm_study_smoke, workshop_flow_smoke, world_life_smoke, dan player_profile_smoke. Tangkapan layar berada di .godot. Aset lingkungan, NPC, mesin, dan cutscene masih dummy sesuai persetujuan pengguna; karakter memakai tujuh frame idle yang telah diberikan.

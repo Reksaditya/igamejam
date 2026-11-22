@@ -113,6 +113,7 @@ func _open_lesson(seat: Area2D = null) -> void:
 	_lesson.player = actor
 	_lesson.seat_position = seat.get_node("SeatPoint").global_position
 	_lesson.closed.connect(_on_lesson_closed)
+	_lesson.completed.connect(_return_to_corridor)
 	_active_seat = seat
 	add_child(_lesson)
 	if actor.is_studying():
@@ -140,6 +141,11 @@ func _on_lesson_closed() -> void:
 	_stand_up()
 	$Hud.show()
 	_refresh_classroom()
+
+
+func _return_to_corridor() -> void:
+	var door := get_parent().get_node("Door") as Area2D
+	SceneTransition.change_scene.call_deferred(door.destination, door.destination_spawn)
 
 
 func _open_exam() -> void:

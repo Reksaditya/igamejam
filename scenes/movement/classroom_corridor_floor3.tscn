@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/movement/classroom_corridor_floor2.tscn" id="1_corridor"]
+
+[node name="ClassroomCorridorFloor3" instance=ExtResource("1_corridor")]
+world_title = "LORONG KELAS · LANTAI 3"
+floor_number = 3
+
+[node name="Door" parent="."]
+destination = "res://scenes/movement/campus_classroom_floor3.tscn"
+
+[node name="Stairs" parent="."]
+position = Vector2(1780, 540)

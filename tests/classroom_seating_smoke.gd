@@ -45,7 +45,20 @@ func _run() -> void:
 			lesson._qte._resolve(true)
 			lesson._process(1.3)
 		assert(career.class_data(1, index + 1).finished)
+		await _frames(4)
+		assert(paused and lesson._summary.window.visible)
 		lesson._summary.close()
+		await scene_changed
+		await root.get_node("SceneTransition").transition_finished
+		assert(current_scene.scene_file_path.ends_with("classroom_corridor_floor1.tscn"))
+		assert(not paused)
+		change_scene_to_file("res://scenes/movement/campus_classroom.tscn")
+		await scene_changed
+		await _frames(4)
+		classroom = current_scene.get_node("ClassActivity")
+		player = current_scene.get_node("Player")
+		seat = classroom._seats[index]
+		player.position = seat.global_position
 		await _frames(4)
 		assert(not player.is_studying())
 		assert(player.get_node("Visual").scale.is_equal_approx(standing_scale))
