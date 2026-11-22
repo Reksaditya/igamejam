@@ -7,7 +7,7 @@
 mouse_default_cursor_shape = 2
 theme_type_variation = &"DesktopItem"
 script = ExtResource("1_launcher")
-display_title = "Proyek"
+display_title = "Project"
 icon_kind = 6
 app_scene = ExtResource("2_project")
 preferred_window_size = Vector2(486, 442)

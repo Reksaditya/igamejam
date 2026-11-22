@@ -11,7 +11,7 @@ const INK: Color = Color("#172440")
 const PAPER: Color = Color("#fff1cf")
 const BLUE: Color = Color("#546faa")
 
-@export var display_title: String = "Aplikasi":
+@export var display_title: String = "App":
 	set(value):
 		display_title = value
 		_update_caption()

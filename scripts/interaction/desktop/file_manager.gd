@@ -16,7 +16,7 @@ func _ready() -> void:
 		_open_subfolder(root_folder)
 	else:
 		%Up.hide()
-		%Location.text = "Folder tidak tersedia"
+		%Location.text = "No folder configured"
 
 
 func _open_subfolder(folder: DesktopFolder) -> void:
@@ -76,7 +76,7 @@ func _build_page(folder: DesktopFolder) -> HFlowContainer:
 			page.add_child(item)
 	if page.get_child_count() == 0:
 		var empty := Label.new()
-		empty.text = "Folder ini kosong."
+		empty.text = "This folder is empty."
 		page.add_child(empty)
 	return page
 
@@ -108,7 +108,7 @@ func _collect_folder(folder: DesktopFolder, visited: Array[DesktopFolder], attac
 			var metadata := item.get_attachment_metadata()
 			item.free()
 			if not metadata.is_empty():
-				metadata["source"] = "Pengelola Berkas"
+				metadata["source"] = "File Manager"
 				attachments.append(metadata)
 	for resource: Resource in folder.subfolders:
 		_collect_folder(resource as DesktopFolder, visited, attachments)

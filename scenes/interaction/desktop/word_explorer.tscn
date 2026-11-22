@@ -67,8 +67,8 @@ theme_override_font_sizes/font_size = 14
 custom_minimum_size = Vector2(30, 22)
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
-tooltip_text = "Tab baru"
-accessibility_name = "Tab baru"
+tooltip_text = "New tab"
+accessibility_name = "New tab"
 
 [node name="Toolbar" type="PanelContainer" parent="Layout"]
 layout_mode = 2
@@ -80,12 +80,12 @@ theme_override_constants/separation = 4
 
 [node name="Home" type="Button" parent="Layout/Toolbar/Navigation"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(68, 24)
+custom_minimum_size = Vector2(50, 24)
 layout_mode = 2
 theme_type_variation = &"BrowserButton"
 theme_override_font_sizes/font_size = 14
 mouse_default_cursor_shape = 2
-text = "Beranda"
+text = "Home"
 
 [node name="Address" type="LineEdit" parent="Layout/Toolbar/Navigation"]
 unique_name_in_owner = true
@@ -94,18 +94,18 @@ layout_mode = 2
 theme_type_variation = &"BrowserAddress"
 theme_override_font_sizes/font_size = 16
 size_flags_horizontal = 3
-accessibility_name = "Alamat"
-placeholder_text = "Alamat"
+accessibility_name = "Address"
+placeholder_text = "Address"
 keep_editing_on_text_submit = true
 
 [node name="Go" type="Button" parent="Layout/Toolbar/Navigation"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(48, 24)
+custom_minimum_size = Vector2(37, 24)
 layout_mode = 2
 theme_type_variation = &"BrowserButton"
 theme_override_font_sizes/font_size = 14
 mouse_default_cursor_shape = 2
-text = "Buka"
+text = "Go"
 
 [node name="PageHost" type="MarginContainer" parent="Layout"]
 unique_name_in_owner = true

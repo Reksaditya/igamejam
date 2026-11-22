@@ -155,7 +155,7 @@ script = ExtResource("5_plate")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(101, 27)
 mouse_default_cursor_shape = 2
-text = "Uji engkol"
+text = "Uji Crank"
 
 [node name="Gate" type="Label" parent="Margin/Layout/Scroll/Bench/Machine/Plate"]
 unique_name_in_owner = true
@@ -314,7 +314,7 @@ theme_override_colors/font_color = Color(0.92, 0.95, 0.92, 1)
 theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 13
-text = "Blueprint (seret ke slot)"
+text = "Blueprint (seret ke Slot)"
 
 [node name="BlueprintList" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/BlueprintDock"]
 unique_name_in_owner = true
@@ -331,7 +331,7 @@ theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.9)
 theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 12
-text = "Dapatkan blueprint dari Perpustakaan atau Catatan kelas."
+text = "Dapatkan Blueprint dari Perpustakaan atau Catatan kelas."
 autowrap_mode = 3
 
 [node name="KeybindHint" type="PanelContainer" parent="."]
@@ -342,7 +342,7 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -480.0
+offset_left = -510.0
 offset_top = -32.0
 offset_right = -14.0
 offset_bottom = -8.0
@@ -357,5 +357,5 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.92)
 theme_override_font_sizes/font_size = 12
-text = "Seret: Blueprint / Rel  ·  Klik: Putar / Engkol  ·  Tab / Panah: Fokus  ·  Enter / Spasi: Aktifkan"
+text = "Seret: Blueprint / Slider  ·  Klik: Putar / Crank  ·  Tab / Panah: Fokus  ·  Enter / Spasi: Aktifkan"
 horizontal_alignment = 2

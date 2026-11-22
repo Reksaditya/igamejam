@@ -7,5 +7,5 @@ script = ExtResource("1_assignment")
 id = "submit_field_notes"
 title = "Kumpulkan Catatan Lapangan"
 kind = 1
-instructions = "Lampirkan satu berkas TXT atau gambar dari Desktop atau Pengelola Berkas."
+instructions = "Lampirkan satu berkas TXT atau gambar dari Desktop atau File Manager."
 accepted_filenames = PackedStringArray("field_notes.txt")

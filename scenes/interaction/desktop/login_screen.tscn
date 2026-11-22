@@ -91,13 +91,13 @@ layout_mode = 2
 horizontal_alignment = 1
 theme_type_variation = &"ShellLabel"
 theme_override_font_sizes/font_size = 24
-text = "Pengguna"
+text = "User"
 text_overrun_behavior = 3
 
 [node name="PasswordLabel" type="Label" parent="Backdrop/Form"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
-text = "Kata sandi"
+text = "Password"
 
 [node name="Password" type="LineEdit" parent="Backdrop/Form"]
 unique_name_in_owner = true
@@ -105,13 +105,13 @@ custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 keep_editing_on_text_submit = true
 secret = true
-accessibility_name = "Kata sandi"
+accessibility_name = "Password"
 
 [node name="SignIn" type="Button" parent="Backdrop/Form"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-text = "Masuk"
+text = "Sign in"
 mouse_default_cursor_shape = 2
 
 [node name="Message" type="Label" parent="Backdrop/Form"]
