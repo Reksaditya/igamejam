@@ -138,7 +138,7 @@ func _draw_overlay() -> void:
 		_draw_carrier_preview(preview_carrier)
 	if output_result != 0:
 		var result_color := Color("#a9e4be") if result_passed else Color("#ffae91")
-		_arrow(_overlay, puzzle.output_socket, 33.0, output_result, result_color)
+		_arrow(_overlay, puzzle.output_socket, 35.0, output_result, result_color, 5.5, 16.0)
 	if locked:
 		var face := Rect2(Vector2(4, 4), Puzzle.PLATE_SIZE - Vector2(8, 8))
 		_overlay.draw_rect(face, Color(0.04, 0.07, 0.08, 0.49))
@@ -150,10 +150,14 @@ func _draw_carrier_preview(carrier: int) -> void:
 	var current := puzzle.carrier_gear_position(carrier, turn)
 	var next := puzzle.carrier_gear_position(carrier, turn + 1.0)
 	var radius := puzzle.pitch_radius(puzzle.socket_id(carrier, roundi(turn)))
-	draw_gear(_overlay, next, Color(1.0, 0.84, 0.54, 0.28), 0.0, radius)
-	_overlay.draw_arc(next, radius + 4.0, 0, TAU, 40, Color(1.0, 0.84, 0.54, 0.64), 2.0, true)
-	_overlay.draw_arc(current, radius + 4.0, 0, TAU, 40, CLUE, 2.0, true)
-	_arc_arrow(_overlay, pivot, 27.0, (current - pivot).angle(), PI / 2.0, CLUE)
+	var orbit_radius := pivot.distance_to(current)
+	var arrow_radius := clampf(orbit_radius * 0.62, 30.0, maxf(30.0, orbit_radius - 6.0))
+	draw_gear(_overlay, next, Color(1.0, 0.84, 0.54, 0.34), 0.0, radius)
+	_overlay.draw_arc(next, radius + 4.5, 0, TAU, 40, Color(INK, 0.82), 5.0, true)
+	_overlay.draw_arc(next, radius + 4.5, 0, TAU, 40, Color(1.0, 0.87, 0.58, 0.88), 2.5, true)
+	_overlay.draw_arc(current, radius + 4.5, 0, TAU, 40, Color(INK, 0.82), 5.0, true)
+	_overlay.draw_arc(current, radius + 4.5, 0, TAU, 40, CLUE, 2.5, true)
+	_arc_arrow(_overlay, pivot, arrow_radius, (current - pivot).angle(), PI / 2.0, CLUE, 5.0, 14.0)
 
 
 func _draw_sheet(face: Rect2) -> void:
@@ -179,8 +183,8 @@ func _draw_sheet(face: Rect2) -> void:
 		draw_circle(position, 6.0, Color("#e4f1f1"), false, 2.0, true)
 	draw_circle(puzzle.idler_socket, 9, Color("#e4f1f1"), false, 2.0, true)
 	_diagram_label("M", puzzle.motor_socket - Vector2(0, 25))
-	_diagram_label("OUT", puzzle.output_socket + Vector2(0, 55))
-	_arrow(self, puzzle.output_socket, 30.0, puzzle.required_output_direction, CLUE)
+	_diagram_label("OUT", puzzle.output_socket + Vector2(0, 58))
+	_arrow(self, puzzle.output_socket, 33.0, puzzle.required_output_direction, CLUE, 5.5, 16.0)
 
 
 func _socket(point: Vector2, selected := false) -> void:
@@ -211,18 +215,32 @@ static func draw_gear(canvas: CanvasItem, point: Vector2, metal: Color, phase :=
 	canvas.draw_circle(point - Vector2(1, 1), 2.0, metal, true, -1, true)
 
 
-func _arrow(canvas: CanvasItem, center: Vector2, radius: float, direction: int, color: Color) -> void:
-	_arc_arrow(canvas, center, radius, -PI / 2 - direction * 0.65, direction * 4.6, color)
+func _arrow(canvas: CanvasItem, center: Vector2, radius: float, direction: int, color: Color, width := 5.5, head_size := 15.0) -> void:
+	_arc_arrow(canvas, center, radius, -PI / 2.0 - direction * 0.65, direction * 4.55, color, width, head_size)
 
 
-func _arc_arrow(canvas: CanvasItem, center: Vector2, radius: float, start: float, sweep: float, color: Color) -> void:
+func _arc_arrow(canvas: CanvasItem, center: Vector2, radius: float, start: float, sweep: float, color: Color, width := 5.0, head_size := 14.0) -> void:
+	if is_zero_approx(sweep):
+		return
+	var dir := signf(sweep)
 	var end := start + sweep
-	canvas.draw_arc(center, radius, minf(start, end), maxf(start, end), 26, color, 4.0, true)
+	var trim := minf(absf(sweep) * 0.35, (head_size * 0.55) / maxf(radius, 1.0))
+	var arc_end := end - dir * trim
+	var arc_from := minf(start, arc_end)
+	var arc_to := maxf(start, arc_end)
+	var outline := Color(INK, 0.92)
 	var radial := Vector2.from_angle(end)
 	var tip := center + radial * radius
-	var tangent := Vector2(-radial.y, radial.x)
-	var tail := tip - tangent * signf(sweep) * 10.0
-	canvas.draw_colored_polygon(PackedVector2Array([tip, tail - radial * 5.0, tail + radial * 5.0]), color)
+	var tangent := Vector2(-radial.y, radial.x) * dir
+	var wing := head_size * 0.52
+	var base := tip - tangent * head_size
+	var outline_tip := tip + tangent * 3.0
+	var outline_base := base - tangent * 2.0
+	var outline_wing := wing + 2.8
+	canvas.draw_arc(center, radius, arc_from, arc_to, 36, outline, width + 4.5, true)
+	canvas.draw_colored_polygon(PackedVector2Array([outline_tip, outline_base - radial * outline_wing, outline_base + radial * outline_wing]), outline)
+	canvas.draw_arc(center, radius, arc_from, arc_to, 36, color, width, true)
+	canvas.draw_colored_polygon(PackedVector2Array([tip, base - radial * wing, base + radial * wing]), color)
 
 
 func _plate_label(value: String, at: Vector2) -> void:

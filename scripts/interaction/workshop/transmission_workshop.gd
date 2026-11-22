@@ -109,9 +109,12 @@ func _ready() -> void:
 
 
 func _update_layout() -> void:
-	var narrow := get_window().size.x < 760 or size.x < 760
+	var width := mini(get_window().size.x, int(size.x)) if size.x > 0.0 else get_window().size.x
+	var narrow := width < 760
 	%Bench.vertical = narrow
 	%Machine.custom_minimum_size.y = clampf(size.x * 0.66, 350.0, 620.0) if narrow else 0.0
+	if has_node("%KeybindHintText"):
+		%KeybindHintText.text = "Click: Use · Tab: Focus · Enter: Activate" if width < 520 else "Click: Use  ·  Tab / Arrows: Focus  ·  Enter / Space: Activate"
 
 
 func _size_blueprint() -> void:
@@ -135,6 +138,7 @@ func _insert_blueprint() -> void:
 	_unlocked = true
 	_plate.locked = false
 	_restore_completion()
+	_record_blueprint_work(_completed)
 	for carrier: int in range(_rotations.size()):
 		_plate.turns[carrier] = float(_rotations[carrier])
 	_feedback("Build complete." if _completed else "Fit the loose idler.")
@@ -256,6 +260,7 @@ func _fit_idler() -> void:
 		return
 	_holding_idler = false
 	_fitted = true
+	_record_blueprint_work(false)
 	_feedback("Idler fitted.")
 	_refresh_plate()
 	_update_controls()
@@ -270,6 +275,7 @@ func _rotate_carrier(carrier: int) -> void:
 	_plate.contacts.clear()
 	_update_controls()
 	_rotations[carrier] = posmod(_rotations[carrier] + 1, Puzzle.SOCKETS_PER_CARRIER)
+	_record_blueprint_work(false)
 	var turn := create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	turn.tween_method(_set_visual_turn.bind(carrier), _plate.turns[carrier], _plate.turns[carrier] + 1.0, 0.22)
 	_feedback("Ready to test.")
@@ -342,12 +348,19 @@ func _show_result(result: Dictionary) -> void:
 	config.set_value(puzzle.puzzle_id, "rotations", _rotations)
 	if Save.write_config(config, SAVE_PATH) == OK:
 		_completed = true
+		_record_blueprint_work(true)
 		_feedback("%s. Build complete." % heading)
 		var checkpoint := get_node_or_null("/root/GameSave")
 		if checkpoint != null:
 			checkpoint.request_autosave()
 	else:
 		_feedback("Passed. Test again to retry saving.")
+
+
+func _record_blueprint_work(completed: bool) -> void:
+	if demo_blueprint or puzzle == null:
+		return
+	ProjectBlueprints.mark_worked(puzzle.linked_blueprint_id, completed)
 
 
 func _refresh_plate() -> void:

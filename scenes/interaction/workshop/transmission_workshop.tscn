@@ -6,14 +6,38 @@
 [ext_resource type="Script" path="res://scripts/interaction/workshop/workshop_room.gd" id="4_room"]
 [ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_plate.gd" id="5_plate"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Panel"]
-content_margin_left = 14.0
-content_margin_top = 9.0
-content_margin_right = 14.0
-content_margin_bottom = 9.0
-bg_color = Color(0.09, 0.15, 0.16, 1)
-border_width_top = 2
-border_color = Color(0.44, 0.56, 0.55, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Whisper"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(0.08, 0.13, 0.14, 0.76)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Reader"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.09, 0.14, 0.15, 0.88)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Hint"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0.07, 0.11, 0.12, 0.72)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Blueprint"]
 content_margin_left = 12.0
@@ -58,40 +82,36 @@ mouse_filter = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_bottom = 36
 
 [node name="Layout" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Header" type="PanelContainer" parent="Margin/Layout"]
+[node name="TopBar" type="HBoxContainer" parent="Margin/Layout"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_Panel")
-
-[node name="Row" type="HBoxContainer" parent="Margin/Layout/Header"]
-layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="Return" type="Button" parent="Margin/Layout/Header/Row"]
+[node name="Return" type="Button" parent="Margin/Layout/TopBar"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Back to lab"
 
-[node name="Title" type="Label" parent="Margin/Layout/Header/Row"]
+[node name="Spacer" type="Control" parent="Margin/Layout/TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.95, 0.92, 0.83, 1)
-theme_override_font_sizes/font_size = 23
-text = "Transmission bench"
-horizontal_alignment = 1
+mouse_filter = 2
 
-[node name="Clock" type="Label" parent="Margin/Layout/Header/Row"]
+[node name="Clock" type="Label" parent="Margin/Layout/TopBar"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(91, 0)
 layout_mode = 2
 theme_type_variation = &"TaskbarClock"
+theme_override_colors/font_outline_color = Color(0.07, 0.11, 0.12, 0.9)
+theme_override_constants/outline_size = 4
 horizontal_alignment = 2
 
 [node name="Scroll" type="ScrollContainer" parent="Margin/Layout"]
@@ -114,8 +134,9 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(258, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.7
+size_flags_stretch_ratio = 1.85
 mouse_filter = 2
+theme_override_constants/separation = 6
 
 [node name="Plate" type="Control" parent="Margin/Layout/Scroll/Bench/Machine"]
 unique_name_in_owner = true
@@ -149,26 +170,28 @@ vertical_alignment = 1
 
 [node name="Feedback" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/Machine"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(176, 0)
+custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
-size_flags_horizontal = 8
-theme_override_styles/panel = SubResource("StyleBoxFlat_Panel")
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_Whisper")
 
 [node name="Status" type="Label" parent="Margin/Layout/Scroll/Bench/Machine/Feedback"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 theme_override_colors/font_color = Color(0.94, 0.95, 0.88, 1)
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 
 [node name="CardStack" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(204, 0)
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_filter = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
 [node name="Blueprint" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
 unique_name_in_owner = true
@@ -193,21 +216,28 @@ size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("5_plate")
 
-[node name="Legend" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
+[node name="Legend" type="MarginContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_Panel")
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
 
 [node name="LegendText" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/Legend"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.94, 0.95, 0.88, 1)
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.95, 0.94, 0.87, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
+theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 14
 autowrap_mode = 3
 
 [node name="Reader" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_Panel")
+theme_override_styles/panel = SubResource("StyleBoxFlat_Reader")
 
 [node name="ReaderRow" type="HBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/Reader"]
 layout_mode = 2
@@ -280,3 +310,29 @@ layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
 text = "Take idler"
+
+[node name="KeybindHint" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -350.0
+offset_top = -32.0
+offset_right = -14.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_Hint")
+
+[node name="KeybindHintText" type="Label" parent="KeybindHint"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.92)
+theme_override_font_sizes/font_size = 12
+text = "Click: Use  ·  Tab / Arrows: Focus  ·  Enter / Space: Activate"
+horizontal_alignment = 2
