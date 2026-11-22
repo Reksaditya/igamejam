@@ -13,6 +13,7 @@ left_destination = ""
 right_destination = ""
 
 [node name="Background" parent="." index="0"]
+z_index = -1
 texture_filter = 1
 script = ExtResource("3_background")
 interior = true

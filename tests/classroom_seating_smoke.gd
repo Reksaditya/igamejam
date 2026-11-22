@@ -20,12 +20,16 @@ func _run() -> void:
 	var standing_scale: Vector2 = player.get_node("Visual").scale
 	assert(classroom._seats.size() == 4)
 	assert(room.get_node("Background").CLASSROOM.resource_path == "res://assets/classroom/background.png")
+	assert(room.get_node("Background").z_index < player.z_index)
+	assert(classroom.get_node("Desks").z_index > player.z_index)
 	for index: int in 4:
 		var seat: Area2D = classroom._seats[index]
 		clock.restore_save_state({"minutes": index * 7 * 1440 + 600, "remainder": 0})
 		player.position = seat.global_position
 		await _frames(8)
-		assert(seat.get_node("Chair").texture.resource_path == "res://assets/classroom/chair.png")
+		assert(seat.get_node("Chair").texture.resource_path == "res://assets/classroom/chair%d.png" % (index + 1))
+		assert(seat.get_node("Chair").z_index < player.z_index)
+		assert(seat.get_node("Chair").z_index > room.get_node("Background").z_index)
 		assert(seat.get_node("Prompt").visible)
 		if index == 0:
 			await _capture("classroom-standing")
@@ -35,6 +39,7 @@ func _run() -> void:
 		assert(is_instance_valid(lesson) and player.is_studying())
 		assert(player.global_position.is_equal_approx(seat.get_node("SeatPoint").global_position))
 		assert(player.get_node("Visual").scale.x > 0)
+		assert(player.get_node("Visual/AnimatedSprite2D").animation == &"sit")
 		if index == 0:
 			await _capture("classroom-seated")
 		for section: int in 3:
@@ -55,6 +60,7 @@ func _run() -> void:
 		change_scene_to_file("res://scenes/movement/campus_classroom.tscn")
 		await scene_changed
 		await _frames(4)
+		room = current_scene
 		classroom = current_scene.get_node("ClassActivity")
 		player = current_scene.get_node("Player")
 		seat = classroom._seats[index]
@@ -66,6 +72,8 @@ func _run() -> void:
 		await _frames(4)
 		assert(classroom._manual_seated and player.is_studying())
 		assert(not is_instance_valid(classroom._lesson))
+		if index == 0:
+			await _capture("classroom-manual-seated")
 		var point := player.position
 		Input.action_press("move_right")
 		await _frames(5)
@@ -87,6 +95,7 @@ func _run() -> void:
 	change_scene_to_file("res://scenes/movement/campus_lab_room.tscn")
 	await scene_changed
 	assert(current_scene.get_node("Background").laboratory)
+	assert(not current_scene.get_node("ClassActivity/Desks").visible)
 	for seat: Area2D in current_scene.get_node("ClassActivity")._seats:
 		assert(not seat.visible and not seat.available)
 	print("PASS: supplied classroom assets, four E seats, seated QTE, study once, movement lock, E/button stand, exam-week sitting and unchanged laboratory")
