@@ -6,11 +6,15 @@
 [ext_resource type="Theme" path="res://scenes/interaction/desktop/lms/lms_theme.tres" id="4_theme"]
 [ext_resource type="Resource" path="res://scenes/interaction/desktop/lms/submit_field_notes.tres" id="5_field_notes"]
 
+[ext_resource type="Script" path="res://scripts/interaction/desktop/lms/lms_chapter.gd" id="6_chapter"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/lms/dinosaur_chapter.tres" id="7_chapter"]
+
 [node name="WordExplorerHome" type="VBoxContainer"]
 theme = ExtResource("4_theme")
 theme_override_constants/separation = 14
 script = ExtResource("1_dashboard")
-assignments = Array[ExtResource("2_assignment")]([ExtResource("3_dinosaur"), ExtResource("5_field_notes")])
+chapters = Array[ExtResource("6_chapter")]([ExtResource("7_chapter")])
+legacy_assignments = Array[ExtResource("2_assignment")]([ExtResource("3_dinosaur"), ExtResource("5_field_notes")])
 
 [node name="Header" type="HBoxContainer" parent="."]
 layout_mode = 2

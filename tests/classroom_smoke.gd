@@ -11,7 +11,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var clock := root.get_node("GameClock")
 	var notes := root.get_node("ClassroomProgress")
-	var blueprint := root.get_node("BlueprintProgress")
+	var blueprints := root.get_node("ProjectBlueprints")
 	if "--interrupted" in OS.get_cmdline_user_args():
 		change_scene_to_file(CLASSROOM)
 		await scene_changed
@@ -58,13 +58,13 @@ func _run() -> void:
 	clock._absolute_minutes = 870
 	var token: int = clock.begin_assessment()
 	var nested: int = clock.begin_assessment()
-	assert(clock._timer.paused)
+	assert(clock.is_activity_running())
 	clock._assessment_started_msec -= 360000
 	clock.end_assessment(token)
 	assert(clock.get_absolute_minutes() == 870)
 	clock.end_assessment(nested)
 	assert(clock.get_formatted_time() == "14:36")
-	assert(not clock._timer.paused)
+	assert(not clock.is_activity_running())
 	clock.end_assessment(nested)
 	assert(clock.get_formatted_time() == "14:36")
 	clock._absolute_minutes = 0
@@ -111,15 +111,15 @@ func _run() -> void:
 	assert(delays[0] != delays[1])
 	assert(notes.is_class_finished())
 	assert(notes.is_complete() == all_success)
+	assert(blueprints.is_owned("sediment_sorter") == all_success)
 	assert(lesson.get_node("Screen").visible)
 	assert(not lesson.get_node("Qte").visible)
 	assert(paused)
 	assert(lesson.get_node("Screen/Scroll/Content/Blueprint").visible == all_success)
 	if all_success:
-		for index: int in 6:
-			assert(blueprint.has_piece(index))
 		lesson._open_blueprint()
 		assert(lesson._popup.visible)
+		assert(lesson._popup.get_child(0)._drawings["sediment_sorter"].is_visible_in_tree())
 		lesson._popup.hide()
 	else:
 		assert(not notes.has_note(2))
@@ -164,7 +164,7 @@ func _run() -> void:
 	assert(paused)
 	assert(exam.assignment.questions.size() == 10)
 	assert(exam.duration_seconds == 600.0)
-	assert(clock._timer.paused)
+	assert(clock.is_activity_running())
 	exam._quiz._select_answer(exam.assignment.questions[0].correct_option)
 	var previous_deadline: float = exam._deadline_unix
 	exam.free()
@@ -220,7 +220,7 @@ func _run() -> void:
 	exam._close()
 	await _frames(2)
 	assert(not paused)
-	assert(not clock._timer.paused)
+	assert(not clock.is_activity_running())
 	change_scene_to_file("res://scenes/movement/campus_lab_room.tscn")
 	await scene_changed
 	await _frames(3)

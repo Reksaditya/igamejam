@@ -4,7 +4,7 @@ signal closed
 
 enum Phase { WAITING, FOCUS, FEEDBACK, NOTES }
 
-const BLUEPRINT_SCENE := preload("res://scenes/interaction/blueprint/blueprint_popup.tscn")
+const BLUEPRINT_SCENE := preload("res://scenes/interaction/desktop/project/project_app.tscn")
 
 @export_range(2.0, 10.0, 0.5) var first_qte_delay: float = 4.0
 @export_range(2.0, 30.0, 0.5) var minimum_qte_delay: float = 5.0
@@ -23,11 +23,10 @@ var _popup: Window
 var _desktop_button: Button
 var _desktop_was_disabled: bool = false
 var _save_error: bool = false
+var _blueprint_error: Error = OK
 
 
 func _ready() -> void:
-	_popup = BLUEPRINT_SCENE.instantiate()
-	add_child(_popup)
 	%Close.pressed.connect(_close)
 	%Blueprint.pressed.connect(_open_blueprint)
 	%Qte.resolved.connect(_on_qte_resolved)
@@ -110,6 +109,8 @@ func _on_qte_resolved(success: bool) -> void:
 	_remaining = 1.2
 	var error := ClassroomProgress.finish_material(_indices[_segment], success)
 	_save_error = _save_error or error != OK
+	if error == OK and ClassroomProgress.is_complete():
+		_blueprint_error = ClassroomProgress.unlock_blueprint()
 	%StudyStatus.text = "Fokus terjaga." if success else "Fokus terputus."
 
 
@@ -140,17 +141,38 @@ func _show_notes() -> void:
 	%Blueprint.visible = complete
 	_refresh_notes()
 	%Notes.visible = finished
-	if complete and ClassroomProgress.unlock_blueprint() != OK:
-		%Status.text = "Blueprint belum tersimpan. Tekan Buka blueprint untuk mencoba kembali."
+	if complete:
+		if _blueprint_error == OK:
+			_blueprint_error = ClassroomProgress.unlock_blueprint()
+		_update_blueprint_status()
 	%Close.grab_focus()
 
 
 func _open_blueprint() -> void:
-	var error := ClassroomProgress.unlock_blueprint()
-	if error == OK:
-		_popup.open()
-	else:
-		%Status.text = "Blueprint belum dapat dibuka. " + error_string(error)
+	_blueprint_error = ClassroomProgress.unlock_blueprint()
+	_update_blueprint_status()
+	if _blueprint_error != OK:
+		return
+	if _popup == null:
+		_popup = Window.new()
+		_popup.title = "Blueprint"
+		_popup.min_size = Vector2i(280, 260)
+		_popup.close_requested.connect(_popup.hide)
+		add_child(_popup)
+		var viewer := BLUEPRINT_SCENE.instantiate() as Control
+		_popup.add_child(viewer)
+		viewer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_popup.popup_centered_clamped(Vector2i(440, 340), 0.9)
+
+
+func _update_blueprint_status() -> void:
+	var saved := _blueprint_error == OK
+	%Blueprint.text = "Buka blueprint" if saved else "Coba simpan lagi"
+	%Material.text = "Catatan lengkap. Blueprint tersedia di Project." if saved else "Catatan lengkap."
+	if not saved:
+		%Status.text = "Blueprint belum tersimpan. Coba simpan lagi. " + error_string(_blueprint_error)
+	elif not _save_error:
+		%Status.text = ""
 
 
 func _restore_player() -> void:

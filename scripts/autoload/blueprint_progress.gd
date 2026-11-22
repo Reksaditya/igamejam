@@ -5,7 +5,8 @@ signal project_completed(project_id: String)
 
 const Definition = preload("res://scripts/interaction/blueprint/blueprint_definition.gd")
 const PROJECT: Definition = preload("res://scenes/interaction/blueprint/transmission.tres")
-const SAVE_PATH := "user://blueprint_progress.cfg"
+const SAVE_PATH := "user://transmission_progress.cfg"
+const LEGACY_SAVE_PATH := "user://blueprint_progress.cfg"
 
 var _learned := PackedInt32Array()
 var _placed := PackedInt32Array()
@@ -19,7 +20,11 @@ func reload_progress() -> void:
 	_learned.clear()
 	_placed.clear()
 	var save := ConfigFile.new()
-	if save.load(SAVE_PATH) != OK or save.get_value("project", "id", "") != PROJECT.id:
+	if save.load(SAVE_PATH) != OK:
+		save.clear()
+		if save.load(LEGACY_SAVE_PATH) != OK:
+			return
+	if save.get_value("project", "id", "") != PROJECT.id:
 		return
 	if save.get_value("project", "version", 0) != 1:
 		return

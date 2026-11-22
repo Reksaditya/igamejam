@@ -2,6 +2,22 @@
 
 [ext_resource type="Script" path="res://scripts/interaction/desktop/lms/lms_attachment_form.gd" id="1_form"]
 
+[sub_resource type="StyleBoxFlat" id="PickerButton"]
+bg_color = Color(0.86, 0.88, 0.9, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.52, 0.56, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="PickerHover"]
+bg_color = Color(0.76, 0.8, 0.83, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.49, 0.53, 1)
+
 [node name="AttachmentForm" type="VBoxContainer"]
 theme_override_constants/separation = 12
 script = ExtResource("1_form")
@@ -25,21 +41,38 @@ theme_type_variation = &"LmsSection"
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Filename" type="Label" parent="Attachment/Fields"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "No attachment selected"
-autowrap_mode = 3
-
 [node name="Actions" type="HBoxContainer" parent="Attachment/Fields"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="Choose" type="Button" parent="Attachment/Fields/Actions"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(42, 36)
 layout_mode = 2
+size_flags_vertical = 4
 mouse_default_cursor_shape = 2
-text = "Choose file"
+tooltip_text = "Choose file"
+accessibility_name = "Choose file"
+theme_override_styles/normal = SubResource("PickerButton")
+theme_override_styles/hover = SubResource("PickerHover")
+theme_override_styles/pressed = SubResource("PickerHover")
+theme_override_styles/hover_pressed = SubResource("PickerHover")
+
+[node name="FolderIcon" type="Control" parent="Attachment/Fields/Actions/Choose"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Filename" type="Label" parent="Attachment/Fields/Actions"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "No attachment selected"
+autowrap_mode = 3
+vertical_alignment = 1
 
 [node name="Remove" type="Button" parent="Attachment/Fields/Actions"]
 unique_name_in_owner = true

@@ -2,14 +2,73 @@
 
 [ext_resource type="Script" path="res://scripts/interaction/desktop/word_explorer.gd" id="1_app"]
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/word_explorer_home.tscn" id="2_page"]
+[ext_resource type="Script" path="res://scripts/interaction/desktop/browser_route.gd" id="3_route"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/desktop/study/study_home.tscn" id="4_study"]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/browser_tab.gd" id="5_tab"]
+
+[sub_resource type="Resource" id="Route_homework"]
+script = ExtResource("3_route")
+address = "www.homeworkplace.com"
+page = ExtResource("2_page")
+
+[sub_resource type="Resource" id="Route_study"]
+script = ExtResource("3_route")
+address = "www.placetostudy.com"
+page = ExtResource("4_study")
+
+[sub_resource type="Resource" id="Tab_library"]
+script = ExtResource("5_tab")
+title = "Library"
+address = "www.placetostudy.com"
+
+[sub_resource type="Resource" id="Tab_homework"]
+script = ExtResource("5_tab")
+title = "Homework"
+address = "www.homeworkplace.com"
 
 [node name="WordExplorer" type="MarginContainer"]
 script = ExtResource("1_app")
-local_page = ExtResource("2_page")
+default_tabs = Array[ExtResource("5_tab")]([SubResource("Tab_library"), SubResource("Tab_homework")])
+start_tab = 1
+local_routes = Array[ExtResource("3_route")]([SubResource("Route_homework"), SubResource("Route_study")])
 
 [node name="Layout" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 0
+
+[node name="TabBar" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"BrowserToolbar"
+
+[node name="Controls" type="HBoxContainer" parent="Layout/TabBar"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TabScroll" type="ScrollContainer" parent="Layout/TabBar/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 0
+scroll_horizontal_by_default = true
+follow_focus = true
+
+[node name="Tabs" type="HBoxContainer" parent="Layout/TabBar/Controls/TabScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="NewTab" type="Button" parent="Layout/TabBar/Controls"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BrowserButton"
+theme_override_font_sizes/font_size = 14
+custom_minimum_size = Vector2(30, 22)
+size_flags_vertical = 0
+mouse_default_cursor_shape = 2
+tooltip_text = "New tab"
+accessibility_name = "New tab"
 
 [node name="Toolbar" type="PanelContainer" parent="Layout"]
 layout_mode = 2
@@ -17,19 +76,23 @@ theme_type_variation = &"BrowserToolbar"
 
 [node name="Navigation" type="HBoxContainer" parent="Layout/Toolbar"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 4
 
 [node name="Home" type="Button" parent="Layout/Toolbar/Navigation"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(62, 34)
+custom_minimum_size = Vector2(50, 24)
 layout_mode = 2
+theme_type_variation = &"BrowserButton"
+theme_override_font_sizes/font_size = 14
 mouse_default_cursor_shape = 2
 text = "Home"
 
 [node name="Address" type="LineEdit" parent="Layout/Toolbar/Navigation"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(142, 34)
+custom_minimum_size = Vector2(125, 24)
 layout_mode = 2
+theme_type_variation = &"BrowserAddress"
+theme_override_font_sizes/font_size = 16
 size_flags_horizontal = 3
 accessibility_name = "Address"
 placeholder_text = "Address"
@@ -37,27 +100,14 @@ keep_editing_on_text_submit = true
 
 [node name="Go" type="Button" parent="Layout/Toolbar/Navigation"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(48, 34)
+custom_minimum_size = Vector2(37, 24)
 layout_mode = 2
+theme_type_variation = &"BrowserButton"
+theme_override_font_sizes/font_size = 14
 mouse_default_cursor_shape = 2
 text = "Go"
 
-[node name="PagePanel" type="PanelContainer" parent="Layout"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Scroll" type="ScrollContainer" parent="Layout/PagePanel"]
+[node name="PageHost" type="MarginContainer" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
-follow_focus = true
-horizontal_scroll_mode = 0
-
-[node name="Page" type="MarginContainer" parent="Layout/PagePanel/Scroll"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 22
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 22
-theme_override_constants/margin_bottom = 20

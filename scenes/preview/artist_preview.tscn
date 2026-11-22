@@ -1,0 +1,77 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/preview/artist_preview.gd" id="1_preview"]
+[ext_resource type="Theme" path="res://scenes/interaction/desktop/desktop_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Menu"]
+content_margin_left = 34.0
+content_margin_top = 27.0
+content_margin_right = 34.0
+content_margin_bottom = 25.0
+bg_color = Color(0.10, 0.16, 0.17, 1)
+border_width_top = 3
+border_color = Color(0.87, 0.70, 0.43, 1)
+shadow_color = Color(0.02, 0.03, 0.04, 0.45)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[node name="ArtistPreview" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2_theme")
+script = ExtResource("1_preview")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.15, 0.22, 0.23, 1)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_Menu")
+
+[node name="Layout" type="VBoxContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Center/Panel/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.97, 0.92, 0.80, 1)
+theme_override_font_sizes/font_size = 26
+text = "Deadline Artist Preview"
+
+[node name="Choices" type="HBoxContainer" parent="Center/Panel/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Desktop" type="Button" parent="Center/Panel/Layout/Choices"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Desktop"
+
+[node name="Workshop" type="Button" parent="Center/Panel/Layout/Choices"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Workshop"
+
+[node name="Status" type="Label" parent="Center/Panel/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.92, 0.84, 1)

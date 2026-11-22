@@ -8,21 +8,13 @@ Kesulitan QTE meningkat setelah melewati setengah materi. Pada enam materi conto
 
 Materi ditandai sudah dilewati saat QTE-nya mulai dan status ini disimpan sebelum pemain menjawab. Materi yang sudah dilewati, termasuk yang QTE-nya gagal atau terputus ketika game ditutup, tidak dapat diulang di kelas. Masuk ulang hanya melanjutkan materi yang benar-benar belum dilewati. Bagian catatan kosong nantinya hanya dapat dilengkapi melalui belajar di asrama; mekanik asrama belum diimplementasikan.
 
-Setelah seluruh catatan lengkap, **Buka blueprint mesin** tersedia. Pilih potongan dan tempatkan pada siluet yang sesuai. Escape menutup popup blueprint. Scene workbench blueprint lama tetap tersedia sebagai komponen terpisah.
+Setelah seluruh catatan lengkap, kelas langsung memberikan blueprint `sediment_sorter`. Tombol **Buka blueprint** menampilkan gambar utuh. Jika pemberian gagal disimpan, tombol **Coba simpan lagi** dapat digunakan tanpa mengulang kelas.
 
-Blueprint contoh terdiri dari enam potongan rancangan transmisi. Jawaban salah dan lokasi pemasangan salah tidak memberikan atau menghabiskan potongan. Materi yang sudah selesai tidak memberi potongan tambahan. Progres tersimpan di `user://blueprint_progress.cfg`; menutup popup, aplikasi, atau game tidak menghapusnya. Kegagalan menyimpan ditampilkan dan perubahan dibatalkan agar dapat dicoba lagi.
+## Integrasi kelas, Library, dan lab
 
-## Integrasi kelas dan lab
+`ClassroomProgress` menyimpan catatan dan indeks materi yang sudah dilewati di `user://classroom_notes.cfg` versi 2. Berkas versi 1 tetap dibaca. `begin_material()` menandai satu kesempatan QTE, sedangkan `finish_material()` hanya menerima hasil dari kesempatan yang sedang berjalan. `unlock_blueprint()` tetap memerlukan semua catatan.
 
-`ClassroomProgress` menyimpan catatan dan indeks materi yang sudah dilewati di `user://classroom_notes.cfg` versi 2. Berkas versi 1 tetap dibaca; catatan yang sudah lengkap juga dianggap sudah dilewati. `begin_material()` menandai satu kesempatan QTE, sedangkan `finish_material()` hanya menerima hasil dari kesempatan yang sedang berjalan. Tidak tersedia fungsi pengulangan materi di kelas. `unlock_blueprint()` memeriksa kelengkapan semua catatan sebelum memberikan potongan menggunakan fungsi berikut:
-
-```gdscript
-var error := BlueprintProgress.complete_study("transmission_motor")
-```
-
-ID materi lain: `transmission_gear`, `transmission_shaft`, `transmission_mount`, `transmission_base`, `transmission_bearing`. Pemanggil perlu menangani nilai `Error` jika penyimpanan gagal. Pemanggilan berulang aman.
-
-Lab dapat membaca `BlueprintProgress.is_complete()` dan mendengarkan `BlueprintProgress.project_completed(project_id)`. Sinyal hanya muncul saat pemasangan terakhir berhasil; baca status awal juga saat menghubungkan lab setelah pergantian scene. Blueprint hanya membuka kesiapan rancangan; simulasi perakitan mesin bukan bagian perubahan ini.
+Kelas dan buku blueprint di Library menggunakan `ProjectBlueprints.grant(blueprint_id)`. Project dan pembaca kartu Workshop menggunakan `ProjectBlueprints.is_owned(blueprint_id)`. Status kepemilikan memakai kunci `completed` pada bagian ID blueprint di `user://blueprint_progress.cfg`. Kepemilikan lama tetap dibaca. Progres pemasangan sebagian tetap bisa menerima blueprint utuh ketika persyaratan hadiah terpenuhi.
 
 ## Ujian kelas dan waktu
 
@@ -30,13 +22,13 @@ Satu minggu adalah tujuh hari game: hari 1–7 adalah minggu 1, hari 50–56 ada
 
 UTS dan UAS masing-masing menggunakan sepuluh soal pilihan ganda dari resource `midterm.tres` dan `final.tres`. Durasi maksimalnya 600 detik nyata. Pemain dapat mengumpulkan lebih awal; jawaban kosong bernilai nol. Saat waktu habis, jawaban dikunci dan dikumpulkan otomatis. Hasil disimpan melalui sistem LMS yang sama. Membuka ujian yang sudah selesai menampilkan hasil, bukan memulai percobaan baru. Draf jawaban dan tenggat waktu nyata disimpan untuk melanjutkan sesi yang terputus; penghitung waktu tetap mengikuti tenggat tersebut.
 
-Selama kuis LMS dan ujian kelas, `GameClock.begin_assessment()` menghentikan Timer waktu game. `end_assessment()` menambahkan durasi akses sebenarnya ke jam game, termasuk ketika sesi ditutup. Pecahan menit dibawa ke sesi berikutnya. Pengerjaan enam menit mulai 14.30 menghasilkan 14.36. Fungsi ini aman terhadap pelepasan berulang dan sesi yang saling bertumpuk. Jam dan pecahan menit kini ikut disimpan dalam autosave sesi.
+Selama ujian kelas, `GameClock.begin_assessment()` menghentikan waktu game. Kuis LMS memakai token terpisah dan menambah 10 menit game saat hasil tersimpan, tanpa biaya saat dibatalkan. Tugas LMS tetap mengikuti jam normal. `end_assessment()` menambahkan durasi akses sebenarnya ke jam game, termasuk ketika sesi ditutup. Pecahan menit dibawa ke sesi berikutnya. Pengerjaan enam menit mulai 14.30 menghasilkan 14.36. Fungsi ini aman terhadap pelepasan berulang dan sesi yang saling bertumpuk. Jam dan pecahan menit kini ikut disimpan dalam autosave sesi.
 
 ## New Game, Load, dan autosave
 
-Game dimulai dari main menu. **New Game** langsung membuka halaman kampus pada hari 1 pukul 00.00 jika belum ada progres. Bila sudah ada data, muncul pertanyaan **apakah anda yakin ingin memulai kehidupan baru?** dengan subheader **seluruh data yang anda save sebelumnya akan hilang**. **Batal** mempertahankan data; **Ya, mulai baru** menghapus catatan kelas, status materi, blueprint, hasil LMS/ujian, draf ujian, dan catatan desktop. Pengaturan volume dan resolusi tetap dipertahankan.
+Game dimulai dari main menu. **New Game** langsung membuka halaman kampus pada hari 1 pukul 06.00 jika belum ada progres. Bila sudah ada data, muncul pertanyaan **apakah anda yakin ingin memulai kehidupan baru?** dengan subheader **seluruh data yang anda save sebelumnya akan hilang**. **Batal** mempertahankan data; **Ya, mulai baru** menghapus catatan kelas, status materi, blueprint, hasil LMS/ujian, draf ujian, dan catatan desktop. Pengaturan volume dan resolusi tetap dipertahankan.
 
-`GameSave` menyimpan checkpoint versi 1 ke `user://game_save.cfg` setiap dua detik selama permainan, ketika memasuki world, setelah perubahan catatan/blueprint, dan ketika jendela game ditutup. Checkpoint memuat scene, posisi dan arah karakter, kalender global, serta salinan data progres permainan. Penulisan rutin memakai file sementara lalu mengganti checkpoint sebelumnya. Pergantian scene yang sedang berjalan tidak ditangkap sebagai lokasi akhir.
+`GameSave` menyimpan checkpoint versi 2 ke `user://game_save.cfg` setiap dua detik selama permainan, ketika memasuki world, setelah perubahan catatan/blueprint, dan ketika jendela game ditutup. Checkpoint memuat scene, posisi dan arah karakter, kalender global, serta salinan data progres permainan. Penulisan rutin memakai file sementara lalu mengganti checkpoint sebelumnya. Pergantian scene yang sedang berjalan tidak ditangkap sebagai lokasi akhir.
 
 **Load** langsung memulihkan checkpoint terakhir dan masuk ke lokasi tersimpan, tanpa membuka daftar save. Tombol nonaktif jika tidak ada checkpoint atau progres lama yang dapat dibaca. Posisi dibatasi di luar trigger teleport tepi world agar Load tidak langsung memindahkan pemain lagi. Scene desktop juga dapat dilanjutkan, dengan aplikasi desktop dibuka kembali melalui launcher seperti biasa.
 
@@ -46,7 +38,7 @@ Untuk menguji minggu ujian tanpa menunggu kalender, atur `week_override` pada no
 
 ## Mengubah konten
 
-`scenes/interaction/blueprint/transmission.tres` berisi gambar, grid, dan materi bertipe Resource, mengikuti pola resource LMS. Jumlah materi harus sama dengan `columns * rows`; setiap materi memetakan satu potongan menurut urutan kiri ke kanan, atas ke bawah. Pertahankan ID dan urutan materi agar progres tersimpan tetap sesuai. SVG contoh dapat diganti dengan ilustrasi blueprint produksi.
+Atur ID, judul, dan tekstur utuh pada resource blueprint desktop, lalu tambahkan resource ke **Blueprints** di `project_app.tscn`. Untuk penghargaan buku, set **Reward Type** ke **Blueprint** dan isi **Blueprint ID** yang sama. Untuk Workshop, isi **Linked Blueprint ID** pada resource puzzle. Pertahankan ID yang sudah dipakai save lama. Resource `scenes/interaction/blueprint/transmission.tres` tetap menyediakan materi kelas dan gambar untuk demo blueprint lama yang terpisah.
 
 ## Pemeriksaan
 
