@@ -17,8 +17,9 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	_prompt_button.pressed.connect(_request_open)
 	SceneTransition.transition_finished.connect(_on_transition_finished)
-	if _is_classroom_door():
+	if _is_classroom_door() or _is_dorm_exit_door():
 		GameClock.minute_changed.connect(_on_schedule_changed)
+	if _is_classroom_door():
 		CareerProgress.changed.connect(_refresh_prompt)
 	_refresh_prompt()
 	_prompt.hide()
@@ -35,6 +36,17 @@ func _is_classroom_door() -> bool:
 	return destination.contains("campus_classroom")
 
 
+func _is_dorm_exit_door() -> bool:
+	return destination.ends_with("dorm_exterior.tscn")
+
+
+func _is_dorm_curfew_locked() -> bool:
+	if not _is_dorm_exit_door():
+		return false
+	var minute_of_day := posmod(GameClock.get_absolute_minutes(), GameClock.MINUTES_PER_DAY)
+	return minute_of_day >= 22 * 60 or minute_of_day < 6 * 60
+
+
 func _is_classroom_locked_out() -> bool:
 	if not _is_classroom_door():
 		return false
@@ -49,7 +61,12 @@ func _on_schedule_changed(_minutes: int) -> void:
 func _refresh_prompt() -> void:
 	if not is_instance_valid(_prompt_button):
 		return
-	if _is_classroom_locked_out():
+	if _is_dorm_curfew_locked():
+		_prompt_button.text = "Asrama terkunci (jam malam). Istirahat di kamar dulu."
+		_prompt_button.tooltip_text = "Pintu keluar asrama terkunci pukul 22:00–06:00."
+		_prompt_button.add_theme_color_override("font_color", Color("#d8d8de"))
+		_prompt_button.add_theme_color_override("font_hover_color", Color("#f0f0f2"))
+	elif _is_classroom_locked_out():
 		_prompt_button.text = "KELAS TERLEWAT · Terlambat > 1 jam"
 		_prompt_button.tooltip_text = "Pintu kelas ditutup setelah 09:00. Kejar catatan di Perpustakaan."
 		_prompt_button.add_theme_color_override("font_color", Color("#ffb4a2"))
@@ -72,7 +89,7 @@ func _resolved_transition_style() -> SceneTransition.TransitionStyle:
 func _request_open() -> bool:
 	if _opening or SceneTransition.is_active() or not is_instance_valid(_player) or not overlaps_body(_player) or destination.is_empty():
 		return false
-	if _is_classroom_locked_out():
+	if _is_dorm_curfew_locked() or _is_classroom_locked_out():
 		_refresh_prompt()
 		return false
 	_opening = true

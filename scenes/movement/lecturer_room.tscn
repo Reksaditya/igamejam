@@ -11,3 +11,7 @@ destination_spawn = &"LecturerSpawn"
 
 [node name="ClassActivity" parent="."]
 classroom_enabled = false
+
+[node name="Visual" parent="Player"]
+position = Vector2(0, -28)
+scale = Vector2(2, 2)

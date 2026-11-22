@@ -13,6 +13,10 @@ destination = "res://scenes/movement/dorm_exterior.tscn"
 [node name="ClassActivity" parent="."]
 classroom_enabled = false
 
+[node name="Visual" parent="Player"]
+position = Vector2(0, -30.8)
+scale = Vector2(2.1, 2.1)
+
 [node name="Background" parent="."]
 visible = false
 

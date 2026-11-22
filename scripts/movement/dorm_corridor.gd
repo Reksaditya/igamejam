@@ -2,6 +2,8 @@ extends Node2D
 
 const Interaction = preload("res://scripts/movement/world_interaction.gd")
 const FONT := preload("res://assets/fonts/pixelify_sans/pixelify_sans.ttf")
+const FLOOR2_NPC_TEXTURE_PATH := "res://assets/textures/characters/npc_floor2.png"
+const FLOOR2_NPC_TARGET_HEIGHT := 117.0
 
 @export_range(1, 2) var floor_number: int = 1
 
@@ -23,7 +25,26 @@ func _ready() -> void:
 		add_child(interaction)
 	if floor_number == 2:
 		_doors.append(Vector2i(650, 210))
+		_spawn_floor2_npc_if_available()
 	queue_redraw()
+
+
+func _spawn_floor2_npc_if_available() -> void:
+	if not ResourceLoader.exists(FLOOR2_NPC_TEXTURE_PATH):
+		return
+	var tex := ResourceLoader.load(FLOOR2_NPC_TEXTURE_PATH) as Texture2D
+	if tex == null or tex.get_height() <= 0:
+		return
+	var npc := Sprite2D.new()
+	npc.name = &"Floor2Npc"
+	npc.texture = tex
+	npc.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	npc.centered = false
+	var scale_factor := FLOOR2_NPC_TARGET_HEIGHT / float(tex.get_height())
+	npc.scale = Vector2.ONE * scale_factor
+	npc.position = Vector2(1190.0 - tex.get_width() * scale_factor * 0.5, 620.0 - FLOOR2_NPC_TARGET_HEIGHT)
+	npc.z_index = 1
+	add_child(npc)
 
 
 func _draw() -> void:

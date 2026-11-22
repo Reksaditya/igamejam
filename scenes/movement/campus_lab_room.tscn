@@ -15,6 +15,10 @@ destination = "res://scenes/movement/campus_lab.tscn"
 [node name="ClassActivity" parent="."]
 classroom_enabled = false
 
+[node name="Visual" parent="Player"]
+position = Vector2(0, -28)
+scale = Vector2(2, 2)
+
 [node name="WorkshopSpawn" type="Marker2D" parent="."]
 position = Vector2(1235, 592)
 

@@ -5,11 +5,13 @@ const DOOR := preload("res://scenes/movement/door_interaction.tscn")
 const Guard = preload("res://scripts/movement/campus_guard.gd")
 const StoryPanel = preload("res://scripts/academic/story_panel.gd")
 
+const DORM_INTERIOR_SCENES: PackedStringArray = ["dorm_room210.tscn", "dorm_floor1.tscn", "dorm_floor2.tscn"]
+
 var _elapsed: float = 0
 var _overlay: CanvasLayer
-var _guard: Node2D
 var _blur: ColorRect
 var _curfew_due: bool = false
+var _curfew_triggered: bool = false
 
 
 func _ready() -> void:
@@ -88,9 +90,14 @@ func _update_blur() -> void:
 	_blur.visible = PlayerStats.get_sanity() >= CareerProgress.SANITY_BLUR_THRESHOLD
 
 
+func _is_inside_dorm() -> bool:
+	var file_name := get_parent().scene_file_path.get_file()
+	return file_name in DORM_INTERIOR_SCENES
+
+
 func _clock_changed(minutes: int) -> void:
-	var hour := (minutes % 1440) / 60.0
-	if (hour >= 22 or hour < 6) and not get_parent().scene_file_path.get_file().begins_with("dorm_"):
+	var minute_of_day := posmod(minutes, GameClock.MINUTES_PER_DAY)
+	if (minute_of_day >= 22 * 60 or minute_of_day < 6 * 60) and not _is_inside_dorm():
 		_curfew_due = true
 
 
@@ -120,8 +127,23 @@ func _process(delta: float) -> void:
 		_overlay.event_id = event
 		add_child(_overlay)
 		return
-	if _curfew_due and not is_instance_valid(_guard):
-		_guard = Guard.new()
-		_guard.player = player
-		_guard.position = Vector2(clampf(player.position.x + 350, 80, 1800), 592)
-		add_child(_guard)
+	if _curfew_due and not _curfew_triggered and not _is_inside_dorm():
+		_trigger_curfew_return()
+
+
+func _trigger_curfew_return() -> void:
+	_curfew_triggered = true
+	_curfew_due = false
+	var profile := get_parent().get_node_or_null("PlayerProfile")
+	if profile != null and profile.has_method("show_notice"):
+		profile.call("show_notice", "Sudah jam malam (22:00). Kembali ke asrama.", 2.0)
+	_curfew_fade_to_dorm.call_deferred()
+
+
+func _curfew_fade_to_dorm() -> void:
+	if not is_inside_tree():
+		return
+	await get_tree().create_timer(0.85, true, false, true).timeout
+	if not is_inside_tree() or _is_inside_dorm() or SceneTransition.is_active():
+		return
+	SceneTransition.change_scene("res://scenes/movement/dorm_room210.tscn", &"InteriorSpawn", SceneTransition.TransitionStyle.FADE)

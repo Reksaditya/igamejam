@@ -12,10 +12,6 @@ func _draw() -> void:
 	draw_rect(Rect2(4, -7, 10, 25), Color("#24364d"))
 
 
-func _physics_process(delta: float) -> void:
-	if _caught or not is_instance_valid(player) or player.is_studying() or SceneTransition.is_active():
-		return
-	position.x = move_toward(position.x, player.position.x, 430.0 * delta)
-	if absf(position.x - player.position.x) < 38:
-		_caught = true
-		SceneTransition.change_scene("res://scenes/movement/dorm_floor1.tscn", &"InteriorSpawn")
+func _physics_process(_delta: float) -> void:
+	# Guard chase animation disabled; curfew is handled cleanly by WorldFeatures fade return.
+	pass
