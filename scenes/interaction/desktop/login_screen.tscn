@@ -1,50 +1,110 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/interaction/desktop/login_screen.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dhecqibei0ucu" path="res://assets/textures/desktop/login_avatar.png" id="2_avatar"]
 
-[sub_resource type="StyleBoxFlat" id="FormBackdrop"]
-content_margin_left = 20.0
-content_margin_top = 18.0
-content_margin_right = 20.0
-content_margin_bottom = 10.0
-bg_color = Color(0.045, 0.075, 0.13, 0.76)
+[sub_resource type="StyleBoxFlat" id="AvatarGlassFrame"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.76, 0.91, 1, 0.34)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.97, 1, 0.86)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="AvatarInnerBezel"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.06, 0.14, 0.24, 0.96)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.76, 0.86, 0.97, 0.52)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_left = 4
-corner_radius_bottom_right = 4
-
-[sub_resource type="StyleBoxFlat" id="AccountTile"]
-bg_color = Color(0.25, 0.40, 0.57, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.74, 0.84, 0.94, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_left = 4
-corner_radius_bottom_right = 4
-
-[sub_resource type="StyleBoxFlat" id="AccountHead"]
-bg_color = Color(0.9, 0.95, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_left = 8
-corner_radius_bottom_right = 8
-
-[sub_resource type="StyleBoxFlat" id="AccountShoulders"]
-bg_color = Color(0.9, 0.95, 1, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_left = 2
+border_color = Color(0.16, 0.31, 0.46, 0.96)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
 corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="Win7Input"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0.99, 0.995, 1, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.24, 0.45, 0.67, 0.92)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="Win7InputFocus"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.78, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="Win7SubmitNormal"]
+bg_color = Color(0.14, 0.43, 0.73, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.75, 0.91, 1, 0.92)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="Win7SubmitHover"]
+bg_color = Color(0.22, 0.56, 0.88, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.9, 0.97, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="Win7SubmitPressed"]
+bg_color = Color(0.09, 0.31, 0.56, 1)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.82, 0.95, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="LoginScreen" type="CenterContainer"]
+texture_filter = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -52,71 +112,94 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 0
 script = ExtResource("1")
+avatar_texture = ExtResource("2_avatar")
 
-[node name="Backdrop" type="PanelContainer" parent="."]
+[node name="Form" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
-theme_override_styles/panel = SubResource("FormBackdrop")
+theme_override_constants/separation = 12
 
-[node name="Form" type="VBoxContainer" parent="Backdrop"]
-custom_minimum_size = Vector2(230, 0)
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="AccountTile" type="Panel" parent="Backdrop/Form"]
-custom_minimum_size = Vector2(56, 56)
+[node name="AvatarFrame" type="PanelContainer" parent="Form"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(104, 104)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
-theme_override_styles/panel = SubResource("AccountTile")
+theme_override_styles/panel = SubResource("AvatarGlassFrame")
 
-[node name="Head" type="Panel" parent="Backdrop/Form/AccountTile"]
-offset_left = 20.0
-offset_top = 10.0
-offset_right = 36.0
-offset_bottom = 26.0
+[node name="AvatarBezel" type="PanelContainer" parent="Form/AvatarFrame"]
+layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("AccountHead")
+theme_override_styles/panel = SubResource("AvatarInnerBezel")
 
-[node name="Shoulders" type="Panel" parent="Backdrop/Form/AccountTile"]
-offset_left = 12.0
-offset_top = 30.0
-offset_right = 44.0
-offset_bottom = 45.0
+[node name="Avatar" type="TextureRect" parent="Form/AvatarFrame/AvatarBezel"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(84, 84)
+layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("AccountShoulders")
+texture = ExtResource("2_avatar")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Account" type="Label" parent="Backdrop/Form"]
+[node name="Account" type="Label" parent="Form"]
 unique_name_in_owner = true
 layout_mode = 2
-horizontal_alignment = 1
-theme_type_variation = &"ShellLabel"
-theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.97, 0.99, 1, 1)
+theme_override_colors/font_outline_color = Color(0.03, 0.09, 0.16, 0.88)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 22
 text = "User"
+horizontal_alignment = 1
 text_overrun_behavior = 3
 
-[node name="PasswordLabel" type="Label" parent="Backdrop/Form"]
+[node name="InputRow" type="HBoxContainer" parent="Form"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
-text = "Password"
+alignment = 1
+theme_override_constants/separation = 6
 
-[node name="Password" type="LineEdit" parent="Backdrop/Form"]
+[node name="Password" type="LineEdit" parent="Form/InputRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 38)
+custom_minimum_size = Vector2(194, 32)
 layout_mode = 2
+theme_override_colors/caret_color = Color(0.08, 0.16, 0.26, 1)
+theme_override_colors/font_color = Color(0.07, 0.13, 0.21, 1)
+theme_override_colors/font_placeholder_color = Color(0.42, 0.5, 0.6, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_colors/selection_color = Color(0.2, 0.48, 0.78, 1)
+theme_override_styles/normal = SubResource("Win7Input")
+theme_override_styles/focus = SubResource("Win7InputFocus")
+placeholder_text = "Password"
 keep_editing_on_text_submit = true
 secret = true
 accessibility_name = "Password"
 
-[node name="SignIn" type="Button" parent="Backdrop/Form"]
+[node name="SignIn" type="Button" parent="Form/InputRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 36)
+custom_minimum_size = Vector2(34, 32)
 layout_mode = 2
-text = "Sign in"
+tooltip_text = "Sign in"
+accessibility_name = "Sign in"
 mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("Win7SubmitNormal")
+theme_override_styles/hover = SubResource("Win7SubmitHover")
+theme_override_styles/pressed = SubResource("Win7SubmitPressed")
 
-[node name="Message" type="Label" parent="Backdrop/Form"]
+[node name="SignInGlyph" type="Control" parent="Form/InputRow/SignIn"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 24)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Message" type="Label" parent="Form"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.81, 0.78, 1)
+theme_override_colors/font_color = Color(1, 0.87, 0.83, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.1, 0.18, 0.86)
+theme_override_constants/outline_size = 2
 horizontal_alignment = 1

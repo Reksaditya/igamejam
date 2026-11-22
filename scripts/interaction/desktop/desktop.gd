@@ -84,6 +84,7 @@ func _ready() -> void:
 	_windows.resized.connect(_resize_windows)
 	get_viewport().gui_focus_changed.connect(_on_focus_changed)
 	get_window().focus_exited.connect(_launchers.cancel_drag)
+	_taskbar.draw.connect(_draw_taskbar_glass)
 	_normal_clock_color = _clock.get_theme_color("font_color")
 	%EnergyIcon.draw.connect(_draw_energy_icon)
 	PlayerStats.changed.connect(_update_energy)
@@ -274,6 +275,17 @@ func _draw_energy_icon() -> void:
 	var origin := Vector2(floorf((icon.size.x - 16.0) * 0.5), floorf((icon.size.y - 16.0) * 0.5))
 	var tint := Color(1.0, 0.58, 0.50) if PlayerStats.get_energy() <= 25.0 else Color.WHITE
 	icon.draw_texture_rect(TASKBAR_ENERGY_ICON, Rect2(origin, Vector2(16.0, 16.0)), false, tint)
+
+
+func _draw_taskbar_glass() -> void:
+	var bar_size := _taskbar.size
+	if bar_size.x <= 0.0 or bar_size.y <= 0.0:
+		return
+	var glass_h := floorf(bar_size.y * 0.42)
+	_taskbar.draw_rect(Rect2(0.0, 0.0, bar_size.x, 1.0), Color(0.04, 0.09, 0.17, 0.92))
+	_taskbar.draw_rect(Rect2(0.0, 1.0, bar_size.x, 1.0), Color(0.84, 0.95, 1.0, 0.80))
+	if glass_h > 2.0:
+		_taskbar.draw_rect(Rect2(0.0, 2.0, bar_size.x, glass_h), Color(0.86, 0.96, 1.0, 0.13))
 
 
 func _update_clock(absolute_minutes: int) -> void:

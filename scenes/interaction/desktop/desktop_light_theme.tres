@@ -18,19 +18,52 @@ border_width_bottom = 1
 border_color = Color(0.49, 0.57, 0.69, 1)
 
 [sub_resource type="StyleBoxFlat" id="Frame"]
-content_margin_left = 1.0
-content_margin_top = 1.0
-content_margin_right = 1.0
-content_margin_bottom = 1.0
-bg_color = Color(0.94, 0.96, 0.99, 1)
+content_margin_left = 5.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.4, 0.68, 0.9, 0.74)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.38, 0.47, 0.63, 1)
-shadow_color = Color(0.035, 0.055, 0.12, 0.42)
-shadow_size = 6
-shadow_offset = Vector2(2, 3)
+border_color = Color(0.12, 0.24, 0.38, 0.92)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="FrameInactive"]
+content_margin_left = 5.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.68, 0.77, 0.86, 0.58)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.28, 0.38, 0.49, 0.78)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="AppBody"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.969, 0.976, 0.988, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.32, 0.44, 0.58, 0.95)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="BrowserButtonHover"]
 content_margin_left = 6.0
@@ -94,24 +127,84 @@ content_margin_left = 10.0
 content_margin_top = 6.0
 content_margin_right = 10.0
 content_margin_bottom = 6.0
-bg_color = Color(0.8, 0.88, 0.97, 1)
+bg_color = Color(0.847, 0.925, 0.988, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.39, 0.54, 0.73, 1)
+border_width_bottom = 2
+border_color = Color(0.235, 0.498, 0.694, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="Button"]
 content_margin_left = 10.0
 content_margin_top = 6.0
 content_margin_right = 10.0
 content_margin_bottom = 6.0
-bg_color = Color(0.98, 0.99, 1, 1)
+bg_color = Color(0.933, 0.953, 0.973, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.439, 0.51, 0.592, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="ButtonPressed"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+bg_color = Color(0.769, 0.882, 0.969, 1)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.17, 0.38, 0.57, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="ScrollTrack"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.91, 0.935, 0.965, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.49, 0.59, 0.71, 1)
+border_color = Color(0.74, 0.8, 0.87, 1)
+
+[sub_resource type="StyleBoxFlat" id="ScrollGrabber"]
+bg_color = Color(0.76, 0.82, 0.89, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.49, 0.57, 0.67, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="ScrollGrabberHover"]
+bg_color = Color(0.62, 0.78, 0.93, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.24, 0.49, 0.72, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="Focus"]
 content_margin_left = 0.0
@@ -212,77 +305,111 @@ expand_margin_right = 3.0
 expand_margin_bottom = 3.0
 
 [sub_resource type="StyleBoxFlat" id="WindowButton"]
-content_margin_left = 6.0
+content_margin_left = 4.0
 content_margin_top = 1.0
-content_margin_right = 6.0
+content_margin_right = 4.0
 content_margin_bottom = 1.0
-bg_color = Color(0.97, 0.98, 1, 1)
+bg_color = Color(0.86, 0.93, 0.99, 0.68)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.47, 0.57, 0.7, 1)
+border_color = Color(0.22, 0.36, 0.52, 0.88)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="WindowButtonHover"]
+content_margin_left = 4.0
+content_margin_top = 1.0
+content_margin_right = 4.0
+content_margin_bottom = 1.0
+bg_color = Color(0.7, 0.88, 1, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.5, 0.78, 0.96)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="CloseHover"]
 content_margin_left = 6.0
 content_margin_top = 1.0
 content_margin_right = 6.0
 content_margin_bottom = 1.0
-bg_color = Color(0.94, 0.77, 0.8, 1)
+bg_color = Color(0.92, 0.29, 0.22, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.63, 0.33, 0.4, 1)
+border_color = Color(1, 0.76, 0.72, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="Close"]
 content_margin_left = 6.0
 content_margin_top = 1.0
 content_margin_right = 6.0
 content_margin_bottom = 1.0
-bg_color = Color(0.97, 0.87, 0.88, 1)
+bg_color = Color(0.78, 0.24, 0.2, 0.94)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.65, 0.42, 0.48, 1)
+border_color = Color(0.36, 0.1, 0.09, 0.95)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="TitleActive"]
-content_margin_left = 7.0
-content_margin_top = 4.0
-content_margin_right = 7.0
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 3.0
 content_margin_bottom = 4.0
-bg_color = Color(0.77, 0.86, 0.95, 1)
-border_width_bottom = 1
-border_color = Color(0.43, 0.54, 0.7, 1)
+bg_color = Color(0.32, 0.62, 0.88, 0.22)
 
 [sub_resource type="StyleBoxFlat" id="TitleFocused"]
-content_margin_left = 7.0
-content_margin_top = 4.0
-content_margin_right = 7.0
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 3.0
 content_margin_bottom = 4.0
-bg_color = Color(0.77, 0.86, 0.95, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.19, 0.39, 0.65, 1)
+bg_color = Color(0.32, 0.62, 0.88, 0.26)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.84, 0.95, 1, 0.95)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="TitleInactive"]
-content_margin_left = 7.0
-content_margin_top = 4.0
-content_margin_right = 7.0
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 3.0
 content_margin_bottom = 4.0
-bg_color = Color(0.86, 0.9, 0.95, 1)
-border_width_bottom = 1
-border_color = Color(0.56, 0.63, 0.74, 1)
+bg_color = Color(0.74, 0.82, 0.9, 0.16)
 
 [resource]
 default_font = ExtResource("1_body")
 default_font_size = 15
 AcceptDialog/styles/panel = SubResource("Dialog")
+AppBody/base_type = &"PanelContainer"
+AppBody/styles/panel = SubResource("AppBody")
 AppFrame/base_type = &"PanelContainer"
 AppFrame/styles/panel = SubResource("Frame")
+AppFrameActive/base_type = &"PanelContainer"
+AppFrameActive/styles/panel = SubResource("Frame")
+AppFrameInactive/base_type = &"PanelContainer"
+AppFrameInactive/styles/panel = SubResource("FrameInactive")
 BrowserActiveTab/base_type = &"BrowserButton"
 BrowserActiveTab/styles/normal = SubResource("BrowserButtonHover")
 BrowserActiveTab/styles/pressed = SubResource("BrowserButtonHover")
@@ -311,7 +438,7 @@ Button/fonts/font = ExtResource("3_display")
 Button/styles/focus = SubResource("ControlFocus")
 Button/styles/hover = SubResource("ButtonHover")
 Button/styles/normal = SubResource("Button")
-Button/styles/pressed = SubResource("Button")
+Button/styles/pressed = SubResource("ButtonPressed")
 DesktopCaption/base_type = &"ShellLabel"
 DesktopCaption/colors/font_color = Color(1, 0.99, 0.94, 1)
 DesktopCaption/colors/font_outline_color = Color(0.045, 0.075, 0.14, 1)
@@ -383,17 +510,22 @@ Window/fonts/title_font = ExtResource("4_display_bold")
 Window/styles/embedded_border = SubResource("DialogFrame")
 Window/styles/embedded_unfocused_border = SubResource("DialogFrame")
 WindowButton/base_type = &"Button"
-WindowButton/styles/hover = SubResource("ButtonHover")
+WindowButton/colors/font_color = Color(0.08, 0.15, 0.24, 1)
+WindowButton/styles/hover = SubResource("WindowButtonHover")
 WindowButton/styles/normal = SubResource("WindowButton")
-WindowButton/styles/pressed = SubResource("ButtonHover")
+WindowButton/styles/pressed = SubResource("WindowButtonHover")
 WindowClose/base_type = &"WindowButton"
-WindowClose/colors/font_color = Color(0.37, 0.11, 0.17, 1)
+WindowClose/colors/font_color = Color(1, 1, 1, 1)
+WindowClose/colors/font_hover_color = Color(1, 1, 1, 1)
+WindowClose/colors/font_pressed_color = Color(1, 0.94, 0.94, 1)
 WindowClose/fonts/font = ExtResource("4_display_bold")
 WindowClose/styles/hover = SubResource("CloseHover")
 WindowClose/styles/normal = SubResource("Close")
 WindowClose/styles/pressed = SubResource("CloseHover")
 WindowTitle/base_type = &"ShellLabel"
-WindowTitle/colors/font_color = Color(0.09, 0.15, 0.24, 1)
+WindowTitle/colors/font_color = Color(0.05, 0.1, 0.18, 1)
+WindowTitle/colors/font_outline_color = Color(1, 1, 1, 0.9)
+WindowTitle/constants/outline_size = 4
 WindowTitle/font_sizes/font_size = 15
 WindowTitle/fonts/font = ExtResource("4_display_bold")
 WindowTitleActive/base_type = &"PanelContainer"
@@ -402,3 +534,11 @@ WindowTitleFocused/base_type = &"PanelContainer"
 WindowTitleFocused/styles/panel = SubResource("TitleFocused")
 WindowTitleInactive/base_type = &"PanelContainer"
 WindowTitleInactive/styles/panel = SubResource("TitleInactive")
+HScrollBar/styles/grabber = SubResource("ScrollGrabber")
+HScrollBar/styles/grabber_highlight = SubResource("ScrollGrabberHover")
+HScrollBar/styles/grabber_pressed = SubResource("ScrollGrabberHover")
+HScrollBar/styles/scroll = SubResource("ScrollTrack")
+VScrollBar/styles/grabber = SubResource("ScrollGrabber")
+VScrollBar/styles/grabber_highlight = SubResource("ScrollGrabberHover")
+VScrollBar/styles/grabber_pressed = SubResource("ScrollGrabberHover")
+VScrollBar/styles/scroll = SubResource("ScrollTrack")

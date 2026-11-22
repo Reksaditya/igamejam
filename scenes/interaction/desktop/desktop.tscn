@@ -59,7 +59,7 @@ mouse_filter = 2
 color = Color(0.15, 0.21, 0.32, 1)
 
 [node name="Wallpaper" type="TextureRect" parent="Display" unique_id=2125097973]
-texture_filter = 2
+texture_filter = 1
 material = SubResource("ShaderMaterial_wallpaper")
 layout_mode = 1
 anchors_preset = 15

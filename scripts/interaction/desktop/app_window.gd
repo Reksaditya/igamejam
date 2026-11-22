@@ -16,6 +16,7 @@ var _start_rect: Rect2
 @onready var _title_bar: PanelContainer = %TitleBar
 @onready var _title: Label = %Title
 @onready var _close: Button = %Close
+@onready var _close_glyph: Control = %CloseGlyph
 @onready var _maximize: Button = %Maximize
 @onready var _maximize_glyph: Control = %MaximizeGlyph
 @onready var _body: ScrollContainer = %Body
@@ -23,11 +24,14 @@ var _start_rect: Rect2
 
 
 func _ready() -> void:
+	draw.connect(_draw_window_glass)
 	_title_bar.gui_input.connect(_handle_pointer.bind(_title_bar, Vector2i.ZERO))
 	_title_bar.focus_entered.connect(_refresh_title_style)
 	_title_bar.focus_exited.connect(_refresh_title_style)
 	_title_bar.draw.connect(_draw_title_highlight)
 	_close.pressed.connect(func() -> void: close_requested.emit(self))
+	_close_glyph.draw.connect(_draw_close_glyph)
+	_close_glyph.resized.connect(_close_glyph.queue_redraw)
 	_maximize.pressed.connect(_toggle_maximize)
 	_maximize_glyph.draw.connect(_draw_maximize_glyph)
 	_maximize_glyph.resized.connect(_maximize_glyph.queue_redraw)
@@ -110,7 +114,7 @@ func _refresh_maximize_button() -> void:
 
 
 func _draw_maximize_glyph() -> void:
-	var center := _maximize_glyph.size * 0.5 + Vector2(0.5, 0.5)
+	var center := (_maximize_glyph.size * 0.5).floor() + Vector2(0.5, 0.5)
 	var ink := _maximize.get_theme_color("font_color")
 	if _maximized:
 		var front := Rect2(center + Vector2(-4, -2), Vector2(6, 6))
@@ -126,9 +130,31 @@ func _draw_maximize_glyph() -> void:
 		_maximize_glyph.draw_rect(Rect2(center - Vector2(4, 4), Vector2(8, 8)), ink, false, 1.0)
 
 
+func _draw_close_glyph() -> void:
+	var c := (_close_glyph.size * 0.5).floor() + Vector2(0.5, 0.5)
+	var shadow := Color(0.2, 0.04, 0.04, 0.85)
+	for dy: float in [1.0, 0.0]:
+		var col := shadow if dy > 0.0 else Color.WHITE
+		var offset := Vector2(0.0, dy)
+		_close_glyph.draw_line(c + Vector2(-4, -4) + offset, c + Vector2(4, 4) + offset, col, 2.0)
+		_close_glyph.draw_line(c + Vector2(-4, 4) + offset, c + Vector2(4, -4) + offset, col, 2.0)
+
+
+func _draw_window_glass() -> void:
+	if size.x < 4.0 or size.y < 4.0:
+		return
+	var rim_alpha := 0.62 if _active else 0.36
+	draw_rect(Rect2(1.0, 1.0, size.x - 2.0, size.y - 2.0), Color(1.0, 1.0, 1.0, rim_alpha), false, 1.0)
+
+
 func _draw_title_highlight() -> void:
-	var highlight := Rect2(2, 2, _title_bar.size.x - 4.0, 1)
-	_title_bar.draw_rect(highlight, Color(1, 1, 1, 0.18))
+	var w := _title_bar.size.x
+	var gloss_h := floorf(_title_bar.size.y * 0.45)
+	if w <= 2.0 or gloss_h <= 1.0:
+		return
+	var gloss_alpha := 0.24 if _active else 0.11
+	_title_bar.draw_rect(Rect2(0.0, 0.0, w, 1.0), Color(1.0, 1.0, 1.0, 0.45 if _active else 0.25))
+	_title_bar.draw_rect(Rect2(0.0, 1.0, w, gloss_h), Color(1.0, 1.0, 1.0, gloss_alpha))
 
 
 func _create_resize_handles() -> void:
@@ -209,7 +235,10 @@ func _parent_mouse_position(event: InputEventMouse) -> Vector2:
 
 
 func _refresh_title_style() -> void:
+	theme_type_variation = &"AppFrameActive" if _active else &"AppFrameInactive"
 	if _title_bar.has_focus():
 		_title_bar.theme_type_variation = &"WindowTitleFocused"
 	else:
 		_title_bar.theme_type_variation = &"WindowTitleActive" if _active else &"WindowTitleInactive"
+	queue_redraw()
+	_title_bar.queue_redraw()
