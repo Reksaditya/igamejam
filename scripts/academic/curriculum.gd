@@ -654,8 +654,28 @@ static func _calculation(semester: int, week: int, index: int) -> Dictionary:
 	var prompt := ""
 	match semester:
 		1:
-			answer = a + b if index == 0 else (a * b if index == 1 else a - b)
-			prompt = "%d %s %d = ?" % [a, "+" if index == 0 else ("×" if index == 1 else "−"), b]
+			match unit_index(week):
+				0:
+					answer = a + b
+					prompt = "%d + %d = ?" % [a, b]
+				1:
+					answer = a - b
+					prompt = "%d − %d = ?" % [a, b]
+				2:
+					answer = a * b
+					prompt = "%d × %d = ?" % [a, b]
+				3:
+					answer = a
+					prompt = "%d ÷ %d = ?" % [a * b, b]
+				4:
+					answer = a
+					prompt = "1/2 dari %d komponen = ?" % (a * 2)
+				5:
+					answer = a * 10
+					prompt = "%.1f meter = berapa sentimeter?" % (a / 10.0)
+				6:
+					answer = a
+					prompt = "25%% dari %d baut = ?" % (a * 4)
 		2:
 			answer = a * 100 if index == 0 else a * b
 			prompt = "%d meter = berapa sentimeter?" % a if index == 0 else "Rasio komponen 1:%d. Untuk %d kelompok diperlukan berapa komponen?" % [a, b]

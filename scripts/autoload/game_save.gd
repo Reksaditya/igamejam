@@ -237,7 +237,7 @@ func _read_snapshot() -> ConfigFile:
 func _is_gameplay_path(path: String) -> bool:
 	if path.is_absolute_path() or path.contains("\\") or path.simplify_path() != path or path.contains(".."):
 		return false
-	return path in ROOT_FILES or (path.begins_with("lms_results/") and path.get_extension() == "cfg") or (path.begins_with("notes/") and path.get_extension() == "txt")
+	return path in ROOT_FILES or ((path.begins_with("lms_results/") or path.begins_with("career_drafts/")) and path.get_extension() == "cfg") or (path.begins_with("notes/") and path.get_extension() == "txt")
 
 
 func _collect_files() -> Dictionary:
@@ -263,7 +263,7 @@ func _gameplay_paths() -> PackedStringArray:
 	for path: String in ROOT_FILES:
 		if FileAccess.file_exists("user://" + path):
 			paths.append(path)
-	for directory: String in ["lms_results", "notes"]:
+	for directory: String in ["lms_results", "notes", "career_drafts"]:
 		_scan_directory(directory, paths)
 	return paths
 
