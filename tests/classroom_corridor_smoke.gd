@@ -19,8 +19,8 @@ func _run() -> void:
 		await scene_changed
 		assert(current_scene.scene_file_path.ends_with("campus_classroom_floor3.tscn"))
 		await _door("Door", F3)
-		await _stairs(F2)
-		await _choose("Turun ke lantai 1", F1)
+		await _stairs(F2, "StairsDown")
+		await _stairs(F1, "StairsDown")
 		await _door("Exit", CAMPUS)
 		assert(absf(current_scene.get_node("Player").position.x - 925) < 1)
 		print("PASS: classroom floor 3 save/reload, correct return floor, stairs down F3-F2-F1 and campus exit")
@@ -34,6 +34,8 @@ func _run() -> void:
 		assert(current_scene.floor_number == floor_number + 1)
 		assert(current_scene.BACKGROUNDS[floor_number].resource_path.ends_with("floor%d.png" % (floor_number + 1)))
 		assert(not current_scene.get_node("LeftExit").monitoring and not current_scene.get_node("RightExit").monitoring)
+		assert(current_scene.get_node("Stairs").available == (floor_number < 2))
+		assert(current_scene.get_node("StairsDown").available == (floor_number > 0))
 		var classroom_path := "res://scenes/movement/campus_classroom.tscn" if floor_number == 0 else "res://scenes/movement/campus_classroom_floor%d.tscn" % (floor_number + 1)
 		var corridor_path := current_scene.scene_file_path
 		await _capture("corridor-f%d" % (floor_number + 1))
@@ -41,21 +43,11 @@ func _run() -> void:
 		assert(current_scene.get_node("Player").z_index > current_scene.get_node("ClassActivity/Seat/Chair").z_index)
 		if floor_number == 2:
 			assert(saves.save_now() == OK and saves.has_save())
-			print("PASS: campus entry, supplied F1/F2/F3, E stairs only, F2 direction choice, three classroom doors and floor-aware save")
+			print("PASS: campus entry, supplied F1/F2/F3, separate E up/down stairs, floor boundaries, three classroom doors and floor-aware save")
 			quit()
 			return
 		await _door("Door", corridor_path)
-		if floor_number == 0:
-			await _stairs(F2)
-		else:
-			await _approach("Stairs")
-			_press(KEY_E)
-			await _frames(4)
-			assert(is_instance_valid(current_scene._stairs_panel) and paused)
-			current_scene._stairs_panel.close()
-			await _frames(4)
-			assert(not paused and current_scene.scene_file_path == F2)
-			await _choose("Naik ke lantai 3", F3)
+		await _stairs(F2 if floor_number == 0 else F3)
 
 
 func _approach(id: String) -> void:
@@ -63,8 +55,10 @@ func _approach(id: String) -> void:
 	current_scene.get_node("Player").position = Vector2(target.position.x, 592)
 	await _frames(8)
 	assert(target.overlaps_body(current_scene.get_node("Player")))
-	if id == "Stairs":
+	if id in ["Stairs", "StairsDown"]:
 		assert(target.get_node("Prompt").visible)
+		var other_id := "StairsDown" if id == "Stairs" else "Stairs"
+		assert(not current_scene.get_node(other_id).overlaps_body(current_scene.get_node("Player")))
 		var path := current_scene.scene_file_path
 		_press(KEY_W)
 		await _frames(5)
@@ -78,25 +72,13 @@ func _door(id: String, destination: String) -> void:
 	await _settle(destination)
 
 
-func _stairs(destination: String) -> void:
-	await _approach("Stairs")
+func _stairs(destination: String, id: String = "Stairs") -> void:
+	await _approach(id)
 	_press(KEY_E)
 	await scene_changed
 	await _settle(destination)
-
-
-func _choose(label: String, destination: String) -> void:
-	await _approach("Stairs")
-	_press(KEY_E)
-	await _frames(4)
-	var panel: CanvasLayer = current_scene._stairs_panel
-	assert(is_instance_valid(panel) and paused)
-	for child: Node in panel.content.get_children():
-		if child is Button and child.text == label:
-			child.pressed.emit()
-			break
-	await scene_changed
-	await _settle(destination)
+	var spawn := "DownstairsSpawn" if id == "Stairs" else "UpstairsSpawn"
+	assert(current_scene.get_node("Player").position.distance_to(current_scene.get_node(spawn).position) < 1)
 
 
 func _settle(destination: String) -> void:

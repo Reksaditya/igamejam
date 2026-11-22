@@ -9,5 +9,8 @@ floor_number = 3
 [node name="Door" parent="."]
 destination = "res://scenes/movement/campus_classroom_floor3.tscn"
 
-[node name="Stairs" parent="."]
+[node name="StairsDown" parent="."]
 position = Vector2(1780, 540)
+
+[node name="DownstairsSpawn" parent="."]
+position = Vector2(1780, 592)

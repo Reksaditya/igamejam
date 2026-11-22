@@ -75,6 +75,31 @@ text = "E · Naik ke lantai 2"
 [node name="StairsSpawn" type="Marker2D" parent="."]
 position = Vector2(1640, 592)
 
+[node name="UpstairsSpawn" type="Marker2D" parent="."]
+position = Vector2(1800, 592)
+
+[node name="DownstairsSpawn" type="Marker2D" parent="."]
+position = Vector2(1530, 592)
+
+[node name="StairsDown" type="Area2D" parent="."]
+position = Vector2(1530, 540)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_interaction")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StairsDown"]
+shape = SubResource("RectangleShape2D_stairs")
+
+[node name="Prompt" type="Button" parent="StairsDown"]
+visible = false
+offset_left = -120.0
+offset_top = -220.0
+offset_right = 120.0
+offset_bottom = -175.0
+focus_mode = 0
+theme = ExtResource("5_theme")
+text = "E · Turun"
+
 [node name="Walls" type="StaticBody2D" parent="."]
 collision_mask = 0
 
