@@ -19,7 +19,7 @@ var _badge_panel: PanelContainer
 
 
 func _init() -> void:
-	custom_minimum_size = Vector2(0.0, 44.0)
+	custom_minimum_size = Vector2(0.0, 48.0)
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	clip_contents = true
 	_build_content()
@@ -49,13 +49,13 @@ func _build_content() -> void:
 
 	_title_label = Label.new()
 	_title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_title_label.add_theme_font_size_override("font_size", 13)
+	_title_label.add_theme_font_size_override("font_size", 14)
 	_title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	info.add_child(_title_label)
 
 	_meta_label = Label.new()
 	_meta_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_meta_label.add_theme_font_size_override("font_size", 11)
+	_meta_label.add_theme_font_size_override("font_size", 12)
 	info.add_child(_meta_label)
 
 	_badge_panel = PanelContainer.new()
@@ -65,7 +65,7 @@ func _build_content() -> void:
 
 	_badge_label = Label.new()
 	_badge_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_badge_label.add_theme_font_size_override("font_size", 11)
+	_badge_label.add_theme_font_size_override("font_size", 12)
 	_badge_panel.add_child(_badge_label)
 
 

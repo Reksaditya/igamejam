@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/interaction/desktop/blocks/block_shape.gd" id="2_shape"]
 [ext_resource type="Script" path="res://scripts/interaction/desktop/blocks/block_board.gd" id="3_board"]
 [ext_resource type="Script" path="res://scripts/interaction/desktop/blocks/block_tray_piece.gd" id="4_tray"]
-[ext_resource type="FontFile" path="res://assets/fonts/pixelify_sans/pixelify_sans.ttf" id="5_font"]
+[ext_resource type="FontFile" uid="uid://curjthd7i3kdi" path="res://assets/fonts/dotgothic16/DotGothic16-Regular.ttf" id="5_font"]
 
 [sub_resource type="Resource" id="dot"]
 script = ExtResource("2_shape")

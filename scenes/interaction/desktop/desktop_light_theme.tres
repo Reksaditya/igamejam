@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://cqbx0heiy2n72"]
 
-[ext_resource type="FontFile" uid="uid://3u2ud3kb3vs5" path="res://assets/fonts/pixelify_sans/pixelify_sans.ttf" id="1_shell"]
+[ext_resource type="FontFile" uid="uid://curjthd7i3kdi" path="res://assets/fonts/dotgothic16/DotGothic16-Regular.ttf" id="1_shell"]
 
 [sub_resource type="StyleBoxFlat" id="Dialog"]
 content_margin_left = 12.0
@@ -275,7 +275,8 @@ border_width_bottom = 1
 border_color = Color(0.56, 0.63, 0.74, 1)
 
 [resource]
-default_font_size = 16
+default_font = ExtResource("1_shell")
+default_font_size = 15
 AcceptDialog/styles/panel = SubResource("Dialog")
 AppFrame/base_type = &"PanelContainer"
 AppFrame/styles/panel = SubResource("Frame")
@@ -290,7 +291,7 @@ BrowserButton/styles/hover_pressed = SubResource("BrowserButtonHover")
 BrowserButton/styles/normal = SubResource("BrowserButton")
 BrowserButton/styles/pressed = SubResource("BrowserButton")
 BrowserHeading/base_type = &"Label"
-BrowserHeading/font_sizes/font_size = 25
+BrowserHeading/font_sizes/font_size = 22
 BrowserToolbar/base_type = &"PanelContainer"
 BrowserToolbar/styles/panel = SubResource("Toolbar")
 Button/colors/font_color = Color(0.09, 0.15, 0.24, 1)
@@ -311,7 +312,7 @@ DesktopCaption/base_type = &"ShellLabel"
 DesktopCaption/colors/font_color = Color(1, 0.99, 0.94, 1)
 DesktopCaption/colors/font_outline_color = Color(0.045, 0.075, 0.14, 1)
 DesktopCaption/constants/outline_size = 4
-DesktopCaption/font_sizes/font_size = 16
+DesktopCaption/font_sizes/font_size = 14
 DesktopItem/base_type = &"Button"
 DesktopItem/styles/focus = SubResource("Focus")
 DesktopItem/styles/hover = SubResource("IconHover")
@@ -320,7 +321,7 @@ DesktopItem/styles/pressed = SubResource("IconPressed")
 DesktopItem/styles/selected = SubResource("IconPressed")
 FileCaption/base_type = &"ShellLabel"
 FileCaption/colors/font_color = Color(0.09, 0.15, 0.24, 1)
-FileCaption/font_sizes/font_size = 16
+FileCaption/font_sizes/font_size = 14
 FileDialog/colors/file_icon_color = Color(0.26, 0.4, 0.58, 1)
 FileDialog/colors/folder_icon_color = Color(0.6, 0.4, 0.18, 1)
 FileItem/base_type = &"DesktopItem"
@@ -344,7 +345,7 @@ MenuButton/styles/focus = SubResource("ControlFocus")
 MenuButton/styles/hover = SubResource("ButtonHover")
 MenuButton/styles/pressed = SubResource("ButtonHover")
 NotepadEditor/base_type = &"TextEdit"
-NotepadEditor/font_sizes/font_size = 16
+NotepadEditor/font_sizes/font_size = 15
 NotepadEditor/styles/normal = SubResource("Editor")
 NotepadFileMenu/base_type = &"MenuButton"
 NotepadFileMenu/font_sizes/font_size = 13
@@ -389,7 +390,7 @@ WindowClose/styles/normal = SubResource("Close")
 WindowClose/styles/pressed = SubResource("CloseHover")
 WindowTitle/base_type = &"ShellLabel"
 WindowTitle/colors/font_color = Color(0.09, 0.15, 0.24, 1)
-WindowTitle/font_sizes/font_size = 16
+WindowTitle/font_sizes/font_size = 15
 WindowTitleActive/base_type = &"PanelContainer"
 WindowTitleActive/styles/panel = SubResource("TitleActive")
 WindowTitleFocused/base_type = &"PanelContainer"

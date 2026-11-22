@@ -1,5 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://j4ne0q5wen4c"]
 
+[ext_resource type="FontFile" uid="uid://curjthd7i3kdi" path="res://assets/fonts/dotgothic16/DotGothic16-Regular.ttf" id="1_font"]
+
 [sub_resource type="StyleBoxFlat" id="Card"]
 content_margin_left = 14.0
 content_margin_top = 10.0
@@ -123,7 +125,8 @@ expand_margin_right = 3.0
 expand_margin_bottom = 3.0
 
 [resource]
-default_font_size = 16
+default_font = ExtResource("1_font")
+default_font_size = 15
 AcceptDialog/styles/panel = SubResource("Card")
 Button/colors/font_color = Color(0.12, 0.14, 0.17, 1)
 Button/colors/font_disabled_color = Color(0.39, 0.41, 0.45, 1)
@@ -147,10 +150,10 @@ LmsCard/styles/panel = SubResource("Card")
 LmsError/base_type = &"Label"
 LmsError/colors/font_color = Color(0.59, 0.09, 0.16, 1)
 LmsHeading/base_type = &"Label"
-LmsHeading/font_sizes/font_size = 26
+LmsHeading/font_sizes/font_size = 24
 LmsMeta/base_type = &"Label"
 LmsMeta/colors/font_color = Color(0.32, 0.35, 0.4, 1)
-LmsMeta/font_sizes/font_size = 14
+LmsMeta/font_sizes/font_size = 13
 LmsOption/base_type = &"CheckBox"
 LmsOption/colors/font_color = Color(0.12, 0.14, 0.17, 1)
 LmsOption/colors/font_focus_color = Color(0.12, 0.14, 0.17, 1)
@@ -177,7 +180,7 @@ LmsResult/colors/font_color = Color(0.56, 0.09, 0.16, 1)
 LmsSection/base_type = &"PanelContainer"
 LmsSection/styles/panel = SubResource("Section")
 LmsSubheading/base_type = &"Label"
-LmsSubheading/font_sizes/font_size = 19
+LmsSubheading/font_sizes/font_size = 18
 PanelContainer/styles/panel = SubResource("Page")
 Window/colors/title_color = Color(1, 1, 1, 1)
 Window/constants/title_height = 32
