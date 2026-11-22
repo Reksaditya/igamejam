@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/login_screen.tscn" id="18_login"]
 [ext_resource type="Texture2D" uid="uid://cutoxf8leboyp" path="res://assets/textures/power_icon.svg" id="19_power_icon"]
 [ext_resource type="AudioStream" uid="uid://cxcvgcr6lwavw" path="res://assets/audio/sfx/desktop_mouse_click.ogg" id="20_click_sound"]
+[ext_resource type="AudioStream" uid="uid://7dlxblc4ulrl" path="res://assets/audio/sfx/desktop_pc_fan.ogg" id="21_fan_ambient"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wallpaper"]
 resource_local_to_scene = true
@@ -35,6 +36,7 @@ login_scene = ExtResource("18_login")
 wallpaper_texture = ExtResource("7_wallpaper_texture")
 light_theme = ExtResource("11_light")
 click_sound = ExtResource("20_click_sound")
+fan_ambient = ExtResource("21_fan_ambient")
 
 [node name="Display" type="Control" parent="." unique_id=197261132]
 clip_contents = true
@@ -93,16 +95,16 @@ script = ExtResource("8_grid")
 [node name="NotepadLauncher" parent="Display/DesktopItems/Launchers" unique_id=1136255648 instance=ExtResource("4_document")]
 custom_minimum_size = Vector2(126, 96)
 layout_mode = 0
-offset_left = 18.0
+offset_left = 154.0
 offset_top = 17.0
-offset_right = 144.0
+offset_right = 280.0
 offset_bottom = 113.0
 tooltip_text = "Notepad"
 accessibility_name = "Notepad"
 submission_filename = ""
 display_title = "Notepad"
 icon_kind = 2
-default_cell = Vector2i(0, 0)
+default_cell = Vector2i(1, 0)
 
 [node name="WordExplorerLauncher" parent="Display/DesktopItems/Launchers" unique_id=343467220 instance=ExtResource("6_explorer")]
 custom_minimum_size = Vector2(126, 96)
@@ -132,14 +134,14 @@ default_cell = Vector2i(1, 2)
 [node name="ProjectLauncher" parent="Display/DesktopItems/Launchers" unique_id=1400766186 instance=ExtResource("13_project")]
 custom_minimum_size = Vector2(126, 96)
 layout_mode = 0
-offset_left = 834.0
-offset_top = 17.0
-offset_right = 960.0
-offset_bottom = 113.0
+offset_left = 562.0
+offset_top = 229.0
+offset_right = 688.0
+offset_bottom = 325.0
 tooltip_text = "Project"
 accessibility_name = "Project"
 display_title = "Project"
-default_cell = Vector2i(6, 0)
+default_cell = Vector2i(4, 2)
 
 [node name="BlocksLauncher" parent="Display/DesktopItems/Launchers" unique_id=1403528437 instance=ExtResource("17_blocks")]
 custom_minimum_size = Vector2(126, 96)

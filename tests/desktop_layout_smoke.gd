@@ -56,7 +56,7 @@ func _test_scattered_desktop() -> void:
 	desktop.size = Vector2(1152.0, 648.0)
 	await _settle()
 	var project := grid.get_node("ProjectLauncher") as Launcher
-	assert(grid._cells[project].x >= 5, "ProjectLauncher should return to upper-right scatter when wide")
+	assert(grid._cells[project] == Vector2i(4, 2), "ProjectLauncher should return to its scattered cell (4, 2) when wide")
 
 	# Simulate pointer drag of NotepadLauncher to cell (2, 2).
 	var notepad := grid.get_node("NotepadLauncher") as Launcher
