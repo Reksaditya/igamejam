@@ -11,12 +11,12 @@ destination_spawn = &"UpstairsSpawn"
 action_text = "Turun ke lantai 1"
 
 [node name="Stairs" parent="."]
-position = Vector2(650, 540)
-destination = "res://scenes/movement/dorm_room210.tscn"
-action_text = "Masuk kamar 210"
+position = Vector2(940, 540)
+destination = "res://scenes/movement/dorm_room203.tscn"
+action_text = "Masuk kamar 203"
 
 [node name="RoomSpawn" type="Marker2D" parent="."]
-position = Vector2(650, 592)
+position = Vector2(940, 592)
 
 [node name="Decor" parent="."]
 floor_number = 2

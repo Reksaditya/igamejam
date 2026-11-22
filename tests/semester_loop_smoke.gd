@@ -57,12 +57,12 @@ func _run() -> void:
 		assert(draw_ids.size() == 10, "Drawn questions must be non-repeating")
 		print("BANK OK Sem %d: total=%d (math=%d, machine=%d)" % [sem, bank.size(), math_count, machine_count])
 
-	# 2. New Game starts in bedroom (dorm_room210.tscn) with exact GDD 4.4 stats & Sem 1 Day 1 06:00.
-	assert(saves.start_new_game("Yohan") == OK)
+	# 2. New Game starts in bedroom (dorm_room203.tscn) with exact GDD 4.4 stats & Sem 1 Day 1 06:00.
+	assert(saves.start_new_game() == OK)
 	await scene_changed
 	await process_frame
 	await process_frame
-	assert(current_scene.scene_file_path == "res://scenes/movement/dorm_room210.tscn", "New game must start in dorm_room210.tscn, got: " + current_scene.scene_file_path)
+	assert(current_scene.scene_file_path == "res://scenes/movement/dorm_room203.tscn", "New game must start in dorm_room203.tscn, got: " + current_scene.scene_file_path)
 	assert(is_equal_approx(stats.get_energy(), 100.0), "Starting Energi must be 100.0")
 	assert(is_equal_approx(stats.get_sanity(), 40.0), "Starting Kewarasan must be 40.0")
 	assert(is_equal_approx(stats.get_gpa(), 0.0), "Starting IPK must be 0.0")
@@ -132,7 +132,7 @@ func _run() -> void:
 	assert(career.ending_for(3.8, false) == "bad")
 
 	# 6. Split Blueprint math (0/2 = 0%, 1/2 = 15%, 2/2 = 30%) + 12-day rollover + idempotency.
-	assert(saves.start_new_game("Yohan") == OK)
+	assert(saves.start_new_game() == OK)
 	await scene_changed
 	await process_frame
 	assert(career.record_result(1, 1, "tugas", 100.0) == OK)

@@ -1,7 +1,6 @@
 extends Node2D
 
 const Interaction = preload("res://scripts/movement/world_interaction.gd")
-const DOOR := preload("res://scenes/movement/door_interaction.tscn")
 const Guard = preload("res://scripts/movement/campus_guard.gd")
 const StoryPanel = preload("res://scripts/academic/story_panel.gd")
 
@@ -14,30 +13,29 @@ var _curfew_due: bool = false
 
 func _ready() -> void:
 	var path := get_parent().scene_file_path
-	if path == "res://scenes/movement/top_down_movement.tscn":
-		var door := DOOR.instantiate()
-		door.position = Vector2(1470, 540)
-		door.destination = "res://scenes/movement/lecturer_room.tscn"
-		door.action_text = "Ruang dosen"
-		add_child(door)
-		_sign("Ruang Dosen", Vector2(1400, 430))
-		var frame := Polygon2D.new()
-		frame.polygon = PackedVector2Array([Vector2(1425, 460), Vector2(1515, 460), Vector2(1515, 620), Vector2(1425, 620)])
-		frame.color = Color("#527a85")
-		add_child(frame)
-		_npc("student", "Mahasiswa · Raka", Vector2(400, 540))
-	elif path == "res://scenes/movement/campus_lab_room.tscn":
+	if path in ["res://scenes/movement/top_down_movement.tscn", "res://scenes/movement/dorm_exterior.tscn"]:
+		_npc.call_deferred("student", "Mahasiswa · Raka", Vector2(1050, 540))
+	if path == "res://scenes/movement/campus_lab_room.tscn":
 		_interaction("workshop", "Mulai merakit mesin", Vector2(650, 540))
 		_sign("Bengkel · Meja perakitan", Vector2(460, 450))
+		_interaction("lecturer", "Laporkan proyek", Vector2(1530, 540))
+		_sign("Dosen · Pengumpulan proyek", Vector2(1400, 430))
 	elif path == "res://scenes/movement/lecturer_room.tscn":
 		_interaction("lecturer", "Laporkan proyek", Vector2(650, 540))
 		_sign("Dosen Teknik · Pengumpulan proyek", Vector2(420, 430))
 		_npc("lecturer", "Dosen Teknik", Vector2(1250, 540))
 	if path.ends_with("dorm_floor1.tscn"):
-		_npc("student", "Teman asrama", Vector2(500, 540))
+		_art_npc("Randomash", "randomash", Vector2(500, 620))
 		_npc("guard", "Petugas asrama", Vector2(1450, 540))
-	elif path.ends_with("campus_classroom.tscn"):
-		_npc("student", "Teman sekelas", Vector2(1500, 540))
+	elif path.ends_with("dorm_floor2.tscn"):
+		_art_npc("RandomKid", "random_kid", Vector2(700, 620))
+	elif path.ends_with("classroom_corridor_floor1.tscn"):
+		_art_npc("RandomKid", "random_kid", Vector2(480, 620))
+	elif path.ends_with("classroom_corridor_floor3.tscn") or path.ends_with("campus_lab.tscn"):
+		_art_npc("Randomash", "randomash", Vector2(480, 620))
+	var lighting := preload("res://scripts/movement/world_lighting.gd").new()
+	lighting.name = "WorldLighting"
+	add_child(lighting)
 	_build_blur()
 	PlayerStats.changed.connect(_update_blur)
 	GameClock.minute_changed.connect(_clock_changed)
@@ -65,7 +63,8 @@ func _sign(value: String, point: Vector2) -> void:
 func _npc(action: String, caption: String, point: Vector2) -> void:
 	var target := _interaction(action, caption, point)
 	var figure := Guard.new()
-	figure.position.y = 52
+	figure.scale = Vector2.ONE * _actor_height() / 82.0
+	figure.position.y = 620 - point.y - 18 * figure.scale.y
 	target.add_child(figure)
 
 
@@ -123,5 +122,24 @@ func _process(delta: float) -> void:
 	if _curfew_due and not is_instance_valid(_guard):
 		_guard = Guard.new()
 		_guard.player = player
-		_guard.position = Vector2(clampf(player.position.x + 350, 80, 1800), 592)
+		_guard.scale = Vector2.ONE * _actor_height() / 82.0
+		var edge: float = player.get_node("Camera2D").limit_right - 80
+		_guard.position = Vector2(clampf(player.position.x + 350, 80, edge), 620 - 18 * _guard.scale.y)
 		add_child(_guard)
+
+
+func _art_npc(id: String, asset: String, point: Vector2) -> void:
+	var figure := Sprite2D.new()
+	figure.name = id
+	figure.texture = load("res://assets/npcs/%s.png" % asset)
+	figure.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var actor := get_parent().get_node("Player/Visual") as Node2D
+	figure.scale = Vector2.ONE * absf(actor.scale.y) * 0.16
+	figure.position = point - Vector2(0, figure.texture.get_height() * figure.scale.y * 0.5)
+	figure.z_index = 1
+	add_child(figure)
+
+
+func _actor_height() -> float:
+	var visual := get_parent().get_node("Player/Visual") as Node2D
+	return 64 * absf(visual.scale.y)

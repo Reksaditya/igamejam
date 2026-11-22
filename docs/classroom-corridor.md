@@ -1,12 +1,12 @@
 # Lorong kelas F1, F2, dan F3
 
-Pintu utama kampus sekarang menuju lorong F1. Pintu ganda pada setiap lorong memasuki kelas di lantai tersebut; keluar kelas kembali ke lorong yang sama. Akses keluar gedung berada di sisi kiri F1.
+Pintu utama kampus sekarang menuju lorong F1. Pintu ganda pada F1 dan F2 memasuki kelas; pintu ganda bertanda LABORATORIUM pada F3 memasuki laboratorium. Keluar ruangan kembali ke lorong pada lantai yang sama. Akses keluar gedung berada di sisi kiri F1. Detail penyatuan gedung dan kompatibilitas save: docs/unified-campus.md.
 
 Setelah pemain menyelesaikan kelas dan menutup catatan akhir, pemain otomatis kembali ke lorong lantai yang sama melalui fade. Popup dapat dibaca sebelum perpindahan. Membaca ulang catatan lama tetap berlangsung di kelas.
 
 - F1 memakai Tak berjudul63_20261122144242.png. Dekati tangga kanan, lalu tekan E untuk naik ke F2.
 - F2 memakai Tak berjudul63_20261122144208.png. E pada tangga naik di kanan membawa pemain ke F3. E pada akses tangga turun di sebelah kirinya membawa pemain ke F1. Kedua area terpisah dan tidak lagi membuka pilihan lantai.
-- F3 memakai Tak berjudul65_20261122142712.png. Pintu hijau di kanan dipakai sebagai akses tangga turun ke F2 melalui E.
+- F3 memakai Tak berjudul65_20261122142712.png. Pintu ganda menuju laboratorium; pintu hijau di kanan dipakai sebagai akses tangga turun ke F2 melalui E.
 
 Interaksi menampilkan bubble dan memakai fade yang sudah ada. Menyentuh area tangga atau menekan W tidak memindahkan pemain. Setelah naik, pemain tiba di akses tangga turun pada lantai tujuan; setelah turun, pemain tiba di tangga naik. F1 tidak menyediakan turun dan F3 tidak menyediakan naik. Gambar disalin tanpa mengubah file asli dan ditampilkan dengan rasio yang dipertahankan. Player memakai z-index 1.
 

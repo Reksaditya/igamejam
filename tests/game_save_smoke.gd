@@ -1,7 +1,7 @@
 extends SceneTree
 
 const MENU := "res://scenes/ui/main_menu.tscn"
-const INITIAL := "res://scenes/movement/dorm_room210.tscn"
+const INITIAL := "res://scenes/movement/dorm_room203.tscn"
 const LAB := "res://scenes/movement/campus_lab.tscn"
 const DESKTOP := "res://scenes/interaction/desktop/desktop.tscn"
 const Results = preload("res://scripts/interaction/desktop/lms/lms_results.gd")
@@ -49,9 +49,6 @@ func _run() -> void:
 	assert(current_scene.get_node("%Load").disabled)
 	assert(not saves.has_save())
 	current_scene._new_game()
-	await process_frame
-	current_scene.get_node("%PlayerName").text = "Yohan"
-	current_scene._create_game()
 	await scene_changed
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)
@@ -153,9 +150,6 @@ func _run() -> void:
 	assert(current_scene.get_node("%NewGameConfirm").visible)
 	current_scene.get_node("%NewGameConfirm").confirmed.emit()
 	current_scene.get_node("%NewGameConfirm").hide()
-	await process_frame
-	current_scene.get_node("%PlayerName").text = "Yohan Baru"
-	current_scene._create_game()
 	await scene_changed
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)

@@ -11,7 +11,7 @@ func _run() -> void:
 	var stats := root.get_node("PlayerStats")
 	var saves := root.get_node("GameSave")
 	root.get_node("SceneTransition").fade_seconds = 0.05
-	assert(saves.start_new_game("Life Test") == OK)
+	assert(saves.start_new_game() == OK)
 	await scene_changed
 	assert(clock.get_absolute_minutes() >= 360 and clock.get_absolute_minutes() < 370)
 	await create_timer(1.0).timeout

@@ -2,6 +2,8 @@ extends Control
 
 signal resolved(success: bool)
 
+const FONT := preload("res://assets/fonts/pixelify_sans/pixelify_sans.ttf")
+
 @export_range(1.0, 10.0, 0.1) var starting_duration_seconds: float = 3.0
 @export_range(1.0, 10.0, 0.1) var ending_duration_seconds: float = 1.8
 @export_range(0.05, 0.4, 0.01) var starting_target_width: float = 0.18
@@ -63,6 +65,9 @@ func _draw() -> void:
 	var center := size * 0.5
 	var radius := minf(size.x, size.y) * 0.39
 	draw_circle(center, radius - 8, Color("#172b3d"))
+	var font_size := maxi(12, int(radius * 0.4))
+	var text_width := FONT.get_string_size("SPACE", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	draw_string(FONT, center + Vector2(-text_width * 0.5, font_size * 0.35), "SPACE", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color("#fff1d2"))
 	draw_arc(center, radius, -PI * 0.5, PI * 1.5, 96, Color("#3d566d"), 12.0, true)
 	draw_arc(center, radius, _target_start * TAU - PI * 0.5, (_target_start + target_width) * TAU - PI * 0.5, 32, Color("#8fd4a3"), 14.0, true)
 	var angle := clampf(_elapsed / duration_seconds, 0.0, 1.0) * TAU - PI * 0.5

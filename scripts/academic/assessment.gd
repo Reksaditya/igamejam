@@ -48,7 +48,7 @@ func _ready() -> void:
 	if error != OK:
 		GameClock.end_assessment(_clock_token)
 		_clock_token = 0
-		label("Energi tidak cukup atau progres belum dapat disimpan. Istirahat dahulu di Kamar 210.")
+		label("Energi tidak cukup atau progres belum dapat disimpan. Istirahat dahulu di Kamar 203.")
 		add_close()
 		_finished = true
 		return

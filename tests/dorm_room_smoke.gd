@@ -1,6 +1,6 @@
 extends SceneTree
 
-const ROOM := "res://scenes/movement/dorm_room210.tscn"
+const ROOM := "res://scenes/movement/dorm_room203.tscn"
 
 
 func _initialize() -> void:
@@ -16,27 +16,29 @@ func _run() -> void:
 		change_scene_to_file("res://scenes/movement/dorm_floor%d.tscn" % floor_number)
 		await scene_changed
 		var corridor := current_scene.get_node("Decor")
-		assert(corridor._doors.size() == 10)
+		assert(corridor._doors.size() == 8)
 		assert(corridor.floor_number == floor_number)
 		if floor_number == 2:
-			assert(corridor._doors.has(Vector2i(650, 210)))
+			assert(corridor._doors.has(Vector2i(940, 203)))
 			assert(current_scene.get_node("Stairs").destination == ROOM)
 	change_scene_to_file(ROOM)
 	await scene_changed
 	await _frames(5)
 	var room := current_scene
 	var player := room.get_node("Player") as CharacterBody2D
-	assert(not player.get_node("Camera2D").enabled)
+	assert(player.get_node("Camera2D").enabled)
 	assert(not room.get_node("Background").visible)
-	for id: String in ["Bed", "Nightstand", "Chair", "Clock"]:
-		var sprite := room.get_node("Furniture/" + id) as Sprite2D
-		assert(sprite.texture != null and sprite.texture.resource_path.begins_with("res://assets/furniture/dorm/"))
+	assert(not room.has_node("Chair"))
+	assert(room.get_node("Furniture/Roommate").texture.resource_path == "res://assets/npcs/roommate.png")
+	assert(room.get_node("Furniture/Bed").texture.resource_path.ends_with("bunk_bed.png"))
 	for size: Vector2i in [Vector2i(1280, 720), Vector2i(960, 540), Vector2i(1920, 1080)]:
 		root.size = size
 		await process_frame
 		await process_frame
 		var view := root.get_visible_rect().size
-		assert(room.room_rect.size.is_equal_approx((view * 0.6).round()))
+		assert(room.room_rect.size == Vector2(2048, 576))
+		assert(room.get_node("Furniture/Bed").scale == Vector2.ONE)
+		assert(room.get_node("Furniture/Roommate").scale == player.get_node("Visual").scale * 0.16)
 		assert(room.get_node("RoomBounds").get_child_count() == 4)
 		player.position = Vector2(room.room_rect.position.x + 23, room.floor_y - 28)
 		Input.action_press("move_left")
@@ -53,25 +55,36 @@ func _run() -> void:
 	root.size = Vector2i(1280, 720)
 	await process_frame
 	await process_frame
-	var chair := room.get_node("Chair")
-	player.position = chair.position + Vector2(0, 2)
+	var bed := room.get_node("Bed")
+	player.position = bed.position + Vector2(0, 22)
 	await _frames(6)
-	assert(chair.overlaps_body(player), "chair %s player %s paused=%s" % [chair.position, player.position, paused])
-	_press_e()
-	await _frames(3)
-	assert(chair.seated and player.is_studying(), "seated=%s tracked=%s paused=%s" % [chair.seated, chair._player, paused])
-	var seated_position := player.position
-	Input.action_press("move_right")
-	await _frames(8)
-	Input.action_release("move_right")
-	assert(player.position == seated_position)
+	assert(bed.interact())
+	await process_frame
+	await process_frame
+	var energy := root.get_node("PlayerStats")
+	energy.set_energy(20)
+	bed._rest(1)
+	await create_timer(0.1).timeout
+	assert(room.sleeping and player.is_studying())
+	assert(player.z_index < room.get_node("Furniture/Bed").z_index)
+	await create_timer(0.6).timeout
+	assert(is_equal_approx(room.get_node("WorldFeatures/WorldLighting").screen.color.a, 0.8))
+	assert(is_equal_approx(player.get_node("Visual").rotation, -PI * 0.5))
 	if "--capture" in OS.get_cmdline_user_args():
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("res://.godot/dorm-room-seated.png")
-	_press_e()
+		root.get_texture().get_image().save_png("res://.godot/dorm-room-sleeping.png")
+	await create_timer(2).timeout
+	assert(not room.sleeping and not player.is_studying())
+	assert(player.z_index > room.get_node("Furniture/Bed").z_index)
+	assert(energy.get_energy() == 35)
+	room.sleep_pose_seconds = 0.1
+	bed._next_week()
+	await create_timer(0.2).timeout
+	assert(not room.sleeping and energy.get_energy() == 100)
+	assert(root.get_node("GameClock").get_formatted_time().begins_with("06:"))
+	bed._panel.close()
+	await process_frame
 	await _frames(3)
-	assert(not chair.seated and not player.is_studying())
-	assert(player.get_node("Visual").scale.is_equal_approx(Vector2(1.5, 1.5)))
 	var normalized: Vector2 = room.get_player_save_position(player)
 	assert(saves.save_now() == OK)
 	saves._enabled = false
@@ -93,7 +106,7 @@ func _run() -> void:
 	await _transition()
 	current_scene.get_node("StartupSound").stop()
 	current_scene._login._submit("123")
-	current_scene._shutdown()
+	current_scene._request_turn_off()
 	await scene_changed
 	await _transition()
 	assert(current_scene.scene_file_path == ROOM)
@@ -106,7 +119,7 @@ func _run() -> void:
 		await process_frame
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("res://.godot/dorm-floor2-doors.png")
-	print("PASS: numbered dorm doors, room 210, supplied furniture, 60-percent room at three resolutions, four solid boundaries, E sit/stand, movement lock, normalized save/load, laptop and return spawn")
+	print("PASS: numbered dorm doors, room 203, supplied furniture, native-size scrolling room at three resolutions, four solid boundaries, no sitting, sleep pose and recovery, normalized save/load, laptop and return spawn")
 	quit()
 
 

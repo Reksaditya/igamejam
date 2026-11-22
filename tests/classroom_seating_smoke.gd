@@ -22,7 +22,7 @@ func _run() -> void:
 	assert(room.get_node("Background").CLASSROOM.resource_path == "res://assets/classroom/background.png")
 	assert(room.get_node("Background").z_index < player.z_index)
 	assert(classroom.get_node("Desks").z_index > player.z_index)
-	for index: int in 4:
+	for index: int in 3:
 		var seat: Area2D = classroom._seats[index]
 		clock.restore_save_state({"minutes": index * 1440 + 480, "remainder": 0})
 		player.position = seat.global_position
@@ -83,6 +83,7 @@ func _run() -> void:
 		await _frames(4)
 		assert(not classroom._manual_seated and not player.is_studying())
 	clock.restore_save_state({"minutes": 5 * 1440 + 480, "remainder": 0})
+	classroom._enter_class()
 	player.position = classroom._seats[1].global_position
 	await _frames(8)
 	_press_e()
@@ -98,7 +99,7 @@ func _run() -> void:
 	assert(not current_scene.get_node("ClassActivity/Desks").visible)
 	for seat: Area2D in current_scene.get_node("ClassActivity")._seats:
 		assert(not seat.visible and not seat.available)
-	print("PASS: supplied classroom assets, four E seats, seated QTE, study once, movement lock, E/button stand, exam-week sitting and unchanged laboratory")
+	print("PASS: supplied classroom assets, three E seats and one occupied NPC seat, seated QTE, study once, movement lock, E/button stand, exam-week sitting and unchanged laboratory")
 	quit()
 
 

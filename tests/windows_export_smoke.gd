@@ -23,10 +23,10 @@ func _run() -> void:
 	_check(menu.get_node("%SettingsPanel").visible, "Settings menu tidak tampil")
 	menu._show_main()
 	var saves := root.get_node("GameSave")
-	_check(saves.start_new_game("Windows Build") == OK, "New Game gagal")
+	_check(saves.start_new_game() == OK, "New Game gagal")
 	await scene_changed
 	var stats := root.get_node("PlayerStats")
-	_check(stats.player_name == "Windows Build", "Nama pemain tidak tersimpan")
+	_check(stats.player_name == "Yohan", "Nama default pemain salah")
 	_check(stats.student_id.length() == 12 and stats.student_id.begins_with("607"), "Format NIM salah")
 	var profile := current_scene.get_node("PlayerProfile")
 	profile.open_profile()
@@ -34,12 +34,12 @@ func _run() -> void:
 	_check(paused and profile._settings.visible, "Settings profil tidak tampil")
 	profile._popup.hide()
 	root.get_node("GameClock").restore_save_state({"minutes": 600, "remainder": 0})
-	change_scene_to_file("res://scenes/movement/dorm_room210.tscn")
+	change_scene_to_file("res://scenes/movement/dorm_room203.tscn")
 	await scene_changed
 	for i: int in 8:
 		await physics_frame
 	var room := current_scene
-	_check(room.room_rect.size.is_equal_approx((root.get_visible_rect().size * 0.6).round()), "Ukuran kamar tidak sesuai")
+	_check(room.room_rect.size == Vector2(2048, 576), "Ukuran kamar tidak sesuai")
 	for id: String in ["Bed", "Nightstand", "Chair", "Clock"]:
 		_check(room.get_node("Furniture/" + id).texture != null, "Texture furniture hilang: " + id)
 	var player := room.get_node("Player") as CharacterBody2D
@@ -61,7 +61,7 @@ func _run() -> void:
 	_check(not current_scene.get_node("%Load").disabled, "Load tidak aktif setelah save")
 	current_scene._load_game()
 	await scene_changed
-	_check(current_scene.scene_file_path.ends_with("dorm_room210.tscn"), "Load tidak kembali ke kamar")
+	_check(current_scene.scene_file_path.ends_with("dorm_room203.tscn"), "Load tidak kembali ke kamar")
 	for path: String in ["res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn", "res://scenes/interaction/desktop/desktop.tscn"]:
 		_check(ResourceLoader.exists(path) and load(path) != null, "Resource ekspor hilang: " + path)
 	if not _failed:

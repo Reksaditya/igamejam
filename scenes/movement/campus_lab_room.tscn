@@ -10,7 +10,7 @@ world_title = "INTERIOR · RUANG LABORATORIUM"
 laboratory = true
 
 [node name="Door" parent="."]
-destination = "res://scenes/movement/campus_lab.tscn"
+destination = "res://scenes/movement/classroom_corridor_floor3.tscn"
 
 [node name="ClassActivity" parent="."]
 classroom_enabled = false

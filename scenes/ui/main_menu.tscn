@@ -184,25 +184,3 @@ autowrap_mode = 3
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 16
 theme_override_colors/font_color = Color(0.9, 0.76, 0.58, 1)
-
-[node name="NameDialog" type="ConfirmationDialog" parent="."]
-unique_name_in_owner = true
-title = "Kehidupan Baru"
-transient = true
-exclusive = true
-ok_button_text = "Mulai"
-cancel_button_text = "Batal"
-
-[node name="Content" type="VBoxContainer" parent="NameDialog"]
-custom_minimum_size = Vector2(400, 100)
-theme_override_constants/separation = 16
-
-[node name="Title" type="Label" parent="NameDialog/Content"]
-layout_mode = 2
-text = "Siapa namamu?"
-
-[node name="PlayerName" type="LineEdit" parent="NameDialog/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-max_length = 32
-placeholder_text = "Nama player"

@@ -21,7 +21,7 @@ func _refresh() -> void:
 		var status := "Selesai (+15%)" if done else ("Terbuka (siap dirakit, -20 Energi)" if owned else "Terkunci (selesaikan kelas / buka Perpustakaan)")
 		label("• %s — %s (%s): %s" % [str(info.slot_label), str(info.title), CareerProgress.blueprint_deadline_text(bp_id), status], 16)
 	if PlayerStats.get_energy() <= 0.0:
-		label("Energi habis. Istirahat dahulu di Kamar 210 sebelum merakit proyek.", 16)
+		label("Energi habis. Istirahat dahulu di Kamar 203 sebelum merakit proyek.", 16)
 	else:
 		button("Buka Meja Rakit Bengkel", _open_bench)
 	add_close()

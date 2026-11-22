@@ -4,7 +4,7 @@ const Vignette = preload("res://scripts/academic/story_vignette.gd")
 const STORIES := {
 	"intro": [
 		"Bab 1 · Semester 1 Dimulai",
-		"Tahun 2026. Kamu tiba di Bandung sebagai mahasiswa Teknik di Universitas Redline dan menempati Kamar 210.\n\nSetiap semester berlangsung 12 hari: Paruh 1 (Hari 1–6, UTS & Blueprint Midterm 15%) dan Paruh 2 (Hari 7–12, UAS & Blueprint Final 15%). Jaga Energi dan Kewarasanmu, lalu raih IPK tinggi untuk menepati janji kepada keluarga.",
+		"Tahun 2026. Kamu tiba di Bandung sebagai mahasiswa Teknik di Universitas Redline dan menempati Kamar 203.\n\nSetiap semester berlangsung 12 hari: Paruh 1 (Hari 1–6, UTS & Blueprint Midterm 15%) dan Paruh 2 (Hari 7–12, UAS & Blueprint Final 15%). Jaga Energi dan Kewarasanmu, lalu raih IPK tinggi untuk menepati janji kepada keluarga.",
 	],
 	"busy": [
 		"Bab 2 · Paruh Kedua Semester 1",
@@ -12,7 +12,7 @@ const STORIES := {
 	],
 	"loss": [
 		"Bab 3 · Kabar dari Ayah",
-		"Di pertengahan Semester 2, ayah menelepon membawa kabar duka: ibu telah tiada. Rasa kehilangan membuat konsentrasi dan tenagamu terguncang.\n\nEnergi menurun dan kewarasan meningkat. Beristirahatlah di Kamar 210 dan terus melangkah sedikit demi sedikit.",
+		"Di pertengahan Semester 2, ayah menelepon membawa kabar duka: ibu telah tiada. Rasa kehilangan membuat konsentrasi dan tenagamu terguncang.\n\nEnergi menurun dan kewarasan meningkat. Beristirahatlah di Kamar 203 dan terus melangkah sedikit demi sedikit.",
 	],
 	"promise": [
 		"Bab 4 · Menuntaskan Janji",

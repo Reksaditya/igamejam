@@ -1,14 +1,14 @@
 extends Node
 
 const SAVE_PATH := "user://game_save.cfg"
-const SAVE_VERSION := 3
-const INITIAL_SCENE := "res://scenes/movement/dorm_room210.tscn"
+const SAVE_VERSION := 4
+const INITIAL_SCENE := "res://scenes/movement/dorm_room203.tscn"
 const COURTYARD_SCENE := "res://scenes/movement/top_down_movement.tscn"
 const DESKTOP_RETURN_CONTEXT := &"desktop_return_context"
-const DORM_SCENE := "res://scenes/movement/dorm_room210.tscn"
+const DORM_SCENE := "res://scenes/movement/dorm_room203.tscn"
 const DESKTOP_SCENE := "res://scenes/interaction/desktop/desktop.tscn"
 const WORKSHOP_SCENE := "res://scenes/interaction/workshop/transmission_workshop.tscn"
-const WORLD_SCENES := [COURTYARD_SCENE, "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn", "res://scenes/movement/dorm_exterior.tscn", "res://scenes/movement/dorm_floor1.tscn", "res://scenes/movement/dorm_floor2.tscn", DORM_SCENE, "res://scenes/movement/lecturer_room.tscn", "res://scenes/movement/classroom_corridor_floor1.tscn", "res://scenes/movement/classroom_corridor_floor2.tscn", "res://scenes/movement/classroom_corridor_floor3.tscn", "res://scenes/movement/campus_classroom_floor2.tscn", "res://scenes/movement/campus_classroom_floor3.tscn"]
+const WORLD_SCENES := [COURTYARD_SCENE, "res://scenes/movement/dorm_room210.tscn", "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn", "res://scenes/movement/dorm_exterior.tscn", "res://scenes/movement/dorm_floor1.tscn", "res://scenes/movement/dorm_floor2.tscn", DORM_SCENE, "res://scenes/movement/lecturer_room.tscn", "res://scenes/movement/classroom_corridor_floor1.tscn", "res://scenes/movement/classroom_corridor_floor2.tscn", "res://scenes/movement/classroom_corridor_floor3.tscn", "res://scenes/movement/campus_classroom_floor2.tscn", "res://scenes/movement/campus_classroom_floor3.tscn"]
 const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "career_progress.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg",
 	"blueprint_progress.cfg.bak", "transmission_progress.cfg", "transmission_progress.cfg.bak",
 	"study_notes.cfg", "study_notes.cfg.bak", "workshop_progress.cfg", "workshop_progress.cfg.bak",
@@ -158,10 +158,8 @@ func save_now() -> Error:
 	return last_save_error
 
 
-func start_new_game(player_name: String = "Yohan") -> Error:
-	if player_name.strip_edges().is_empty():
-		return ERR_INVALID_PARAMETER
-	var stats := PlayerStats.make_new_state(player_name)
+func start_new_game() -> Error:
+	var stats := PlayerStats.make_new_state()
 	_busy = true
 	var previous_scene := _resume_scene
 	var previous_world := _world_scene
@@ -279,7 +277,7 @@ func _make_snapshot(clock: Dictionary, files: Dictionary, stats: Dictionary = {}
 
 func _read_snapshot() -> ConfigFile:
 	var snapshot := ConfigFile.new()
-	if snapshot.load(SAVE_PATH) != OK or snapshot.get_value("save", "version", 0) not in [1, 2, SAVE_VERSION]:
+	if snapshot.load(SAVE_PATH) != OK or snapshot.get_value("save", "version", 0) not in [1, 2, 3, SAVE_VERSION]:
 		return null
 	var scene: Variant = snapshot.get_value("world", "scene", "")
 	var world: Variant = snapshot.get_value("world", "world_scene", "")
@@ -302,6 +300,12 @@ func _read_snapshot() -> ConfigFile:
 		for path: String in snapshot.get_section_keys("files"):
 			if not _is_gameplay_path(path) or not snapshot.get_value("files", path) is String:
 				return null
+	for key: String in ["scene", "world_scene"]:
+		var saved_scene: String = snapshot.get_value("world", key)
+		if saved_scene == "res://scenes/movement/dorm_room210.tscn":
+			snapshot.set_value("world", key, DORM_SCENE)
+		elif saved_scene == "res://scenes/movement/dorm_exterior.tscn":
+			snapshot.set_value("world", key, COURTYARD_SCENE)
 	return snapshot
 
 

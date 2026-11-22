@@ -251,11 +251,11 @@ func _insert_blueprint_by_id(puzzle_id: String) -> void:
 		return
 	if not demo_blueprint:
 		if PlayerStats.get_energy() <= 0.0:
-			_feedback("Energi habis. Istirahat dahulu di Kamar 210 sebelum merakit proyek.")
+			_feedback("Energi habis. Istirahat dahulu di Kamar 203 sebelum merakit proyek.")
 			return
 		var charge_err := CareerProgress.begin_activity("project", "bp_" + target.linked_blueprint_id)
 		if charge_err != OK:
-			_feedback("Energi tidak cukup (-20 Energi diperlukan). Istirahat dahulu di Kamar 210.")
+			_feedback("Energi tidak cukup (-20 Energi diperlukan). Istirahat dahulu di Kamar 203.")
 			return
 
 	_inserting = true

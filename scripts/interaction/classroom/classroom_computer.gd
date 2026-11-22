@@ -2,6 +2,8 @@ extends Area2D
 
 signal interaction_requested
 
+@export var occupied: bool = false
+
 var available: bool = false
 var _player: CharacterBody2D
 
@@ -19,7 +21,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _interact() -> bool:
-	if not available or not is_instance_valid(_player) or not overlaps_body(_player) or SceneTransition.is_active():
+	if occupied or not available or not is_instance_valid(_player) or not overlaps_body(_player) or SceneTransition.is_active():
 		return false
 	interaction_requested.emit()
 	return true
@@ -28,7 +30,7 @@ func _interact() -> bool:
 func _on_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D:
 		_player = body
-		$Prompt.visible = available
+		$Prompt.visible = available and not occupied
 
 
 func _on_body_exited(body: Node2D) -> void:

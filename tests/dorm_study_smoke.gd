@@ -14,7 +14,7 @@ func _run() -> void:
 	if "--reload" in OS.get_cmdline_user_args():
 		assert(saves.load_game() == OK)
 		await scene_changed
-		assert(current_scene.scene_file_path.ends_with("dorm_room210.tscn"))
+		assert(current_scene.scene_file_path.ends_with("dorm_room203.tscn"))
 		assert(career.blueprint_ready(1))
 		assert(career.class_data(1, 1).complete.size() == 3)
 		print("PASS: dorm, restored notes and assembled blueprint persist across processes")
@@ -41,10 +41,10 @@ func _run() -> void:
 	assert(career.blueprint_ready(1))
 	assert(clock.get_formatted_time() == "06:00")
 	library.queue_free()
-	change_scene_to_file("res://scenes/movement/dorm_exterior.tscn")
+	change_scene_to_file("res://scenes/movement/top_down_movement.tscn")
 	await scene_changed
-	for target: String in ["dorm_floor1", "dorm_floor2", "dorm_room210"]:
-		var door := current_scene.get_node("Door" if target == "dorm_floor1" else "Stairs")
+	for target: String in ["dorm_floor1", "dorm_floor2", "dorm_room203"]:
+		var door := current_scene.get_node("DormDoor" if target == "dorm_floor1" else "Stairs")
 		current_scene.get_node("Player").position = door.position + Vector2(0, 52)
 		for frame: int in 6:
 			await physics_frame
@@ -133,7 +133,7 @@ func _click_turn_off_and_check_room() -> void:
 	assert(root.get_node("SceneTransition").is_active())
 	await scene_changed
 	await _transition()
-	assert(current_scene.scene_file_path.ends_with("dorm_room210.tscn"))
+	assert(current_scene.scene_file_path.ends_with("dorm_room203.tscn"))
 	assert(is_equal_approx(current_scene.get_node("Player").position.x, current_scene.get_node("ComputerSpawn").position.x))
 
 

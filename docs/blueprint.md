@@ -2,7 +2,7 @@
 
 ## Mulai bermain
 
-New Game meminta nama pemain, membuat ID 12 digit berawalan 607, lalu memulai hari pertama pukul 06.00. Jika save sudah ada, konfirmasi dan input nama harus diselesaikan sebelum data lama diganti. Load melanjutkan autosave, termasuk lokasi, waktu, identitas, catatan, nilai, rancangan, dan perakitan. Pengaturan tidak dihapus oleh New Game.
+New Game langsung memulai permainan sebagai Yohan dan membuat ID 12 digit berawalan 607. Input nama sudah dihapus. Jika save sudah ada, konfirmasi kehidupan baru harus diselesaikan sebelum data lama diganti. Load melanjutkan autosave; nama dari save lama dinormalisasi menjadi Yohan tanpa menghapus ID atau progresnya. Pengaturan tidak dihapus oleh New Game. Laboratorium kini berada di lantai 3 gedung kuliah; map luar kini satu area dengan kamera horizontal dan kamar pemain menjadi 203. Panduan terbaru tersedia di docs/campus-world.md.
 
 Berjalan dengan A/D atau panah kiri/kanan; Shift untuk berlari. MC memakai animasi jalan enam frame, beralih ke side idle tujuh frame ketika berhenti, lalu idle depan setelah tiga detik tanpa berjalan. Arah side idle mengikuti arah jalan terakhir. Interaksi memakai E atau bubble yang muncul ketika mendekati objek. Lompatan tetap dinonaktifkan sesuai permintaan. Batas tepi world transparan. Interaksi pintu dan komputer menggunakan fade.
 
@@ -11,11 +11,11 @@ Berjalan dengan A/D atau panah kiri/kanan; Shift untuk berlari. MC memakai anima
 <<<<<<<<< Temporary merge branch 1
 Setelah seluruh catatan lengkap, kelas langsung memberikan blueprint `sediment_sorter`. Tombol **Buka blueprint** menampilkan gambar utuh. Jika pemberian gagal disimpan, tombol **Coba simpan lagi** dapat digunakan tanpa mengulang kelas.
 =========
-Kamar 210 kini memakai furniture kiriman pengguna, kursi interaktif, dan area gerak berukuran 60% lebar serta tinggi viewport. Detail aset dan perilaku resize/save tersedia di [panduan kamar](dorm-room.md).
+Kamar 203 memakai aset kamar pada ukuran asli 2048 × 576, kamera horizontal, kasur bawah interaktif, dan laptop. Kursi pada gambar tidak dapat diduduki. Detail aset dan perilaku resize/save tersedia di [panduan kamar](dorm-room.md).
 
-- Halaman kampus: pintu tengah menuju lorong kelas F1; pintu di sisi kanan bangunan menuju ruang dosen. Tepi kanan menuju gedung lab; tepi kiri menuju asrama.
+- Halaman kampus: satu map luar dengan asrama di kiri, gedung kuliah di tengah, dan perpustakaan belum tersedia di kanan. Setiap gedung memiliki label dan interaksi E. Tidak ada teleport di ujung map. Pelaporan proyek tetap tersedia di area laboratorium.
 - Lorong kelas: tangga dengan E menghubungkan F1, F2, dan F3. Area tangga naik khusus untuk naik, dan akses tangga turun khusus untuk turun; tidak ada popup pilihan lantai. Pintu ganda menuju kelas di lantai tersebut. Keluar gedung dari sisi kiri F1. Detail: docs/classroom-corridor.md.
-- Gedung lab: pintu menuju bengkel. Meja perakitan dapat diakses dengan E.
+- Laboratorium: pintu bertanda LABORATORIUM pada lorong F3 menuju ruang lab. Meja perakitan dapat diakses dengan E; keluar lab kembali ke F3.
 - Asrama: pintu masuk menuju lantai 1. Tangga di kanan menuju lantai 2. Pintu kamar 210 berada di sisi kiri lantai 2.
 - Kamar 210: tempat tidur di kiri dan meja komputer di kanan. Komputer menyediakan Word Explorer/LMS, Library, Project, Blocks, Notepad, dan aplikasi desktop sebelumnya. Sandi awal komputer 123. Matikan komputer untuk kembali ke kamar.
 - Ruang dosen: laporkan mesin yang selesai untuk memperoleh nilai proyek.

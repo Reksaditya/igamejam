@@ -72,11 +72,11 @@ func _test_transitions() -> void:
 	var workshop_bench := current_scene.get_node("WorkshopBench")
 	assert(workshop_bench._resolved_transition_style() == transition.TransitionStyle.FADE, "Workshop bench door must preserve FADE transition")
 
-	transition.change_scene("res://scenes/movement/dorm_room210.tscn", &"BedSpawn", transition.TransitionStyle.FADE)
+	transition.change_scene("res://scenes/movement/dorm_room203.tscn", &"BedSpawn", transition.TransitionStyle.FADE)
 	await scene_changed
 	while transition.is_active():
 		await process_frame
-	assert(current_scene.scene_file_path == "res://scenes/movement/dorm_room210.tscn")
+	assert(current_scene.scene_file_path == "res://scenes/movement/dorm_room203.tscn")
 	assert(transition.last_style == transition.TransitionStyle.FADE)
 
 
@@ -150,7 +150,7 @@ func _test_class_lockout_and_hud() -> void:
 	var clock := root.get_node("GameClock")
 	var career := root.get_node("CareerProgress")
 
-	assert(saves.start_new_game("Ardi") == OK)
+	assert(saves.start_new_game() == OK)
 	await scene_changed
 	await process_frame
 	await process_frame

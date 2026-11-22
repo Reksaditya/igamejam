@@ -1,16 +1,6 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/movement/top_down_movement.tscn" id="1"]
-[ext_resource type="Script" path="res://scripts/movement/room_decor.gd" id="2"]
 
 [node name="DormExterior" instance=ExtResource("1")]
-world_title = "ASRAMA"
-left_destination = "res://scenes/movement/campus_lab.tscn"
-right_destination = "res://scenes/movement/top_down_movement.tscn"
-
-[node name="Door" parent="."]
-destination = "res://scenes/movement/dorm_floor1.tscn"
-
-[node name="Sign" type="Node2D" parent="."]
-script = ExtResource("2")
-title = "Asrama Mahasiswa Redline"
+world_title = "KAMPUS"

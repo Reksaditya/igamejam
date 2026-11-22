@@ -20,7 +20,7 @@ func _run() -> void:
 		await _check_resolution(index)
 		assert(settings.master_volume == original_volume)
 		assert(AudioServer.is_bus_mute(0))
-	assert(root.get_node("GameSave").start_new_game("Resolution Test") == OK)
+	assert(root.get_node("GameSave").start_new_game() == OK)
 	await scene_changed
 	var profile := current_scene.get_node("PlayerProfile")
 	profile.open_profile()

@@ -172,7 +172,7 @@ func get_today_schedule_status() -> Dictionary:
 			"state": "exam_done" if done else "exam_ready",
 			"badge": "UJIAN SELESAI" if done else "HARI UJIAN",
 			"title": "%s Semester %d tuntas" % [exam_label, term] if done else "Ujian %s · Ruang Kelas" % exam_label,
-			"detail": "Istirahat di Kamar 210 untuk lanjut" if done else "Masuk kelas & dekati komputer ujian",
+			"detail": "Istirahat di Kamar 203 untuk lanjut" if done else "Masuk kelas & dekati komputer ujian",
 			"semester": term,
 			"day_in_semester": day,
 			"can_enter": true,

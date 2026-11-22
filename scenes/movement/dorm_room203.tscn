@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/movement/top_down_movement.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/movement/world_interaction.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/movement/dorm_room.gd" id="3"]
+[ext_resource type="Texture2D" path="res://assets/furniture/dorm/bunk_bed.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/npcs/roommate.png" id="6"]
+
+[node name="DormRoom203" instance=ExtResource("1")]
+script = ExtResource("3")
+world_title = "KAMAR 203"
+left_destination = ""
+right_destination = ""
+
+[node name="Door" parent="."]
+destination = "res://scenes/movement/dorm_floor2.tscn"
+destination_spawn = &"RoomSpawn"
+action_text = "Keluar kamar 203"
+
+[node name="Bed" type="Area2D" parent="."]
+script = ExtResource("2")
+action = "sleep"
+caption = "Tidur / Istirahat"
+interaction_size = Vector2(180, 160)
+
+[node name="Computer" type="Area2D" parent="."]
+script = ExtResource("2")
+action = "computer"
+caption = "Gunakan laptop"
+interaction_size = Vector2(130, 180)
+
+[node name="ComputerSpawn" type="Marker2D" parent="."]
+
+[node name="Furniture" type="Node2D" parent="."]
+texture_filter = 1
+
+[node name="Bed" type="Sprite2D" parent="Furniture"]
+z_index = 2
+texture = ExtResource("5")
+centered = false
+
+[node name="Roommate" type="Sprite2D" parent="Furniture"]
+z_index = 1
+texture = ExtResource("6")

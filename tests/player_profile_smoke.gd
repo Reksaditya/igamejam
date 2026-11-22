@@ -14,19 +14,11 @@ func _run() -> void:
 	var clock := root.get_node("GameClock")
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await scene_changed
+	assert(not current_scene.has_node("NameDialog"))
 	current_scene._new_game()
-	await process_frame
-	assert(current_scene.get_node("%NameDialog").visible)
-	assert(current_scene.get_node("%NameDialog").get_ok_button().disabled)
-	current_scene.get_node("%PlayerName").text = "   "
-	current_scene._create_game()
-	assert(current_scene.scene_file_path.ends_with("main_menu.tscn"))
-	current_scene.get_node("%PlayerName").text = "  Reksa Aditya  "
-	current_scene.get_node("%NameDialog").hide()
-	current_scene._create_game()
 	await scene_changed
 	await physics_frame
-	assert(stats.player_name == "Reksa Aditya")
+	assert(stats.player_name == "Yohan")
 	var id: String = stats.student_id
 	assert(id.length() == 12 and id.begins_with("607") and id.is_valid_int())
 	var profile := current_scene.get_node("PlayerProfile")
@@ -127,24 +119,23 @@ func _run() -> void:
 	change_scene_to_file("res://scenes/ui/main_menu.tscn")
 	await scene_changed
 	current_scene._new_game()
+	assert(current_scene.get_node("%NewGameConfirm").visible)
 	current_scene.get_node("%NewGameConfirm").hide()
-	current_scene._start_new_game()
 	await process_frame
-	current_scene.get_node("%NameDialog").hide()
 	assert(stats.student_id == id and journal.get_entries().size() == 2)
 	assert(saves.load_game() == OK)
 	await scene_changed
 	await physics_frame
-	assert(stats.student_id == id and stats.player_name == "Reksa Aditya")
+	assert(stats.student_id == id and stats.player_name == "Yohan")
 	assert(stats.get_energy() == 65 and stats.get_gpa() == 3.65)
 	assert(journal.get_entries().size() == 2)
 	if "--capture" in OS.get_cmdline_user_args():
 		print("CAPTURE: rendering profile pages")
 		await _capture()
-	assert(saves.start_new_game("Kehidupan Baru") == OK)
+	assert(saves.start_new_game() == OK)
 	await scene_changed
 	await physics_frame
-	assert(stats.player_name == "Kehidupan Baru" and stats.student_id != id)
+	assert(stats.player_name == "Yohan" and stats.student_id != id)
 	assert(stats.get_energy() == 100 and stats.get_gpa() == 0)
 	assert(journal.get_entries().is_empty())
 	for index: int in 6:

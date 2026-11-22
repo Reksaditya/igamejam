@@ -17,13 +17,13 @@ func _run() -> void:
 	if "--reload" in OS.get_cmdline_user_args():
 		assert(saves.load_game() == OK)
 		await scene_changed
-		assert(current_scene.scene_file_path.ends_with("campus_classroom_floor3.tscn"))
+		assert(current_scene.scene_file_path.ends_with("campus_lab_room.tscn"))
 		await _door("Door", F3)
 		await _stairs(F2, "StairsDown")
 		await _stairs(F1, "StairsDown")
 		await _door("Exit", CAMPUS)
-		assert(absf(current_scene.get_node("Player").position.x - 925) < 1)
-		print("PASS: classroom floor 3 save/reload, correct return floor, stairs down F3-F2-F1 and campus exit")
+		assert(absf(current_scene.get_node("Player").position.x - 1755) < 1)
+		print("PASS: floor 3 laboratory save/reload, correct return corridor, stairs down F3-F2-F1 and campus exit")
 		quit()
 		return
 	root.get_node("GameClock").restore_save_state({"minutes": 480, "remainder": 0})
@@ -37,13 +37,15 @@ func _run() -> void:
 		assert(current_scene.get_node("Stairs").available == (floor_number < 2))
 		assert(current_scene.get_node("StairsDown").available == (floor_number > 0))
 		var classroom_path := "res://scenes/movement/campus_classroom.tscn" if floor_number == 0 else "res://scenes/movement/campus_classroom_floor%d.tscn" % (floor_number + 1)
+		if floor_number == 2:
+			classroom_path = "res://scenes/movement/campus_lab_room.tscn"
 		var corridor_path := current_scene.scene_file_path
 		await _capture("corridor-f%d" % (floor_number + 1))
 		await _door("Door", classroom_path)
 		assert(current_scene.get_node("Player").z_index > current_scene.get_node("ClassActivity/Seat/Chair").z_index)
 		if floor_number == 2:
 			assert(saves.save_now() == OK and saves.has_save())
-			print("PASS: campus entry, supplied F1/F2/F3, separate E up/down stairs, floor boundaries, three classroom doors and floor-aware save")
+			print("PASS: campus entry, supplied F1/F2/F3, separate E up/down stairs, classrooms F1/F2, floor 3 lab and floor-aware save")
 			quit()
 			return
 		await _door("Door", corridor_path)

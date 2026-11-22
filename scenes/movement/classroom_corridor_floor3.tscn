@@ -1,16 +1,36 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/movement/classroom_corridor_floor2.tscn" id="1_corridor"]
+[ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="2_theme"]
 
 [node name="ClassroomCorridorFloor3" instance=ExtResource("1_corridor")]
 world_title = "LORONG KELAS · LANTAI 3"
 floor_number = 3
 
 [node name="Door" parent="."]
-destination = "res://scenes/movement/campus_classroom_floor3.tscn"
+destination = "res://scenes/movement/campus_lab_room.tscn"
+action_text = "Laboratorium"
+
+[node name="Prompt" parent="Door"]
+z_index = 3
+offset_top = -180.0
+offset_bottom = -136.0
 
 [node name="StairsDown" parent="."]
 position = Vector2(1780, 540)
 
 [node name="DownstairsSpawn" parent="."]
 position = Vector2(1780, 592)
+
+[node name="LabSign" type="Label" parent="."]
+offset_left = 1111.0
+offset_top = 143.0
+offset_right = 1229.0
+offset_bottom = 175.0
+mouse_filter = 2
+theme = ExtResource("2_theme")
+theme_override_colors/font_color = Color(0.2, 0.27, 0.26, 1)
+theme_override_font_sizes/font_size = 14
+text = "LABORATORIUM"
+horizontal_alignment = 1
+vertical_alignment = 1

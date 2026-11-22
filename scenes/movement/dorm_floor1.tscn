@@ -8,7 +8,10 @@
 world_title = "ASRAMA · LANTAI 1"
 
 [node name="Door" parent="."]
-destination = "res://scenes/movement/dorm_exterior.tscn"
+position = Vector2(100, 540)
+destination = "res://scenes/movement/top_down_movement.tscn"
+destination_spawn = &"DormSpawn"
+action_text = "Keluar asrama"
 
 [node name="ClassActivity" parent="."]
 classroom_enabled = false
@@ -27,3 +30,7 @@ position = Vector2(1270, 592)
 [node name="Decor" type="Node2D" parent="."]
 script = ExtResource("3")
 floor_number = 1
+
+[node name="Visual" parent="Player"]
+position = Vector2(0, -66)
+scale = Vector2(3, 3)

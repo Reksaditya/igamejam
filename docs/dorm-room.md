@@ -1,22 +1,11 @@
-# Asrama dan kamar 210
+# Asrama dan kamar 203
 
-![Kamar pemain dengan furniture dan kursi interaktif](previews/dorm-room210.png)
+Asrama diakses dengan E dari pintu gedung kiri pada map kampus. Tiap lantai memiliki delapan kamar: 101–108 dan 201–208. Kamar pemain adalah 203, setelah 202, memakai aset single_door.png dan warna yang sama dengan kamar lain. Kamar lain terkunci. Pintu keluar di lantai 1 dan pintu turun di lantai 2 memakai aset pintu yang sama. Tangga naik lantai 1 memakai aset stairs.png kiriman pengguna.
 
-Lantai 1 memiliki pintu bernomor 101–110. Lantai 2 memiliki pintu 201–210; pintu 210 berwarna hijau dan terhubung ke kamar pemain. Kamar lain terkunci dan memberi informasi saat diinteraksikan. Tangga naik tetap berada di kanan lantai 1; pintu tangga lantai 2 kembali ke lantai 1.
+Lorong berukuran 3072 unit dengan kamera horizontal. Kamar 203 mempertahankan ukuran asli gambar 2048 × 576 tanpa memperkecil gambar atau furnitur agar masuk satu layar. Kamera mengikuti MC secara horizontal. Background dan lapisan kasur memakai skala 1:1. Ukuran NPC teman, Randomash, Random kid, dan petugas disesuaikan dengan tinggi MC pada map masing-masing.
 
-Kamar 210 memiliki world tersendiri tanpa objek kelas, kamera tetap, dan ukuran 60% lebar serta 60% tinggi viewport, berada di tengah layar. Dinding, langit-langit, dan lantai memiliki collision yang menyesuaikan ukuran jendela. Pemain tidak bisa bergerak keluar dari kamar.
+Kamar memiliki pintu keluar di ujung kiri, kasur bawah yang dapat digunakan untuk tidur, laptop yang membuka desktop melalui E, dan NPC teman di sudut kanan. Kursi pada gambar tidak memiliki interaksi duduk. Pilihan tidur serta pemulihan energi/kewarasan tetap memakai CareerProgress. Selama pose tidur, MC berada di belakang lapisan kasur dan redup layar menjadi total 80%. Setelah bangun, pose dan pencahayaan kembali seperti keadaan world.
 
-| Berkas pengguna | Aset project | Pemakaian |
-|---|---|---|
-| Furniture (96).png | assets/furniture/dorm/bed.png | Kasur |
-| Furniture (117).png | assets/furniture/dorm/nightstand.png | Nakas di samping kasur |
-| Furniture (246).png | assets/furniture/dorm/chair.png | Kursi yang dapat diduduki |
-| Furniture (105).png | assets/furniture/dorm/clock.png | Jam dinding |
+Scene aktif adalah dorm_room203.tscn. File dorm_room210.tscn tetap menjadi alias kompatibilitas. GameSave versi 4 menerima save versi 1, 2, dan 3, serta mengarahkan referensi kamar 210 ke kamar 203, termasuk world tujuan kembali dari desktop. Identitas dan progress tetap dipertahankan. Posisi save kamar dan lorong dinormalisasi agar tetap valid pada resolusi berbeda.
 
-Keempat PNG disalin tanpa perubahan byte dan ditampilkan menggunakan nearest filtering. Meja belajar, laptop, dan lampu nakas dibuat sebagai dummy melalui drawing Godot.
-
-Dekati kursi, lalu tekan E untuk duduk. Gerakan terkunci selama duduk; E berikutnya membuat pemain berdiri kembali. Animasi dan skala berdiri dipulihkan setelah berdiri. Laptop tetap dapat diakses dengan E setelah berdiri dan mendekatinya; mematikan komputer mengembalikan pemain ke posisi meja dalam kamar. Interaksi tidur berada pada kasur.
-
-Posisi pemain dalam save dinormalisasi terhadap ruang gerak kamar agar dapat dipulihkan pada resolusi lain. Save lama kamar tetap diterima. Pemain yang dimuat kembali dalam keadaan sebelumnya duduk dikembalikan ke posisi berdiri agar kontrol tidak terkunci.
-
-Validasi: dorm_room_smoke memeriksa nomor kamar, keempat PNG, ukuran kamar pada 960×540, 1280×720, dan 1920×1080, empat collision batas, tombol E untuk duduk/berdiri, penguncian gerak, save/load lintas resolusi, serta keluar-masuk desktop. Suite produksi kini memiliki 18 pemeriksaan termasuk lima pengujian ulang dari proses baru. Tampilan kamar dan koridor juga diperiksa secara grafis.
+Uji terkait: dorm_room_smoke (batas gerak, tiga resolusi, skala asli, tidur, pemulihan energi, redup 80%, laptop, save/load), campus_map_smoke (delapan kamar, jalur masuk/keluar, migrasi save versi 3), dan npc_placement_smoke (penempatan dan ukuran NPC). Pengujian memakai direktori save terisolasi. Build Windows belum diperbarui dan perubahan belum di-commit/push.

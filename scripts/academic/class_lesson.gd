@@ -157,7 +157,7 @@ func _show_summary() -> void:
 		var bp := Curriculum.blueprint_info(bp_id)
 		if not bp.is_empty():
 			_summary.label("Blueprint terbuka: %s (%s · Tenggat Sem %d Hari %d)." % [bp.title, bp.slot_label, int(bp.semester), int(bp.deadline_day_in_semester)], 16)
-	_summary.label("Materi yang dilewati tidak dapat diulang di kelas. Lengkapi catatan melalui Perpustakaan di laptop Kamar 210.", 16)
+	_summary.label("Materi yang dilewati tidak dapat diulang di kelas. Lengkapi catatan melalui Perpustakaan di laptop Kamar 203.", 16)
 	_summary.add_close()
 	if not notes_only:
 		_summary.close_button.text = "Kembali ke lorong"

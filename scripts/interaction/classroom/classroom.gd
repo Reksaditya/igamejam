@@ -22,6 +22,7 @@ func _ready() -> void:
 	if not classroom_enabled:
 		$Computer.hide()
 		$Desks.hide()
+		$ClassNPCs.hide()
 		for seat: Area2D in _seats:
 			seat.hide()
 		$Hud.hide()
@@ -64,7 +65,7 @@ func _refresh_classroom() -> void:
 	var missed: bool = not exam_day and not finished and CareerProgress.is_class_missed(term, _week)
 	var actor := get_parent().get_node("Player") as CharacterBody2D
 	for seat: Area2D in _seats:
-		seat.available = not is_instance_valid(_lesson) and not is_instance_valid(_exam) and (not _manual_seated or seat == _active_seat)
+		seat.available = not seat.occupied and not is_instance_valid(_lesson) and not is_instance_valid(_exam) and (not _manual_seated or seat == _active_seat)
 		var prompt := seat.get_node("Prompt") as Button
 		if _manual_seated and seat == _active_seat:
 			prompt.text = "E · Berdiri"
@@ -90,6 +91,8 @@ func _refresh_classroom() -> void:
 
 
 func _interact_seat(seat: Area2D) -> void:
+	if seat.occupied:
+		return
 	CareerProgress.check_class_attendance_cutoff()
 	var term := CareerProgress.semester()
 	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
@@ -136,7 +139,7 @@ func _open_lesson(seat: Area2D = null) -> void:
 	var actor := get_parent().get_node("Player") as CharacterBody2D
 	if seat == null:
 		seat = $Seat
-	if not seat.overlaps_body(actor):
+	if seat.occupied or not seat.overlaps_body(actor):
 		return
 	_lesson = Lesson.new()
 	_lesson.term = CareerProgress.semester()

@@ -1,14 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/movement/top_down_movement.tscn" id="1_world"]
+[ext_resource type="PackedScene" path="res://scenes/movement/classroom_corridor_floor3.tscn" id="1_world"]
 
 [node name="CampusLab" instance=ExtResource("1_world")]
-world_title = "WORLD 02 · GEDUNG LABORATORIUM"
-left_destination = "res://scenes/movement/top_down_movement.tscn"
-right_destination = "res://scenes/movement/dorm_exterior.tscn"
-
-[node name="Background" parent="." index="0"]
-laboratory = true
-
-[node name="Door" parent="."]
-destination = "res://scenes/movement/campus_lab_room.tscn"
+world_title = "GEDUNG KULIAH · LABORATORIUM LANTAI 3"
