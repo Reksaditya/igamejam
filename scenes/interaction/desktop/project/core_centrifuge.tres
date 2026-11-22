@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/project/blueprint.gd" id="1_blueprint"]
+[ext_resource type="Texture2D" path="res://assets/textures/core_centrifuge_blueprint.svg" id="2_artwork"]
+
+[resource]
+script = ExtResource("1_blueprint")
+blueprint_id = "core_centrifuge"
+title = "Core centrifuge"
+artwork = ExtResource("2_artwork")
+workshop_puzzle_id = "centrifuge_drive"

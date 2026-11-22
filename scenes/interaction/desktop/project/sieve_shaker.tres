@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/project/blueprint.gd" id="1_blueprint"]
+[ext_resource type="Texture2D" path="res://assets/textures/sieve_shaker_blueprint.svg" id="2_artwork"]
+
+[resource]
+script = ExtResource("1_blueprint")
+blueprint_id = "sieve_shaker"
+title = "Sieve shaker"
+artwork = ExtResource("2_artwork")
+workshop_puzzle_id = "slider_relay"

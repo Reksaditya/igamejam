@@ -1,0 +1,26 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_puzzle.gd" id="1_puzzle"]
+[ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_slider.gd" id="2_slider"]
+
+[resource]
+script = ExtResource("1_puzzle")
+puzzle_id = "starter_drive"
+linked_blueprint_id = "core_drive"
+title = "Core drive"
+difficulty = "Easy"
+required_output_direction = -1
+motor_socket = Vector2(150, 205)
+motor_radius = 40.0
+output_socket = Vector2(314, 201)
+output_radius = 32.0
+output_label_offset = Vector2(0, 56)
+fixed_gear_positions = PackedVector2Array()
+fixed_gear_radii = PackedFloat32Array()
+carrier_pivots = PackedVector2Array(228, 121, 256, 259)
+carrier_first_sockets = PackedVector2Array(210, 179, 256, 201)
+carrier_radii = PackedFloat32Array(25, 26)
+starting_rotations = PackedInt32Array(2, 2)
+sliders = Array[ExtResource("2_slider")]([])
+contact_pairs = Array[Vector2i]([Vector2i(0, 2), Vector2i(1, 6), Vector2i(1, 7), Vector2i(2, 6)])
+clue_socket = 2

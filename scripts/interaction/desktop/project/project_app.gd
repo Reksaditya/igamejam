@@ -18,6 +18,7 @@ class BlueprintEntry extends RefCounted:
 
 
 var _entries: Dictionary[String, BlueprintEntry] = {}
+var _drawings: Dictionary[String, TextureRect] = {}
 
 
 func _ready() -> void:
@@ -107,6 +108,7 @@ func _add_blueprint(blueprint: Blueprint) -> void:
 	drawing.accessibility_name = blueprint.title + " blueprint"
 	group.add_child(drawing)
 	entry.drawing = drawing
+	_drawings[blueprint.blueprint_id] = drawing
 
 	var note := Label.new()
 	note.add_theme_font_size_override("font_size", 13)

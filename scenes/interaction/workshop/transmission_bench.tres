@@ -1,18 +1,26 @@
 [gd_resource type="Resource" format=3]
 
 [ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_puzzle.gd" id="1_puzzle"]
+[ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_slider.gd" id="2_slider"]
 
 [resource]
 script = ExtResource("1_puzzle")
 puzzle_id = "transmission_bench"
 linked_blueprint_id = "sediment_sorter"
+title = "Sediment sorter"
+difficulty = "Medium"
 required_output_direction = 1
 motor_socket = Vector2(128, 238)
+motor_radius = 45.0
 output_socket = Vector2(322, 215)
-idler_socket = Vector2(212, 235)
-gear_pitch_radii = PackedFloat32Array(45, 29, 39, 25, 21, 20)
+output_radius = 29.0
+output_label_offset = Vector2(87, 43)
+fixed_gear_positions = PackedVector2Array(212, 235)
+fixed_gear_radii = PackedFloat32Array(39)
 carrier_pivots = PackedVector2Array(271, 169, 344, 252, 327, 133)
 carrier_first_sockets = PackedVector2Array(275, 246, 274, 201, 239, 179)
+carrier_radii = PackedFloat32Array(25, 21, 20)
 starting_rotations = PackedInt32Array(2, 1, 3)
+sliders = Array[ExtResource("2_slider")]([])
 contact_pairs = Array[Vector2i]([Vector2i(0, 2), Vector2i(2, 3), Vector2i(3, 7), Vector2i(7, 1), Vector2i(2, 4), Vector2i(4, 11), Vector2i(11, 7)])
 clue_socket = 7

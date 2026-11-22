@@ -3,6 +3,9 @@
 [ext_resource type="Script" path="res://scripts/interaction/desktop/project/project_app.gd" id="1_app"]
 [ext_resource type="Resource" path="res://scenes/interaction/desktop/project/sediment_sorter.tres" id="2_sorter"]
 [ext_resource type="Script" path="res://scripts/interaction/desktop/project/blueprint.gd" id="3_blueprint"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/project/core_drive.tres" id="4_core_drive"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/project/sieve_shaker.tres" id="5_sieve_shaker"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/project/core_centrifuge.tres" id="6_centrifuge"]
 
 [sub_resource type="StyleBoxFlat" id="ProjectPaper"]
 content_margin_left = 16.0
@@ -14,7 +17,7 @@ bg_color = Color(0.94, 0.96, 0.97, 1)
 [node name="Project" type="PanelContainer"]
 theme_override_styles/panel = SubResource("ProjectPaper")
 script = ExtResource("1_app")
-blueprints = Array[ExtResource("3_blueprint")]([ExtResource("2_sorter")])
+blueprints = Array[ExtResource("3_blueprint")]([ExtResource("4_core_drive"), ExtResource("2_sorter"), ExtResource("5_sieve_shaker"), ExtResource("6_centrifuge")])
 
 [node name="Scroll" type="ScrollContainer" parent="."]
 layout_mode = 2

@@ -1,0 +1,32 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_puzzle.gd" id="1_puzzle"]
+[ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_slider.gd" id="2_slider"]
+
+[sub_resource type="Resource" id="Slider_1"]
+script = ExtResource("2_slider")
+stops = PackedVector2Array(224, 152, 224, 224, 224, 296)
+starting_stop = 1
+pitch_radius = 22.0
+
+[resource]
+script = ExtResource("1_puzzle")
+puzzle_id = "slider_relay"
+linked_blueprint_id = "sieve_shaker"
+title = "Sieve shaker"
+difficulty = "Hard"
+required_output_direction = 1
+motor_socket = Vector2(122, 188)
+motor_radius = 38.0
+output_socket = Vector2(280, 224)
+output_radius = 34.0
+output_label_offset = Vector2(78, 36)
+fixed_gear_positions = PackedVector2Array(176, 222)
+fixed_gear_radii = PackedFloat32Array(26)
+carrier_pivots = PackedVector2Array(166, 106, 313, 145)
+carrier_first_sockets = PackedVector2Array(176, 154, 267, 167)
+carrier_radii = PackedFloat32Array(26, 24)
+starting_rotations = PackedInt32Array(2, 1)
+sliders = Array[ExtResource("2_slider")]([SubResource("Slider_1")])
+contact_pairs = Array[Vector2i]([Vector2i(0, 2), Vector2i(0, 3), Vector2i(1, 7), Vector2i(1, 12), Vector2i(2, 12), Vector2i(3, 11), Vector2i(7, 11)])
+clue_socket = 11
