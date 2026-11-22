@@ -3,8 +3,6 @@
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 [ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="2_theme"]
 [ext_resource type="Script" path="res://scripts/ui/menu_background.gd" id="3_background"]
-[ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="4_display_bold"]
-[ext_resource type="FontFile" uid="uid://dil78upyuf7a2" path="res://assets/fonts/pixelify_sans/PixelifySans-Medium.ttf" id="5_display"]
 
 [node name="MainMenu" type="Control"]
 process_mode = 3
@@ -49,8 +47,7 @@ theme_override_constants/separation = 20
 layout_mode = 2
 text = "Deadline"
 horizontal_alignment = 1
-theme_override_fonts/font = ExtResource("4_display_bold")
-theme_override_font_sizes/font_size = 72
+theme_override_font_sizes/font_size = 80
 theme_override_colors/font_color = Color(0.97, 0.91, 0.76, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_x = 3
@@ -99,8 +96,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Pengaturan"
 horizontal_alignment = 1
-theme_override_fonts/font = ExtResource("4_display_bold")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 28
 
 [node name="VolumeRow" type="HBoxContainer" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
 unique_name_in_owner = true
@@ -178,8 +174,7 @@ custom_minimum_size = Vector2(480, 0)
 text = "Apakah Anda yakin ingin memulai permainan baru?"
 autowrap_mode = 3
 horizontal_alignment = 1
-theme_override_fonts/font = ExtResource("5_display")
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 24
 
 [node name="Subheader" type="Label" parent="NewGameConfirm/Content"]
 layout_mode = 2
