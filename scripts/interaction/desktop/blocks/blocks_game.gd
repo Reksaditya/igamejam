@@ -9,18 +9,27 @@ const LINE_POINTS := 10
 
 @export var shape_pool: Array[Shape]
 
+@export_group("Audio")
+@export var place_sound: AudioStream
+@export var clear_sound: AudioStream
+@export var combo_sound: AudioStream
+@export_range(-30.0, 6.0, 0.5, "suffix:dB") var sfx_volume_db: float = -6.0
+
 var _board: Array[Color] = []
 var _tray: Array[Shape] = []
 var _pool: Array[Shape] = []
 var _score := 0
 var _selected_slot := -1
 var _game_over := false
+var _clear_streak := 0
+var _turns_without_clear := 0
 
 @onready var _playfield: Board = %Board
 @onready var _tray_buttons: Array[TrayPiece] = [%Piece1, %Piece2, %Piece3]
 
 
 func _ready() -> void:
+	_configure_audio_players()
 	for shape: Shape in shape_pool:
 		if _valid_shape(shape):
 			_pool.append(shape)
@@ -47,6 +56,8 @@ func _restart() -> void:
 	_tray.fill(null)
 	_score = 0
 	_selected_slot = -1
+	_clear_streak = 0
+	_turns_without_clear = 0
 	_game_over = _pool.is_empty()
 	if not _game_over:
 		_refill_tray()
@@ -96,7 +107,9 @@ func _place_piece(slot: int, origin: Vector2i) -> void:
 	_board = _board_with_piece(slot, origin)
 	var lines := _completed_lines(_board)
 	_clear_lines(lines)
-	_score += piece.cells.size() + (lines.rows.size() + lines.columns.size()) * LINE_POINTS
+	var cleared: int = lines.rows.size() + lines.columns.size()
+	_score += piece.cells.size() + cleared * LINE_POINTS
+	_update_streak_and_play_audio(cleared)
 	_tray[slot] = null
 	_selected_slot = -1
 	if _tray.count(null) == TRAY_SIZE:
@@ -193,3 +206,47 @@ func _refresh() -> void:
 		button.set_pressed_no_signal(index == _selected_slot)
 		button.accessibility_name = shape.title if shape != null else "Slot baki kosong"
 		button.tooltip_text = shape.title if shape != null else ""
+
+
+func _configure_audio_players() -> void:
+	var audio_bus := &"SFX" if AudioServer.get_bus_index(&"SFX") != -1 else &"Master"
+	var entries: Array[Array] = [
+		[%PlaceSound as AudioStreamPlayer, place_sound],
+		[%ClearSound as AudioStreamPlayer, clear_sound],
+		[%ComboSound as AudioStreamPlayer, combo_sound],
+	]
+	for entry: Array in entries:
+		var player := entry[0] as AudioStreamPlayer
+		var stream := entry[1] as AudioStream
+		if player == null:
+			continue
+		player.bus = audio_bus
+		player.volume_db = sfx_volume_db
+		player.stream = stream
+
+
+func _update_streak_and_play_audio(cleared: int) -> void:
+	if cleared > 0:
+		_turns_without_clear = 0
+		_clear_streak += 1
+		if _clear_streak >= 4:
+			_play_sfx(%ComboSound as AudioStreamPlayer)
+			_clear_streak = 0
+		else:
+			_play_sfx(%ClearSound as AudioStreamPlayer)
+		return
+
+	_play_sfx(%PlaceSound as AudioStreamPlayer)
+	if _clear_streak > 0:
+		_turns_without_clear += 1
+		if _turns_without_clear > 2:
+			_clear_streak = 0
+			_turns_without_clear = 0
+
+
+func _play_sfx(player: AudioStreamPlayer) -> void:
+	if Engine.is_editor_hint() or player == null or player.stream == null:
+		return
+	player.volume_db = sfx_volume_db
+	player.pitch_scale = randf_range(0.98, 1.02)
+	player.play()

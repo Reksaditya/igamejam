@@ -5,6 +5,9 @@
 [ext_resource type="Script" path="res://scripts/interaction/desktop/blocks/block_board.gd" id="3_board"]
 [ext_resource type="Script" path="res://scripts/interaction/desktop/blocks/block_tray_piece.gd" id="4_tray"]
 [ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="5_font"]
+[ext_resource type="AudioStream" uid="uid://bi30re6hxsnsk" path="res://assets/audio/sfx/blocks_place.ogg" id="6_place_sound"]
+[ext_resource type="AudioStream" uid="uid://68i76y41sysp" path="res://assets/audio/sfx/blocks_clear.ogg" id="7_clear_sound"]
+[ext_resource type="AudioStream" uid="uid://batrch4javfgd" path="res://assets/audio/sfx/blocks_combo4.ogg" id="8_combo_sound"]
 
 [sub_resource type="Resource" id="dot"]
 script = ExtResource("2_shape")
@@ -146,6 +149,9 @@ BlocksTrayPiece/styles/disabled = SubResource("TrayEmpty")
 theme_override_styles/panel = SubResource("Surface")
 script = ExtResource("1_game")
 shape_pool = Array[ExtResource("2_shape")]([SubResource("dot"), SubResource("domino"), SubResource("corner"), SubResource("square"), SubResource("bar"), SubResource("step"), SubResource("hook"), SubResource("plate"), SubResource("large")])
+place_sound = ExtResource("6_place_sound")
+clear_sound = ExtResource("7_clear_sound")
+combo_sound = ExtResource("8_combo_sound")
 
 [node name="Scroll" type="ScrollContainer" parent="."]
 layout_mode = 2
@@ -233,3 +239,12 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.07, 0.2, 0.26, 1)
 autowrap_mode = 3
 horizontal_alignment = 1
+
+[node name="PlaceSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[node name="ClearSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[node name="ComboSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
