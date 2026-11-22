@@ -49,34 +49,54 @@ func _enter_class() -> void:
 	if not classroom_enabled or not is_inside_tree():
 		return
 	_week = week_override if week_override > 0 else CareerProgress.day_in_semester()
+	CareerProgress.check_class_attendance_cutoff()
 	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
 	$Computer.available = exam_day
 	_refresh_classroom()
 
 
 func _refresh_classroom() -> void:
+	CareerProgress.check_class_attendance_cutoff()
+	var term := CareerProgress.semester()
 	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
-	var finished: bool = CareerProgress.class_data(CareerProgress.semester(), _week).finished
+	var finished: bool = CareerProgress.class_data(term, _week).finished
+	var missed: bool = not exam_day and not finished and CareerProgress.is_class_missed(term, _week)
 	var actor := get_parent().get_node("Player") as CharacterBody2D
 	for seat: Area2D in _seats:
 		seat.available = not is_instance_valid(_lesson) and not is_instance_valid(_exam) and (not _manual_seated or seat == _active_seat)
 		var prompt := seat.get_node("Prompt") as Button
-		prompt.text = "E · Berdiri" if _manual_seated and seat == _active_seat else ("E · Duduk" if exam_day or finished else "E · Duduk dan Belajar")
+		if _manual_seated and seat == _active_seat:
+			prompt.text = "E · Berdiri"
+		elif missed:
+			prompt.text = "E · Duduk (Kelas Terlewat)"
+		elif exam_day or finished:
+			prompt.text = "E · Duduk"
+		else:
+			prompt.text = "E · Duduk dan Belajar"
 		prompt.visible = seat.available and seat.overlaps_body(actor)
 	%Review.visible = not exam_day and finished
 	var exam_name := "UTS" if _week == CareerProgress.Curriculum.MIDTERM_DAY else "UAS"
-	%ClassStatus.text = "Semester %d · Hari %d/12 · %s" % [
-		CareerProgress.semester(),
-		_week,
-		"Ujian %s: dekati komputer kelas, lalu tekan E." % exam_name if exam_day else ("Kelas selesai. Materi tidak dapat diulang di kelas." if finished else "Dekati kursi, tekan E untuk duduk dan mulai belajar.")
-	]
+	if missed:
+		%ClassStatus.text = "KELAS TERLEWAT — Terlambat > 1 jam (Batas 09:00). Kejar catatan di Perpustakaan."
+		%ClassStatus.add_theme_color_override("font_color", Color("#ff9b85"))
+	else:
+		%ClassStatus.remove_theme_color_override("font_color")
+		%ClassStatus.text = "Semester %d · Hari %d/12 · %s" % [
+			term,
+			_week,
+			"Ujian %s: dekati komputer kelas, lalu tekan E." % exam_name if exam_day else ("Kelas selesai. Materi tidak dapat diulang di kelas." if finished else "Dekati kursi, tekan E untuk duduk dan mulai belajar.")
+		]
 
 
 func _interact_seat(seat: Area2D) -> void:
+	CareerProgress.check_class_attendance_cutoff()
+	var term := CareerProgress.semester()
 	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
+	var finished: bool = CareerProgress.class_data(term, _week).finished
+	var missed: bool = not exam_day and not finished and CareerProgress.is_class_missed(term, _week)
 	if _manual_seated:
 		_stand_up()
-	elif exam_day or CareerProgress.class_data(CareerProgress.semester(), _week).finished:
+	elif exam_day or finished or missed:
 		_active_seat = seat
 		_manual_seated = true
 		_pose_player(seat)
@@ -106,8 +126,11 @@ func _stand_up() -> void:
 func _open_lesson(seat: Area2D = null) -> void:
 	if is_instance_valid(_lesson) or is_instance_valid(_exam) or SceneTransition.is_active():
 		return
+	CareerProgress.check_class_attendance_cutoff()
+	var term := CareerProgress.semester()
 	var exam_day := _week == CareerProgress.Curriculum.MIDTERM_DAY or _week == CareerProgress.Curriculum.FINAL_DAY
-	if exam_day or CareerProgress.class_data(CareerProgress.semester(), _week).finished:
+	if exam_day or CareerProgress.class_data(term, _week).finished or CareerProgress.is_class_missed(term, _week):
+		_refresh_classroom()
 		return
 	var actor := get_parent().get_node("Player") as CharacterBody2D
 	if seat == null:
@@ -152,7 +175,7 @@ func _on_lesson_closed() -> void:
 
 func _return_to_corridor() -> void:
 	var door := get_parent().get_node("Door") as Area2D
-	SceneTransition.change_scene.call_deferred(door.destination, door.destination_spawn)
+	SceneTransition.change_scene.call_deferred(door.destination, door.destination_spawn, SceneTransition.TransitionStyle.SLIDE_RIGHT)
 
 
 func _open_exam() -> void:

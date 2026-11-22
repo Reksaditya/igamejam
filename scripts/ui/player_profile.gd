@@ -223,6 +223,14 @@ var _hud_week: Label
 var _hud_period: Label
 var _hud_period_badge: PanelContainer
 var _hud_period_style: StyleBoxFlat
+var _hud_quest_panel: PanelContainer
+var _hud_quest_style: StyleBoxFlat
+var _hud_quest_badge: Label
+var _hud_quest_title: Label
+var _hud_quest_detail: Label
+var _hud_toast: PanelContainer
+var _hud_toast_label: Label
+var _toast_tween: Tween
 var _popup: Window
 var _overview: HBoxContainer
 var _status: VBoxContainer
@@ -256,9 +264,12 @@ func _ready() -> void:
 	_build_popup()
 	PlayerStats.changed.connect(_refresh_stats)
 	GameClock.minute_changed.connect(_refresh_clock)
+	CareerProgress.changed.connect(_refresh_quest_hud)
+	CareerProgress.class_missed.connect(_on_class_missed)
 	get_viewport().size_changed.connect(_fit_popup, CONNECT_DEFERRED)
 	_refresh_stats()
 	_refresh_clock(GameClock.get_absolute_minutes())
+	_refresh_quest_hud()
 
 
 func _process(_delta: float) -> void:
@@ -267,6 +278,8 @@ func _process(_delta: float) -> void:
 
 
 func _exit_tree() -> void:
+	if is_instance_valid(_toast_tween):
+		_toast_tween.kill()
 	if is_instance_valid(_settings) and _settings.visible:
 		GameSettings.preview_volume(GameSettings.master_volume)
 	if _owns_pause:
@@ -438,13 +451,19 @@ func _match_portrait_height() -> void:
 
 
 func _build_clock_hud(root: Control) -> void:
+	var left_stack := VBoxContainer.new()
+	left_stack.name = &"LeftHudStack"
+	left_stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	left_stack.add_theme_constant_override("separation", 6)
+	left_stack.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	left_stack.offset_left = 14
+	left_stack.offset_top = 12
+	root.add_child(left_stack)
+
 	_hud_clock_panel = PanelContainer.new()
 	_hud_clock_panel.clip_contents = true
 	_hud_clock_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_hud_clock_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	_hud_clock_panel.offset_left = 14
-	_hud_clock_panel.offset_top = 12
-	_hud_clock_panel.custom_minimum_size = Vector2(216, 0)
+	_hud_clock_panel.custom_minimum_size = Vector2(228, 0)
 
 	_hud_clock_style = StyleBoxFlat.new()
 	_hud_clock_style.bg_color = HUD_SURFACE
@@ -459,7 +478,7 @@ func _build_clock_hud(root: Control) -> void:
 	_hud_clock_style.content_margin_top = 5
 	_hud_clock_style.content_margin_bottom = 5
 	_hud_clock_panel.add_theme_stylebox_override("panel", _hud_clock_style)
-	root.add_child(_hud_clock_panel)
+	left_stack.add_child(_hud_clock_panel)
 
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -511,6 +530,79 @@ func _build_clock_hud(root: Control) -> void:
 	_hud_period.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 	_hud_week = _hud_label(readout, "Minggu 1", 12, HUD_MUTED)
+
+	_build_quest_hud(left_stack)
+	_build_missed_toast(root)
+
+
+func _build_quest_hud(parent: Control) -> void:
+	_hud_quest_panel = PanelContainer.new()
+	_hud_quest_panel.name = &"ScheduleQuestPanel"
+	_hud_quest_panel.clip_contents = true
+	_hud_quest_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hud_quest_panel.custom_minimum_size = Vector2(228, 0)
+
+	_hud_quest_style = StyleBoxFlat.new()
+	_hud_quest_style.bg_color = HUD_SURFACE
+	_hud_quest_style.border_color = Color("#7ec0ee")
+	_hud_quest_style.border_width_left = 4
+	_hud_quest_style.border_width_top = 1
+	_hud_quest_style.border_width_right = 1
+	_hud_quest_style.border_width_bottom = 1
+	_hud_quest_style.set_corner_radius_all(7)
+	_hud_quest_style.content_margin_left = 10
+	_hud_quest_style.content_margin_right = 10
+	_hud_quest_style.content_margin_top = 5
+	_hud_quest_style.content_margin_bottom = 6
+	_hud_quest_panel.add_theme_stylebox_override("panel", _hud_quest_style)
+	parent.add_child(_hud_quest_panel)
+
+	var box := VBoxContainer.new()
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_theme_constant_override("separation", 1)
+	_hud_quest_panel.add_child(box)
+
+	_hud_quest_badge = _hud_label(box, "JADWAL KELAS", 11, Color("#86c5f4"))
+	_hud_quest_title = _hud_label(box, "Kelas 08:00 · Batas 09:00", 13, HUD_INK)
+	_hud_quest_title.clip_text = true
+	_hud_quest_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_hud_quest_title.custom_minimum_size.x = 204.0
+
+	_hud_quest_detail = _hud_label(box, "", 11, HUD_MUTED)
+	_hud_quest_detail.clip_text = true
+	_hud_quest_detail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_hud_quest_detail.custom_minimum_size.x = 204.0
+
+
+func _build_missed_toast(root: Control) -> void:
+	_hud_toast = PanelContainer.new()
+	_hud_toast.name = &"MissedClassToast"
+	_hud_toast.visible = false
+	_hud_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hud_toast.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	_hud_toast.offset_top = 16
+	_hud_toast.offset_left = -220
+	_hud_toast.offset_right = 220
+
+	var toast_style := StyleBoxFlat.new()
+	toast_style.bg_color = Color("#2d1115f0")
+	toast_style.border_color = Color("#ff7b6b")
+	toast_style.border_width_left = 4
+	toast_style.border_width_top = 1
+	toast_style.border_width_right = 1
+	toast_style.border_width_bottom = 2
+	toast_style.set_corner_radius_all(8)
+	toast_style.content_margin_left = 14
+	toast_style.content_margin_right = 14
+	toast_style.content_margin_top = 8
+	toast_style.content_margin_bottom = 8
+	_hud_toast.add_theme_stylebox_override("panel", toast_style)
+	root.add_child(_hud_toast)
+
+	_hud_toast_label = _hud_label(_hud_toast, "", 13, Color("#ffd8d1"))
+	_hud_toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_hud_toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_hud_toast_label.custom_minimum_size.x = 380.0
 
 
 func _hud_label(parent: Node, value: String, font_size: int, color: Color) -> Label:
@@ -721,6 +813,65 @@ func _refresh_clock(absolute_minutes: int) -> void:
 	_hud_clock_panel.accessibility_name = summary
 	_profile_clock.text = time
 	_profile_date.text = "Hari %d · Minggu %d" % [GameClock.get_day(), GameClock.get_week()]
+	_refresh_quest_hud()
+
+
+func _refresh_quest_hud() -> void:
+	if not is_instance_valid(_hud_quest_panel):
+		return
+	var status := CareerProgress.get_today_schedule_status()
+	var state_id := str(status.get("state", "class_upcoming"))
+	_hud_quest_badge.text = str(status.get("badge", "JADWAL KELAS"))
+	_hud_quest_title.text = str(status.get("title", ""))
+	_hud_quest_detail.text = str(status.get("detail", ""))
+
+	var border := Color("#86c5f4")
+	var bg := HUD_SURFACE
+	var badge_color := Color("#86c5f4")
+	match state_id:
+		"class_open":
+			border = CLOCK_DAY_ACCENT
+			bg = Color("#1d1a10ea")
+			badge_color = CLOCK_DAY_ACCENT
+		"class_missed":
+			border = Color("#ff7b6b")
+			bg = Color("#261116ee")
+			badge_color = Color("#ff9b85")
+		"class_done", "exam_done":
+			border = Color("#64b5a0")
+			bg = Color("#0f201ee8")
+			badge_color = Color("#7ed4bd")
+		"exam_ready":
+			border = CLOCK_DAY_ACCENT
+			bg = Color("#201a0ee8")
+			badge_color = CLOCK_DAY_ACCENT
+		_:
+			border = Color("#86c5f4")
+			bg = HUD_SURFACE
+			badge_color = Color("#86c5f4")
+
+	_hud_quest_style.border_color = border
+	_hud_quest_style.bg_color = bg
+	_hud_quest_badge.add_theme_color_override("font_color", badge_color)
+	_hud_quest_panel.queue_redraw()
+
+
+func _on_class_missed(_term: int, _day_in_sem: int) -> void:
+	_refresh_quest_hud()
+	if not is_inside_tree() or not is_instance_valid(_hud_toast):
+		return
+	_hud_toast_label.text = "KELAS TERLEWAT — Terlambat > 1 jam (Batas 09:00). Kejar catatan di Perpustakaan."
+	if is_instance_valid(_toast_tween):
+		_toast_tween.kill()
+	_hud_toast.modulate.a = 0.0
+	_hud_toast.show()
+	_toast_tween = create_tween()
+	_toast_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_toast_tween.set_ignore_time_scale(true)
+	_toast_tween.tween_property(_hud_toast, "modulate:a", 1.0, 0.25)
+	_toast_tween.tween_interval(4.0)
+	_toast_tween.tween_property(_hud_toast, "modulate:a", 0.0, 0.35)
+	_toast_tween.tween_callback(_hud_toast.hide)
 
 
 func open_profile() -> void:

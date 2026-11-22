@@ -2,10 +2,13 @@ extends Node
 
 signal changed
 signal semester_evaluated(term: int, summary: Dictionary)
+signal class_missed(term: int, day_in_sem: int)
 
 const Curriculum = preload("res://scripts/academic/curriculum.gd")
 const SAVE_PATH := "user://career_progress.cfg"
 const SAVE_VERSION := 2
+const CLASS_START_MINUTES := 8 * 60
+const CLASS_LATE_CUTOFF_MINUTES := 9 * 60
 
 ## GDD Section 4.4 Energi costs per activity.
 const COSTS := {
@@ -100,7 +103,122 @@ func result_id(term: int, slot: int, kind: String) -> String:
 
 
 func class_data(term: int, day_in_sem: int) -> Dictionary:
-	return state.classes.get(key_for(term, day_in_sem), {"attempted": [], "complete": [], "finished": false}).duplicate(true)
+	var data: Dictionary = state.classes.get(key_for(term, day_in_sem), {"attempted": [], "complete": [], "finished": false, "missed": false}).duplicate(true)
+	if not data.has("missed"):
+		data["missed"] = false
+	return data
+
+
+func is_class_missed(term: int, day_in_sem: int) -> bool:
+	if not _is_lesson(term, day_in_sem):
+		return false
+	var data := class_data(term, day_in_sem)
+	if data.finished:
+		return false
+	if data.get("missed", false) == true:
+		return true
+	var abs_day := Curriculum.absolute_day_for(term, day_in_sem)
+	var current_day := GameClock.get_day()
+	if abs_day < current_day:
+		return true
+	if abs_day == current_day:
+		var minute_of_day := posmod(GameClock.get_absolute_minutes(), GameClock.MINUTES_PER_DAY)
+		return minute_of_day >= CLASS_LATE_CUTOFF_MINUTES
+	return false
+
+
+func can_enter_class(term: int, day_in_sem: int) -> bool:
+	if day_in_sem == Curriculum.MIDTERM_DAY or day_in_sem == Curriculum.FINAL_DAY:
+		return true
+	if not _is_lesson(term, day_in_sem):
+		return true
+	var data := class_data(term, day_in_sem)
+	if data.finished:
+		return true
+	return not is_class_missed(term, day_in_sem)
+
+
+func check_class_attendance_cutoff() -> bool:
+	var term := semester()
+	var day := day_in_semester()
+	if not _is_lesson(term, day):
+		return false
+	var data := class_data(term, day)
+	if data.finished or data.get("missed", false) == true:
+		return false
+	var minute_of_day := posmod(GameClock.get_absolute_minutes(), GameClock.MINUTES_PER_DAY)
+	if minute_of_day < CLASS_LATE_CUTOFF_MINUTES:
+		return false
+	var previous := state.duplicate(true)
+	data["missed"] = true
+	state.classes[key_for(term, day)] = data
+	var error := _save(previous)
+	if error == OK:
+		class_missed.emit(term, day)
+		return true
+	return false
+
+
+func get_today_schedule_status() -> Dictionary:
+	var term := semester()
+	var day := day_in_semester()
+	var minute_of_day := posmod(GameClock.get_absolute_minutes(), GameClock.MINUTES_PER_DAY)
+	if day == Curriculum.MIDTERM_DAY or day == Curriculum.FINAL_DAY:
+		var is_midterm := day == Curriculum.MIDTERM_DAY
+		var exam_kind := "uts" if is_midterm else "uas"
+		var exam_label := "UTS" if is_midterm else "UAS"
+		var done: bool = state.results.has(result_id(term, day, exam_kind))
+		return {
+			"state": "exam_done" if done else "exam_ready",
+			"badge": "UJIAN SELESAI" if done else "HARI UJIAN",
+			"title": "%s Semester %d tuntas" % [exam_label, term] if done else "Ujian %s · Ruang Kelas" % exam_label,
+			"detail": "Istirahat di Kamar 210 untuk lanjut" if done else "Masuk kelas & dekati komputer ujian",
+			"semester": term,
+			"day_in_semester": day,
+			"can_enter": true,
+		}
+	var data := class_data(term, day)
+	var lesson := Curriculum.lesson(term, day)
+	if data.finished:
+		return {
+			"state": "class_done",
+			"badge": "KELAS SELESAI",
+			"title": "Kelas hari ini tuntas",
+			"detail": "Cek LMS/Project di PC atau rakit di Lab",
+			"semester": term,
+			"day_in_semester": day,
+			"can_enter": true,
+		}
+	if is_class_missed(term, day):
+		return {
+			"state": "class_missed",
+			"badge": "KELAS TERLEWAT",
+			"title": "Terlambat > 1 jam (Batas 09:00)",
+			"detail": "Kejar catatan di Perpustakaan (PC)",
+			"semester": term,
+			"day_in_semester": day,
+			"can_enter": false,
+		}
+	if minute_of_day >= CLASS_START_MINUTES:
+		var remaining := maxi(1, CLASS_LATE_CUTOFF_MINUTES - minute_of_day)
+		return {
+			"state": "class_open",
+			"badge": "KELAS DIBUKA",
+			"title": "Segera ke Kelas · Sisa %d mnt" % remaining,
+			"detail": "%s · Tutup 09:00" % lesson.title,
+			"semester": term,
+			"day_in_semester": day,
+			"can_enter": true,
+		}
+	return {
+		"state": "class_upcoming",
+		"badge": "JADWAL KELAS",
+		"title": "Kelas 08:00 · Batas 09:00",
+		"detail": lesson.title,
+		"semester": term,
+		"day_in_semester": day,
+		"can_enter": true,
+	}
 
 
 ## GDD 4.4: Charges Energi once per unique activity id and adds +10 Kewarasan.
@@ -162,7 +280,7 @@ func review_details(term: int, day_in_sem: int) -> Dictionary:
 	var data := class_data(term, day_in_sem)
 	var abs_day := Curriculum.absolute_day_for(term, day_in_sem)
 	var current_day := GameClock.get_day()
-	if abs_day > current_day or (abs_day == current_day and not data.finished):
+	if abs_day > current_day or (abs_day == current_day and not data.finished and not is_class_missed(term, day_in_sem)):
 		return {}
 	var missing := PackedInt32Array()
 	for section: int in 3:
@@ -440,14 +558,14 @@ func acknowledge_khs() -> Error:
 
 func _on_time_changed(_minutes: int) -> void:
 	var current_day := GameClock.get_day()
-	if current_day == _active_day:
-		return
-	_active_day = current_day
-	# End-of-semester rollover check: Day > 12 evaluates Sem 1; Day > 24 evaluates Sem 2.
-	if current_day > Curriculum.DAYS_PER_SEMESTER and not state.evaluated_semesters.has("1"):
-		evaluate_semester(1)
-	if current_day > Curriculum.TOTAL_DAYS and not state.evaluated_semesters.has("2"):
-		evaluate_semester(2)
+	if current_day != _active_day:
+		_active_day = current_day
+		# End-of-semester rollover check: Day > 12 evaluates Sem 1; Day > 24 evaluates Sem 2.
+		if current_day > Curriculum.DAYS_PER_SEMESTER and not state.evaluated_semesters.has("1"):
+			evaluate_semester(1)
+		if current_day > Curriculum.TOTAL_DAYS and not state.evaluated_semesters.has("2"):
+			evaluate_semester(2)
+	check_class_attendance_cutoff()
 
 
 ## Exact GDD Section 4.4 sleep & rest rules:
@@ -496,7 +614,7 @@ func can_advance_day() -> bool:
 		return state.results.has(result_id(term, day, "uts"))
 	if day == Curriculum.FINAL_DAY:
 		return state.results.has(result_id(term, day, "uas"))
-	return class_data(term, day).finished
+	return class_data(term, day).finished or is_class_missed(term, day)
 
 
 ## Backwards-compatible alias for bed interaction.

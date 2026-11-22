@@ -9,14 +9,18 @@ var _player: CharacterBody2D
 var _opening: bool = false
 
 @onready var _prompt: Control = $Prompt
+@onready var _prompt_button: Button = $Prompt/Button
 
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	$Prompt/Button.text = "E · " + action_text
-	$Prompt/Button.pressed.connect(_request_open)
+	_prompt_button.pressed.connect(_request_open)
 	SceneTransition.transition_finished.connect(_on_transition_finished)
+	if _is_classroom_door():
+		GameClock.minute_changed.connect(_on_schedule_changed)
+		CareerProgress.changed.connect(_refresh_prompt)
+	_refresh_prompt()
 	_prompt.hide()
 
 
@@ -25,6 +29,36 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if _request_open():
 		get_viewport().set_input_as_handled()
+
+
+func _is_classroom_door() -> bool:
+	return destination.contains("campus_classroom")
+
+
+func _is_classroom_locked_out() -> bool:
+	if not _is_classroom_door():
+		return false
+	CareerProgress.check_class_attendance_cutoff()
+	return not CareerProgress.can_enter_class(CareerProgress.semester(), CareerProgress.day_in_semester())
+
+
+func _on_schedule_changed(_minutes: int) -> void:
+	_refresh_prompt()
+
+
+func _refresh_prompt() -> void:
+	if not is_instance_valid(_prompt_button):
+		return
+	if _is_classroom_locked_out():
+		_prompt_button.text = "KELAS TERLEWAT · Terlambat > 1 jam"
+		_prompt_button.tooltip_text = "Pintu kelas ditutup setelah 09:00. Kejar catatan di Perpustakaan."
+		_prompt_button.add_theme_color_override("font_color", Color("#ffb4a2"))
+		_prompt_button.add_theme_color_override("font_hover_color", Color("#ffd0c4"))
+	else:
+		_prompt_button.text = "E · " + action_text
+		_prompt_button.tooltip_text = ""
+		_prompt_button.remove_theme_color_override("font_color")
+		_prompt_button.remove_theme_color_override("font_hover_color")
 
 
 func _resolved_transition_style() -> SceneTransition.TransitionStyle:
@@ -38,6 +72,9 @@ func _resolved_transition_style() -> SceneTransition.TransitionStyle:
 func _request_open() -> bool:
 	if _opening or SceneTransition.is_active() or not is_instance_valid(_player) or not overlaps_body(_player) or destination.is_empty():
 		return false
+	if _is_classroom_locked_out():
+		_refresh_prompt()
+		return false
 	_opening = true
 	_open.call_deferred()
 	return true
@@ -46,6 +83,7 @@ func _request_open() -> bool:
 func _on_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D:
 		_player = body
+		_refresh_prompt()
 		_prompt.show()
 
 
