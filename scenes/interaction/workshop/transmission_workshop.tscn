@@ -5,6 +5,11 @@
 [ext_resource type="Theme" path="res://scenes/interaction/desktop/desktop_theme.tres" id="3_theme"]
 [ext_resource type="Script" path="res://scripts/interaction/workshop/workshop_room.gd" id="4_room"]
 [ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_plate.gd" id="5_plate"]
+[ext_resource type="Script" path="res://scripts/interaction/workshop/transmission_puzzle.gd" id="6_puzzle_script"]
+[ext_resource type="Resource" path="res://scenes/interaction/workshop/puzzle_01_easy.tres" id="7_p1"]
+[ext_resource type="Resource" path="res://scenes/interaction/workshop/puzzle_03_hard.tres" id="8_p3"]
+[ext_resource type="Resource" path="res://scenes/interaction/workshop/puzzle_04_expert.tres" id="9_p4"]
+[ext_resource type="Script" path="res://scripts/interaction/workshop/blueprint_reader_slot.gd" id="10_reader"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_Whisper"]
 content_margin_left = 12.0
@@ -63,7 +68,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_theme")
 script = ExtResource("1_workshop")
-puzzle = ExtResource("2_puzzle")
+puzzles = Array[ExtResource("6_puzzle_script")]([ExtResource("7_p1"), ExtResource("2_puzzle"), ExtResource("8_p3"), ExtResource("9_p4")])
 
 [node name="Room" type="Control" parent="."]
 layout_mode = 1
@@ -203,6 +208,7 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="SheetTitle" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/Blueprint/SheetLayout"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.89, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 16
@@ -235,15 +241,17 @@ theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 14
 autowrap_mode = 3
 
-[node name="Reader" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
+[node name="ReaderSlot" type="PanelContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_Reader")
+script = ExtResource("10_reader")
 
-[node name="ReaderRow" type="HBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/Reader"]
+[node name="ReaderRow" type="HBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="ReaderFace" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/Reader/ReaderRow"]
+[node name="ReaderFace" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow"]
 custom_minimum_size = Vector2(87, 34)
 layout_mode = 2
 size_flags_vertical = 4
@@ -251,7 +259,7 @@ mouse_filter = 2
 clip_contents = true
 color = Color(0.15, 0.22, 0.24, 1)
 
-[node name="ReaderSlot" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/Reader/ReaderRow/ReaderFace"]
+[node name="SlotMouth" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow/ReaderFace"]
 z_index = 1
 offset_left = 66.0
 offset_top = 4.0
@@ -260,7 +268,7 @@ offset_bottom = 30.0
 mouse_filter = 2
 color = Color(0.04, 0.07, 0.08, 1)
 
-[node name="Card" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/Reader/ReaderRow/ReaderFace"]
+[node name="Card" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow/ReaderFace"]
 unique_name_in_owner = true
 visible = false
 offset_left = 8.0
@@ -270,7 +278,7 @@ offset_bottom = 26.0
 mouse_filter = 2
 color = Color(0.35, 0.66, 0.77, 1)
 
-[node name="Stripe" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/Reader/ReaderRow/ReaderFace/Card"]
+[node name="Stripe" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow/ReaderFace/Card"]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 35.0
@@ -278,7 +286,7 @@ offset_bottom = 6.0
 mouse_filter = 2
 color = Color(0.75, 0.9, 0.93, 1)
 
-[node name="ReaderLight" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/Reader/ReaderRow"]
+[node name="ReaderLight" type="ColorRect" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(8, 8)
 layout_mode = 2
@@ -286,30 +294,45 @@ size_flags_vertical = 4
 mouse_filter = 2
 color = Color(0.71, 0.33, 0.27, 1)
 
-[node name="Insert" type="Button" parent="Margin/Layout/Scroll/Bench/CardStack/Reader/ReaderRow"]
+[node name="Insert" type="Button" parent="Margin/Layout/Scroll/Bench/CardStack/ReaderSlot/ReaderRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-text = "Insert blueprint"
+text = "Insert selected"
 
-[node name="TrayRow" type="HBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
+[node name="BlueprintDock" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack"]
 unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="TrayPocket" type="Control" parent="Margin/Layout/Scroll/Bench/CardStack/TrayRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(34, 34)
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 6
 
-[node name="Tray" type="Button" parent="Margin/Layout/Scroll/Bench/CardStack/TrayRow"]
+[node name="DockTitle" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/BlueprintDock"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.92, 0.95, 0.92, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 13
+text = "Blueprints (drag into slot)"
+
+[node name="BlueprintList" type="VBoxContainer" parent="Margin/Layout/Scroll/Bench/CardStack/BlueprintDock"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
-mouse_default_cursor_shape = 2
-text = "Take idler"
+mouse_filter = 2
+theme_override_constants/separation = 5
+
+[node name="NoBlueprints" type="Label" parent="Margin/Layout/Scroll/Bench/CardStack/BlueprintDock"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.9)
+theme_override_colors/font_outline_color = Color(0.08, 0.12, 0.13, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 12
+text = "Earn blueprints from the Library or Class notes."
+autowrap_mode = 3
 
 [node name="KeybindHint" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -319,7 +342,7 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -350.0
+offset_left = -480.0
 offset_top = -32.0
 offset_right = -14.0
 offset_bottom = -8.0
@@ -334,5 +357,5 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.86, 0.9, 0.88, 0.92)
 theme_override_font_sizes/font_size = 12
-text = "Click: Use  ·  Tab / Arrows: Focus  ·  Enter / Space: Activate"
+text = "Drag: Blueprint / Rail  ·  Click: Rotate / Crank  ·  Tab / Arrows: Focus  ·  Enter / Space: Activate"
 horizontal_alignment = 2
