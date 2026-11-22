@@ -3,6 +3,12 @@
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 [ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="2_theme"]
 [ext_resource type="Script" path="res://scripts/ui/menu_background.gd" id="3_background"]
+[ext_resource type="FontFile" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="4_font_semibold"]
+[ext_resource type="Texture2D" path="res://assets/textures/hud/icon_sanity_pixel.png" id="5_icon_new"]
+[ext_resource type="Texture2D" path="res://assets/textures/desktop/icons/icon_notepad.png" id="6_icon_load"]
+[ext_resource type="Texture2D" path="res://assets/textures/desktop/icons/icon_project.png" id="7_icon_option"]
+[ext_resource type="Texture2D" path="res://assets/textures/desktop/icons/icon_browser.png" id="8_icon_exit"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/deadline_logo.png" id="9_logo"]
 
 [node name="MainMenu" type="Control"]
 process_mode = 3
@@ -20,101 +26,135 @@ mouse_filter = 2
 script = ExtResource("3_background")
 
 [node name="Margin" type="MarginContainer" parent="."]
+unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 24.0
-offset_right = -24.0
-offset_bottom = -24.0
+theme_override_constants/margin_left = 72
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 72
+theme_override_constants/margin_bottom = 44
 
-[node name="Scroll" type="ScrollContainer" parent="Margin"]
+[node name="MainPanel" type="VBoxContainer" parent="Margin"]
+unique_name_in_owner = true
 layout_mode = 2
-horizontal_scroll_mode = 0
-follow_focus = true
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_constants/separation = 38
 
-[node name="Center" type="CenterContainer" parent="Margin/Scroll"]
+[node name="TitleBox" type="PanelContainer" parent="Margin/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Logo" type="TextureRect" parent="Margin/MainPanel/TitleBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(456, 82)
+layout_mode = 2
+texture = ExtResource("9_logo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ButtonColumn" type="VBoxContainer" parent="Margin/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 16
+
+[node name="NewGame" type="Button" parent="Margin/MainPanel/ButtonColumn"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(236, 56)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+text = "NEW GAME"
+icon = ExtResource("5_icon_new")
+alignment = 0
+
+[node name="Load" type="Button" parent="Margin/MainPanel/ButtonColumn"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(236, 56)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+text = "LOAD GAME"
+icon = ExtResource("6_icon_load")
+alignment = 0
+
+[node name="Settings" type="Button" parent="Margin/MainPanel/ButtonColumn"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(236, 56)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+text = "OPTION"
+icon = ExtResource("7_icon_option")
+alignment = 0
+
+[node name="Quit" type="Button" parent="Margin/MainPanel/ButtonColumn"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(236, 56)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_default_cursor_shape = 2
+text = "EXIT"
+icon = ExtResource("8_icon_exit")
+alignment = 0
+
+[node name="MenuStatus" type="Label" parent="Margin/MainPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+visible = false
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 16
+
+[node name="SettingsCenter" type="CenterContainer" parent="Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 
-[node name="Layout" type="VBoxContainer" parent="Margin/Scroll/Center"]
-layout_mode = 2
-custom_minimum_size = Vector2(420, 0)
-theme_override_constants/separation = 20
-
-[node name="Logo" type="Label" parent="Margin/Scroll/Center/Layout"]
-layout_mode = 2
-text = "Deadline"
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 80
-theme_override_colors/font_color = Color(0.97, 0.91, 0.76, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
-theme_override_constants/shadow_offset_x = 3
-theme_override_constants/shadow_offset_y = 4
-
-[node name="Card" type="PanelContainer" parent="Margin/Scroll/Center/Layout"]
-layout_mode = 2
-
-[node name="MainPanel" type="VBoxContainer" parent="Margin/Scroll/Center/Layout/Card"]
+[node name="SettingsCard" type="PanelContainer" parent="Margin/SettingsCenter"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(440, 0)
 layout_mode = 2
-theme_override_constants/separation = 12
+visible = false
 
-[node name="NewGame" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "New Game"
-mouse_default_cursor_shape = 2
-
-[node name="Load" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Load"
-mouse_default_cursor_shape = 2
-
-[node name="Settings" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Settings"
-mouse_default_cursor_shape = 2
-
-[node name="Quit" type="Button" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Quit"
-mouse_default_cursor_shape = 2
-
-[node name="SettingsPanel" type="VBoxContainer" parent="Margin/Scroll/Center/Layout/Card"]
+[node name="SettingsPanel" type="VBoxContainer" parent="Margin/SettingsCenter/SettingsCard"]
 unique_name_in_owner = true
 layout_mode = 2
 visible = false
 theme_override_constants/separation = 14
 
-[node name="SettingsTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+[node name="SettingsTitle" type="Label" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Settings"
+text = "OPTION"
 horizontal_alignment = 1
+theme_override_fonts/font = ExtResource("4_font_semibold")
 theme_override_font_sizes/font_size = 28
 
-[node name="VolumeRow" type="HBoxContainer" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+[node name="VolumeRow" type="HBoxContainer" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 
-
-[node name="VolumeTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel/VolumeRow"]
+[node name="VolumeTitle" type="Label" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel/VolumeRow"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Volume"
 size_flags_horizontal = 3
 
-[node name="VolumeValue" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel/VolumeRow"]
+[node name="VolumeValue" type="Label" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel/VolumeRow"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "80%"
 
-[node name="Volume" type="HSlider" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+[node name="Volume" type="HSlider" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 0.0
@@ -124,37 +164,32 @@ value = 80.0
 custom_minimum_size = Vector2(0, 28)
 accessibility_name = "Volume utama"
 
-[node name="ResolutionTitle" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+[node name="ResolutionTitle" type="Label" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Resolusi"
 
-[node name="Resolution" type="OptionButton" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+[node name="Resolution" type="OptionButton" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 accessibility_name = "Resolusi layar"
 
-[node name="SettingsStatus" type="Label" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+[node name="SettingsStatus" type="Label" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 autowrap_mode = 3
 
-[node name="Apply" type="Button" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+[node name="Apply" type="Button" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Terapkan"
 
-[node name="SettingsBack" type="Button" parent="Margin/Scroll/Center/Layout/Card/SettingsPanel"]
+[node name="SettingsBack" type="Button" parent="Margin/SettingsCenter/SettingsCard/SettingsPanel"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "Kembali"
-
-[node name="MenuStatus" type="Label" parent="Margin/Scroll/Center/Layout/Card/MainPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-visible = false
-autowrap_mode = 3
-theme_override_font_sizes/font_size = 16
 
 [node name="NewGameConfirm" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true

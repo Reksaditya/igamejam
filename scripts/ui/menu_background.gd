@@ -1,20 +1,30 @@
 extends Control
 
+const CORRIDOR_TEXTURE: Texture2D = preload("res://assets/classroom/corridor/floor1.png")
+const SOURCE_LEFT_ANCHOR := 508.0
+const VERTICAL_ZOOM := 1.08
+
 
 func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	resized.connect(queue_redraw)
 
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("#0c1929"))
-	draw_circle(Vector2(size.x * 0.84, size.y * 0.22), 60.0, Color("#233349"))
-	var horizon := size.y * 0.8
-	for index: int in range(9):
-		var x := float(index) * size.x / 8.0 - 45.0
-		var height := 90.0 + float(index % 3) * 35.0
-		draw_rect(Rect2(x, horizon - height, 100, height), Color("#14283d"))
-		for row: int in range(2):
-			for column: int in range(3):
-				draw_rect(Rect2(x + 14 + column * 25, horizon - height + 22 + row * 35, 12, 18), Color("#2b4256"))
-	draw_rect(Rect2(0, horizon, size.x, size.y - horizon), Color("#101f30"))
-	draw_line(Vector2(0, horizon), Vector2(size.x, horizon), Color("#304055"), 2.0)
+	if CORRIDOR_TEXTURE == null or size.x <= 0.0 or size.y <= 0.0:
+		return
+	var tex_size := CORRIDOR_TEXTURE.get_size()
+	if tex_size.x <= 0.0 or tex_size.y <= 0.0:
+		return
+	var view_aspect := size.x / size.y
+	var src_h := tex_size.y / VERTICAL_ZOOM
+	var src_w := src_h * view_aspect
+	if src_w > tex_size.x:
+		src_w = tex_size.x
+		src_h = minf(tex_size.y, src_w / view_aspect)
+	var src_x := clampf(SOURCE_LEFT_ANCHOR, 0.0, maxf(0.0, tex_size.x - src_w))
+	draw_texture_rect_region(
+		CORRIDOR_TEXTURE,
+		Rect2(Vector2.ZERO, size),
+		Rect2(src_x, 0.0, src_w, src_h)
+	)
