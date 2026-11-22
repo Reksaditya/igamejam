@@ -5,6 +5,7 @@ const Launcher = preload("res://scripts/interaction/desktop/desktop_launcher.gd"
 const FileManagerLauncher = preload("res://scripts/interaction/desktop/file_manager_launcher.gd")
 const IconGrid = preload("res://scripts/interaction/desktop/desktop_icon_grid.gd")
 const AppWindow = preload("res://scripts/interaction/desktop/app_window.gd")
+const BLOCK_BOARD_SCRIPT := preload("res://scripts/interaction/desktop/blocks/block_board.gd")
 const APP_WINDOW_SCENE: PackedScene = preload("res://scenes/interaction/desktop/app_window.tscn")
 const RETURN_CONTEXT := &"desktop_return_context"
 const BOOT_SECONDS := 1.5
@@ -163,6 +164,38 @@ func _play_mouse_click() -> void:
 	player.play()
 
 
+func _is_interactive_click_target(hovered: Control) -> bool:
+	var node: Node = hovered
+	while node != null and node != self:
+		if node is BaseButton:
+			return not (node as BaseButton).disabled
+		if node is LineEdit:
+			return (node as LineEdit).editable
+		if node is TextEdit:
+			return (node as TextEdit).editable
+		if node is SpinBox:
+			return (node as SpinBox).editable
+		if node is Slider:
+			return (node as Slider).editable
+		if node is TabBar or node is ItemList or node is Tree or node is ScrollBar:
+			return true
+		if node is Control and node.get_script() == BLOCK_BOARD_SCRIPT:
+			return not bool(node.get("game_over"))
+		if node.name == &"TitleBar" and _has_app_window_ancestor(node):
+			return true
+		node = node.get_parent()
+	return false
+
+
+func _has_app_window_ancestor(node: Node) -> bool:
+	var ancestor: Node = node.get_parent()
+	while ancestor != null and ancestor != self:
+		if ancestor is AppWindow:
+			return true
+		ancestor = ancestor.get_parent()
+	return false
+
+
 func _fade_fan_ambient(target_db: float, duration: float, stop_when_done: bool) -> void:
 	if is_instance_valid(_fan_tween):
 		_fan_tween.kill()
@@ -201,7 +234,8 @@ func _input(event: InputEvent) -> void:
 	if not _turning_off and event is InputEventMouseButton:
 		var mouse_button := event as InputEventMouseButton
 		if mouse_button.button_index == MOUSE_BUTTON_LEFT and mouse_button.pressed and not mouse_button.canceled:
-			_play_mouse_click()
+			if _is_interactive_click_target(get_viewport().gui_get_hovered_control()):
+				_play_mouse_click()
 	if is_instance_valid(_login):
 		return
 	if event is InputEventMouse and not is_instance_valid(_exam_window):
