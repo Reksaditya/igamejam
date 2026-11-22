@@ -8,3 +8,4 @@ script = ExtResource("1_blueprint")
 blueprint_id = "sediment_sorter"
 title = "Sediment sorter"
 artwork = ExtResource("2_artwork")
+workshop_puzzle_id = "transmission_bench"
