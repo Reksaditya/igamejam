@@ -2,10 +2,227 @@ extends CanvasLayer
 
 const PORTRAIT := preload("res://assets/characters/mc/idle/1.png")
 const MENU_THEME := preload("res://scenes/ui/menu_theme.tres")
+const HUD_FONT := preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
+const CLOCK_DAY_ACCENT := Color("#ffd277")
+const CLOCK_NIGHT_ACCENT := Color("#91bde9")
+const HUD_SURFACE := Color("#0d1824e8")
+const HUD_INK := Color("#f9faf5")
+const HUD_MUTED := Color("#a5bccd")
+
+
+class DayNightDial extends Control:
+	const DIAL_SIZE := Vector2(72.0, 72.0)
+	const BODY_EXTENT := 7.5
+	const STARS := [
+		Vector2(-0.52, -0.44),
+		Vector2(-0.22, -0.62),
+		Vector2(0.16, -0.58),
+		Vector2(0.50, -0.36),
+		Vector2(-0.04, -0.32),
+	]
+
+	var minute_of_day: int = 360
+
+
+	func _init() -> void:
+		custom_minimum_size = DIAL_SIZE
+		size = DIAL_SIZE
+		clip_contents = true
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+
+	func set_minute_of_day(value: int) -> void:
+		var normalized := posmod(value, GameClock.MINUTES_PER_DAY)
+		if minute_of_day == normalized:
+			return
+		minute_of_day = normalized
+		queue_redraw()
+
+
+	func is_daytime() -> bool:
+		return minute_of_day >= 360 and minute_of_day < 1080
+
+
+	func phase_progress() -> float:
+		if is_daytime():
+			return clampf(float(minute_of_day - 360) / 720.0, 0.0, 1.0)
+		var night_elapsed := posmod(minute_of_day - 1080, GameClock.MINUTES_PER_DAY)
+		return clampf(float(night_elapsed) / 720.0, 0.0, 1.0)
+
+
+	func get_sky_radius() -> float:
+		var side := minf(size.x, size.y)
+		return maxf(8.0, side * 0.5 - 8.0)
+
+
+	func get_celestial_center() -> Vector2:
+		var center := size * 0.5
+		var sky_r := get_sky_radius()
+		var arc_origin := center + Vector2(0.0, sky_r * 0.22)
+		var arc_r := sky_r * 0.58
+		var angle := lerpf(0.32, PI - 0.32, phase_progress())
+		var raw := arc_origin + Vector2(-cos(angle) * arc_r, -sin(angle) * arc_r)
+		var max_offset := maxf(0.0, sky_r - BODY_EXTENT - 2.0)
+		var offset := raw - center
+		if offset.length() > max_offset and offset.length() > 0.001:
+			raw = center + offset.normalized() * max_offset
+		var margin := BODY_EXTENT + 2.0
+		raw.x = clampf(raw.x, margin, maxf(margin, size.x - margin))
+		raw.y = clampf(raw.y, margin, maxf(margin, size.y - margin))
+		return raw
+
+
+	func _draw() -> void:
+		var center := size * 0.5
+		var sky_r := get_sky_radius()
+		var daytime := is_daytime()
+		var accent := CLOCK_DAY_ACCENT if daytime else CLOCK_NIGHT_ACCENT
+
+		# Outer Persona dial bezel strictly inside DIAL_SIZE bounds.
+		draw_circle(center + Vector2(1.5, 2.0), sky_r + 3.5, Color("#060d17cc"), true, -1.0, true)
+		draw_circle(center, sky_r + 3.0, accent, true, -1.0, true)
+		draw_circle(center, sky_r + 1.4, Color("#e7edf2"), true, -1.0, true)
+
+		var sky := _sky_palette()
+		var sky_top: Color = sky[0]
+		var sky_mid: Color = sky[1]
+		var sky_horizon: Color = sky[2]
+
+		# Base upper sky fill + mathematically clipped gradient bands.
+		draw_circle(center, sky_r, sky_top, true, -1.0, true)
+		_draw_circle_band(center, sky_r, center.y - sky_r * 0.22, center.y + sky_r * 0.16, sky_mid)
+		_draw_circle_band(center, sky_r, center.y + sky_r * 0.12, center.y + sky_r * 0.44, sky_horizon)
+
+		# Subtle dotted arc track showing the sun/moon path.
+		var arc_origin := center + Vector2(0.0, sky_r * 0.22)
+		var arc_r := sky_r * 0.58
+		var track_color := Color(1.0, 0.98, 0.9, 0.24 if daytime else 0.18)
+		for step: int in range(9):
+			var t := float(step) / 8.0
+			var a := lerpf(0.32, PI - 0.32, t)
+			var pt := arc_origin + Vector2(-cos(a) * arc_r, -sin(a) * arc_r)
+			if pt.distance_to(center) <= sky_r - 3.0:
+				draw_circle(pt, 0.95, track_color, true, -1.0, true)
+
+		# Twinkling pixel stars during twilight and night.
+		var star_alpha := _star_alpha()
+		if star_alpha > 0.02:
+			for idx: int in range(STARS.size()):
+				var star_dir: Vector2 = STARS[idx]
+				var star_pos := center + star_dir * sky_r
+				var star_r := 1.4 if idx % 2 == 0 else 1.0
+				draw_circle(star_pos, star_r, Color(0.92, 0.96, 1.0, star_alpha), true, -1.0, false)
+
+		# Moving Sun (06:00-17:59) or Crescent Moon (18:00-05:59).
+		var body_pos := get_celestial_center()
+		if daytime:
+			draw_circle(body_pos, 7.4, Color(1.0, 0.84, 0.44, 0.28), true, -1.0, true)
+			for ray: int in range(8):
+				var ray_angle := float(ray) * TAU / 8.0 + phase_progress() * 0.65
+				var ray_dir := Vector2(cos(ray_angle), sin(ray_angle))
+				draw_line(body_pos + ray_dir * 4.8, body_pos + ray_dir * 7.2, Color("#ffe89e"), 1.35, true)
+			draw_circle(body_pos, 4.5, Color("#ffd277"), true, -1.0, true)
+			draw_circle(body_pos + Vector2(-1.1, -1.1), 2.1, Color("#fff7d6"), true, -1.0, true)
+		else:
+			draw_circle(body_pos, 7.2, Color(0.57, 0.74, 0.92, 0.25), true, -1.0, true)
+			draw_circle(body_pos, 4.9, Color("#eef5ff"), true, -1.0, true)
+			draw_circle(body_pos + Vector2(2.1, -1.2), 4.2, sky_top.lerp(sky_mid, 0.35), true, -1.0, true)
+
+		# Clipped horizon silhouette across the lower chord of the sky disc.
+		var horizon_y := center.y + sky_r * 0.36
+		var ground_color := Color("#122234") if daytime else Color("#09111d")
+		_draw_circle_band(center, sky_r, horizon_y, center.y + sky_r, ground_color)
+		var half_chord := sqrt(maxf(0.0, sky_r * sky_r - pow(horizon_y - center.y, 2.0)))
+		if half_chord > 2.0:
+			var rim := Color(accent, 0.72)
+			draw_line(Vector2(center.x - half_chord + 1.0, horizon_y), Vector2(center.x + half_chord - 1.0, horizon_y), rim, 1.3, true)
+
+		# Crisp inner ring to keep the sky dial edge razor sharp.
+		draw_arc(center, sky_r, 0.0, TAU, 48, Color("#0a1420cc"), 1.3, true)
+
+
+	func _draw_circle_band(center: Vector2, radius: float, y_top: float, y_bottom: float, color: Color) -> void:
+		var top_y := clampf(y_top, center.y - radius, center.y + radius)
+		var bot_y := clampf(y_bottom, center.y - radius, center.y + radius)
+		if bot_y <= top_y + 0.25:
+			return
+		var steps := 10
+		var left_pts: PackedVector2Array = PackedVector2Array()
+		var right_pts: PackedVector2Array = PackedVector2Array()
+		for i: int in range(steps + 1):
+			var y := lerpf(top_y, bot_y, float(i) / float(steps))
+			var dy := y - center.y
+			var dx := sqrt(maxf(0.0, radius * radius - dy * dy))
+			left_pts.append(Vector2(center.x - dx, y))
+			right_pts.append(Vector2(center.x + dx, y))
+		var poly := PackedVector2Array()
+		for pt: Vector2 in left_pts:
+			poly.append(pt)
+		for i: int in range(right_pts.size() - 1, -1, -1):
+			poly.append(right_pts[i])
+		if poly.size() >= 3:
+			draw_colored_polygon(poly, color)
+
+
+	func _sky_palette() -> Array[Color]:
+		var hour := float(minute_of_day) / 60.0
+		if hour >= 5.5 and hour < 7.5:
+			var t := (hour - 5.5) / 2.0
+			return [
+				Color("#1c2b4d").lerp(Color("#4c88c4"), t),
+				Color("#5f4c6e").lerp(Color("#88b8de"), t),
+				Color("#d68760").lerp(Color("#f4cb8c"), t),
+			]
+		if hour >= 7.5 and hour < 11.5:
+			var t := (hour - 7.5) / 4.0
+			return [
+				Color("#4c88c4").lerp(Color("#2f7fc9"), t),
+				Color("#88b8de").lerp(Color("#69b1e6"), t),
+				Color("#f4cb8c").lerp(Color("#cbe7fa"), t),
+			]
+		if hour >= 11.5 and hour < 15.0:
+			return [Color("#2f7fc9"), Color("#69b1e6"), Color("#cbe7fa")]
+		if hour >= 15.0 and hour < 18.0:
+			var t := (hour - 15.0) / 3.0
+			return [
+				Color("#2f7fc9").lerp(Color("#364572"), t),
+				Color("#69b1e6").lerp(Color("#b06558"), t),
+				Color("#cbe7fa").lerp(Color("#f0a45a"), t),
+			]
+		if hour >= 18.0 and hour < 20.0:
+			var t := (hour - 18.0) / 2.0
+			return [
+				Color("#364572").lerp(Color("#0d192e"), t),
+				Color("#b06558").lerp(Color("#162844"), t),
+				Color("#f0a45a").lerp(Color("#243b5e"), t),
+			]
+		return [Color("#0d192e"), Color("#162844"), Color("#243b5e")]
+
+
+	func _star_alpha() -> float:
+		var hour := float(minute_of_day) / 60.0
+		if hour >= 20.0 or hour < 5.0:
+			return 0.88
+		if hour >= 18.0 and hour < 20.0:
+			return lerpf(0.25, 0.88, (hour - 18.0) / 2.0)
+		if hour >= 5.0 and hour < 6.0:
+			return lerpf(0.88, 0.0, hour - 5.0)
+		return 0.0
+
 
 var _opener: Button
+var _hud_stats: PanelContainer
 var _hud_name: Label
-var _hud_energy: ProgressBar
+var _hud_name_plate: PanelContainer
+var _hud_clock_panel: PanelContainer
+var _hud_clock_style: StyleBoxFlat
+var _hud_dial: DayNightDial
+var _hud_semester: Label
+var _hud_day: Label
+var _hud_week: Label
+var _hud_period: Label
+var _hud_period_badge: PanelContainer
+var _hud_period_style: StyleBoxFlat
 var _popup: Window
 var _overview: HBoxContainer
 var _status: VBoxContainer
@@ -106,11 +323,6 @@ func _portrait(parent: Node, minimum: Vector2, face: bool = false) -> TextureRec
 		atlas.atlas = PORTRAIT
 		atlas.region = Rect2(90, 35, 240, 240)
 		picture.texture = atlas
-		var shader := Shader.new()
-		shader.code = "shader_type canvas_item; void fragment(){ vec4 c = texture(TEXTURE, UV); vec2 face_uv = (UV - vec2(0.225, 0.0875)) / vec2(0.6); float d = distance(face_uv, vec2(0.5)); COLOR = vec4(c.rgb, c.a * (1.0 - smoothstep(0.47, 0.5, d))); }"
-		var material := ShaderMaterial.new()
-		material.shader = shader
-		picture.material = material
 	parent.add_child(picture)
 	return picture
 
@@ -121,44 +333,202 @@ func _build_hud() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.theme = MENU_THEME
 	add_child(root)
-	var stats := preload("res://scripts/movement/stats_hud.gd").new()
-	stats.position = Vector2(16, 16)
-	stats.custom_minimum_size.x = 274
-	root.add_child(stats)
-	var clock_panel := PanelContainer.new()
-	clock_panel.position = Vector2(306, 16)
-	clock_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	root.add_child(clock_panel)
-	_hud_clock = _label(clock_panel, "", 24)
-	_hud_clock.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_opener = _button(root, "", open_profile)
-	_opener.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	_opener.offset_left = -320
-	_opener.offset_right = -20
-	_opener.offset_top = 16
-	_opener.offset_bottom = 98
-	_opener.tooltip_text = "Buka profil player"
-	_opener.accessibility_name = "Profil player"
-	var margin := MarginContainer.new()
-	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	margin.add_theme_constant_override("margin_left", 16)
-	margin.add_theme_constant_override("margin_right", 10)
-	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_opener.add_child(margin)
+	_build_clock_hud(root)
+
+	var cluster := HBoxContainer.new()
+	cluster.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cluster.add_theme_constant_override("separation", 10)
+	root.add_child(cluster)
+	cluster.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	cluster.offset_left = -14
+	cluster.offset_right = -14
+	cluster.offset_top = 12
+	cluster.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+
+	_hud_stats = preload("res://scripts/movement/stats_hud.gd").new()
+	_hud_stats.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	cluster.add_child(_hud_stats)
+
+	var portrait_column := VBoxContainer.new()
+	portrait_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	portrait_column.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	portrait_column.add_theme_constant_override("separation", 4)
+	cluster.add_child(portrait_column)
+
+	_opener = _button(portrait_column, "", open_profile)
+	_opener.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_opener.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	_opener.accessibility_name = "Buka profil pemain"
+	_style_portrait_button(_opener)
+	var portrait := _portrait(_opener, Vector2.ZERO, true)
+	portrait.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	portrait.offset_left = 4
+	portrait.offset_top = 4
+	portrait.offset_right = -4
+	portrait.offset_bottom = -4
+
+	_hud_name_plate = PanelContainer.new()
+	_hud_name_plate.clip_contents = true
+	_hud_name_plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hud_name_plate.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var name_style := StyleBoxFlat.new()
+	name_style.bg_color = HUD_SURFACE
+	name_style.border_color = Color("#7a95a699")
+	name_style.set_border_width_all(1)
+	name_style.set_corner_radius_all(6)
+	name_style.content_margin_left = 8
+	name_style.content_margin_right = 8
+	name_style.content_margin_top = 2
+	name_style.content_margin_bottom = 2
+	_hud_name_plate.add_theme_stylebox_override("panel", name_style)
+	portrait_column.add_child(_hud_name_plate)
+
+	_hud_name = _label(_hud_name_plate, "", 13)
+	_hud_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hud_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_hud_name.clip_text = true
+	_hud_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_hud_name.add_theme_font_override("font", HUD_FONT)
+	_hud_name.add_theme_color_override("font_color", HUD_INK)
+
+	_hud_stats.minimum_size_changed.connect(_match_portrait_height)
+	_match_portrait_height()
+
+
+func _style_portrait_button(button: Button) -> void:
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = HUD_SURFACE
+	normal.border_color = Color("#d8b674d8")
+	normal.set_border_width_all(2)
+	normal.set_corner_radius_all(8)
+	normal.shadow_color = Color(0.0, 0.0, 0.0, 0.36)
+	normal.shadow_size = 4
+	normal.shadow_offset = Vector2(0, 2)
+
+	var hover := normal.duplicate() as StyleBoxFlat
+	hover.bg_color = Color("#16283af2")
+	hover.border_color = CLOCK_DAY_ACCENT
+
+	var pressed := normal.duplicate() as StyleBoxFlat
+	pressed.bg_color = Color("#0b141ef5")
+	pressed.border_color = Color("#f6e1a8")
+
+	var disabled := normal.duplicate() as StyleBoxFlat
+	disabled.bg_color = Color("#0d1824a8")
+	disabled.border_color = Color("#6b7f8e88")
+
+	var focus := StyleBoxFlat.new()
+	focus.draw_center = false
+	focus.border_color = CLOCK_DAY_ACCENT
+	focus.set_border_width_all(2)
+	focus.set_corner_radius_all(8)
+
+	button.add_theme_stylebox_override("normal", normal)
+	button.add_theme_stylebox_override("hover", hover)
+	button.add_theme_stylebox_override("pressed", pressed)
+	button.add_theme_stylebox_override("disabled", disabled)
+	button.add_theme_stylebox_override("focus", focus)
+
+
+func _match_portrait_height() -> void:
+	var side := maxf(68.0, _hud_stats.get_combined_minimum_size().y)
+	_opener.custom_minimum_size = Vector2(side, side)
+	if is_instance_valid(_hud_name):
+		_hud_name.custom_minimum_size.x = maxf(side + 12.0, 84.0)
+
+
+func _build_clock_hud(root: Control) -> void:
+	_hud_clock_panel = PanelContainer.new()
+	_hud_clock_panel.clip_contents = true
+	_hud_clock_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hud_clock_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	_hud_clock_panel.offset_left = 14
+	_hud_clock_panel.offset_top = 12
+	_hud_clock_panel.custom_minimum_size = Vector2(216, 0)
+
+	_hud_clock_style = StyleBoxFlat.new()
+	_hud_clock_style.bg_color = HUD_SURFACE
+	_hud_clock_style.border_color = CLOCK_DAY_ACCENT
+	_hud_clock_style.border_width_left = 4
+	_hud_clock_style.border_width_top = 1
+	_hud_clock_style.border_width_right = 1
+	_hud_clock_style.border_width_bottom = 2
+	_hud_clock_style.set_corner_radius_all(8)
+	_hud_clock_style.content_margin_left = 8
+	_hud_clock_style.content_margin_right = 12
+	_hud_clock_style.content_margin_top = 5
+	_hud_clock_style.content_margin_bottom = 5
+	_hud_clock_panel.add_theme_stylebox_override("panel", _hud_clock_style)
+	root.add_child(_hud_clock_panel)
+
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	margin.add_child(row)
-	var info := VBoxContainer.new()
-	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	info.alignment = BoxContainer.ALIGNMENT_CENTER
-	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(info)
-	_hud_name = _label(info, "")
-	_hud_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_hud_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_hud_energy = _bar(info)
-	_hud_energy.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_portrait(row, Vector2(64, 64), true)
+	row.add_theme_constant_override("separation", 10)
+	_hud_clock_panel.add_child(row)
+
+	_hud_dial = DayNightDial.new()
+	_hud_dial.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(_hud_dial)
+
+	var readout := VBoxContainer.new()
+	readout.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	readout.alignment = BoxContainer.ALIGNMENT_CENTER
+	readout.add_theme_constant_override("separation", 1)
+	row.add_child(readout)
+
+	var cal_row := HBoxContainer.new()
+	cal_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cal_row.add_theme_constant_override("separation", 5)
+	readout.add_child(cal_row)
+
+	_hud_semester = _hud_label(cal_row, "SEM 1", 13, CLOCK_DAY_ACCENT)
+	_hud_label(cal_row, "·", 13, Color("#738b9c"))
+	_hud_day = _hud_label(cal_row, "HARI 1", 13, Color("#e7edf2"))
+
+	var time_row := HBoxContainer.new()
+	time_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	time_row.add_theme_constant_override("separation", 7)
+	readout.add_child(time_row)
+
+	_hud_clock = _hud_label(time_row, "06:00", 22, HUD_INK)
+	_hud_clock.add_theme_color_override("font_outline_color", Color("#060d17cc"))
+	_hud_clock.add_theme_constant_override("outline_size", 3)
+
+	_hud_period_badge = PanelContainer.new()
+	_hud_period_badge.clip_contents = true
+	_hud_period_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hud_period_badge.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_hud_period_style = StyleBoxFlat.new()
+	_hud_period_style.set_border_width_all(1)
+	_hud_period_style.set_corner_radius_all(4)
+	_hud_period_style.content_margin_left = 6
+	_hud_period_style.content_margin_right = 6
+	_hud_period_style.content_margin_top = 1
+	_hud_period_style.content_margin_bottom = 1
+	_hud_period_badge.add_theme_stylebox_override("panel", _hud_period_style)
+	time_row.add_child(_hud_period_badge)
+	_hud_period = _hud_label(_hud_period_badge, "Pagi", 12, Color("#fff3cf"))
+	_hud_period.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+	_hud_week = _hud_label(readout, "Minggu 1", 12, HUD_MUTED)
+
+
+func _hud_label(parent: Node, value: String, font_size: int, color: Color) -> Label:
+	var label := _label(parent, value, font_size)
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.add_theme_font_override("font", HUD_FONT)
+	label.add_theme_color_override("font_color", color)
+	return label
+
+
+func _period_info(minute_of_day: int) -> Dictionary:
+	if minute_of_day >= 360 and minute_of_day < 660:
+		return {"label": "Pagi", "bg": Color("#4a3a18f0"), "border": CLOCK_DAY_ACCENT, "text": Color("#fff3cf")}
+	if minute_of_day >= 660 and minute_of_day < 900:
+		return {"label": "Siang", "bg": Color("#193c58f0"), "border": Color("#86c5f4"), "text": Color("#e6f6ff")}
+	if minute_of_day >= 900 and minute_of_day < 1080:
+		return {"label": "Sore", "bg": Color("#4c2a1bf0"), "border": Color("#f09d62"), "text": Color("#ffead9")}
+	return {"label": "Malam", "bg": Color("#182444f0"), "border": CLOCK_NIGHT_ACCENT, "text": Color("#dcebff")}
 
 
 func _build_popup() -> void:
@@ -317,10 +687,31 @@ func _fit_popup() -> void:
 		_popup.popup_centered_clamped(Vector2i(780, 570))
 
 
-func _refresh_clock(_absolute_minutes: int) -> void:
+func _refresh_clock(absolute_minutes: int) -> void:
 	var time := GameClock.get_formatted_time()
+	var minute_of_day := posmod(absolute_minutes, GameClock.MINUTES_PER_DAY)
+	var semester_num := CareerProgress.semester()
+	var semester_week := CareerProgress.week()
+	var period := _period_info(minute_of_day)
+
+	_hud_dial.set_minute_of_day(minute_of_day)
+	var accent := CLOCK_DAY_ACCENT if _hud_dial.is_daytime() else CLOCK_NIGHT_ACCENT
+	_hud_clock_style.border_color = accent
+	_hud_semester.text = "SEM %d" % semester_num
+	_hud_semester.add_theme_color_override("font_color", accent)
+	_hud_day.text = "HARI %d" % GameClock.get_day()
 	_hud_clock.text = time
-	_hud_clock.tooltip_text = "Hari %d · Minggu %d" % [GameClock.get_day(), GameClock.get_week()]
+	_hud_week.text = "Minggu %d" % semester_week
+
+	_hud_period_style.bg_color = period.bg
+	_hud_period_style.border_color = period.border
+	_hud_period_badge.queue_redraw()
+	_hud_period.text = period.label
+	_hud_period.add_theme_color_override("font_color", period.text)
+
+	var summary := "Semester %d · Minggu %d · Hari %d (%s %s)" % [semester_num, semester_week, GameClock.get_day(), time, period.label]
+	_hud_clock.tooltip_text = summary
+	_hud_clock_panel.accessibility_name = summary
 	_profile_clock.text = time
 	_profile_date.text = "Hari %d · Minggu %d" % [GameClock.get_day(), GameClock.get_week()]
 
@@ -445,8 +836,8 @@ func _refresh_journal() -> void:
 
 func _refresh_stats() -> void:
 	_hud_name.text = PlayerStats.player_name
-	_hud_energy.value = PlayerStats.get_energy()
-	_hud_energy.tooltip_text = "Energi %d / 100" % roundi(PlayerStats.get_energy())
+	_hud_name.get_parent().tooltip_text = PlayerStats.player_name
+	_opener.tooltip_text = "Profil " + PlayerStats.player_name
 	_name.text = PlayerStats.player_name
 	_id.text = "NIM / ID  " + PlayerStats.student_id
 	_energy.value = PlayerStats.get_energy()
