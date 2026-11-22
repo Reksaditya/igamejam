@@ -67,8 +67,8 @@ visible = false
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
-text = "Buku Catatan"
-tooltip_text = "Tab"
+text = "[Tab] Buka Catatan"
+tooltip_text = "Tekan Tab untuk membuka/menutup catatan"
 
 [node name="Countdown" type="Label" parent="Screen/Scroll/Margins/Center/Content"]
 unique_name_in_owner = true

@@ -32,11 +32,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
-[node name="Heading" type="Label" parent="Screen/Scroll/Content"]
+[node name="HeaderRow" type="HBoxContainer" parent="Screen/Scroll/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Screen/Scroll/Content/HeaderRow"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"LmsHeading"
 autowrap_mode = 3
+
+[node name="NotesHint" type="Button" parent="Screen/Scroll/Content/HeaderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+text = "[Tab] Buka Catatan"
+tooltip_text = "Tekan Tab untuk membuka/menutup buku catatan"
 
 [node name="Countdown" type="Label" parent="Screen/Scroll/Content"]
 unique_name_in_owner = true

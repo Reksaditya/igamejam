@@ -27,6 +27,8 @@ func _ready() -> void:
 	%Heading.text = assignment.title
 	%Close.pressed.connect(_close)
 	%Retry.pressed.connect(_start_exam)
+	if has_node("%NotesHint"):
+		%NotesHint.pressed.connect(func() -> void: StudyNotes.toggle_book(CareerProgress.semester()))
 	var result := Results.read_result(assignment.id)
 	if result.is_empty():
 		_start_exam()
@@ -34,7 +36,20 @@ func _ready() -> void:
 		_show_result(result.score, result.max_score)
 
 
+func _input(event: InputEvent) -> void:
+	if _finished or not is_instance_valid(_quiz):
+		return
+	if event is InputEventKey and event.pressed:
+		var key := event as InputEventKey
+		if key.keycode == KEY_TAB and not key.shift_pressed and not key.ctrl_pressed and not key.alt_pressed and not key.meta_pressed:
+			get_viewport().set_input_as_handled()
+			if not key.echo:
+				StudyNotes.toggle_book(CareerProgress.semester())
+
+
 func _exit_tree() -> void:
+	if StudyNotes.is_book_open():
+		StudyNotes.close_book()
 	if _owns_pause:
 		get_tree().paused = _was_paused
 

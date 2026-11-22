@@ -70,7 +70,21 @@ func _ready() -> void:
 			deadline = Time.get_unix_time_from_system() + 600.0
 		can_close = false
 		lock_changed.emit(true)
-	label("%s · %s" % [_heading_prefix(), kind.to_upper()], 24)
+	var header_row := HBoxContainer.new()
+	header_row.add_theme_constant_override("separation", 10)
+	content.add_child(header_row)
+	var heading := Label.new()
+	heading.text = "%s · %s" % [_heading_prefix(), kind.to_upper()]
+	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	heading.add_theme_font_size_override("font_size", 24)
+	header_row.add_child(heading)
+	var notes_btn := Button.new()
+	notes_btn.name = &"NotesHintButton"
+	notes_btn.text = "[Tab] Buka Catatan"
+	notes_btn.tooltip_text = "Tekan Tab untuk membuka/menutup buku catatan"
+	notes_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	notes_btn.pressed.connect(func() -> void: StudyNotes.toggle_book(term))
+	header_row.add_child(notes_btn)
 	_status = label("")
 	_error = label("", 16)
 	_question_area = VBoxContainer.new()
@@ -234,6 +248,19 @@ func _show_result(score: float) -> void:
 	add_close()
 
 
+func _window_input(event: InputEvent) -> void:
+	if not _finished and event is InputEventKey and event.pressed:
+		var key := event as InputEventKey
+		if key.keycode == KEY_TAB and not key.shift_pressed and not key.ctrl_pressed and not key.alt_pressed and not key.meta_pressed:
+			window.set_input_as_handled()
+			if not key.echo:
+				StudyNotes.toggle_book(term)
+			return
+	super._window_input(event)
+
+
 func _exit_tree() -> void:
+	if StudyNotes.is_book_open():
+		StudyNotes.close_book()
 	GameClock.end_assessment(_clock_token)
 	super._exit_tree()

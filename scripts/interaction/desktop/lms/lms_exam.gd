@@ -100,9 +100,12 @@ func _input(event: InputEvent) -> void:
 
 func _fit_views() -> void:
 	var notebook: Control = _desk.get_node("%Notebook")
-	var scroll: Control = _desk.get_node("%Scroll")
-	notebook.custom_minimum_size.x = clampf(size.x - 56.0, 0.0, 640.0)
-	scroll.custom_minimum_size.y = clampf(size.y - 150.0, 60.0, 260.0)
+	var book_aspect := 390.0 / 300.0
+	var max_w := clampf(size.x - 48.0, 320.0, 740.0)
+	var max_h := clampf(size.y - 44.0, 246.0, 569.0)
+	var book_w := minf(max_w, max_h * book_aspect)
+	var book_h := book_w / book_aspect
+	notebook.custom_minimum_size = Vector2(floorf(book_w), floorf(book_h))
 
 
 func _toggle_notebook() -> void:
@@ -138,21 +141,33 @@ func _on_notes_changed(assignment_id: String) -> void:
 
 func _refresh_notebook() -> void:
 	var entries: VBoxContainer = _desk.get_node("%Entries")
-	for child: Node in entries.get_children():
-		entries.remove_child(child)
-		child.queue_free()
+	var entries_right: VBoxContainer = _desk.get_node_or_null("%EntriesRight") as VBoxContainer
+	for container: VBoxContainer in [entries, entries_right]:
+		if container == null:
+			continue
+		for child: Node in container.get_children():
+			container.remove_child(child)
+			child.queue_free()
 	var unlocked := StudyNotes.get_unlocked_entries(assignment.get_notebook_id())
 	if unlocked.is_empty():
 		var empty := Label.new()
 		empty.text = "Belum ada catatan yang terbuka."
-		empty.theme_type_variation = &"LmsMeta"
+		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		empty.add_theme_color_override("font_color", Color("#665649"))
 		entries.add_child(empty)
 		return
-	for note in unlocked:
+	var split_at := ceili(float(unlocked.size()) * 0.5)
+	for i: int in range(unlocked.size()):
+		var note = unlocked[i]
 		var entry := Label.new()
 		entry.text = note.notebook_text
 		entry.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		entries.add_child(entry)
+		entry.add_theme_color_override("font_color", Color("#241c18"))
+		entry.add_theme_font_size_override("font_size", 13)
+		if entries_right != null and i >= split_at:
+			entries_right.add_child(entry)
+		else:
+			entries.add_child(entry)
 
 
 func _show_quiz() -> void:

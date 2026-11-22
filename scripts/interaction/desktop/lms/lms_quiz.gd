@@ -86,7 +86,7 @@ func _select_answer(option: int) -> void:
 
 func _refresh_progress() -> void:
 	var answered := _answers.size() - _answers.count(-1)
-	%Progress.text = "Mode ujian · %d dari %d terjawab" % [answered, _answers.size()]
+	%Progress.text = "Mode ujian · %d dari %d terjawab · [Tab] Buka Catatan" % [answered, _answers.size()]
 	_submit_button.disabled = not allow_partial_submission and answered < _answers.size()
 
 

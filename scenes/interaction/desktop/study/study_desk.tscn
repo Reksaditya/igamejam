@@ -1,23 +1,43 @@
 [gd_scene format=3]
 
 [ext_resource type="Theme" path="res://scenes/interaction/desktop/lms/lms_theme.tres" id="1_theme"]
-
 [ext_resource type="Shader" path="res://scenes/interaction/desktop/study/notebook_blur.gdshader" id="2_blur"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/study_notes_book.png" id="3_book"]
 
 [sub_resource type="ShaderMaterial" id="Blur"]
 shader = ExtResource("2_blur")
 
-[sub_resource type="StyleBoxFlat" id="Paper"]
-content_margin_left = 24.0
-content_margin_top = 18.0
-content_margin_right = 24.0
-content_margin_bottom = 18.0
-bg_color = Color(1, 0.975, 0.9, 1)
-border_width_left = 4
-border_color = Color(0.66, 0.27, 0.26, 1)
-shadow_color = Color(0.18, 0.09, 0.06, 0.4)
-shadow_size = 8
-shadow_offset = Vector2(3, 4)
+[sub_resource type="StyleBoxFlat" id="BookBtnNormal"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.86, 0.8, 0.7, 0.78)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.48, 0.4, 0.32, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="BookBtnHover"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.79, 0.71, 0.59, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.38, 0.3, 0.22, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="Desk" type="ColorRect"]
 visible = false
@@ -33,49 +53,94 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/margin_left = 28
-theme_override_constants/margin_top = 26
-theme_override_constants/margin_right = 28
-theme_override_constants/margin_bottom = 26
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
 
 [node name="Center" type="CenterContainer" parent="Padding"]
 layout_mode = 2
 
-[node name="Notebook" type="PanelContainer" parent="Padding/Center"]
+[node name="Notebook" type="Control" parent="Padding/Center"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(585, 450)
 layout_mode = 2
-theme_override_styles/panel = SubResource("Paper")
 
-[node name="Layout" type="VBoxContainer" parent="Padding/Center/Notebook"]
-layout_mode = 2
-theme_override_constants/separation = 12
+[node name="BookTexture" type="TextureRect" parent="Padding/Center/Notebook"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_book")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="Header" type="HBoxContainer" parent="Padding/Center/Notebook/Layout"]
-layout_mode = 2
-theme_override_constants/separation = 12
+[node name="LeftPage" type="VBoxContainer" parent="Padding/Center/Notebook"]
+clip_contents = true
+layout_mode = 1
+anchor_left = 0.095
+anchor_top = 0.08
+anchor_right = 0.425
+anchor_bottom = 0.815
+theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Padding/Center/Notebook/Layout/Header"]
+[node name="Title" type="Label" parent="Padding/Center/Notebook/LeftPage"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"LmsSubheading"
+theme_override_colors/font_color = Color(0.14, 0.11, 0.09, 1)
+theme_override_font_sizes/font_size = 16
 text = "Buku Catatan"
 
-[node name="ReturnToQuiz" type="Button" parent="Padding/Center/Notebook/Layout/Header"]
+[node name="Scroll" type="ScrollContainer" parent="Padding/Center/Notebook/LeftPage"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Kembali ke kuis"
-tooltip_text = "Tab"
-
-[node name="Scroll" type="ScrollContainer" parent="Padding/Center/Notebook/Layout"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 160)
-layout_mode = 2
+size_flags_vertical = 3
 focus_mode = 2
 horizontal_scroll_mode = 0
 follow_focus = true
 
-[node name="Entries" type="VBoxContainer" parent="Padding/Center/Notebook/Layout/Scroll"]
+[node name="Entries" type="VBoxContainer" parent="Padding/Center/Notebook/LeftPage/Scroll"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
+
+[node name="RightPage" type="VBoxContainer" parent="Padding/Center/Notebook"]
+clip_contents = true
+layout_mode = 1
+anchor_left = 0.575
+anchor_top = 0.08
+anchor_right = 0.905
+anchor_bottom = 0.815
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Padding/Center/Notebook/RightPage"]
+layout_mode = 2
+alignment = 2
+
+[node name="ReturnToQuiz" type="Button" parent="Padding/Center/Notebook/RightPage/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.14, 0.11, 0.09, 1)
+theme_override_colors/font_hover_color = Color(0.05, 0.04, 0.03, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("BookBtnNormal")
+theme_override_styles/hover = SubResource("BookBtnHover")
+theme_override_styles/pressed = SubResource("BookBtnHover")
+text = "[Tab] Tutup ×"
+tooltip_text = "Tab"
+
+[node name="RightScroll" type="ScrollContainer" parent="Padding/Center/Notebook/RightPage"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="EntriesRight" type="VBoxContainer" parent="Padding/Center/Notebook/RightPage/RightScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8

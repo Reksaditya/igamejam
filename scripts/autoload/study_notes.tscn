@@ -7,31 +7,31 @@
 script = ExtResource("2_note")
 note_id = "dinosaur_triceratops_horns"
 assignment_id = "dinosaur_basics"
-notebook_text = "Triceratops memiliki tiga tanduk: dua di atas mata dan satu di atas hidung."
+notebook_text = "• Triceratops: 3 tanduk (2 di atas mata, 1 di atas hidung)."
 
 [sub_resource type="Resource" id="Note_plates"]
 script = ExtResource("2_note")
 note_id = "dinosaur_stegosaurus_plates"
 assignment_id = "dinosaur_basics"
-notebook_text = "Stegosaurus memiliki dua baris lempeng besar di sepanjang punggungnya."
+notebook_text = "• Stegosaurus: 2 baris lempeng besar di punggung."
 
 [sub_resource type="Resource" id="Note_stegosaurus"]
 script = ExtResource("2_note")
 note_id = "dinosaur_stegosaurus_period"
 assignment_id = "dinosaur_basics"
-notebook_text = "Stegosaurus hidup pada periode Jura Akhir."
+notebook_text = "• Stegosaurus hidup pada periode Jura Akhir."
 
 [sub_resource type="Resource" id="Note_tyrannosaurus"]
 script = ExtResource("2_note")
 note_id = "dinosaur_tyrannosaurus_period"
 assignment_id = "dinosaur_basics"
-notebook_text = "Tyrannosaurus rex hidup pada periode Kapur Akhir."
+notebook_text = "• Tyrannosaurus rex hidup pada periode Kapur Akhir."
 
 [sub_resource type="Resource" id="Note_first"]
 script = ExtResource("2_note")
 note_id = "dinosaur_first_period"
 assignment_id = "dinosaur_basics"
-notebook_text = "Dinosaurus paling awal yang diketahui muncul pada periode Trias."
+notebook_text = "• Dinosaurus paling awal muncul pada periode Trias."
 
 [node name="StudyNotes" type="Node"]
 script = ExtResource("1_notebook")
