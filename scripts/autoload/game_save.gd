@@ -1,12 +1,21 @@
 extends Node
 
 const SAVE_PATH := "user://game_save.cfg"
+const RESET_ON_LAUNCH_SETTING := "application/config/reset_progress_on_launch"
+const KEEP_SAVE_ARGS := ["--keep-save", "--reload", "--legacy", "--interrupted"]
 const INITIAL_SCENE := "res://scenes/movement/top_down_movement.tscn"
 const DESKTOP_SCENE := "res://scenes/interaction/desktop/desktop.tscn"
-const WORLD_SCENES := [INITIAL_SCENE, "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn", "res://scenes/movement/dorm_exterior.tscn", "res://scenes/movement/dorm_floor1.tscn", "res://scenes/movement/dorm_floor2.tscn", "res://scenes/movement/dorm_room210.tscn", "res://scenes/movement/lecturer_room.tscn"]
-const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "career_progress.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg"]
+const WORKSHOP_SCENE := "res://scenes/interaction/workshop/transmission_workshop.tscn"
+const WORLD_SCENES := [INITIAL_SCENE, "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn"]
+const SNAPSHOT_VERSION := 2
+const DESKTOP_FILES := ["blueprint_progress.cfg", "study_notes.cfg", "chapter_timeline.cfg",
+	"blueprint_progress.cfg.bak", "study_notes.cfg.bak", "chapter_timeline.cfg.bak"]
+const CAMPUS_FILES := ["classroom_notes.cfg", "transmission_progress.cfg",
+	"workshop_progress.cfg", "workshop_progress.cfg.bak",
+	"classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg"]
 
 var last_save_error: Error = OK
+var reset_on_launch: bool = true
 var _enabled: bool = false
 var _busy: bool = false
 var _queued: bool = false
@@ -24,9 +33,41 @@ func _ready() -> void:
 	get_tree().scene_changed.connect(_on_scene_changed)
 	ClassroomProgress.changed.connect(request_autosave)
 	BlueprintProgress.changed.connect(request_autosave)
+	ProjectBlueprints.changed.connect(request_autosave)
 	PlayerStats.changed.connect(request_autosave)
-	PlayerJournal.changed.connect(request_autosave)
-	CareerProgress.changed.connect(request_autosave)
+	reset_on_launch = bool(ProjectSettings.get_setting(RESET_ON_LAUNCH_SETTING, true))
+	if should_reset_on_launch():
+		reset_persistent_data()
+
+
+func should_reset_on_launch() -> bool:
+	if not reset_on_launch:
+		return false
+	var user_args := OS.get_cmdline_user_args()
+	for flag: String in KEEP_SAVE_ARGS:
+		if flag in user_args:
+			return false
+	return true
+
+
+func reset_persistent_data() -> Error:
+	_busy = true
+	var error := _replace_files({}, true)
+	if error == OK:
+		_resume_scene = INITIAL_SCENE
+		_world_scene = INITIAL_SCENE
+		_position = Vector2(320, 592)
+		_facing = 1.0
+		_restore_position = false
+		_enabled = false
+		ClassroomProgress.reload_progress()
+		BlueprintProgress.reload_progress()
+		StudyNotes.reload_progress()
+		GameClock.reset_timeline()
+		PlayerStats.restore_save_state(PlayerStats.DEFAULTS)
+		_clear_spawn()
+	_busy = false
+	return error
 
 
 func _process(delta: float) -> void:
@@ -45,6 +86,7 @@ func _notification(what: int) -> void:
 
 
 func register_world(world: Node2D, player: CharacterBody2D) -> void:
+	GameClock.resume_timeline()
 	if _restore_position and world.scene_file_path == _world_scene:
 		player.position = _position
 		var visual := player.get_node("Visual") as Node2D
@@ -99,12 +141,12 @@ func save_now() -> Error:
 		_resume_scene = _world_scene
 		_position = Vector2(clampf(player.position.x, 80.0, 1840.0), clampf(player.position.y, 0.0, 592.0))
 		_facing = signf((player.get_node("Visual") as Node2D).scale.x)
-	elif scene.scene_file_path != DESKTOP_SCENE:
+	elif scene.scene_file_path not in [DESKTOP_SCENE, WORKSHOP_SCENE]:
 		return ERR_UNAVAILABLE
 	var files := _collect_files()
 	if last_save_error != OK:
 		return last_save_error
-	var snapshot := _make_snapshot(GameClock.get_save_state(), files)
+	var snapshot := _make_snapshot(GameClock.get_save_state(), files, PlayerStats.get_save_state())
 	last_save_error = snapshot.save(SAVE_PATH + ".tmp")
 	if last_save_error == OK:
 		last_save_error = DirAccess.rename_absolute(SAVE_PATH + ".tmp", SAVE_PATH)
@@ -124,8 +166,8 @@ func start_new_game(player_name: String = "Yohan") -> Error:
 	_world_scene = INITIAL_SCENE
 	_position = Vector2(320, 592)
 	_facing = 1.0
-	var clock := {"minutes": 360, "remainder": 0}
-	var snapshot := _make_snapshot(clock, {}, stats)
+	var clock := {"minutes": GameClock.MORNING_MINUTES, "remainder": 0}
+	var snapshot := _make_snapshot(clock, {}, PlayerStats.DEFAULTS)
 	var error := _replace_files({"game_save.cfg": snapshot.encode_to_text()}, true)
 	if error != OK:
 		_resume_scene = previous_scene
@@ -136,10 +178,9 @@ func start_new_game(player_name: String = "Yohan") -> Error:
 		return error
 	ClassroomProgress.reload_progress()
 	BlueprintProgress.reload_progress()
-	PlayerJournal.reload_progress()
-	CareerProgress.reload_progress()
-	PlayerStats.restore_save_state(stats)
+	StudyNotes.reload_progress()
 	GameClock.restore_save_state(clock)
+	PlayerStats.restore_save_state(PlayerStats.DEFAULTS)
 	_clear_spawn()
 	_restore_position = true
 	_enabled = true
@@ -160,12 +201,18 @@ func load_game(allow_legacy: bool = false) -> Error:
 		var legacy_files := _collect_files()
 		if last_save_error != OK:
 			return last_save_error
-		snapshot = _make_snapshot({"minutes": 0, "remainder": 0}, legacy_files)
+		GameClock.resume_timeline()
+		snapshot = _make_snapshot(GameClock.get_save_state(), legacy_files, PlayerStats.DEFAULTS)
 	_busy = true
 	var files: Dictionary = {}
 	if snapshot.has_section("files"):
 		for path: String in snapshot.get_section_keys("files"):
 			files[path] = snapshot.get_value("files", path)
+	if snapshot.get_value("save", "version") == 1:
+		var migration := _migrate_snapshot_files(files)
+		if migration != OK:
+			_busy = false
+			return migration
 	var error := _replace_files(files, false)
 	if error != OK:
 		_busy = false
@@ -176,13 +223,12 @@ func load_game(allow_legacy: bool = false) -> Error:
 	_facing = snapshot.get_value("world", "facing", 1.0)
 	ClassroomProgress.reload_progress()
 	BlueprintProgress.reload_progress()
-	PlayerJournal.reload_progress()
-	CareerProgress.reload_progress()
-	var stats := PlayerStats.DEFAULTS.duplicate()
-	for key: String in stats:
-		stats[key] = snapshot.get_value("profile", key, stats[key])
-	PlayerStats.restore_save_state(stats)
+	StudyNotes.reload_progress()
 	GameClock.restore_save_state({"minutes": snapshot.get_value("clock", "minutes"), "remainder": snapshot.get_value("clock", "remainder", 0)})
+	var stats := {}
+	for key: String in PlayerStats.DEFAULTS:
+		stats[key] = snapshot.get_value("stats", key, PlayerStats.DEFAULTS[key])
+	PlayerStats.restore_save_state(stats)
 	_clear_spawn()
 	_restore_position = _resume_scene in WORLD_SCENES
 	_enabled = true
@@ -192,22 +238,22 @@ func load_game(allow_legacy: bool = false) -> Error:
 
 
 func _clear_spawn() -> void:
-	if get_tree().has_meta(&"side_scroller_spawn"):
-		get_tree().remove_meta(&"side_scroller_spawn")
+	for key: StringName in [&"side_scroller_spawn", &"desktop_return_context"]:
+		if get_tree().has_meta(key):
+			get_tree().remove_meta(key)
 
 
-func _make_snapshot(clock: Dictionary, files: Dictionary, stats: Dictionary = {}) -> ConfigFile:
+func _make_snapshot(clock: Dictionary, files: Dictionary, stats: Dictionary) -> ConfigFile:
 	var snapshot := ConfigFile.new()
-	snapshot.set_value("save", "version", 2)
-	var profile := PlayerStats.get_save_state() if stats.is_empty() else stats
-	for key: String in profile:
-		snapshot.set_value("profile", key, profile[key])
+	snapshot.set_value("save", "version", SNAPSHOT_VERSION)
 	snapshot.set_value("world", "scene", _resume_scene)
 	snapshot.set_value("world", "world_scene", _world_scene)
 	snapshot.set_value("world", "position", _position)
 	snapshot.set_value("world", "facing", _facing)
 	snapshot.set_value("clock", "minutes", clock.minutes)
 	snapshot.set_value("clock", "remainder", clock.remainder)
+	for key: String in stats:
+		snapshot.set_value("stats", key, stats[key])
 	for path: String in files:
 		snapshot.set_value("files", path, files[path])
 	return snapshot
@@ -215,7 +261,7 @@ func _make_snapshot(clock: Dictionary, files: Dictionary, stats: Dictionary = {}
 
 func _read_snapshot() -> ConfigFile:
 	var snapshot := ConfigFile.new()
-	if snapshot.load(SAVE_PATH) != OK or snapshot.get_value("save", "version", 0) not in [1, 2]:
+	if snapshot.load(SAVE_PATH) != OK or snapshot.get_value("save", "version", 0) not in [1, SNAPSHOT_VERSION]:
 		return null
 	var scene: Variant = snapshot.get_value("world", "scene", "")
 	var world: Variant = snapshot.get_value("world", "world_scene", "")
@@ -238,10 +284,38 @@ func _read_snapshot() -> ConfigFile:
 	return snapshot
 
 
+func _migrate_snapshot_files(files: Dictionary) -> Error:
+	var shared_path := "blueprint_progress.cfg"
+	if files.has(shared_path):
+		var blueprint := ConfigFile.new()
+		var error := blueprint.parse(files[shared_path])
+		if error != OK:
+			return error
+		if blueprint.get_value("project", "id", "") == "transmission":
+			files["transmission_progress.cfg"] = files[shared_path]
+			blueprint.erase_section("project")
+			if blueprint.get_sections().is_empty():
+				files.erase(shared_path)
+			else:
+				files[shared_path] = blueprint.encode_to_text()
+	# Version 1 checkpoints did not capture desktop study or puzzle progress.
+	for path: String in DESKTOP_FILES:
+		if files.has(path) or not FileAccess.file_exists("user://" + path):
+			continue
+		var file := FileAccess.open("user://" + path, FileAccess.READ)
+		if file == null:
+			return FileAccess.get_open_error()
+		files[path] = file.get_as_text()
+		var error := file.get_error()
+		if error != OK and error != ERR_FILE_EOF:
+			return error
+	return OK
+
+
 func _is_gameplay_path(path: String) -> bool:
 	if path.is_absolute_path() or path.contains("\\") or path.simplify_path() != path or path.contains(".."):
 		return false
-	return path in ROOT_FILES or ((path.begins_with("lms_results/") or path.begins_with("career_drafts/")) and path.get_extension() == "cfg") or (path.begins_with("notes/") and path.get_extension() == "txt")
+	return (path in DESKTOP_FILES or path in CAMPUS_FILES) or (path.begins_with("lms_results/") and path.get_extension() == "cfg") or (path.begins_with("notes/") and path.get_extension() == "txt")
 
 
 func _collect_files() -> Dictionary:
@@ -264,7 +338,7 @@ func _collect_files() -> Dictionary:
 
 func _gameplay_paths() -> PackedStringArray:
 	var paths := PackedStringArray()
-	for path: String in ROOT_FILES:
+	for path: String in CAMPUS_FILES + DESKTOP_FILES:
 		if FileAccess.file_exists("user://" + path):
 			paths.append(path)
 	for directory: String in ["lms_results", "notes", "career_drafts"]:

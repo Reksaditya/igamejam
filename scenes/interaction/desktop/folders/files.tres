@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/desktop/desktop_folder.gd" id="1_folder"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/folders/documents.tres" id="documents"]
+[ext_resource type="Resource" path="res://scenes/interaction/desktop/folders/images.tres" id="images"]
+
+[resource]
+script = ExtResource("1_folder")
+folder_name = "Files"
+subfolders = Array[Resource]([ExtResource("documents"), ExtResource("images")])

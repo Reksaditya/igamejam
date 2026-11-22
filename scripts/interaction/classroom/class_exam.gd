@@ -18,6 +18,7 @@ var _timed_out: bool = false
 var _was_paused: bool = false
 var _owns_pause: bool = true
 var _game_start_minutes: int = 0
+var _assessment_token := 0
 
 
 func _ready() -> void:
@@ -35,6 +36,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	_finish_assessment()
 	if _owns_pause:
 		get_tree().paused = _was_paused
 
@@ -56,6 +58,12 @@ func _start_exam() -> void:
 	var error := _save_draft(stored_answers)
 	if error != OK:
 		%Status.text = "Ujian belum dapat dimulai karena penyimpanan gagal. Coba kembali."
+		%Retry.show()
+		%Close.disabled = false
+		return
+	_assessment_token = GameClock.begin_assessment()
+	if _assessment_token == 0:
+		%Status.text = "Tunggu sampai aktivitas yang sedang berlangsung selesai."
 		%Retry.show()
 		%Close.disabled = false
 		return
@@ -102,6 +110,7 @@ func _draft_path() -> String:
 
 func _show_result(score: int, max_score: int) -> void:
 	_finished = true
+	_finish_assessment()
 	if is_instance_valid(_quiz):
 		%QuizHost.remove_child(_quiz)
 		_quiz.queue_free()
@@ -113,6 +122,12 @@ func _show_result(score: int, max_score: int) -> void:
 	%Close.disabled = false
 	%Close.grab_focus()
 	%Retry.hide()
+
+
+func _finish_assessment() -> void:
+	if _assessment_token != 0:
+		GameClock.end_assessment(_assessment_token)
+		_assessment_token = 0
 
 
 func _close() -> void:

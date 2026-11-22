@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Deadline"
+config/reset_progress_on_launch=true
 run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://assets/textures/icon.svg"
@@ -19,8 +20,10 @@ config/icon="res://assets/textures/icon.svg"
 
 GameClock="*res://scripts/autoload/game_clock.tscn"
 PlayerStats="*res://scripts/autoload/player_stats.gd"
+StudyNotes="*res://scripts/autoload/study_notes.tscn"
 GameSettings="*res://scripts/autoload/game_settings.gd"
 BlueprintProgress="*res://scripts/autoload/blueprint_progress.gd"
+ProjectBlueprints="*res://scripts/interaction/desktop/project/blueprint_progress.gd"
 ClassroomProgress="*res://scripts/autoload/classroom_progress.gd"
 PlayerJournal="*res://scripts/autoload/player_journal.gd"
 CareerProgress="*res://scripts/autoload/career_progress.gd"

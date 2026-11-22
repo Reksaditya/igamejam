@@ -8,23 +8,13 @@ Berjalan dengan A/D atau panah kiri/kanan; Shift untuk berlari. Interaksi memaka
 
 ## Lokasi dan alur
 
-- Halaman kampus: pintu tengah menuju kelas; pintu di sisi kanan bangunan menuju ruang dosen. Tepi kanan menuju gedung lab; tepi kiri menuju asrama.
-- Gedung lab: pintu menuju bengkel. Meja perakitan dapat diakses dengan E.
-- Asrama: pintu masuk menuju lantai 1. Tangga di kanan menuju lantai 2. Pintu kamar 210 berada di sisi kiri lantai 2.
-- Kamar 210: tempat tidur di kiri dan meja komputer di kanan. Komputer menyediakan Word Explorer/LMS, Library, Project, Blocks, Notepad, dan aplikasi desktop sebelumnya. Sandi awal komputer 123. Matikan komputer untuk kembali ke kamar.
-- Ruang dosen: laporkan mesin yang selesai untuk memperoleh nilai proyek.
+Setelah seluruh catatan lengkap, kelas langsung memberikan blueprint `sediment_sorter`. Tombol **Buka blueprint** menampilkan gambar utuh. Jika pemberian gagal disimpan, tombol **Coba simpan lagi** dapat digunakan tanpa mengulang kelas.
 
-## Kalender dan kurikulum
+## Integrasi kelas, Library, dan lab
 
-Delapan semester mengikuti kurikulum yang diberikan pengguna. Tiap semester berlangsung 16 minggu, setiap minggu tujuh hari. Tujuh unit STEM per semester diperkenalkan sebelum UTS dan diperdalam kembali sesudah UTS. Isi mencakup operasi bilangan/mesin sederhana, pengukuran, geometri/penggerak, aljabar/penopang, statistik/mekanisme, algoritma/elektronik, optimasi/robot, dan proyek akhir/keselamatan.
+`ClassroomProgress` menyimpan catatan dan indeks materi yang sudah dilewati di `user://classroom_notes.cfg` versi 2. Berkas versi 1 tetap dibaca. `begin_material()` menandai satu kesempatan QTE, sedangkan `finish_material()` hanya menerima hasil dari kesempatan yang sedang berjalan. `unlock_blueprint()` tetap memerlukan semua catatan.
 
-Satu menit game berlangsung 0,5 detik nyata, sehingga satu hari game berlangsung 12 menit nyata. Kelas menghentikan percepatan normal selama kegiatan, lalu menambah tepat dua jam ketika selesai. Tugas, membaca, merakit, dan Blocks mengikuti waktu game. Kuis dan ujian memakai durasi akses nyata; enam menit pengerjaan menambah enam menit game. Pecahan menit disimpan.
-
-Setelah kelas atau ujian dan tugas/kuis minggu aktif selesai, tempat tidur menyediakan pilihan beristirahat sampai minggu berikutnya. Pilihan ini memajukan kalender ke Senin pukul 06.00, tidak memberikan nilai atau potongan yang belum diperoleh. Minggu yang terlewat secara alami tetap menghasilkan nilai nol untuk kegiatan yang belum dikumpulkan.
-
-## Kelas dan catatan
-
-Duduk dengan E. QTE pertama muncul empat detik kemudian, lalu QTE selanjutnya setelah jeda acak 5–11 detik. QTE berada di atas kepala; tekan Space ketika penanda berada di zona hijau. Tiga bagian catatan disimpan per minggu. Kesulitan meningkat pada bagian akhir materi. Percobaan ditandai sebelum QTE muncul, sehingga keluar dari game tidak memberikan kesempatan mengulang bagian tersebut di kelas.
+Kelas dan buku blueprint di Library menggunakan `ProjectBlueprints.grant(blueprint_id)`. Project dan pembaca kartu Workshop menggunakan `ProjectBlueprints.is_owned(blueprint_id)`. Status kepemilikan memakai kunci `completed` pada bagian ID blueprint di `user://blueprint_progress.cfg`. Kepemilikan lama tetap dibaca. Progres pemasangan sebagian tetap bisa menerima blueprint utuh ketika persyaratan hadiah terpenuhi.
 
 Catatan akhir baru tersedia setelah kelas selesai. Kegagalan menyisakan bagian kosong. Buka Library pada komputer asrama, baca materi yang selesai atau minggu yang terlewat, lalu tuliskan keyword bacaan. Keyword benar melengkapi catatan dan memberikan satu potongan blueprint. Materi masa depan tidak tersedia. Jurnal profil mengelompokkan catatan dan proyek per semester/minggu; data terdahulu tanpa tanggal masuk Arsip Lama.
 
@@ -32,13 +22,13 @@ Minggu 8 dan 16 digunakan untuk UTS/UAS melalui komputer kelas. Tugas dan kuis t
 
 ## LMS, nilai, dan IPK
 
-Word Explorer membuka LMS Universitas Redline. Tiap minggu ada tugas dan kuis, masing-masing sepuluh soal pilihan ganda. Tugas tidak memiliki timer pengerjaan; kuis, UTS, dan UAS dibatasi sepuluh menit nyata. Tugas/kuis ditutup setelah enam hari. Jawaban kosong bernilai nol. Timer habis mengumpulkan jawaban otomatis. Draf mempertahankan jawaban dan tenggat waktu nyata ketika aplikasi ditutup.
+Selama ujian kelas, `GameClock.begin_assessment()` menghentikan waktu game. Kuis LMS memakai token terpisah dan menambah 10 menit game saat hasil tersimpan, tanpa biaya saat dibatalkan. Tugas LMS tetap mengikuti jam normal. `end_assessment()` menambahkan durasi akses sebenarnya ke jam game, termasuk ketika sesi ditutup. Pecahan menit dibawa ke sesi berikutnya. Pengerjaan enam menit mulai 14.30 menghasilkan 14.36. Fungsi ini aman terhadap pelepasan berulang dan sesi yang saling bertumpuk. Jam dan pecahan menit kini ikut disimpan dalam autosave sesi.
 
 Nilai tersimpan hanya sekali dan dapat dilihat di riwayat. Tugas/kuis dirata-rata atas 16 minggu; nilai yang belum dikumpulkan bernilai nol. Bobot semester: tugas 10%, kuis 15%, UTS 22,5%, UAS 22,5%, proyek 30%. Total persentase dibagi 25 menghasilkan IPK 0–4. IPK kumulatif merata-ratakan semester yang sedang berlangsung dan semester sebelumnya.
 
-## Blueprint dan proyek
+Game dimulai dari main menu. **New Game** langsung membuka halaman kampus pada hari 1 pukul 06.00 jika belum ada progres. Bila sudah ada data, muncul pertanyaan **apakah anda yakin ingin memulai kehidupan baru?** dengan subheader **seluruh data yang anda save sebelumnya akan hilang**. **Batal** mempertahankan data; **Ya, mulai baru** menghapus catatan kelas, status materi, blueprint, hasil LMS/ujian, draf ujian, dan catatan desktop. Pengaturan volume dan resolusi tetap dipertahankan.
 
-Setiap semester memiliki sembilan potongan. Aplikasi Project menampilkan siluet 3×3. Pilih potongan milik pemain, lalu tempatkan di posisi yang sesuai. Potongan yang salah tidak dikonsumsi. Blueprint lengkap membuka perakitan di bengkel.
+`GameSave` menyimpan checkpoint versi 2 ke `user://game_save.cfg` setiap dua detik selama permainan, ketika memasuki world, setelah perubahan catatan/blueprint, dan ketika jendela game ditutup. Checkpoint memuat scene, posisi dan arah karakter, kalender global, serta salinan data progres permainan. Penulisan rutin memakai file sementara lalu mengganti checkpoint sebelumnya. Pergantian scene yang sedang berjalan tidak ditangkap sebagai lokasi akhir.
 
 Bengkel memiliki enam komponen sesuai semester. Ambil komponen yang diminta objective, pilih Pasang, lalu selesaikan QTE. Komponen salah ditolak dan kegagalan QTE mengembalikan komponen ke rak. Preview menampilkan dudukan yang sudah terisi. Progres perakitan bertahan saat keluar atau Load.
 
@@ -48,7 +38,7 @@ Laporkan mesin lengkap kepada dosen. Nilai awal proyek 100, dikurangi lima per k
 
 ## Energi, kewarasan, dan istirahat
 
-Energi awal 100. Kelas menghabiskan 15, tugas/kuis 5, ujian 30, proyek 20, dan belajar ulang 5. Biaya tidak dipotong berulang untuk kegiatan yang sama ketika dilanjutkan. Energi nol membuat pemain tertidur di kelas dan semua catatan sesi tersebut kosong; perakitan memerlukan energi.
+Atur ID, judul, dan tekstur utuh pada resource blueprint desktop, lalu tambahkan resource ke **Blueprints** di `project_app.tscn`. Untuk penghargaan buku, set **Reward Type** ke **Blueprint** dan isi **Blueprint ID** yang sama. Untuk Workshop, isi **Linked Blueprint ID** pada resource puzzle. Pertahankan ID yang sudah dipakai save lama. Resource `scenes/interaction/blueprint/transmission.tres` tetap menyediakan materi kelas dan gambar untuk demo blueprint lama yang terpisah.
 
 Aktivitas menambah tingkat kewarasan/tekanan sebesar 10, mengikuti arah angka GDD: nilai 80 atau lebih menimbulkan blur pada dunia, sementara HUD tetap terbaca. Istirahat mengembalikannya ke 50. Tidur delapan jam memulihkan energi dengan penalti 10 poin per jam setelah pukul 22.00. Istirahat singkat hanya memulihkan sebagian energi dan menambah kekurangan tidur; tidur cukup mengurangi kekurangan tersebut.
 

@@ -2,6 +2,7 @@ extends Resource
 
 @export var title: String
 @export var color := Color("#64d5b0")
+## List the occupied coordinates. The bounds of a piece start at column 0 and row 0.
 @export var cells: Array[Vector2i]
 
 
