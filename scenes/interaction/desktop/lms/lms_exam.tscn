@@ -59,7 +59,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
-text = "Exit quiz"
+text = "Keluar kuis"
 
 [node name="Peek" type="Button" parent="Screen/Scroll/Margins/Center/Content/Header"]
 unique_name_in_owner = true
@@ -67,7 +67,7 @@ visible = false
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
-text = "Notebook"
+text = "Buku Catatan"
 tooltip_text = "Tab"
 
 [node name="Countdown" type="Label" parent="Screen/Scroll/Margins/Center/Content"]
@@ -89,7 +89,7 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LmsHeading"
-text = "Starting quiz…"
+text = "Memulai kuis…"
 
 [node name="LoadingAssignment" type="Label" parent="Screen/Scroll/Margins/Center/Content/Loading/Message"]
 unique_name_in_owner = true
@@ -99,10 +99,11 @@ autowrap_mode = 3
 
 [node name="ConfirmExit" type="ConfirmationDialog" parent="Screen"]
 unique_name_in_owner = true
-title = "Exit quiz?"
-dialog_text = "Your unsubmitted answers will be discarded."
+title = "Keluar dari kuis?"
+dialog_text = "Jawaban yang belum dikumpulkan akan dibuang."
 dialog_autowrap = true
-ok_button_text = "Discard and exit"
+ok_button_text = "Buang dan keluar"
+cancel_button_text = "Batal"
 
 [node name="Desk" parent="." instance=ExtResource("3_desk")]
 

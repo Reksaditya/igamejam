@@ -43,9 +43,10 @@ func _ready() -> void:
 	%University.text = university_name
 	%LoadingAssignment.text = assignment.title
 	if track_name == "Tugas":
-		%LoadingTitle.text = "Starting Tugas..."
-		_exit.text = "Exit Tugas"
-		_confirm.title = "Exit Tugas?"
+		%LoadingTitle.text = "Memulai Tugas…"
+		_exit.text = "Keluar tugas"
+		_confirm.title = "Keluar dari tugas?"
+	_confirm.get_cancel_button().text = "Batal"
 	_screen.resized.connect(_fit_content)
 	resized.connect(_fit_views)
 	_fit_content()
@@ -143,7 +144,7 @@ func _refresh_notebook() -> void:
 	var unlocked := StudyNotes.get_unlocked_entries(assignment.get_notebook_id())
 	if unlocked.is_empty():
 		var empty := Label.new()
-		empty.text = "No notes unlocked yet."
+		empty.text = "Belum ada catatan yang terbuka."
 		empty.theme_type_variation = &"LmsMeta"
 		entries.add_child(empty)
 		return
@@ -160,7 +161,7 @@ func _show_quiz() -> void:
 	%Loading.hide()
 	_quiz = QUIZ_SCENE.instantiate() as Quiz
 	_quiz.assignment = assignment
-	_quiz.submit_label = "Submit " + track_name
+	_quiz.submit_label = "Kumpulkan " + track_name
 	_quiz.grade_metadata = {"item_title": assignment.title, "chapter": chapter_name, "track": track_name}
 	_quiz.submitted.connect(_on_submitted)
 	_quiz.tree_exited.connect(_on_quiz_removed, CONNECT_DEFERRED)
@@ -180,7 +181,7 @@ func _process(_delta: float) -> void:
 func _update_countdown() -> void:
 	var remaining := maxi(0, ceili((_countdown_end - Time.get_ticks_msec()) / 1000.0))
 	@warning_ignore("integer_division")
-	%Countdown.text = "%02d:%02d remaining" % [remaining / 60, remaining % 60]
+	%Countdown.text = "Sisa waktu %02d:%02d" % [remaining / 60, remaining % 60]
 	if remaining == 0:
 		_expire_attempt()
 

@@ -58,12 +58,12 @@ theme_override_constants/separation = 12
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"LmsSubheading"
-text = "Notebook"
+text = "Buku Catatan"
 
 [node name="ReturnToQuiz" type="Button" parent="Padding/Center/Notebook/Layout/Header"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Back to quiz"
+text = "Kembali ke kuis"
 tooltip_text = "Tab"
 
 [node name="Scroll" type="ScrollContainer" parent="Padding/Center/Notebook/Layout"]

@@ -10,7 +10,7 @@ const EXAM_SCENE := preload("res://scenes/interaction/desktop/lms/lms_exam.tscn"
 const ATTACHMENT_SCENE := preload("res://scenes/interaction/desktop/lms/lms_attachment_form.tscn")
 const Chapter = preload("res://scripts/interaction/desktop/lms/lms_chapter.gd")
 
-@export var university_name: String = "The University"
+@export var university_name: String = "Universitas"
 @export var chapters: Array[Chapter]
 ## Used to identify results from older builds.
 @export var legacy_assignments: Array[Assignment]
@@ -34,11 +34,11 @@ func _ready() -> void:
 	%UniversityName.text = university_name
 	_profile.draw.connect(_draw_profile)
 	GameClock.resume_timeline()
-	for title: String in ["Kotak Tugas", "Kotak Kuis", "Submitted"]:
+	for title: String in ["Kotak Tugas", "Kotak Kuis", "Terkumpul"]:
 		_create_section(title)
 	_history = _cards[2]
 	if not attachment_assignments.is_empty():
-		_create_section("Attachment assignment")
+		_create_section("Tugas Lampiran")
 	GameClock.minute_changed.connect(_on_minute_changed)
 	_rebuild_groups()
 
@@ -133,7 +133,7 @@ func _add_track(container: VBoxContainer, track: int, track_name: String, durati
 				active = item
 				chapter_name = chapter.title
 	if active == null:
-		_add_label(container, "No item currently available.")
+		_add_label(container, "Belum ada item yang tersedia saat ini.")
 		return
 	_add_label(container, chapter_name)
 	_add_card(container, active, Results.read_result(active.id), track_name, duration, chapter_name)
@@ -165,12 +165,12 @@ func _rebuild_history() -> void:
 		if item.kind == Assignment.Kind.ATTACHMENT:
 			attachment_ids.append(item.id)
 		else:
-			catalog[item.id] = PackedStringArray([item.title, "Legacy", "Kuis"])
+			catalog[item.id] = PackedStringArray([item.title, "Arsip", "Kuis"])
 	for id: String in Results.result_ids():
 		var result := Results.read_result(id)
 		if result.is_empty() or id in attachment_ids or result.has("attachment_filename"):
 			continue
-		var item: PackedStringArray = catalog.get(id, PackedStringArray([id, "Legacy", "Kuis"]))
+		var item: PackedStringArray = catalog.get(id, PackedStringArray([id, "Arsip", "Kuis"]))
 		var panel := PanelContainer.new()
 		panel.theme_type_variation = &"LmsCard"
 		_history.add_child(panel)
@@ -179,7 +179,7 @@ func _rebuild_history() -> void:
 		_add_label(layout, result.get("item_title", item[0]))
 		_add_label(layout, "%s · %s · %d / %d" % [result.get("chapter", item[1]), result.get("track", item[2]), result.score, result.max_score])
 	if _history.get_child_count() == 0:
-		_add_label(_history, "No grades yet.")
+		_add_label(_history, "Belum ada nilai.")
 
 
 func _add_card(cards: VBoxContainer, assignment: Assignment, result: Dictionary, track_name: String = "", duration: float = 0.0, chapter_name: String = "") -> void:
@@ -206,23 +206,23 @@ func _add_card(cards: VBoxContainer, assignment: Assignment, result: Dictionary,
 	if not result.is_empty():
 		caption.theme_type_variation = &"LmsResult"
 		if assignment.kind == Assignment.Kind.ATTACHMENT or result.has("attachment_filename"):
-			caption.text = "Attachment submitted"
+			caption.text = "Lampiran terkumpul"
 		else:
-			caption.text = "Submitted"
+			caption.text = "Terkumpul"
 		caption.focus_mode = Control.FOCUS_ALL
 		_focus_targets[assignment.id] = caption
 		return
 
-	caption.text = "No deadline"
+	caption.text = "Tanpa tenggat"
 	if not track_name.is_empty():
 		var deadline := assignment.get_chapter_deadline()
 		var minute_of_day := deadline % 1440
 		@warning_ignore("integer_division")
-		caption.text = "Due Day %d · %02d:%02d" % [deadline / 1440 + 1, minute_of_day / 60, minute_of_day % 60]
+		caption.text = "Tenggat Hari %d · %02d:%02d" % [deadline / 1440 + 1, minute_of_day / 60, minute_of_day % 60]
 	elif assignment.deadline_day > 0:
-		caption.text = "Day %d Â· %02d:%02d" % [assignment.deadline_day, assignment.deadline_hour, assignment.deadline_minute]
+		caption.text = "Hari %d · %02d:%02d" % [assignment.deadline_day, assignment.deadline_hour, assignment.deadline_minute]
 	var start := Button.new()
-	start.text = "Open assignment" if assignment.kind == Assignment.Kind.ATTACHMENT else "Start " + track_name
+	start.text = "Buka tugas" if assignment.kind == Assignment.Kind.ATTACHMENT else "Mulai " + track_name
 	start.accessibility_name = start.text + " " + assignment.title
 	start.theme_type_variation = &"LmsPrimaryButton"
 	start.size_flags_vertical = Control.SIZE_SHRINK_CENTER

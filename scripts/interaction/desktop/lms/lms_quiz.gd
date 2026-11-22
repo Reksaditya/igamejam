@@ -14,7 +14,7 @@ var _question_index: int = 0
 var _finished: bool = false
 var _locked := false
 var grade_metadata: Dictionary
-var submit_label := "Submit quiz"
+var submit_label := "Kumpulkan kuis"
 
 @onready var _options: VBoxContainer = %Options
 @onready var _submit_button: Button = %Submit
@@ -39,7 +39,7 @@ func _ready() -> void:
 
 func _show_question() -> void:
 	var question := assignment.questions[_question_index]
-	%QuestionNumber.text = "Question %d of %d" % [_question_index + 1, _answers.size()]
+	%QuestionNumber.text = "Soal %d dari %d" % [_question_index + 1, _answers.size()]
 	%Prompt.text = question.prompt
 
 	for child: Node in _options.get_children():
@@ -86,7 +86,7 @@ func _select_answer(option: int) -> void:
 
 func _refresh_progress() -> void:
 	var answered := _answers.size() - _answers.count(-1)
-	%Progress.text = "Exam mode · %d of %d answered" % [answered, _answers.size()]
+	%Progress.text = "Mode ujian · %d dari %d terjawab" % [answered, _answers.size()]
 	_submit_button.disabled = not allow_partial_submission and answered < _answers.size()
 
 
@@ -119,10 +119,10 @@ func complete_attempt() -> void:
 		if not result.is_empty():
 			_finish(result.score, result.max_score)
 			return
-	_save_error.text = "Could not save your result. Your answers are still here."
+	_save_error.text = "Gagal menyimpan hasil. Jawaban Anda masih tersimpan di layar ini."
 	%Progress.hide()
 	_save_error.show()
-	_submit_button.text = "Retry save"
+	_submit_button.text = "Coba simpan lagi"
 	_submit_button.disabled = false
 	_submit_button.grab_focus()
 

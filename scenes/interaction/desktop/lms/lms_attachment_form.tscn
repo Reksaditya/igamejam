@@ -51,8 +51,8 @@ custom_minimum_size = Vector2(42, 36)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
-tooltip_text = "Choose file"
-accessibility_name = "Choose file"
+tooltip_text = "Pilih berkas"
+accessibility_name = "Pilih berkas"
 theme_override_styles/normal = SubResource("PickerButton")
 theme_override_styles/hover = SubResource("PickerHover")
 theme_override_styles/pressed = SubResource("PickerHover")
@@ -70,7 +70,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "No attachment selected"
+text = "Belum ada lampiran dipilih"
 autowrap_mode = 3
 vertical_alignment = 1
 
@@ -79,14 +79,14 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 disabled = true
-text = "Remove"
+text = "Hapus"
 
 [node name="SaveError" type="Label" parent="."]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"LmsError"
-text = "Could not submit the attachment. Your selection is still here."
+text = "Gagal mengumpulkan lampiran. Pilihan Anda masih tersimpan di sini."
 autowrap_mode = 3
 
 [node name="Footer" type="HBoxContainer" parent="."]
@@ -97,7 +97,7 @@ theme_override_constants/separation = 8
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
-text = "Cancel"
+text = "Batal"
 
 [node name="Spacer" type="Control" parent="Footer"]
 layout_mode = 2
@@ -110,12 +110,13 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LmsPrimaryButton"
 disabled = true
-text = "Submit attachment"
+text = "Kumpulkan lampiran"
 
 [node name="Picker" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
-title = "Choose a simulated file"
-ok_button_text = "Attach"
+title = "Pilih berkas simulasi"
+ok_button_text = "Lampirkan"
+cancel_button_text = "Batal"
 
 [node name="PickerContent" type="VBoxContainer" parent="Picker"]
 offset_left = 14.0
@@ -129,11 +130,11 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
 size_flags_vertical = 3
-accessibility_name = "Available TXT and image files"
+accessibility_name = "Berkas TXT dan gambar yang tersedia"
 
 [node name="EmptyFiles" type="Label" parent="Picker/PickerContent"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"LmsMeta"
-text = "No TXT or image items are available."
+text = "Tidak ada berkas TXT atau gambar yang tersedia."

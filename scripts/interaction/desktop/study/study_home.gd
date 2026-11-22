@@ -19,7 +19,7 @@ func _ready() -> void:
 		if book != null:
 			_add_book(book)
 	%Back.pressed.connect(_close_reading)
-	_confirm.get_cancel_button().text = "No"
+	_confirm.get_cancel_button().text = "Tidak"
 	_confirm.confirmed.connect(_study)
 	_confirm.canceled.connect(_clear_selection)
 
@@ -36,8 +36,8 @@ func _add_book(book: Book) -> void:
 	var action: Button = card.get_node("%Study")
 	title.text = book.title
 	var type_label: Label = card.get_node("%BookType")
-	type_label.text = "Review" if book.reward_type == Book.Reward.REVIEW else "Blueprint"
-	action.accessibility_name = "%s, %s book" % [book.title, type_label.text]
+	type_label.text = "Ulasan" if book.reward_type == Book.Reward.REVIEW else "Blueprint"
+	action.accessibility_name = "%s, buku %s" % [book.title, type_label.text]
 	for state: String in ["normal", "hover", "pressed", "hover_pressed"]:
 		var style := StyleBoxFlat.new()
 		style.bg_color = book.cover_color if state == "normal" else book.cover_color.lightened(0.13)
@@ -56,9 +56,9 @@ func _request_study(book: Book, action: Control) -> void:
 		var error := ProjectBlueprints.grant(book.blueprint_id)
 		if error == OK:
 			_open_reading(book)
-			%ReadingStatus.text = "Blueprint available in Project"
+			%ReadingStatus.text = "Blueprint tersedia di Proyek"
 		else:
-			_show_status("Could not save the blueprint. Try opening the book again.", true)
+			_show_status("Gagal menyimpan blueprint. Coba buka kembali buku ini.", true)
 		return
 	if StudyNotes.is_book_studied(book.book_id, book.linked_note_ids):
 		_open_reading(book)
@@ -84,7 +84,7 @@ func _study() -> void:
 	if error == OK:
 		_open_reading(book)
 	else:
-		_show_status("Could not save the notes. You can try studying again.", true)
+		_show_status("Gagal menyimpan catatan. Anda dapat mencoba belajar kembali.", true)
 	await _fade(0.0)
 	_black.hide()
 	_transitioning = false

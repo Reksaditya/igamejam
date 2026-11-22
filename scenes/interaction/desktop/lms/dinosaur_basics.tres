@@ -5,35 +5,35 @@
 
 [sub_resource type="Resource" id="Question_horns"]
 script = ExtResource("2_question")
-prompt = "How many horns did Triceratops have?"
-options = PackedStringArray("One", "Two", "Three", "Four")
+prompt = "Berapa jumlah tanduk yang dimiliki Triceratops?"
+options = PackedStringArray("Satu", "Dua", "Tiga", "Empat")
 correct_option = 2
 
 [sub_resource type="Resource" id="Question_plates"]
 script = ExtResource("2_question")
-prompt = "Which dinosaur had two rows of large plates on its back?"
+prompt = "Dinosaurus mana yang memiliki dua baris lempeng besar di punggungnya?"
 options = PackedStringArray("Stegosaurus", "Ankylosaurus", "Iguanodon", "Brachiosaurus")
 
 [sub_resource type="Resource" id="Question_stegosaurus"]
 script = ExtResource("2_question")
-prompt = "Which period did Stegosaurus live in?"
-options = PackedStringArray("Late Triassic", "Early Jurassic", "Early Cretaceous", "Late Jurassic")
+prompt = "Pada periode apakah Stegosaurus hidup?"
+options = PackedStringArray("Trias Akhir", "Jura Awal", "Kapur Awal", "Jura Akhir")
 correct_option = 3
 
 [sub_resource type="Resource" id="Question_tyrannosaurus"]
 script = ExtResource("2_question")
-prompt = "Which period did Tyrannosaurus rex live in?"
-options = PackedStringArray("Late Jurassic", "Late Cretaceous", "Early Cretaceous", "Late Triassic")
+prompt = "Pada periode apakah Tyrannosaurus rex hidup?"
+options = PackedStringArray("Jura Akhir", "Kapur Akhir", "Kapur Awal", "Trias Akhir")
 correct_option = 1
 
 [sub_resource type="Resource" id="Question_first_dinosaurs"]
 script = ExtResource("2_question")
-prompt = "In which period did the earliest known dinosaurs appear?"
-options = PackedStringArray("Permian", "Jurassic", "Triassic", "Cretaceous")
+prompt = "Pada periode apakah dinosaurus paling awal yang diketahui muncul?"
+options = PackedStringArray("Perm", "Jura", "Trias", "Kapur")
 correct_option = 2
 
 [resource]
 script = ExtResource("1_assignment")
 id = "dinosaur_basics"
-title = "Dinosaur Basics"
+title = "Dasar-Dasar Dinosaurus"
 questions = Array[ExtResource("2_question")]([SubResource("Question_horns"), SubResource("Question_plates"), SubResource("Question_stegosaurus"), SubResource("Question_tyrannosaurus"), SubResource("Question_first_dinosaurs")])

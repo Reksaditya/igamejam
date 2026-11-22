@@ -6,54 +6,54 @@
 
 [sub_resource type="Resource" id="Book_dinosaur"]
 script = ExtResource("3_book")
-title = "Dinosaur Basics"
+title = "Dasar-Dasar Dinosaurus"
 book_id = "dinosaur_field_guide"
-reading_text = "Start by looking at the bones. Three horns identify Triceratops. Two rows of large plates along the back identify Stegosaurus.
+reading_text = "Mulailah dengan mengamati tulang-belulangnya. Tiga tanduk menjadi ciri khas Triceratops. Dua baris lempeng besar di sepanjang punggung menjadi ciri khas Stegosaurus.
 
-One distinct layer of sedimentary rock is called a stratum. The earliest known dinosaurs appeared in the Triassic. Stegosaurus lived in the Late Jurassic, while Tyrannosaurus rex lived in the Late Cretaceous."
+Satu lapisan batuan sedimen yang terpisah disebut stratum. Dinosaurus paling awal yang diketahui muncul pada periode Trias. Stegosaurus hidup pada periode Jura Akhir, sedangkan Tyrannosaurus rex hidup pada periode Kapur Akhir."
 linked_note_ids = PackedStringArray("dinosaur_triceratops_horns", "dinosaur_stegosaurus_plates", "dinosaur_stegosaurus_period", "dinosaur_tyrannosaurus_period", "dinosaur_first_period")
 
 [sub_resource type="Resource" id="Book_core_drive"]
 script = ExtResource("3_book")
 book_id = "core_drive_primer"
-title = "Core Drive Primer"
+title = "Panduan Penggerak Inti"
 cover_color = Color(0.18, 0.42, 0.41, 1)
-reading_text = "Start at the motor drive and count each gear mesh to control output direction. Two rotating carriers let you bridge the plate cleanly without extra linkages.
+reading_text = "Mulailah dari roda gigi penggerak motor dan hitung setiap hubungan gigi untuk mengendalikan arah putaran keluaran. Dua lengan pemutar memungkinkan Anda menjembatani pelat secara rapi tanpa penghubung tambahan.
 
-The complete blueprint is available in Project after opening this primer."
+Blueprint lengkapnya tersedia di aplikasi Proyek setelah Anda membuka panduan ini."
 reward_type = 1
 blueprint_id = "core_drive"
 
 [sub_resource type="Resource" id="Book_sorter"]
 script = ExtResource("3_book")
 book_id = "sediment_sorter_manual"
-title = "Sorter Manual"
+title = "Manual Pemilah Sedimen"
 cover_color = Color(0.12, 0.31, 0.43, 1)
-reading_text = "The sediment sorter feeds material through the inlet and uses the rotor to separate grains by size. The gauge monitors the pressure before the material reaches the outlet.
+reading_text = "Pemilah sedimen menyalurkan material melalui saluran masuk dan menggunakan rotor untuk memisahkan butiran berdasarkan ukurannya. Pengukur tekanan memantau kondisi sebelum material mencapai saluran keluar.
 
-The complete blueprint is available in Project after opening this manual."
+Blueprint lengkapnya tersedia di aplikasi Proyek setelah Anda membuka manual ini."
 reward_type = 1
 blueprint_id = "sediment_sorter"
 
 [sub_resource type="Resource" id="Book_sieve_shaker"]
 script = ExtResource("3_book")
 book_id = "sieve_shaker_manual"
-title = "Sieve Shaker Manual"
+title = "Manual Pengayak Getar"
 cover_color = Color(0.37, 0.34, 0.56, 1)
-reading_text = "The sieve shaker introduces a sliding rail gear between the primary bridge and the output shaft. Moving the gear along its vertical rail alters the mesh path and reverses output rotation.
+reading_text = "Pengayak getar menggunakan roda gigi rel geser di antara roda gigi penghubung utama dan poros keluaran. Menggeser roda gigi di sepanjang rel vertikal mengubah jalur sambungan sekaligus membalik arah putaran keluaran.
 
-The complete blueprint is available in Project after opening this manual."
+Blueprint lengkapnya tersedia di aplikasi Proyek setelah Anda membuka manual ini."
 reward_type = 1
 blueprint_id = "sieve_shaker"
 
 [sub_resource type="Resource" id="Book_core_centrifuge"]
 script = ExtResource("3_book")
 book_id = "core_centrifuge_manual"
-title = "Centrifuge Spec Sheet"
+title = "Spesifikasi Sentrifuga Inti"
 cover_color = Color(0.49, 0.3, 0.23, 1)
-reading_text = "The core centrifuge pairs two parallel sliding rail tracks with three fixed bridges and dual carriers. Route both tracks carefully to reverse the express parity without locking the gear train.
+reading_text = "Sentrifuga inti memadukan dua rel geser sejajar dengan tiga roda gigi penghubung tetap dan dua lengan pemutar. Arahkan kedua jalur rel dengan cermat untuk membalik paritas lintasan utama tanpa membuat rangkaian roda gigi macet.
 
-The complete blueprint is available in Project after opening this spec sheet."
+Blueprint lengkapnya tersedia di aplikasi Proyek setelah Anda membuka lembar spesifikasi ini."
 reward_type = 1
 blueprint_id = "core_centrifuge"
 
@@ -67,7 +67,7 @@ books = Array[ExtResource("3_book")]([SubResource("Book_dinosaur"), SubResource(
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LmsHeading"
-text = "Place to Study"
+text = "Perpustakaan Belajar"
 horizontal_alignment = 1
 
 [node name="Books" type="HFlowContainer" parent="."]
@@ -100,7 +100,7 @@ theme_override_constants/separation = 12
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Back to books"
+text = "Kembali ke daftar buku"
 
 [node name="ReadingStatus" type="Label" parent="Reading/Toolbar"]
 unique_name_in_owner = true
@@ -124,10 +124,10 @@ theme_override_constants/separation = 8
 
 [node name="ConfirmStudy" type="ConfirmationDialog" parent="."]
 unique_name_in_owner = true
-title = "Study this book?"
+title = "Pelajari buku ini?"
 dialog_autowrap = true
-dialog_text = "Are you sure you want to study this book?"
-ok_button_text = "Yes"
+dialog_text = "Apakah Anda yakin ingin mempelajari buku ini?"
+ok_button_text = "Ya"
 
 
 [node name="Transition" type="CanvasLayer" parent="."]

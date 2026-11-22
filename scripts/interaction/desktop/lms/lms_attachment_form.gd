@@ -30,6 +30,7 @@ func _ready() -> void:
 	_remove.pressed.connect(_select.bind({}))
 	%Cancel.pressed.connect(_close)
 	_submit.pressed.connect(_submit_attachment)
+	_picker.get_cancel_button().text = "Batal"
 	_picker.confirmed.connect(_attach_selected)
 	_picker.canceled.connect(_focus_choose)
 	_files.item_selected.connect(func(_index: int) -> void: _picker.get_ok_button().disabled = false)
@@ -81,13 +82,13 @@ func _attach_selected() -> void:
 func _select(metadata: Dictionary) -> void:
 	_selected = metadata
 	var has_file := not _selected.is_empty()
-	%Filename.text = _selected.filename if has_file else "No attachment selected"
-	var action := "Replace file" if has_file else "Choose file"
+	%Filename.text = _selected.filename if has_file else "Belum ada lampiran dipilih"
+	var action := "Ganti berkas" if has_file else "Pilih berkas"
 	_choose.tooltip_text = action
 	_choose.accessibility_name = action
 	_remove.disabled = not has_file
 	_submit.disabled = not has_file
-	_submit.text = "Submit attachment"
+	_submit.text = "Kumpulkan lampiran"
 	_error.hide()
 	_focus_choose()
 
@@ -101,7 +102,7 @@ func _submit_attachment() -> void:
 		_close()
 	else:
 		_error.show()
-		_submit.text = "Retry submission"
+		_submit.text = "Coba kirim lagi"
 
 
 func _close() -> void:
