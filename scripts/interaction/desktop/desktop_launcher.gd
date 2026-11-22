@@ -24,6 +24,13 @@ const BLUE: Color = Color("#546faa")
 @export var app_scene: PackedScene
 @export var preferred_window_size := Vector2(512, 330)
 @export var minimum_window_size := Vector2(260, 180)
+@export var default_cell := Vector2i(-1, -1):
+	set(value):
+		default_cell = value
+		if is_inside_tree():
+			var parent := get_parent()
+			if parent != null and parent.has_method("refresh_layout"):
+				parent.call_deferred("refresh_layout")
 
 var _caption: Label
 var _box_selected := false
