@@ -15,7 +15,7 @@ func _run() -> void:
 	for floor_number: int in range(1, 4):
 		var room_path := "res://scenes/movement/campus_classroom.tscn" if floor_number == 1 else "res://scenes/movement/campus_classroom_floor%d.tscn" % floor_number
 		var corridor_path := "res://scenes/movement/classroom_corridor_floor%d.tscn" % floor_number
-		clock.restore_save_state({"minutes": (floor_number - 1) * 7 * 1440 + 600, "remainder": 0})
+		clock.restore_save_state({"minutes": (floor_number - 1) * 1440 + 480, "remainder": 0})
 		change_scene_to_file(room_path)
 		await scene_changed
 		await _frames(4)
@@ -56,7 +56,7 @@ func _run() -> void:
 		classroom._lesson._summary.close()
 		await _frames(8)
 		assert(current_scene.scene_file_path == room_path and not transition.is_active())
-	clock.restore_save_state({"minutes": 21 * 1440 + 600, "remainder": 0})
+	clock.restore_save_state({"minutes": 3 * 1440 + 480, "remainder": 0})
 	var classroom := current_scene.get_node("ClassActivity")
 	current_scene.get_node("Player").position = classroom.get_node("Seat").global_position
 	await _frames(4)

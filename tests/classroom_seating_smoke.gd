@@ -9,7 +9,7 @@ func _initialize() -> void:
 func _run() -> void:
 	var clock := root.get_node("GameClock")
 	var career := root.get_node("CareerProgress")
-	clock.restore_save_state({"minutes": 600, "remainder": 0})
+	clock.restore_save_state({"minutes": 480, "remainder": 0})
 	change_scene_to_file("res://scenes/movement/campus_classroom.tscn")
 	await scene_changed
 	root.size = Vector2i(1920, 720)
@@ -24,7 +24,7 @@ func _run() -> void:
 	assert(classroom.get_node("Desks").z_index > player.z_index)
 	for index: int in 4:
 		var seat: Area2D = classroom._seats[index]
-		clock.restore_save_state({"minutes": index * 7 * 1440 + 600, "remainder": 0})
+		clock.restore_save_state({"minutes": index * 1440 + 480, "remainder": 0})
 		player.position = seat.global_position
 		await _frames(8)
 		assert(seat.get_node("Chair").texture.resource_path == "res://assets/classroom/chair%d.png" % (index + 1))
@@ -82,7 +82,7 @@ func _run() -> void:
 		seat.get_node("Prompt").pressed.emit()
 		await _frames(4)
 		assert(not classroom._manual_seated and not player.is_studying())
-	clock.restore_save_state({"minutes": 49 * 1440 + 600, "remainder": 0})
+	clock.restore_save_state({"minutes": 5 * 1440 + 480, "remainder": 0})
 	player.position = classroom._seats[1].global_position
 	await _frames(8)
 	_press_e()

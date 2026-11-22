@@ -26,7 +26,7 @@ func _run() -> void:
 		print("PASS: classroom floor 3 save/reload, correct return floor, stairs down F3-F2-F1 and campus exit")
 		quit()
 		return
-	root.get_node("GameClock").restore_save_state({"minutes": 600, "remainder": 0})
+	root.get_node("GameClock").restore_save_state({"minutes": 480, "remainder": 0})
 	change_scene_to_file(CAMPUS)
 	await scene_changed
 	await _door("Door", F1)
