@@ -47,6 +47,13 @@ func _ready() -> void:
 	_refresh_wallpaper()
 	if Engine.is_editor_hint():
 		return
+	_add_academic_app("Library", "res://scenes/interaction/desktop/library.tscn")
+	_add_academic_app("Project", "res://scenes/interaction/desktop/career_project.tscn")
+	_add_academic_app("Blocks n Blast", "res://scenes/interaction/desktop/blocks/blocks_game.tscn")
+	var shutdown := Button.new()
+	shutdown.text = "Matikan komputer"
+	shutdown.pressed.connect(_shutdown)
+	$Taskbar/Bar.add_child(shutdown)
 
 	for child: Node in _launchers.get_children():
 		_connect_launcher(child)
@@ -63,6 +70,7 @@ func _ready() -> void:
 		_windows.hide()
 		$Taskbar.hide()
 		_login = login_scene.instantiate() as Control
+		_login.account_name = PlayerStats.player_name
 		add_child(_login)
 		_login.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		_login.z_index = 10
@@ -289,3 +297,20 @@ func _focus_launcher(preferred: Launcher) -> void:
 		if launcher != null and launcher.is_visible_in_tree() and not launcher.disabled:
 			launcher.grab_focus()
 			return
+
+
+func _add_academic_app(title: String, path: String) -> void:
+	var launcher := preload("res://scenes/interaction/desktop/app_launcher.tscn").instantiate()
+	launcher.display_title = title
+	launcher.app_scene = load(path)
+	launcher.preferred_window_size = Vector2(660, 540)
+	launcher.minimum_window_size = Vector2(350, 260)
+	_launchers.add_child(launcher)
+
+
+func _shutdown() -> void:
+	if is_instance_valid(_exam_window) or SceneTransition.is_active():
+		return
+	_startup_sound.stop()
+	GameSave.save_now()
+	SceneTransition.change_scene(GameSave.get_return_world(), &"ComputerSpawn")

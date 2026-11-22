@@ -98,13 +98,16 @@ func finish_class(term: int, study_week: int) -> Error:
 func review_class(term: int, study_week: int, keyword: String) -> Error:
 	var data := class_data(term, study_week)
 	var lesson := Curriculum.lesson(term, study_week)
-	if not data.finished or keyword.strip_edges().to_lower() != lesson.keyword.to_lower():
+	var past_week := (term - 1) * 16 + study_week < GameClock.get_week()
+	if (not data.finished and not past_week) or study_week in [8, 16] or keyword.strip_edges().to_lower() != lesson.keyword.to_lower():
 		return ERR_UNAUTHORIZED
 	var error := begin_activity("study", "review_" + key_for(term, study_week))
 	if error != OK:
 		return error
 	var previous := state.duplicate(true)
 	data.complete = [0, 1, 2]
+	data.attempted = [0, 1, 2]
+	data.finished = true
 	state.classes[key_for(term, study_week)] = data
 	_grant_piece(term, study_week)
 	error = _save(previous)
@@ -194,6 +197,25 @@ func recalculate_gpa() -> void:
 	for term: int in range(1, terms + 1):
 		total += semester_grade(term)
 	PlayerStats.set_gpa(total / terms)
+
+
+func rest(hours: int) -> Error:
+	if hours not in [1, 8]:
+		return ERR_INVALID_PARAMETER
+	var previous := state.duplicate(true)
+	var hour := float(GameClock.get_absolute_minutes() % 1440) / 60.0
+	var late := maxf(0, hour - 22.0) if hour >= 6 else hour + 2.0
+	var debt: int = int(state.flags.get("sleep_debt", 0))
+	debt = maxi(0, debt - 8) if hours == 8 else mini(10, debt + 1)
+	state.flags.sleep_debt = debt
+	var error := _save(previous)
+	if error != OK:
+		return error
+	PlayerStats.set_energy(maxf(0, 100.0 - ceili(late) * 10.0 - debt * 5.0) if hours == 8 else minf(100.0 - debt * 5.0, PlayerStats.get_energy() + 10.0))
+	PlayerStats.set_sanity(50)
+	GameClock.advance_minutes(hours * 60)
+	recalculate_gpa()
+	return OK
 
 
 func _journal_class(term: int, study_week: int) -> Error:

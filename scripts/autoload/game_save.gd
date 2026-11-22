@@ -3,7 +3,7 @@ extends Node
 const SAVE_PATH := "user://game_save.cfg"
 const INITIAL_SCENE := "res://scenes/movement/top_down_movement.tscn"
 const DESKTOP_SCENE := "res://scenes/interaction/desktop/desktop.tscn"
-const WORLD_SCENES := [INITIAL_SCENE, "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn"]
+const WORLD_SCENES := [INITIAL_SCENE, "res://scenes/movement/campus_lab.tscn", "res://scenes/movement/campus_classroom.tscn", "res://scenes/movement/campus_lab_room.tscn", "res://scenes/movement/dorm_exterior.tscn", "res://scenes/movement/dorm_floor1.tscn", "res://scenes/movement/dorm_floor2.tscn", "res://scenes/movement/dorm_room210.tscn"]
 const ROOT_FILES := ["classroom_notes.cfg", "blueprint_progress.cfg", "player_journal.cfg", "career_progress.cfg", "classroom_classroom_midterm_week_8.cfg", "classroom_classroom_final_week_16.cfg"]
 
 var last_save_error: Error = OK
@@ -79,6 +79,10 @@ func _flush() -> void:
 
 func has_save() -> bool:
 	return _read_snapshot() != null
+
+
+func get_return_world() -> String:
+	return _world_scene
 
 
 func save_now() -> Error:

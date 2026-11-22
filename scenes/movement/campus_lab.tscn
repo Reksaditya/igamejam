@@ -5,7 +5,7 @@
 [node name="CampusLab" instance=ExtResource("1_world")]
 world_title = "WORLD 02 · GEDUNG LABORATORIUM"
 left_destination = "res://scenes/movement/top_down_movement.tscn"
-right_destination = "res://scenes/movement/top_down_movement.tscn"
+right_destination = "res://scenes/movement/dorm_exterior.tscn"
 
 [node name="Background" parent="." index="0"]
 laboratory = true

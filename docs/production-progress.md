@@ -18,6 +18,13 @@ Validasi: academic_flow_smoke memeriksa alur kelas, kegagalan catatan, larangan 
 
 ## Tahap berikutnya
 
-3. Asrama, tidur, komputer, Library, puzzle blueprint 3×3, dan Blocks.
+## Tahap 3: asrama dan aplikasi komputer
+
+Asrama memiliki eksterior, lantai 1, lantai 2, dan kamar 210 dengan tempat tidur serta meja komputer. Interaksi E memakai area fisik, bukan tombol desktop di HUD. Mematikan komputer kembali ke kamar melalui fade. Library menampilkan materi kelas yang selesai atau minggu yang terlewat; keyword yang benar memulihkan catatan dan memberikan potongan. Project menampilkan siluet 3×3, potongan yang dimiliki, dan penempatan yang memeriksa kecocokan. Blocks diadaptasi dari implementasi origin/main dengan penempatan, pembersihan garis, skor, dan kondisi kehabisan langkah. Waktu normal tetap berjalan pada komputer.
+
+Tidur delapan jam memulihkan energi dengan penalti terlambat, sedangkan istirahat singkat memulihkan sebagian energi dan mencatat kekurangan tidur. Kewarasan kembali ke 50. Tidur memajukan kalender dan memperbarui IPK semester aktif.
+
+Validasi: dorm_study_smoke menguji penalti tidur pukul 23.00, pemulihan melalui sembilan bacaan, kecocokan puzzle, empat lokasi asrama, interaksi komputer, penempatan Blocks, kembali dari desktop, dan pemuatan kembali progres.
+
 4. Bengkel, QTE perakitan, pengumpulan proyek, dan penilaian dosen.
 5. Energi/kewarasan, satpam, NPC, cerita, tiga ending, dan pemeriksaan integrasi.

@@ -1,0 +1,35 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/movement/campus_classroom.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/movement/world_interaction.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/movement/room_decor.gd" id="3"]
+
+[node name="DormRoom210" instance=ExtResource("1")]
+world_title = "KAMAR 210"
+
+[node name="Door" parent="."]
+destination = "res://scenes/movement/dorm_floor2.tscn"
+destination_spawn = &"RoomSpawn"
+
+[node name="ClassActivity" parent="."]
+classroom_enabled = false
+
+[node name="Decor" type="Node2D" parent="."]
+script = ExtResource("3")
+title = "Kamar 210 · Meja belajar dan tempat tidur"
+bedroom = true
+
+[node name="Bed" type="Area2D" parent="."]
+position = Vector2(460, 560)
+script = ExtResource("2")
+action = "sleep"
+caption = "Tidur / Istirahat"
+
+[node name="Computer" type="Area2D" parent="."]
+position = Vector2(1270, 540)
+script = ExtResource("2")
+action = "computer"
+caption = "Gunakan komputer"
+
+[node name="ComputerSpawn" type="Marker2D" parent="."]
+position = Vector2(1270, 592)

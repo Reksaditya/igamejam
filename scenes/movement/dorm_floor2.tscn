@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/movement/dorm_floor1.tscn" id="1"]
+
+[node name="DormFloor2" instance=ExtResource("1")]
+world_title = "ASRAMA · LANTAI 2"
+
+[node name="Door" parent="."]
+destination = "res://scenes/movement/dorm_floor1.tscn"
+destination_spawn = &"UpstairsSpawn"
+action_text = "Turun ke lantai 1"
+
+[node name="Stairs" parent="."]
+position = Vector2(650, 540)
+destination = "res://scenes/movement/dorm_room210.tscn"
+action_text = "Masuk kamar 210"
+
+[node name="RoomSpawn" type="Marker2D" parent="."]
+position = Vector2(650, 592)
+
+[node name="Decor" parent="."]
+title = "Asrama · Lantai 2 · Kamar 210"
