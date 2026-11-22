@@ -7,6 +7,7 @@ const IconGrid = preload("res://scripts/interaction/desktop/desktop_icon_grid.gd
 const AppWindow = preload("res://scripts/interaction/desktop/app_window.gd")
 const BLOCK_BOARD_SCRIPT := preload("res://scripts/interaction/desktop/blocks/block_board.gd")
 const APP_WINDOW_SCENE: PackedScene = preload("res://scenes/interaction/desktop/app_window.tscn")
+const TASKBAR_ENERGY_ICON: Texture2D = preload("res://assets/textures/desktop/taskbar_energy_pixel.png")
 const RETURN_CONTEXT := &"desktop_return_context"
 const BOOT_SECONDS := 1.5
 const LATE_CLOCK_COLOR := Color("#ff827f")
@@ -265,15 +266,14 @@ func _update_energy() -> void:
 	var percentage := roundi(PlayerStats.get_energy() / PlayerStats.ENERGY_MAX * 100.0)
 	%Energy.text = "%d%%" % percentage
 	%Energy.accessibility_name = "Energy %d percent" % percentage
+	%EnergyIcon.queue_redraw()
 
 
 func _draw_energy_icon() -> void:
 	var icon: Control = %EnergyIcon
-	icon.draw_set_transform(Vector2(1, (icon.size.y - 14.0) * 0.5))
-	icon.draw_colored_polygon(PackedVector2Array([
-		Vector2(6, 0), Vector2(1, 8), Vector2(5, 8),
-		Vector2(4, 14), Vector2(12, 5), Vector2(7, 5)
-	]), Color("#f2c46d"))
+	var origin := Vector2(floorf((icon.size.x - 16.0) * 0.5), floorf((icon.size.y - 16.0) * 0.5))
+	var tint := Color(1.0, 0.58, 0.50) if PlayerStats.get_energy() <= 25.0 else Color.WHITE
+	icon.draw_texture_rect(TASKBAR_ENERGY_ICON, Rect2(origin, Vector2(16.0, 16.0)), false, tint)
 
 
 func _update_clock(absolute_minutes: int) -> void:

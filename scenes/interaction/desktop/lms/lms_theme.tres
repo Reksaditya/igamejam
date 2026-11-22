@@ -2,8 +2,8 @@
 
 [ext_resource type="FontFile" uid="uid://btaew8rsc3xvx" path="res://assets/fonts/nunito/Nunito-Medium.ttf" id="1_body"]
 [ext_resource type="FontFile" uid="uid://d3a7dxtv066mj" path="res://assets/fonts/nunito/Nunito-SemiBold.ttf" id="2_ui_bold"]
-[ext_resource type="FontFile" uid="uid://b2hc3kthyamng" path="res://assets/fonts/rubik/Rubik-SemiBold.ttf" id="3_display"]
-[ext_resource type="FontFile" uid="uid://crklr4uy6hlf0" path="res://assets/fonts/rubik/Rubik-Bold.ttf" id="4_display_bold"]
+[ext_resource type="FontFile" uid="uid://dil78upyuf7a2" path="res://assets/fonts/pixelify_sans/PixelifySans-Medium.ttf" id="3_display"]
+[ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="4_display_bold"]
 
 [sub_resource type="StyleBoxFlat" id="Card"]
 content_margin_left = 14.0
@@ -136,7 +136,7 @@ Button/colors/font_disabled_color = Color(0.39, 0.41, 0.45, 1)
 Button/colors/font_focus_color = Color(0.09, 0.11, 0.14, 1)
 Button/colors/font_hover_color = Color(0.09, 0.11, 0.14, 1)
 Button/colors/font_pressed_color = Color(0.09, 0.11, 0.14, 1)
-Button/fonts/font = ExtResource("2_ui_bold")
+Button/fonts/font = ExtResource("3_display")
 Button/styles/disabled = SubResource("Section")
 Button/styles/focus = SubResource("Focus")
 Button/styles/hover = SubResource("ActionHover")
@@ -154,7 +154,7 @@ LmsCard/styles/panel = SubResource("Card")
 LmsError/base_type = &"Label"
 LmsError/colors/font_color = Color(0.59, 0.09, 0.16, 1)
 LmsHeading/base_type = &"Label"
-LmsHeading/font_sizes/font_size = 24
+LmsHeading/font_sizes/font_size = 25
 LmsHeading/fonts/font = ExtResource("4_display_bold")
 LmsMeta/base_type = &"Label"
 LmsMeta/colors/font_color = Color(0.32, 0.35, 0.4, 1)
@@ -177,7 +177,7 @@ LmsPrimaryButton/colors/font_color = Color(1, 1, 1, 1)
 LmsPrimaryButton/colors/font_focus_color = Color(1, 1, 1, 1)
 LmsPrimaryButton/colors/font_hover_color = Color(1, 1, 1, 1)
 LmsPrimaryButton/colors/font_pressed_color = Color(1, 1, 1, 1)
-LmsPrimaryButton/fonts/font = ExtResource("3_display")
+LmsPrimaryButton/fonts/font = ExtResource("4_display_bold")
 LmsPrimaryButton/styles/hover = SubResource("PrimaryHover")
 LmsPrimaryButton/styles/hover_pressed = SubResource("PrimaryHover")
 LmsPrimaryButton/styles/normal = SubResource("Primary")
@@ -187,8 +187,8 @@ LmsResult/colors/font_color = Color(0.56, 0.09, 0.16, 1)
 LmsSection/base_type = &"PanelContainer"
 LmsSection/styles/panel = SubResource("Section")
 LmsSubheading/base_type = &"Label"
-LmsSubheading/font_sizes/font_size = 18
-LmsSubheading/fonts/font = ExtResource("3_display")
+LmsSubheading/font_sizes/font_size = 19
+LmsSubheading/fonts/font = ExtResource("4_display_bold")
 PanelContainer/styles/panel = SubResource("Page")
 Window/colors/title_color = Color(1, 1, 1, 1)
 Window/constants/title_height = 32

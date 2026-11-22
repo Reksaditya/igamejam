@@ -149,6 +149,6 @@ text = "A / D atau panah: berjalan · E: interaksi di depan pintu · Shift: lari
 [node name="StatsHud" type="PanelContainer" parent="DesktopAccess"]
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 286.0
+offset_right = 290.0
 mouse_filter = 2
 script = ExtResource("7_stats")

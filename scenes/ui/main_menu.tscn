@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 [ext_resource type="Theme" path="res://scenes/ui/menu_theme.tres" id="2_theme"]
 [ext_resource type="Script" path="res://scripts/ui/menu_background.gd" id="3_background"]
-[ext_resource type="FontFile" uid="uid://crklr4uy6hlf0" path="res://assets/fonts/rubik/Rubik-Bold.ttf" id="4_display_bold"]
-[ext_resource type="FontFile" uid="uid://b2hc3kthyamng" path="res://assets/fonts/rubik/Rubik-SemiBold.ttf" id="5_display"]
+[ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="4_display_bold"]
+[ext_resource type="FontFile" uid="uid://dil78upyuf7a2" path="res://assets/fonts/pixelify_sans/PixelifySans-Medium.ttf" id="5_display"]
 
 [node name="MainMenu" type="Control"]
 process_mode = 3

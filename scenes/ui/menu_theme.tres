@@ -1,7 +1,7 @@
 [gd_resource type="Theme" format=3]
 
 [ext_resource type="FontFile" uid="uid://btaew8rsc3xvx" path="res://assets/fonts/nunito/Nunito-Medium.ttf" id="1_body"]
-[ext_resource type="FontFile" uid="uid://b2hc3kthyamng" path="res://assets/fonts/rubik/Rubik-SemiBold.ttf" id="2_display"]
+[ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="2_display"]
 [ext_resource type="FontFile" uid="uid://d3a7dxtv066mj" path="res://assets/fonts/nunito/Nunito-SemiBold.ttf" id="3_ui_bold"]
 
 [sub_resource type="StyleBoxFlat" id="Panel"]
@@ -89,7 +89,7 @@ PanelContainer/styles/panel = SubResource("Panel")
 PopupMenu/styles/panel = SubResource("Panel")
 PopupMenu/colors/font_color = Color(0.96, 0.94, 0.86, 1)
 OptionButton/colors/font_color = Color(0.96, 0.94, 0.86, 1)
-OptionButton/fonts/font = ExtResource("3_ui_bold")
+OptionButton/fonts/font = ExtResource("2_display")
 OptionButton/styles/normal = SubResource("Button")
 OptionButton/styles/hover = SubResource("Hover")
 OptionButton/styles/pressed = SubResource("Hover")

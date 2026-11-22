@@ -1,9 +1,9 @@
 extends PanelContainer
 
-const ICON_ENERGY: Texture2D = preload("res://assets/textures/hud/icon_energy.svg")
-const ICON_SANITY: Texture2D = preload("res://assets/textures/hud/icon_sanity.svg")
-const ICON_GPA: Texture2D = preload("res://assets/textures/hud/icon_gpa.svg")
-const VALUE_FONT: Font = preload("res://assets/fonts/jetbrains_mono/JetBrainsMono-SemiBold.ttf")
+const ICON_ENERGY: Texture2D = preload("res://assets/textures/hud/icon_energy_pixel.png")
+const ICON_SANITY: Texture2D = preload("res://assets/textures/hud/icon_sanity_pixel.png")
+const ICON_GPA: Texture2D = preload("res://assets/textures/hud/icon_gpa_pixel.png")
+const VALUE_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
 
 var _pills: Array[PanelContainer] = []
 var _values: Array[Label] = []
@@ -38,9 +38,9 @@ func _add_stat(rows: VBoxContainer, icon: Texture2D, maximum: float, fill: Color
 
 	var glyph := TextureRect.new()
 	glyph.texture = icon
-	glyph.custom_minimum_size = Vector2(22, 22)
-	glyph.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	glyph.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	glyph.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	glyph.custom_minimum_size = Vector2(24, 24)
+	glyph.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 	glyph.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(glyph)
@@ -64,7 +64,7 @@ func _add_stat(rows: VBoxContainer, icon: Texture2D, maximum: float, fill: Color
 	value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	value.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	value.add_theme_font_override("font", VALUE_FONT)
-	value.add_theme_font_size_override("font_size", 13)
+	value.add_theme_font_size_override("font_size", 15)
 	value.add_theme_color_override("font_color", Color("#f2f6f8"))
 	row.add_child(value)
 	_values.append(value)

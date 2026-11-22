@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/project/project_launcher.tscn" id="13_project"]
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/blocks/blocks_launcher.tscn" id="17_blocks"]
 [ext_resource type="PackedScene" path="res://scenes/interaction/desktop/login_screen.tscn" id="18_login"]
-[ext_resource type="Texture2D" uid="uid://cutoxf8leboyp" path="res://assets/textures/power_icon.svg" id="19_power_icon"]
+[ext_resource type="Texture2D" uid="uid://clh61l0gxninh" path="res://assets/textures/desktop/power_icon_pixel.png" id="19_power_icon"]
 [ext_resource type="AudioStream" uid="uid://cxcvgcr6lwavw" path="res://assets/audio/sfx/desktop_mouse_click.ogg" id="20_click_sound"]
 [ext_resource type="AudioStream" uid="uid://7dlxblc4ulrl" path="res://assets/audio/sfx/desktop_pc_fan.ogg" id="21_fan_ambient"]
 
@@ -183,6 +183,7 @@ layout_mode = 2
 
 [node name="TurnOff" type="Button" parent="Display/Taskbar/Bar" unique_id=160868380]
 unique_name_in_owner = true
+texture_filter = 1
 custom_minimum_size = Vector2(28, 24)
 layout_mode = 2
 size_flags_vertical = 4
@@ -193,7 +194,7 @@ accessibility_name = "Turn off"
 tooltip_text = "No return destination configured."
 icon = ExtResource("19_power_icon")
 icon_alignment = 1
-expand_icon = true
+expand_icon = false
 
 [node name="Spacer" type="Control" parent="Display/Taskbar/Bar"]
 layout_mode = 2
@@ -202,8 +203,10 @@ mouse_filter = 2
 
 [node name="EnergyIcon" type="Control" parent="Display/Taskbar/Bar"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(14, 0)
+texture_filter = 1
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
+size_flags_vertical = 4
 mouse_filter = 2
 
 [node name="Energy" type="Label" parent="Display/Taskbar/Bar"]

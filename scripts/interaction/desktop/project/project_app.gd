@@ -2,7 +2,7 @@ extends PanelContainer
 
 const Blueprint = preload("res://scripts/interaction/desktop/project/blueprint.gd")
 const BlueprintState = preload("res://scripts/interaction/desktop/project/blueprint_progress.gd").State
-const DISPLAY_FONT: Font = preload("res://assets/fonts/rubik/Rubik-SemiBold.ttf")
+const DISPLAY_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
 
 @export var blueprints: Array[Blueprint]
 @export var demo_blueprints := false

@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/interaction/desktop/blocks/block_shape.gd" id="2_shape"]
 [ext_resource type="Script" path="res://scripts/interaction/desktop/blocks/block_board.gd" id="3_board"]
 [ext_resource type="Script" path="res://scripts/interaction/desktop/blocks/block_tray_piece.gd" id="4_tray"]
-[ext_resource type="FontFile" uid="uid://brqnjvbdp2u5x" path="res://assets/fonts/jetbrains_mono/JetBrainsMono-SemiBold.ttf" id="5_font"]
+[ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="5_font"]
 
 [sub_resource type="Resource" id="dot"]
 script = ExtResource("2_shape")
@@ -167,7 +167,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.07, 0.2, 0.26, 1)
 theme_override_fonts/font = ExtResource("5_font")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 22
 
 [node name="Restart" type="Button" parent="Scroll/Layout/Status"]
 unique_name_in_owner = true

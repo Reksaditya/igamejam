@@ -6,7 +6,7 @@ const BRASS := Color("#ecb670")
 const STEEL := Color("#add1ce")
 const INK := Color("#182527")
 const CLUE := Color("#ffe0a1")
-const PLATE_FONT: Font = preload("res://assets/fonts/jetbrains_mono/JetBrainsMono-SemiBold.ttf")
+const PLATE_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
 
 var puzzle: Puzzle
 var sheet := false

@@ -2,9 +2,8 @@
 
 [ext_resource type="FontFile" uid="uid://btaew8rsc3xvx" path="res://assets/fonts/nunito/Nunito-Medium.ttf" id="1_body"]
 [ext_resource type="FontFile" uid="uid://d3a7dxtv066mj" path="res://assets/fonts/nunito/Nunito-SemiBold.ttf" id="2_ui_bold"]
-[ext_resource type="FontFile" uid="uid://b2hc3kthyamng" path="res://assets/fonts/rubik/Rubik-SemiBold.ttf" id="3_display"]
-[ext_resource type="FontFile" uid="uid://crklr4uy6hlf0" path="res://assets/fonts/rubik/Rubik-Bold.ttf" id="4_display_bold"]
-[ext_resource type="FontFile" uid="uid://dqoefhylj4wkh" path="res://assets/fonts/jetbrains_mono/JetBrainsMono-Medium.ttf" id="5_mono"]
+[ext_resource type="FontFile" uid="uid://dil78upyuf7a2" path="res://assets/fonts/pixelify_sans/PixelifySans-Medium.ttf" id="3_display"]
+[ext_resource type="FontFile" uid="uid://22pvkut5lq6d" path="res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf" id="4_display_bold"]
 
 [sub_resource type="StyleBoxFlat" id="Dialog"]
 content_margin_left = 12.0
@@ -308,7 +307,7 @@ Button/colors/icon_focus_color = Color(0.14, 0.24, 0.39, 1)
 Button/colors/icon_hover_color = Color(0.14, 0.24, 0.39, 1)
 Button/colors/icon_normal_color = Color(0.2, 0.31, 0.47, 1)
 Button/colors/icon_pressed_color = Color(0.14, 0.24, 0.39, 1)
-Button/fonts/font = ExtResource("2_ui_bold")
+Button/fonts/font = ExtResource("3_display")
 Button/styles/focus = SubResource("ControlFocus")
 Button/styles/hover = SubResource("ButtonHover")
 Button/styles/normal = SubResource("Button")
@@ -345,7 +344,7 @@ LineEdit/fonts/font = ExtResource("1_body")
 LineEdit/styles/focus = SubResource("ControlFocus")
 LineEdit/styles/normal = SubResource("Input")
 MenuButton/colors/font_color = Color(0.09, 0.15, 0.24, 1)
-MenuButton/fonts/font = ExtResource("2_ui_bold")
+MenuButton/fonts/font = ExtResource("3_display")
 MenuButton/styles/focus = SubResource("ControlFocus")
 MenuButton/styles/hover = SubResource("ButtonHover")
 MenuButton/styles/pressed = SubResource("ButtonHover")
@@ -370,7 +369,7 @@ PopupMenu/styles/panel = SubResource("Dialog")
 ShellLabel/base_type = &"Label"
 ShellLabel/colors/font_color = Color(0.09, 0.15, 0.24, 1)
 ShellLabel/font_sizes/font_size = 14
-ShellLabel/fonts/font = ExtResource("2_ui_bold")
+ShellLabel/fonts/font = ExtResource("3_display")
 TextEdit/colors/caret_color = Color(0.09, 0.15, 0.24, 1)
 TextEdit/colors/font_color = Color(0.09, 0.15, 0.24, 1)
 TextEdit/colors/font_placeholder_color = Color(0.36, 0.42, 0.52, 1)
@@ -380,7 +379,7 @@ TextEdit/styles/focus = SubResource("ControlFocus")
 TextEdit/styles/normal = SubResource("Input")
 Window/colors/title_color = Color(1, 1, 1, 1)
 Window/constants/title_height = 32
-Window/fonts/title_font = ExtResource("3_display")
+Window/fonts/title_font = ExtResource("4_display_bold")
 Window/styles/embedded_border = SubResource("DialogFrame")
 Window/styles/embedded_unfocused_border = SubResource("DialogFrame")
 WindowButton/base_type = &"Button"
@@ -396,7 +395,7 @@ WindowClose/styles/pressed = SubResource("CloseHover")
 WindowTitle/base_type = &"ShellLabel"
 WindowTitle/colors/font_color = Color(0.09, 0.15, 0.24, 1)
 WindowTitle/font_sizes/font_size = 15
-WindowTitle/fonts/font = ExtResource("3_display")
+WindowTitle/fonts/font = ExtResource("4_display_bold")
 WindowTitleActive/base_type = &"PanelContainer"
 WindowTitleActive/styles/panel = SubResource("TitleActive")
 WindowTitleFocused/base_type = &"PanelContainer"

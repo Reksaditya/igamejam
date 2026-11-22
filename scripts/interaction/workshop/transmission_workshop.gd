@@ -7,7 +7,7 @@ const ReaderSlot = preload("res://scripts/interaction/workshop/blueprint_reader_
 const SliderHandle = preload("res://scripts/interaction/workshop/slider_handle.gd")
 const Save = preload("res://scripts/autoload/playthrough_save.gd")
 const SAVE_PATH := "user://workshop_progress.cfg"
-const PLATE_BUTTON_FONT: Font = preload("res://assets/fonts/jetbrains_mono/JetBrainsMono-SemiBold.ttf")
+const PLATE_BUTTON_FONT: Font = preload("res://assets/fonts/pixelify_sans/PixelifySans-SemiBold.ttf")
 
 @export var puzzles: Array[Puzzle]
 @export_file("*.tscn") var return_scene := "res://scenes/movement/campus_lab_room.tscn"
