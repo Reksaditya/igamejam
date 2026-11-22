@@ -17,8 +17,17 @@ func _ready() -> void:
 	%SettingsBack.pressed.connect(_show_main)
 	%Apply.pressed.connect(_apply_settings)
 	%Volume.value_changed.connect(_preview_volume)
+	%Resolution.item_selected.connect(_change_resolution)
 	%NewGameConfirm.visibility_changed.connect(_restore_new_game_focus)
 	%NewGameConfirm.confirmed.connect(_start_new_game)
+	%NameDialog.confirmed.connect(_create_game)
+	%NameDialog.visibility_changed.connect(_restore_new_game_focus)
+	%PlayerName.text_changed.connect(func(value: String): %NameDialog.get_ok_button().disabled = value.strip_edges().is_empty())
+	%PlayerName.text_submitted.connect(func(value: String):
+		if not value.strip_edges().is_empty():
+			%NameDialog.hide()
+			_create_game()
+	)
 	get_window().focus_entered.connect(_refresh_saves)
 	for resolution: Vector2i in GameSettings.RESOLUTIONS:
 		%Resolution.add_item("%d × %d" % [resolution.x, resolution.y])
@@ -70,8 +79,21 @@ func _restore_new_game_focus() -> void:
 func _start_new_game() -> void:
 	if _busy:
 		return
+	_show_name_dialog.call_deferred()
+
+
+func _show_name_dialog() -> void:
+	%PlayerName.clear()
+	%NameDialog.get_ok_button().disabled = true
+	%NameDialog.popup_centered_clamped(Vector2i(480, 200))
+	%PlayerName.grab_focus()
+
+
+func _create_game() -> void:
+	if _busy or %PlayerName.text.strip_edges().is_empty():
+		return
 	_set_busy(true)
-	var error := GameSave.start_new_game()
+	var error := GameSave.start_new_game(%PlayerName.text)
 	if error != OK:
 		_start_failed(error)
 
@@ -116,6 +138,14 @@ func _show_settings() -> void:
 func _preview_volume(value: float) -> void:
 	%VolumeValue.text = "%d%%" % roundi(value)
 	GameSettings.preview_volume(value / 100.0)
+
+
+func _change_resolution(index: int) -> void:
+	var error := GameSettings.save_settings(GameSettings.master_volume, index)
+	%SettingsStatus.text = "Resolusi tersimpan." if error == OK else "Resolusi belum dapat diubah. Coba lagi."
+	if error != OK:
+		%Resolution.select(GameSettings.resolution_index)
+	GameSettings.preview_volume(%Volume.value / 100.0)
 
 
 func _apply_settings() -> void:

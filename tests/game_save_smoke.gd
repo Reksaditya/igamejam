@@ -8,6 +8,7 @@ const Results = preload("res://scripts/interaction/desktop/lms/lms_results.gd")
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 
@@ -48,6 +49,9 @@ func _run() -> void:
 	assert(current_scene.get_node("%Load").disabled)
 	assert(not saves.has_save())
 	current_scene._new_game()
+	await process_frame
+	current_scene.get_node("%PlayerName").text = "Yohan"
+	current_scene._create_game()
 	await scene_changed
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)
@@ -138,6 +142,10 @@ func _run() -> void:
 	current_scene._new_game()
 	assert(current_scene.get_node("%NewGameConfirm").visible)
 	current_scene.get_node("%NewGameConfirm").confirmed.emit()
+	current_scene.get_node("%NewGameConfirm").hide()
+	await process_frame
+	current_scene.get_node("%PlayerName").text = "Yohan Baru"
+	current_scene._create_game()
 	await scene_changed
 	await _frames(2)
 	assert(current_scene.scene_file_path == INITIAL)

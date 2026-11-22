@@ -124,6 +124,39 @@ func begin_assessment() -> int:
 	return _next_assessment_token
 
 
+func begin_class(owner: Node) -> bool:
+	if is_instance_valid(_class_owner) or not _assessment_tokens.is_empty():
+		return false
+	_class_owner = owner
+	_class_start = _absolute_minutes
+	_timer.paused = true
+	owner.tree_exiting.connect(cancel_class.bind(owner), CONNECT_ONE_SHOT)
+	return true
+
+
+func complete_class(owner: Node) -> bool:
+	if owner != _class_owner:
+		return false
+	_class_owner = null
+	_absolute_minutes = _class_start + 120
+	_timer.paused = false
+	_timer.start(seconds_per_minute)
+	minute_changed.emit(_absolute_minutes)
+	return true
+
+
+func cancel_class(owner: Node) -> void:
+	if owner == _class_owner:
+		_class_owner = null
+		_timer.paused = false
+
+
+func advance_minutes(minutes: int) -> void:
+	_absolute_minutes += maxi(0, minutes)
+	_timer.start(seconds_per_minute)
+	minute_changed.emit(_absolute_minutes)
+
+
 func end_assessment(token: int) -> void:
 	if not _assessment_tokens.erase(token) or not _assessment_tokens.is_empty():
 		return

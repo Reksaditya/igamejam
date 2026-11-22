@@ -5,6 +5,7 @@ const Results = preload("res://scripts/interaction/desktop/lms/lms_results.gd")
 
 
 func _initialize() -> void:
+	set_meta(&"suppress_world_events", true)
 	_run.call_deferred()
 
 

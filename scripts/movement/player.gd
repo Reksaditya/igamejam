@@ -6,16 +6,16 @@ extends CharacterBody2D
 @export var maximum_fall_speed: float = 900.0
 
 var _studying: bool = false
-var _standing_position: Vector2
 var _standing_scale: Vector2
-var _standing_legs: PackedVector2Array
 
 @onready var _visual: Node2D = $Visual
+@onready var _sprite: AnimatedSprite2D = $Visual/AnimatedSprite2D
 
 
 func _physics_process(delta: float) -> void:
 	if _studying:
 		velocity = Vector2.ZERO
+		_update_animation(false)
 		return
 	var direction := Input.get_axis("move_left", "move_right")
 	var speed := run_speed if Input.is_action_pressed("run") else walk_speed
@@ -25,6 +25,16 @@ func _physics_process(delta: float) -> void:
 	if not is_zero_approx(direction):
 		_visual.scale.x = absf(_visual.scale.x) * signf(direction)
 	move_and_slide()
+	_update_animation(is_zero_approx(direction) and is_on_floor())
+
+
+func _update_animation(idle: bool) -> void:
+	if idle:
+		if not _sprite.is_playing():
+			_sprite.play(&"idle")
+	else:
+		_sprite.stop()
+		_sprite.frame = 0
 
 
 func set_studying(studying: bool) -> void:
@@ -32,18 +42,13 @@ func set_studying(studying: bool) -> void:
 		return
 	_studying = studying
 	velocity = Vector2.ZERO
-	var legs := $Visual/Legs as Polygon2D
 	if studying:
-		_standing_position = _visual.position
 		_standing_scale = _visual.scale
-		_standing_legs = legs.polygon
-		_visual.position += Vector2(0, 8)
 		_visual.scale.x = -absf(_visual.scale.x)
-		legs.polygon = PackedVector2Array([Vector2(-12, 12), Vector2(20, 12), Vector2(20, 20), Vector2(8, 20), Vector2(8, 22), Vector2(0, 22), Vector2(0, 19), Vector2(-12, 19)])
+		_update_animation(false)
 	else:
-		_visual.position = _standing_position
 		_visual.scale = _standing_scale
-		legs.polygon = _standing_legs
+		_update_animation(is_on_floor())
 
 
 func is_studying() -> bool:

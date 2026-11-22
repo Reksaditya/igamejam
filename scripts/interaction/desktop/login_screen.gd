@@ -11,6 +11,8 @@ signal authenticated
 
 func _ready() -> void:
 	%Account.text = account_name
+	if password == "123":
+		_password.placeholder_text = "Sandi awal komputer: 123"
 	_password.text_submitted.connect(_submit)
 	%SignIn.pressed.connect(func() -> void: _submit(_password.text))
 	_password.grab_focus.call_deferred()

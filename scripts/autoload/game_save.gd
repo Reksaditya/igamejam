@@ -123,6 +123,10 @@ func has_save() -> bool:
 	return _read_snapshot() != null
 
 
+func get_return_world() -> String:
+	return _world_scene
+
+
 func save_now() -> Error:
 	var scene := get_tree().current_scene
 	if not _enabled or _busy or SceneTransition.is_active() or scene == null:
@@ -149,7 +153,10 @@ func save_now() -> Error:
 	return last_save_error
 
 
-func start_new_game() -> Error:
+func start_new_game(player_name: String = "Yohan") -> Error:
+	if player_name.strip_edges().is_empty():
+		return ERR_INVALID_PARAMETER
+	var stats := PlayerStats.make_new_state(player_name)
 	_busy = true
 	var previous_scene := _resume_scene
 	var previous_world := _world_scene
@@ -334,7 +341,7 @@ func _gameplay_paths() -> PackedStringArray:
 	for path: String in CAMPUS_FILES + DESKTOP_FILES:
 		if FileAccess.file_exists("user://" + path):
 			paths.append(path)
-	for directory: String in ["lms_results", "notes"]:
+	for directory: String in ["lms_results", "notes", "career_drafts"]:
 		_scan_directory(directory, paths)
 	return paths
 
